@@ -16,3 +16,7 @@ es/3rdparty/walkontable/test
 !handsontable-general-terms.pdf
 !handsontable-non-commercial-license.pdf
 !handsontable.d.ts
+!src/**/*
+!.config/**/*
+!hot.config.js
+!webpack.config.js
