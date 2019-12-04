@@ -20,3 +20,4 @@ es/3rdparty/walkontable/test
 !.config/**/*
 !hot.config.js
 !webpack.config.js
+!babel.config.js
