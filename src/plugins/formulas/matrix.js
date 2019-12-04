@@ -121,16 +121,22 @@ class Matrix {
         return acc;
       }, []);
     };
+    var resultLength = 0;
+    var maxDependenciesDeep = this.hot && this.hot.getSettings().maxDependenciesDeep || -1;
 
     const getTotalDependencies = (cell) => {
+      if(maxDependenciesDeep > 0 && resultLength > maxDependenciesDeep) {
+        return [];
+      }
       let deps = getDependencies(cell);
 
       if (deps.length) {
         arrayEach(deps, (cellValue) => {
-          if (cellValue.hasPrecedents()) {
+          if (cellValue.hasPrecedents() && (maxDependenciesDeep > 0 && resultLength < maxDependenciesDeep|| maxDependenciesDeep === -1)) {
             deps = deps.concat(getTotalDependencies({ row: this.hot.toVisualRow(cellValue.row), column: this.hot.toVisualColumn(cellValue.column) }));
           }
         });
+        resultLength +=deps.length;
       }
 
       return deps;
