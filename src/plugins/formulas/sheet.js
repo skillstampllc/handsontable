@@ -85,20 +85,54 @@ class Sheet {
         break;
     }
   }
-
+  
+  /**
+   * AsyncPromises.
+   */
+  allPromiseAsync (...PromisesList) {
+    return new Promise(async resolve => {
+      let output = []
+      for (let promise of PromisesList) {
+        try {
+          output.push(await promise.then(async resolvedData => await resolvedData))
+        } catch (e) {
+          return output;
+        }
+        if (output.length === PromisesList.length) resolve(output)
+      }
+    }) 
+  }
+  
   /**
    * Recalculate sheet using optimized methods (fast recalculation).
    */
   recalculateOptimized() {
     const cells = this.matrix.getOutOfDateCells();
-
+    let promisses = [];
+    
     arrayEach(cells, (cellValue) => {
       const value = this.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
       if (isFormulaExpression(value)) {
-        this.parseExpression(cellValue, value.substr(1));
+        promisses.push(
+          new Promise(resolve => {
+            setTimeout(() => {
+              this.parseExpression(cellValue, value.substr(1));
+              resolve();
+            },10)
+          })
+        );
       }
     });
+    promisses.push(
+      new Promise(resolve => {
+        setTimeout(() => {
+          this.hot.render();
+          resolve();
+        },10);
+      })
+    );
+    this.allPromiseAsync(promisses);
 
     this._state = STATE_UP_TO_DATE;
     this.runLocalHooks('afterRecalculate', cells, 'optimized');
@@ -162,7 +196,13 @@ class Sheet {
       this.parseExpression(new CellValue(row, column), newValue.substr(1));
     }
 
-    const deps = this.getCellDependencies(this.hot.toVisualRow(row), this.hot.toVisualColumn(column));
+    var deps = [];
+    var maxDependenciesDeep = this.hot && this.hot.getSettings().maxDependenciesDeep > -1
+      ? this.hot.getSettings().maxDependenciesDeep : -1;
+
+    if(maxDependenciesDeep !== 0) {
+      deps = this.getCellDependencies(this.hot.toVisualRow(row), this.hot.toVisualColumn(column));
+    }
 
     arrayEach(deps, (cellValue) => {
       cellValue.setState(CellValue.STATE_OUT_OFF_DATE);
