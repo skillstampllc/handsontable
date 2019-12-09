@@ -155,7 +155,7 @@ class Matrix {
     /* eslint-disable arrow-body-style */
     let result = [];
     let startCell = cellCoord;
-    let cellCode = this.coordsToA1([startCell.column || startCell[1], (startCell.row || startCell[0]) + 1]);
+    var cellCode = this.coordsToA1([startCell[1] || startCell.column, (startCell[0] || startCell.row) + 1]);
 
     function distinctFilter(array) {
       var seenIt = {};
