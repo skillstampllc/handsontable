@@ -147,6 +147,75 @@ class Matrix {
   }
 
   /**
+   * Get cell dependencies using visual coordinates.
+   *
+   * @param {Object} cellCoord Visual cell coordinates object.
+   */
+  getDependenciesCustom(cellCoord) {
+    /* eslint-disable arrow-body-style */
+    let result = [];
+    let startCell = cellCoord;
+    let cellCode = this.coordsToA1([startCell.column || startCell[1], (startCell.row || startCell[0]) + 1]);
+
+    function distinctFilter(array) {
+      var seenIt = {};
+
+      return array.reverse().filter(function (val) {
+        let key = `${val.row}-${val.column}`;
+        if (seenIt[key]) {
+          return false;
+        }
+        return seenIt[key] = true;
+      }).reverse();
+    }
+
+    this.data.forEach(dataCell => {
+      if (dataCell.precedentsList && dataCell.precedentsList[cellCode]) {
+        result.push(this.getCellAt(
+          dataCell.row,
+          dataCell.column,
+        ));
+      }
+    });
+    result.forEach(parentCell => {
+      result.push(...this.getDependenciesCustom([parentCell.row, parentCell.column]));
+    });
+
+    return distinctFilter(result);
+  }
+
+  /**
+   * 
+   */
+  coordsToA1(coords) {
+    return this.stringifyCol(coords[0]) + coords[1];
+  }
+  /**
+   * Stringify column from number to.
+   *
+   * @param {*} value
+   */
+  stringifyCol(value) {
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    let col = '';
+
+    while (value >= 0) {
+      if (value / 26 >= 1) {
+        col += String.fromCharCode(64 + Math.floor(value / 26));
+        value = value % 26;
+      } else {
+        col += String.fromCharCode(65 + value);
+        value = -1;
+      }
+    }
+
+    return col;
+  }
+  
+  /**
    * Register cell reference to the collection.
    *
    * @param {CellReference|Object} cellReference Cell reference object.

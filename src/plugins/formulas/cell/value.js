@@ -52,6 +52,14 @@ class CellValue extends BaseCell {
      * @type {Array}
      */
     this.precedents = [];
+
+    /**
+     * List of precedents cells.
+     *
+     * @type {Array}
+     */
+    this.precedentsList = {};
+    
     /**
      * Computed value.
      *
@@ -79,6 +87,90 @@ class CellValue extends BaseCell {
    */
   setValue(value) {
     this.value = value;
+  }
+
+  /**
+   * Parse column name to number.
+   *
+   * @param {*} value
+   */
+  parseCol(value) {
+    if (typeof value === 'number') {
+      return value;
+    }
+
+    let coord = -1;
+    for (let i = 0; i < value.length; i++) {
+      coord += (value[i].charCodeAt(0) - 64) * Math.pow(26, value.length - 1 - i);
+    }
+    return coord;
+  }
+
+  /**
+   * Stringify column from number to.
+   *
+   * @param {*} value
+   */
+  stringifyCol(value) {
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    let col = '';
+
+    while (value >= 0) {
+      if (value / 26 >= 1) {
+        col += String.fromCharCode(64 + Math.floor(value / 26));
+        value = value % 26;
+      } else {
+        col += String.fromCharCode(65 + value);
+        value = -1;
+      }
+    }
+
+    return col;
+  }
+
+  /**
+   * Parse precedents without deep.
+   *
+   * @param {*} value
+   */
+  setPrecedents(value) {
+    let precedents = {};
+
+    if (!value || typeof value === 'number' || value[0] !== '=') {
+      return {};
+    }
+
+    let regex = /(\$?[A-Z]+\$?[0-9]+:\$?[A-Z]+\$?[0-9]+)|(\$?[A-Z]+\$?[0-9]+)/g;
+
+    try {
+      (value.match(regex) || []).forEach(cell => {
+        if(cell.indexOf(':') > -1) {
+          let [startCell, endCell] = cell.split(':');
+          startCell = startCell.match(/(\D+)(\d+)/);
+          endCell = endCell.match(/(\D+)(\d+)/);
+
+          for(let i = this.parseCol(startCell[1]); i <= this.parseCol(endCell[1]); i++) {
+            for(let j = startCell[2]; j <=endCell[2]; j++) {
+              let newCell = `${this.stringifyCol(i)}${j}`;
+              if(!precedents[newCell]) {
+                precedents[newCell] = newCell;
+              }
+            }
+          }
+        } else {
+          if(!precedents[cell]) {
+            precedents[cell] = cell;
+          }
+        }
+      });
+    } catch (e) {
+      console.log('e',e);
+    }
+
+    this.precedentsList = precedents;
   }
 
   /**

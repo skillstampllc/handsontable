@@ -232,6 +232,8 @@ class Sheet {
       cellValue.setState(CellValue.STATE_UP_TO_DATE);
     }
 
+    cellValue.setPrecedents("=" + toUpperCaseFormula(formula));
+
     this.matrix.add(cellValue);
     this._processingCell = null;
   }
@@ -255,7 +257,17 @@ class Sheet {
    * @returns {Array}
    */
   getCellDependencies(row, column) {
-    return this.matrix.getDependencies({ row, column });
+    var useCustomGetCellDependencies = this.hot && this.hot.getSettings().useCustomGetCellDependencies || false;
+
+    return useCustomGetCellDependencies
+      ? this.matrix.getDependenciesCustom({
+        row,
+        column
+      })
+      : this.matrix.getDependencies({
+        row,
+        column
+      });
   }
 
   /**
