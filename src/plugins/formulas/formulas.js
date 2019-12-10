@@ -261,9 +261,11 @@ class Formulas extends BasePlugin {
     if (source === 'loadData') {
       return;
     }
-
+    
     this.dataProvider.clearChanges();
 
+    let needRecalculate = false;
+    
     arrayEach(changes, ([row, column, oldValue, newValue]) => {
       const physicalColumn = this.hot.propToCol(column);
       const physicalRow = this.hot.toPhysicalRow(row);
@@ -272,14 +274,17 @@ class Formulas extends BasePlugin {
       if (isFormulaExpression(value)) {
         value = toUpperCaseFormula(value);
       }
-
-      this.dataProvider.collectChanges(physicalRow, physicalColumn, value);
-
+      
       if (oldValue !== value) {
+        needRecalculate = true;
+        this.dataProvider.collectChanges(physicalRow, physicalColumn, value);
         this.sheet.applyChanges(physicalRow, physicalColumn, value);
       }
     });
-    this.recalculate();
+
+    if(needRecalculate) {
+      this.recalculate();
+    }
   }
 
   /**
