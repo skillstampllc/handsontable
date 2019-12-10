@@ -57,6 +57,21 @@ class Sheet {
      * @type {null}
      */
     this._processingCell = null;
+
+    /**
+     *
+     * @private
+     * @type boolean
+     */
+    this.useCustomGetCellDependencies = this.hot && this.hot.getSettings().useCustomGetCellDependencies || false;
+    
+    /**
+     *
+     * @private
+     * @type {null}
+     */
+    this._parsedCells = {};
+    
     /**
      * State of the sheet.
      *
@@ -109,32 +124,45 @@ class Sheet {
   recalculateOptimized() {
     const cells = this.matrix.getOutOfDateCells();
     let promisses = [];
-    
+    this._parsedCells = {};
+    this.matrix.data.forEach(cell => {
+      if(cell.state === 3 && Object.keys(cell.precedentsList).length > 0) {
+        this._parsedCells[cell.key] = cell.value;
+      }
+    });
+
     arrayEach(cells, (cellValue) => {
       const value = this.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
       if (isFormulaExpression(value)) {
-        promisses.push(
-          new Promise(resolve => {
-            setTimeout(() => {
-              this.parseExpression(cellValue, value.substr(1));
-              resolve();
-            },10)
-          })
-        );
+        if(this.useCustomGetCellDependencies) {
+          this.parseExpression(cellValue, value.substr(1));
+        } else {
+          promisses.push(
+            new Promise(resolve => {
+              setTimeout(() => {
+                this.parseExpression(cellValue, value.substr(1));
+                resolve();
+              },10)
+            })
+          );
+        }
       }
     });
-    promisses.push(
-      new Promise(resolve => {
-        setTimeout(() => {
-          this.hot.render();
-          resolve();
-        },10);
-      })
-    );
-    this.allPromiseAsync(promisses);
-
+    if(!this.useCustomGetCellDependencies) {
+      promisses.push(
+        new Promise(resolve => {
+          setTimeout(() => {
+            this.hot.render();
+            resolve();
+          },10);
+        })
+      );
+      this.allPromiseAsync(promisses);
+    }
+    
     this._state = STATE_UP_TO_DATE;
+    this._parsedCells = {};
     this.runLocalHooks('afterRecalculate', cells, 'optimized');
   }
 
@@ -145,6 +173,7 @@ class Sheet {
     const cells = this.dataProvider.getSourceDataByRange();
 
     this.matrix.reset();
+    this._parsedCells = {};
 
     arrayEach(cells, (rowData, row) => {
       arrayEach(rowData, (value, column) => {
@@ -155,6 +184,7 @@ class Sheet {
     });
 
     this._state = STATE_UP_TO_DATE;
+    this._parsedCells = {};
     this.runLocalHooks('afterRecalculate', cells, 'full');
   }
 
@@ -221,7 +251,21 @@ class Sheet {
     cellValue.setState(CellValue.STATE_COMPUTING);
     this._processingCell = cellValue;
 
+    let oldFormula = toUpperCaseFormula(formula);
+    let newFormula = toUpperCaseFormula(formula);
+    Object.keys(this._parsedCells).forEach(cell => {
+      if(this._parsedCells[cell]) {
+        newFormula = newFormula.replace(new RegExp(`${cell}+`), `${this._parsedCells[cell]}`)
+        newFormula = newFormula.replace(new RegExp(`${cell}\,`), `${this._parsedCells[cell]},`)
+        newFormula = newFormula.replace(new RegExp(`${cell}$`), `${this._parsedCells[cell]}`)
+      }
+    });
+
     const { error, result } = this.parser.parse(toUpperCaseFormula(formula));
+    
+    if(result && !this._parsedCells[cellValue.key]) {
+      this._parsedCells[cellValue.key] = result;
+    }
 
     if (isFormulaExpression(result)) {
       this.parseExpression(cellValue, result.substr(1));
@@ -257,9 +301,8 @@ class Sheet {
    * @returns {Array}
    */
   getCellDependencies(row, column) {
-    var useCustomGetCellDependencies = this.hot && this.hot.getSettings().useCustomGetCellDependencies || false;
-
-    return useCustomGetCellDependencies
+    
+    return this.useCustomGetCellDependencies
       ? this.matrix.getDependenciesCustom({
         row,
         column

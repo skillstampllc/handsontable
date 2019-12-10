@@ -78,6 +78,14 @@ class CellValue extends BaseCell {
      * @type {String}
      */
     this.state = CellValue.STATE_UP_TO_DATE;
+    
+    /**
+     * Indicates cell key.
+     *
+     * @type {String}
+     */
+    this.key = `${this.stringifyCol(column)}${row+1}`;
+    ;
   }
 
   /**
