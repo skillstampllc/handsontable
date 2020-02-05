@@ -161,7 +161,7 @@ class CellValue extends BaseCell {
           endCell = endCell.match(/(\D+)(\d+)/);
 
           for(let i = this.parseCol(startCell[1]); i <= this.parseCol(endCell[1]); i++) {
-            for(let j = startCell[2]; j <=endCell[2]; j++) {
+            for(let j = parseInt(startCell[2]); j <=parseInt(endCell[2]); j++) {
               let newCell = `${this.stringifyCol(i)}${j}`;
               if(!precedents[newCell]) {
                 precedents[newCell] = newCell;
