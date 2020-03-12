@@ -201,7 +201,6 @@ class ContextMenu extends BasePlugin {
     }
 
     this.prepareMenuItems();
-
     this.menu.open();
 
     if (!this.menu.isOpened()) {

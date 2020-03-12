@@ -28,8 +28,13 @@
  * INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY CHARACTER ARISING
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
+<<<<<<< HEAD
  * Version: 8.0.0-beta.1
  * Release date: 14/11/2019 (built at 13/02/2020 15:40:50)
+=======
+ * Version: 7.4.2
+ * Release date: 19/02/2020 (built at 19/02/2020 13:44:06)
+>>>>>>> master
  */
 /**
  * Fix for bootstrap styles
@@ -184,7 +189,6 @@
   outline-width: 0;
   white-space: pre-line;
   /* preserve new line character in cell */
-  background-clip: padding-box;
 }
 
 .handsontable th:last-child {

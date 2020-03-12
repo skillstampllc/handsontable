@@ -11,7 +11,7 @@ import {
  *
  * @param  {HTMLElement} element Element from which traversing is started.
  * @param  {Number} [level=0] Traversing deep level.
- * @return {HTMLElement|null}
+ * @returns {HTMLElement|null}
  */
 export function getParent(element, level = 0) {
   let iteration = -1;
@@ -37,23 +37,58 @@ export function getParent(element, level = 0) {
 }
 
 /**
- * Goes up the DOM tree (including given element) until it finds an element that matches the nodes or nodes name.
+ * Gets `frameElement` of the specified frame. Returns null if it is a top frame or if script has no access to read property.
+ *
+ * @param {Window} frame Frame from which should be get frameElement in safe way.
+ * @returns {HTMLIFrameElement|null}
+ */
+export function getFrameElement(frame) {
+  return Object.getPrototypeOf(frame.parent) && frame.frameElement;
+}
+
+/**
+ * Gets parent frame of the specified frame. Returns null if it is a top frame or if script has no access to read property.
+ *
+ * @param {Window} frame Frame from which should be get frameElement in safe way.
+ * @returns {Window|null}
+ */
+export function getParentWindow(frame) {
+  return getFrameElement(frame) && frame.parent;
+}
+
+/**
+ * Checks if script has access to read from parent frame of specified frame.
+
+ * @param {Window} frame Frame from which should be get frameElement in safe way.
+ */
+export function hasAccessToParentWindow(frame) {
+  return !!Object.getPrototypeOf(frame.parent);
+}
+
+/**
+ * Goes up the DOM tree (including given element) until it finds an parent element that matches the nodes or nodes name.
  * This method goes up through web components.
  *
- * @param {HTMLElement} element Element from which traversing is started
- * @param {Array} nodes Array of elements or Array of elements name
- * @param {HTMLElement} [until]
- * @returns {HTMLElement|null}
+ * @param {Node} element Element from which traversing is started.
+ * @param {(string | Node)[]} [nodes] Array of elements or Array of elements name (in uppercase form).
+ * @param {Node} [until] The element until the traversing ends.
+ * @returns {Node|null}
  */
-export function closest(element, nodes, until) {
+export function closest(element, nodes = [], until) {
+  const { ELEMENT_NODE, DOCUMENT_FRAGMENT_NODE } = Node;
   let elementToCheck = element;
 
-  while (elementToCheck !== null && elementToCheck !== until) {
-    if (elementToCheck.nodeType === Node.ELEMENT_NODE && (nodes.indexOf(elementToCheck.nodeName) > -1 || nodes.indexOf(elementToCheck) > -1)) {
+  while (elementToCheck !== null && elementToCheck !== void 0 && elementToCheck !== until) {
+    const { nodeType, nodeName } = elementToCheck;
+
+    if (nodeType === ELEMENT_NODE && (nodes.includes(nodeName) || nodes.includes(elementToCheck))) {
       return elementToCheck;
     }
-    if (elementToCheck.host && elementToCheck.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      elementToCheck = elementToCheck.host;
+
+    const { host } = elementToCheck;
+
+    if (host && nodeType === DOCUMENT_FRAGMENT_NODE) {
+      elementToCheck = host;
 
     } else {
       elementToCheck = elementToCheck.parentNode;
@@ -189,7 +224,7 @@ export function polymerUnwrap(element) {
  *
  * @see http://jsperf.com/sibling-index/10
  * @param {Element} element
- * @return {Number}
+ * @returns {Number}
  */
 export function index(element) {
   let i = 0;
@@ -421,7 +456,7 @@ export const HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
 
 /**
  * Insert content into element trying avoid innerHTML method.
- * @return {void}
+ * @returns {void}
  */
 export function fastInnerHTML(element, content) {
   if (HTML_CHARACTERS.test(content)) {
@@ -433,7 +468,7 @@ export function fastInnerHTML(element, content) {
 
 /**
  * Insert text content into element
- * @return {Boolean}
+ * @returns {Boolean}
  */
 export function fastInnerText(element, content) {
   const child = element.firstChild;
@@ -499,7 +534,7 @@ export function isVisible(elem) {
  * Returns elements top and left offset relative to the document. Function is not compatible with jQuery offset.
  *
  * @param {HTMLElement} elem
- * @return {Object} Returns object with `top` and `left` props
+ * @returns {Object} Returns object with `top` and `left` props
  */
 export function offset(elem) {
   const rootDocument = elem.ownerDocument;
@@ -849,7 +884,7 @@ export function removeEvent(element, event, callback) {
  * Returns caret position in text input
  *
  * @author https://stackoverflow.com/questions/263743/how-to-get-caret-position-in-textarea
- * @return {Number}
+ * @returns {Number}
  */
 export function getCaretPosition(el) {
   const rootDocument = el.ownerDocument;
@@ -880,7 +915,7 @@ export function getCaretPosition(el) {
 /**
  * Returns end of the selection in text input
  *
- * @return {Number}
+ * @returns {Number}
  */
 export function getSelectionEndPosition(el) {
   const rootDocument = el.ownerDocument;
@@ -1019,7 +1054,7 @@ function walkontableCalculateScrollbarWidth(rootDocument = document) {
  * Returns the computed width of the native browser scroll bar.
  *
  * @param {Document} rootDocument
- * @return {Number} width
+ * @returns {Number} width
  */
 // eslint-disable-next-line no-restricted-globals
 export function getScrollbarWidth(rootDocument = document) {
