@@ -1,3 +1,4 @@
+import "core-js/modules/es.array.every";
 import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.index-of";

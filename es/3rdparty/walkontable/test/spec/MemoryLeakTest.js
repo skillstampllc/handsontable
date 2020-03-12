@@ -1,3 +1,4 @@
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.string.includes";
 import "core-js/modules/web.dom-collections.for-each";

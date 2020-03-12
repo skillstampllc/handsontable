@@ -1,3 +1,4 @@
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.match";
 import "core-js/modules/es.string.replace";
 

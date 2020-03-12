@@ -2,6 +2,8 @@
 
 require("core-js/modules/es.array.index-of");
 
+require("core-js/modules/es.array.some");
+
 require("core-js/modules/es.number.to-fixed");
 
 exports.__esModule = true;

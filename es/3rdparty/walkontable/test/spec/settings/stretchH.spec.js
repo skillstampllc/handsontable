@@ -2,6 +2,11 @@ import "core-js/modules/es.array.find";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.promise";
 import "regenerator-runtime/runtime";
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 describe('stretchH option', function () {
   var debug = false;
   beforeEach(function () {
@@ -42,9 +47,13 @@ describe('stretchH option', function () {
 
     expect(spec().$table.find('col:eq(2)').width() - spec().$table.find('col:eq(1)').width()).toBeInArray([-1, 0, 1]);
   });
-  it('should stretch all visible columns when stretchH equals \'all\' and window is resized', function _callee() {
+  it('should stretch all visible columns when stretchH equals \'all\' and window is resized',
+  /*#__PURE__*/
+  _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee() {
     var wt, initialTableWidth, evt, currentTableWidth;
-    return regeneratorRuntime.async(function _callee$(_context) {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -69,7 +78,7 @@ describe('stretchH option', function () {
             window.dispatchEvent(evt);
             wt.draw();
             _context.next = 13;
-            return regeneratorRuntime.awrap(sleep(300));
+            return sleep(300);
 
           case 13:
             currentTableWidth = spec().$table.outerWidth();
@@ -81,8 +90,8 @@ describe('stretchH option', function () {
             return _context.stop();
         }
       }
-    });
-  });
+    }, _callee);
+  })));
   it('should stretch all visible columns when stretchH equals \'all\' (when rows are of variable height)', function () {
     createDataArray(20, 2);
 

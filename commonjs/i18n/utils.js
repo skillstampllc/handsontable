@@ -6,6 +6,8 @@ require("core-js/modules/es.array.slice");
 
 require("core-js/modules/es.object.freeze");
 
+require("core-js/modules/es.regexp.exec");
+
 exports.__esModule = true;
 exports.extendNotExistingKeys = extendNotExistingKeys;
 exports.createCellHeadersRange = createCellHeadersRange;

@@ -1,3 +1,4 @@
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.search";
 import moment from 'moment';
 import { getNormalizedDate } from '../helpers/date';

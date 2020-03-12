@@ -1,4 +1,5 @@
 import "core-js/modules/es.array.index-of";
+import "core-js/modules/es.array.some";
 import "core-js/modules/es.number.to-fixed";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

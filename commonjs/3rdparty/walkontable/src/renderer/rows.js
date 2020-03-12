@@ -35,7 +35,7 @@ var _base = _interopRequireDefault(require("./_base"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _templateObject() {
   var data = _taggedTemplateLiteral(["Performance tip: Handsontable rendered more than 1000 visible rows. Consider limiting the number \n        of rendered rows by specifying the table height and/or turning off the \"renderAllRows\" option."], ["Performance tip: Handsontable rendered more than 1000 visible rows. Consider limiting the number\\x20\n        of rendered rows by specifying the table height and/or turning off the \"renderAllRows\" option."]);

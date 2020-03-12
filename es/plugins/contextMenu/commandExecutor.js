@@ -1,4 +1,5 @@
 import "core-js/modules/es.array.join";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.split";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

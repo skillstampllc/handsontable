@@ -2,6 +2,8 @@
 
 require("core-js/modules/es.array.join");
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.string.split");
 
 exports.__esModule = true;

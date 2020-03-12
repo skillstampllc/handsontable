@@ -2,6 +2,7 @@ import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.find";
 import "core-js/modules/es.array.splice";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.replace";
 import "core-js/modules/es.string.split";

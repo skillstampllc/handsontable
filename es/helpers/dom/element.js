@@ -8,8 +8,10 @@ import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.join";
 import "core-js/modules/es.array.slice";
+import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.constructor";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.includes";
 import "core-js/modules/es.string.iterator";
@@ -33,7 +35,7 @@ import { hasCaptionProblem, isClassListSupported, isTextContentSupported, isGetC
  *
  * @param  {HTMLElement} element Element from which traversing is started.
  * @param  {Number} [level=0] Traversing deep level.
- * @return {HTMLElement|null}
+ * @returns {HTMLElement|null}
  */
 
 export function getParent(element) {
@@ -59,25 +61,66 @@ export function getParent(element) {
   return parent;
 }
 /**
- * Goes up the DOM tree (including given element) until it finds an element that matches the nodes or nodes name.
- * This method goes up through web components.
+ * Gets `frameElement` of the specified frame. Returns null if it is a top frame or if script has no access to read property.
  *
- * @param {HTMLElement} element Element from which traversing is started
- * @param {Array} nodes Array of elements or Array of elements name
- * @param {HTMLElement} [until]
- * @returns {HTMLElement|null}
+ * @param {Window} frame Frame from which should be get frameElement in safe way.
+ * @returns {HTMLIFrameElement|null}
  */
 
-export function closest(element, nodes, until) {
+export function getFrameElement(frame) {
+  return Object.getPrototypeOf(frame.parent) && frame.frameElement;
+}
+/**
+ * Gets parent frame of the specified frame. Returns null if it is a top frame or if script has no access to read property.
+ *
+ * @param {Window} frame Frame from which should be get frameElement in safe way.
+ * @returns {Window|null}
+ */
+
+export function getParentWindow(frame) {
+  return getFrameElement(frame) && frame.parent;
+}
+/**
+ * Checks if script has access to read from parent frame of specified frame.
+
+ * @param {Window} frame Frame from which should be get frameElement in safe way.
+ */
+
+export function hasAccessToParentWindow(frame) {
+  return !!Object.getPrototypeOf(frame.parent);
+}
+/**
+ * Goes up the DOM tree (including given element) until it finds an parent element that matches the nodes or nodes name.
+ * This method goes up through web components.
+ *
+ * @param {Node} element Element from which traversing is started.
+ * @param {(string | Node)[]} [nodes] Array of elements or Array of elements name (in uppercase form).
+ * @param {Node} [until] The element until the traversing ends.
+ * @returns {Node|null}
+ */
+
+export function closest(element) {
+  var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var until = arguments.length > 2 ? arguments[2] : undefined;
+  var _Node = Node,
+      ELEMENT_NODE = _Node.ELEMENT_NODE,
+      DOCUMENT_FRAGMENT_NODE = _Node.DOCUMENT_FRAGMENT_NODE;
   var elementToCheck = element;
 
-  while (elementToCheck !== null && elementToCheck !== until) {
-    if (elementToCheck.nodeType === Node.ELEMENT_NODE && (nodes.indexOf(elementToCheck.nodeName) > -1 || nodes.indexOf(elementToCheck) > -1)) {
+  while (elementToCheck !== null && elementToCheck !== void 0 && elementToCheck !== until) {
+    var _elementToCheck = elementToCheck,
+        nodeType = _elementToCheck.nodeType,
+        nodeName = _elementToCheck.nodeName;
+
+    if (nodeType === ELEMENT_NODE && (nodes.includes(nodeName) || nodes.includes(elementToCheck))) {
       return elementToCheck;
     }
 
-    if (elementToCheck.host && elementToCheck.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      elementToCheck = elementToCheck.host;
+    var _elementToCheck2 = elementToCheck,
+        host = _elementToCheck2.host;
+
+    if (host && nodeType === DOCUMENT_FRAGMENT_NODE) {
+      elementToCheck = host;
     } else {
       elementToCheck = elementToCheck.parentNode;
     }
@@ -214,7 +257,7 @@ export function polymerUnwrap(element) {
  *
  * @see http://jsperf.com/sibling-index/10
  * @param {Element} element
- * @return {Number}
+ * @returns {Number}
  */
 
 export function index(element) {
@@ -451,7 +494,7 @@ export function empty(element) {
 export var HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
 /**
  * Insert content into element trying avoid innerHTML method.
- * @return {void}
+ * @returns {void}
  */
 
 export function fastInnerHTML(element, content) {
@@ -463,7 +506,7 @@ export function fastInnerHTML(element, content) {
 }
 /**
  * Insert text content into element
- * @return {Boolean}
+ * @returns {Boolean}
  */
 
 export function fastInnerText(element, content) {
@@ -529,7 +572,7 @@ export function isVisible(elem) {
  * Returns elements top and left offset relative to the document. Function is not compatible with jQuery offset.
  *
  * @param {HTMLElement} elem
- * @return {Object} Returns object with `top` and `left` props
+ * @returns {Object} Returns object with `top` and `left` props
  */
 
 export function offset(elem) {
@@ -893,7 +936,7 @@ export function removeEvent(element, event, callback) {
  * Returns caret position in text input
  *
  * @author https://stackoverflow.com/questions/263743/how-to-get-caret-position-in-textarea
- * @return {Number}
+ * @returns {Number}
  */
 
 export function getCaretPosition(el) {
@@ -922,7 +965,7 @@ export function getCaretPosition(el) {
 /**
  * Returns end of the selection in text input
  *
- * @return {Number}
+ * @returns {Number}
  */
 
 export function getSelectionEndPosition(el) {
@@ -1065,7 +1108,7 @@ function walkontableCalculateScrollbarWidth() {
  * Returns the computed width of the native browser scroll bar.
  *
  * @param {Document} rootDocument
- * @return {Number} width
+ * @returns {Number} width
  */
 // eslint-disable-next-line no-restricted-globals
 

@@ -1,5 +1,7 @@
 "use strict";
 
+require("core-js/modules/es.array.every");
+
 require("core-js/modules/es.array.from");
 
 require("core-js/modules/es.array.includes");

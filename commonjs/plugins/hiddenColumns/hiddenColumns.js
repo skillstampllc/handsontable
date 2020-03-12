@@ -8,6 +8,8 @@ require("core-js/modules/es.symbol.iterator");
 
 require("core-js/modules/es.array.concat");
 
+require("core-js/modules/es.array.every");
+
 require("core-js/modules/es.array.filter");
 
 require("core-js/modules/es.array.from");
@@ -35,6 +37,8 @@ require("core-js/modules/es.object.set-prototype-of");
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.reflect.get");
+
+require("core-js/modules/es.regexp.exec");
 
 require("core-js/modules/es.set");
 
@@ -69,7 +73,7 @@ var _showColumn = _interopRequireDefault(require("./contextMenuItem/showColumn")
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

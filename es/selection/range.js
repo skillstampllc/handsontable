@@ -3,6 +3,7 @@ import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.some";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.string.includes";
 import "core-js/modules/es.string.iterator";

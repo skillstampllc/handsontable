@@ -1,6 +1,7 @@
 import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.slice";
 import "core-js/modules/es.object.freeze";
+import "core-js/modules/es.regexp.exec";
 
 function _templateObject() {
   var data = _taggedTemplateLiteral(["Language with code \"", "\" was not found. You should register particular language \n    before using it. Read more about this issue at: https://handsontable.com/docs/i18n/missing-language-code."]);

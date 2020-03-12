@@ -2,6 +2,8 @@
 
 require("core-js/modules/es.array.concat");
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.string.replace");
 
 exports.__esModule = true;

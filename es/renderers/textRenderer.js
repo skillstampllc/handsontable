@@ -1,4 +1,5 @@
 import "core-js/modules/es.array.concat";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.replace";
 import { empty, fastInnerText } from './../helpers/dom/element';
 import { stringify } from './../helpers/mixed';

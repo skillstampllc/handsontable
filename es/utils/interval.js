@@ -1,3 +1,4 @@
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.replace";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

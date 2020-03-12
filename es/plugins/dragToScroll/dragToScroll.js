@@ -10,7 +10,7 @@ import "core-js/modules/es.reflect.get";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36,6 +36,7 @@ import BasePlugin from './../_base';
 import EventManager from './../../eventManager';
 import { registerPlugin } from './../../plugins';
 import { isRightClick } from '../../helpers/dom/event';
+import { getParentWindow } from '../../helpers/dom/element';
 /**
  * @description
  * Plugin used to scroll Handsontable by selecting a cell and dragging outside of the visible viewport.
@@ -261,7 +262,7 @@ function (_BasePlugin) {
         this.eventManager.addEventListener(frame.document, 'mousemove', function (event) {
           return _this3.onMouseMove(event);
         });
-        frame = frame.frameElement && frame.frameElement.ownerDocument.defaultView;
+        frame = getParentWindow(frame);
       }
     }
     /**

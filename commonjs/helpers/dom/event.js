@@ -76,13 +76,13 @@ function pageY(event) {
     return event.pageY;
   }
 
-  var rootWindow = event.target.ownerDocument.defaultView;
-  var frame = rootWindow;
+  var frame = event.target.ownerDocument.defaultView;
   var offset = (0, _element.getWindowScrollTop)(frame);
+  frame = (0, _element.getParentWindow)(frame);
 
-  while (frame.frameElement) {
-    frame = frame.frameElement.ownerDocument.defaultView;
+  while (frame) {
     offset -= (0, _element.getWindowScrollTop)(frame);
+    frame = (0, _element.getParentWindow)(frame);
   }
 
   return event.clientY + offset;

@@ -6,9 +6,15 @@ require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.promise");
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.string.replace");
 
 require("regenerator-runtime/runtime");
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 describe('Walkontable.Selection', function () {
   var debug = false;
@@ -92,9 +98,13 @@ describe('Walkontable.Selection', function () {
     wt.draw();
     expect($td1.hasClass('current')).toEqual(true);
   });
-  it('should add/remove border to selection when cell is clicked', function _callee() {
+  it('should add/remove border to selection when cell is clicked',
+  /*#__PURE__*/
+  _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee() {
     var wt, $td1, $td2, $top, pos1, pos2;
-    return regeneratorRuntime.async(function _callee$(_context) {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -111,7 +121,7 @@ describe('Walkontable.Selection', function () {
             });
             wt.draw();
             _context.next = 4;
-            return regeneratorRuntime.awrap(sleep(1500));
+            return sleep(1500);
 
           case 4:
             $td1 = spec().$table.find('tbody tr:eq(1) td:eq(0)');
@@ -132,8 +142,8 @@ describe('Walkontable.Selection', function () {
             return _context.stop();
         }
       }
-    });
-  });
+    }, _callee);
+  })));
   it('should add a selection that is outside of the viewport', function () {
     var wt = walkontable({
       data: getData,

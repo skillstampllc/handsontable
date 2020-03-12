@@ -209,10 +209,10 @@ function () {
         this.instance.getSetting('onCellCornerMouseDown', event, realTarget);
       } else if (cell.TD && this.instance.hasSetting('onCellMouseDown')) {
         this.instance.getSetting('onCellMouseDown', event, cell.coords, cell.TD, this.instance);
-      }
+      } // doubleclick reacts only for left mouse button or from touch events
 
-      if (event.button !== 2 && cell.TD) {
-        // if not right mouse button
+
+      if ((event.button === 0 || this.instance.touchApplied) && cell.TD) {
         priv.dblClickOrigin[0] = cell.TD;
         clearTimeout(priv.dblClickTimeout[0]);
         priv.dblClickTimeout[0] = setTimeout(function () {
@@ -293,16 +293,16 @@ function () {
   }, {
     key: "onMouseUp",
     value: function onMouseUp(event) {
-      if (event.button === 2) {
-        return;
-      } // if not right mouse button
-
-
       var priv = privatePool.get(this);
       var cell = this.parentCell(event.realTarget);
 
       if (cell.TD && this.instance.hasSetting('onCellMouseUp')) {
         this.instance.getSetting('onCellMouseUp', event, cell.coords, cell.TD, this.instance);
+      } // if not left mouse button, and the origin event is not comes from touch
+
+
+      if (event.button !== 0 && !this.instance.touchApplied) {
+        return;
       }
 
       if (cell.TD === priv.dblClickOrigin[0] && cell.TD === priv.dblClickOrigin[1]) {
@@ -348,8 +348,7 @@ function () {
     key: "onTouchEnd",
     value: function onTouchEnd(event) {
       var excludeTags = ['A', 'BUTTON', 'INPUT'];
-      var target = event.target;
-      this.instance.touchApplied = false; // When the standard event was performed on the link element (a cell which contains HTML `a` element) then here
+      var target = event.target; // When the standard event was performed on the link element (a cell which contains HTML `a` element) then here
       // we check if it should be canceled. Click is blocked in a situation when the element is rendered outside
       // selected cells. This prevents accidentally page reloads while selecting adjacent cells.
 
@@ -358,6 +357,7 @@ function () {
       }
 
       this.onMouseUp(event);
+      this.instance.touchApplied = false;
     }
     /**
      * Clears double-click timeouts and destroys the internal eventManager instance.

@@ -14,6 +14,8 @@ require("core-js/modules/es.object.freeze");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.code-point-at");
@@ -104,7 +106,7 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
  * Converts any value to string.
@@ -250,7 +252,7 @@ var domMessages = {
 function _injectProductInfo(key, element) {
   var hasValidType = !isEmpty(key);
   var isNonCommercial = typeof key === 'string' && key.toLowerCase() === 'non-commercial-and-evaluation';
-  var hotVersion = "8.0.0-beta.1";
+  var hotVersion = "7.4.2";
   var keyValidityDate;
   var consoleMessageState = 'invalid';
   var domMessageState = 'invalid';
@@ -260,7 +262,7 @@ function _injectProductInfo(key, element) {
 
   if (hasValidType || isNonCommercial || schemaValidity) {
     if (schemaValidity) {
-      var releaseDate = (0, _moment.default)("14/11/2019", 'DD/MM/YYYY');
+      var releaseDate = (0, _moment.default)("19/02/2020", 'DD/MM/YYYY');
       var releaseDays = Math.floor(releaseDate.toDate().getTime() / 8.64e7);
 
       var keyValidityDays = _extractTime(key);

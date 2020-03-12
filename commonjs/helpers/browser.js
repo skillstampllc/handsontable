@@ -2,6 +2,7 @@
 
 exports.__esModule = true;
 exports.setBrowserMeta = setBrowserMeta;
+exports.setPlatformMeta = setPlatformMeta;
 exports.isChrome = isChrome;
 exports.isEdge = isEdge;
 exports.isIE = isIE;
@@ -11,6 +12,9 @@ exports.isMSBrowser = isMSBrowser;
 exports.isMobileBrowser = isMobileBrowser;
 exports.isSafari = isSafari;
 exports.isFirefox = isFirefox;
+exports.isWindowsOS = isWindowsOS;
+exports.isMacOS = isMacOS;
+exports.isLinuxOS = isLinuxOS;
 
 var _object = require("./object");
 
@@ -54,6 +58,22 @@ var browsers = {
     return /Safari/.test(ua) && /Apple Computer/.test(vendor);
   })
 };
+var platforms = {
+  mac: tester(function (platform) {
+    return /^Mac/.test(platform);
+  }),
+  win: tester(function (platform) {
+    return /^Win/.test(platform);
+  }),
+  linux: tester(function (platform) {
+    return /^Linux/.test(platform);
+  })
+};
+/**
+ * @param {object} [metaObject] The browser identity collection.
+ * @param {object} [metaObject.userAgent] The user agent reported by browser.
+ * @param {object} [metaObject.vendor] The vendor name reported by browser.
+ */
 
 function setBrowserMeta() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -67,8 +87,25 @@ function setBrowserMeta() {
     return void test(userAgent, vendor);
   });
 }
+/**
+ * @param {object} [metaObject] The platform identity collection.
+ * @param {object} [metaObject.platform] The platform ID.
+ */
+
+
+function setPlatformMeta() {
+  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref3$platform = _ref3.platform,
+      platform = _ref3$platform === void 0 ? navigator.platform : _ref3$platform;
+
+  (0, _object.objectEach)(platforms, function (_ref4) {
+    var test = _ref4.test;
+    return void test(platform);
+  });
+}
 
 setBrowserMeta();
+setPlatformMeta();
 
 function isChrome() {
   return browsers.chrome.value;
@@ -104,4 +141,28 @@ function isSafari() {
 
 function isFirefox() {
   return browsers.firefox.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+
+function isWindowsOS() {
+  return platforms.win.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+
+function isMacOS() {
+  return platforms.mac.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+
+function isLinuxOS() {
+  return platforms.linux.value;
 }

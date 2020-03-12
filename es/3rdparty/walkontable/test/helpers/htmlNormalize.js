@@ -1,4 +1,5 @@
 import "core-js/modules/es.array.index-of";
+import "core-js/modules/es.array.reduce";
 import "core-js/modules/es.array.sort";
 import "core-js/modules/es.array.splice";
 import "core-js/modules/es.object.keys";

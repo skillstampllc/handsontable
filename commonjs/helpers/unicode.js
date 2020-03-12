@@ -4,6 +4,8 @@ require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.index-of");
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.string.includes");
 
 require("core-js/modules/es.string.split");

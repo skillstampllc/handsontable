@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 require("core-js/modules/es.object.get-own-property-names");
 
@@ -97,8 +97,8 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "13/02/2020 15:39:45";
-Handsontable.version = "8.0.0-beta.1"; // Export Hooks singleton
+Handsontable.buildDate = "12/03/2020 11:04:31";
+Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
 

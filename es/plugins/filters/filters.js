@@ -3,6 +3,7 @@ import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.filter";
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
@@ -22,10 +23,10 @@ import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.for-each";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["The filter conditions have been applied properly, but couldn\u2019t be displayed visually. \n        The overall amount of conditions exceed the capability of the dropdown menu. \n        For more details see the documentation."]);
+  var data = _taggedTemplateLiteral(["The filter conditions have been applied properly, but couldn\u2019t be displayed visually. \n        The overall amount of conditions exceed the capability of the dropdown menu. \n        For more details see the documentation."], ["The filter conditions have been applied properly, but couldn\u2019t be displayed visually.\\x20\n        The overall amount of conditions exceed the capability of the dropdown menu.\\x20\n        For more details see the documentation."]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -216,7 +217,7 @@ function (_BasePlugin) {
         return;
       }
 
-      this.filtersRowsMap = this.hot.rowIndexMapper.registerMap('filters', new SkipMap());
+      this.trimRowsPlugin = this.hot.getPlugin('trimRows');
       this.dropdownMenuPlugin = this.hot.getPlugin('dropdownMenu');
       var dropdownSettings = this.hot.getSettings().dropdownMenu;
       var menuContainer = dropdownSettings && dropdownSettings.uiContainer || this.hot.rootDocument.body;

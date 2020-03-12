@@ -10,6 +10,10 @@ require("core-js/modules/es.promise");
 
 require("regenerator-runtime/runtime");
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 describe('WalkontableScroll', function () {
   var debug = false;
   beforeEach(function () {
@@ -356,9 +360,13 @@ describe('WalkontableScroll', function () {
       wt.draw();
       expect(spec().$table.find('tbody tr:first td').length).toBeGreaterThan(3);
     });
-    it('should scroll the desired cell to the bottom edge even if it\'s located in a fixed column', function _callee() {
+    it('should scroll the desired cell to the bottom edge even if it\'s located in a fixed column',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee() {
       var wt;
-      return regeneratorRuntime.async(function _callee$(_context) {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -374,7 +382,7 @@ describe('WalkontableScroll', function () {
               wt.scrollViewport(new Walkontable.CellCoords(8, 1));
               wt.draw();
               _context.next = 8;
-              return regeneratorRuntime.awrap(sleep(50));
+              return sleep(50);
 
             case 8:
               expect(wt.wtTable.getLastVisibleRow()).toBe(8);
@@ -384,11 +392,15 @@ describe('WalkontableScroll', function () {
               return _context.stop();
           }
         }
-      });
-    });
-    it('should update the scroll position of overlays only once, when scrolling the master table', function _callee2() {
+      }, _callee);
+    })));
+    it('should update the scroll position of overlays only once, when scrolling the master table',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee2() {
       var topOverlayCallback, leftOverlayCallback, wt, masterHolder, leftOverlayHolder, topOverlayHolder;
-      return regeneratorRuntime.async(function _callee2$(_context2) {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
@@ -412,7 +424,7 @@ describe('WalkontableScroll', function () {
               wt.scrollViewport(new Walkontable.CellCoords(50, 50));
               wt.draw();
               _context2.next = 15;
-              return regeneratorRuntime.awrap(sleep(100));
+              return sleep(100);
 
             case 15:
               expect(topOverlayCallback.calls.count()).toEqual(1);
@@ -427,11 +439,15 @@ describe('WalkontableScroll', function () {
               return _context2.stop();
           }
         }
-      });
-    });
-    it('should call onScrollVertically hook, if scrollTop was changed', function _callee3() {
+      }, _callee2);
+    })));
+    it('should call onScrollVertically hook, if scrollTop was changed',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee3() {
       var scrollHorizontally, scrollVertically, wt;
-      return regeneratorRuntime.async(function _callee3$(_context3) {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
@@ -452,7 +468,7 @@ describe('WalkontableScroll', function () {
               wt.wtTable.holder.scrollTop = 400;
               wt.draw();
               _context3.next = 10;
-              return regeneratorRuntime.awrap(sleep(50));
+              return sleep(50);
 
             case 10:
               expect(scrollVertically.calls.count()).toEqual(1);
@@ -463,11 +479,15 @@ describe('WalkontableScroll', function () {
               return _context3.stop();
           }
         }
-      });
-    });
-    it('should call onScrollHorizontally hook, if scrollLeft was changed', function _callee4() {
+      }, _callee3);
+    })));
+    it('should call onScrollHorizontally hook, if scrollLeft was changed',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee4() {
       var scrollHorizontally, scrollVertically, wt;
-      return regeneratorRuntime.async(function _callee4$(_context4) {
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
@@ -488,7 +508,7 @@ describe('WalkontableScroll', function () {
               wt.wtTable.holder.scrollLeft = 400;
               wt.draw();
               _context4.next = 10;
-              return regeneratorRuntime.awrap(sleep(50));
+              return sleep(50);
 
             case 10:
               expect(scrollVertically.calls.count()).toEqual(0);
@@ -499,11 +519,15 @@ describe('WalkontableScroll', function () {
               return _context4.stop();
           }
         }
-      });
-    });
-    it('should scroll the table when the `wheel` event is triggered on the top-left corner overlay', function _callee5() {
+      }, _callee4);
+    })));
+    it('should scroll the table when the `wheel` event is triggered on the top-left corner overlay',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee5() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topLeftCornerOverlayHolder, topHolder, bottomHolder, leftHolder, masterHolder;
-      return regeneratorRuntime.async(function _callee5$(_context5) {
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
@@ -535,7 +559,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(topLeftCornerOverlayHolder, 400);
               wt.draw();
               _context5.next = 21;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 21:
               expect(masterCallback.calls.count()).toEqual(1);
@@ -545,7 +569,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(topLeftCornerOverlayHolder, 0, 400);
               wt.draw();
               _context5.next = 29;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 29:
               expect(masterCallback.calls.count()).toEqual(2);
@@ -562,11 +586,15 @@ describe('WalkontableScroll', function () {
               return _context5.stop();
           }
         }
-      });
-    });
-    it('should scroll the table when the `wheel` event is triggered on the bottom-left corner overlay', function _callee6() {
+      }, _callee5);
+    })));
+    it('should scroll the table when the `wheel` event is triggered on the bottom-left corner overlay',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee6() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, bottomLeftCornerOverlayHolder, topHolder, bottomHolder, leftHolder, masterHolder;
-      return regeneratorRuntime.async(function _callee6$(_context6) {
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
           switch (_context6.prev = _context6.next) {
             case 0:
@@ -598,7 +626,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(bottomLeftCornerOverlayHolder, 400);
               wt.draw();
               _context6.next = 21;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 21:
               expect(masterCallback.calls.count()).toEqual(1);
@@ -608,7 +636,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(bottomLeftCornerOverlayHolder, 0, 400);
               wt.draw();
               _context6.next = 29;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 29:
               expect(masterCallback.calls.count()).toEqual(2);
@@ -625,11 +653,15 @@ describe('WalkontableScroll', function () {
               return _context6.stop();
           }
         }
-      });
-    });
-    it('should scroll the table when the `wheel` event is triggered on the left overlay', function _callee7() {
+      }, _callee6);
+    })));
+    it('should scroll the table when the `wheel` event is triggered on the left overlay',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee7() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topHolder, bottomHolder, leftHolder, masterHolder;
-      return regeneratorRuntime.async(function _callee7$(_context7) {
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) {
           switch (_context7.prev = _context7.next) {
             case 0:
@@ -660,7 +692,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(leftHolder, 400);
               wt.draw();
               _context7.next = 20;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 20:
               expect(masterCallback.calls.count()).toEqual(1);
@@ -670,7 +702,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(leftHolder, 0, 400);
               wt.draw();
               _context7.next = 28;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 28:
               expect(masterCallback.calls.count()).toEqual(2);
@@ -687,11 +719,15 @@ describe('WalkontableScroll', function () {
               return _context7.stop();
           }
         }
-      });
-    });
-    it('should scroll the table when the `wheel` event is triggered on the top overlay', function _callee8() {
+      }, _callee7);
+    })));
+    it('should scroll the table when the `wheel` event is triggered on the top overlay',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee8() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topHolder, bottomHolder, leftHolder, masterHolder;
-      return regeneratorRuntime.async(function _callee8$(_context8) {
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
         while (1) {
           switch (_context8.prev = _context8.next) {
             case 0:
@@ -722,7 +758,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(topHolder, 400);
               wt.draw();
               _context8.next = 20;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 20:
               expect(masterCallback.calls.count()).toEqual(1);
@@ -732,7 +768,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(topHolder, 0, 400);
               wt.draw();
               _context8.next = 28;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 28:
               expect(masterCallback.calls.count()).toEqual(2);
@@ -749,11 +785,15 @@ describe('WalkontableScroll', function () {
               return _context8.stop();
           }
         }
-      });
-    });
-    it('should scroll the table when the `wheel` event is triggered on the bottom overlay', function _callee9() {
+      }, _callee8);
+    })));
+    it('should scroll the table when the `wheel` event is triggered on the bottom overlay',
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee9() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topHolder, bottomHolder, leftHolder, masterHolder;
-      return regeneratorRuntime.async(function _callee9$(_context9) {
+      return regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) {
           switch (_context9.prev = _context9.next) {
             case 0:
@@ -784,7 +824,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(bottomHolder, 400);
               wt.draw();
               _context9.next = 20;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 20:
               expect(masterCallback.calls.count()).toEqual(1);
@@ -794,7 +834,7 @@ describe('WalkontableScroll', function () {
               wheelOnElement(bottomHolder, 0, 400);
               wt.draw();
               _context9.next = 28;
-              return regeneratorRuntime.awrap(sleep(200));
+              return sleep(200);
 
             case 28:
               expect(masterCallback.calls.count()).toEqual(2);
@@ -811,8 +851,8 @@ describe('WalkontableScroll', function () {
               return _context9.stop();
           }
         }
-      });
-    });
+      }, _callee9);
+    })));
   });
   describe('scrollViewport - horizontally', function () {
     beforeEach(function () {

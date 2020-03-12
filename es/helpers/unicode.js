@@ -1,5 +1,6 @@
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.index-of";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.includes";
 import "core-js/modules/es.string.split";
 import { arrayEach } from './array';

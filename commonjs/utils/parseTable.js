@@ -20,7 +20,11 @@ require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.array.join");
 
+require("core-js/modules/es.array.last-index-of");
+
 require("core-js/modules/es.array.map");
+
+require("core-js/modules/es.array.reduce");
 
 require("core-js/modules/es.array.splice");
 
@@ -30,11 +34,15 @@ require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.regexp.constructor");
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.includes");
 
 require("core-js/modules/es.string.iterator");
+
+require("core-js/modules/es.string.match");
 
 require("core-js/modules/es.string.replace");
 
@@ -131,7 +139,7 @@ function instanceToHTML(instance) {
           if ((0, _mixed.isEmpty)(cellData)) {
             cell = "<td ".concat(attrs.join(' '), "></td>");
           } else {
-            var value = cellData.toString().replace(/(<br(\s*|\/)>(\r\n|\n)?|\r\n|\n)/g, '<br>\r\n').replace(/\x20/gi, '&nbsp;').replace(/\t/gi, '&#9;');
+            var value = cellData.toString().replace('<', '&lt;').replace('>', '&gt;').replace(/(<br(\s*|\/)>(\r\n|\n)?|\r\n|\n)/g, '<br>\r\n').replace(/\x20/gi, '&nbsp;').replace(/\t/gi, '&#9;');
             cell = "<td ".concat(attrs.join(' '), ">").concat(value, "</td>");
           }
         }
@@ -176,7 +184,7 @@ function _dataToHTML(input) {
 
     for (var column = 0; column < columnsLen; column += 1) {
       var cellData = rowData[column];
-      var parsedCellData = (0, _mixed.isEmpty)(cellData) ? '' : cellData.toString().replace(/(<br(\s*|\/)>(\r\n|\n)?|\r\n|\n)/g, '<br>\r\n').replace(/\x20/gi, '&nbsp;').replace(/\t/gi, '&#9;');
+      var parsedCellData = (0, _mixed.isEmpty)(cellData) ? '' : cellData.toString().replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(<br(\s*|\/)>(\r\n|\n)?|\r\n|\n)/g, '<br>\r\n').replace(/\x20/gi, '&nbsp;').replace(/\t/gi, '&#9;');
       columnsResult.push("<td>".concat(parsedCellData, "</td>"));
     }
 
@@ -209,7 +217,13 @@ function htmlToGridSettings(element) {
   var checkElement = element;
 
   if (typeof checkElement === 'string') {
-    tempElem.insertAdjacentHTML('afterbegin', "".concat(checkElement));
+    var escapedAdjacentHTML = checkElement.replace(/<td\b[^>]*?>([\s\S]*?)<\/\s*td>/g, function (cellFragment) {
+      var openingTag = cellFragment.match(/<td\b[^>]*?>/g)[0];
+      var cellValue = cellFragment.substring(openingTag.length, cellFragment.lastIndexOf('<')).replace(/(<(?!br)([^>]+)>)/gi, '');
+      var closingTag = '</td>';
+      return "".concat(openingTag).concat(cellValue).concat(closingTag);
+    });
+    tempElem.insertAdjacentHTML('afterbegin', "".concat(escapedAdjacentHTML));
     checkElement = tempElem.querySelector('table');
   }
 

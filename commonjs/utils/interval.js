@@ -1,5 +1,7 @@
 "use strict";
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.string.replace");
 
 exports.__esModule = true;

@@ -1,3 +1,4 @@
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.string.trim";
 import "core-js/modules/web.dom-collections.for-each";
 

@@ -40,6 +40,23 @@ var browsers = {
     return /Safari/.test(ua) && /Apple Computer/.test(vendor);
   })
 };
+var platforms = {
+  mac: tester(function (platform) {
+    return /^Mac/.test(platform);
+  }),
+  win: tester(function (platform) {
+    return /^Win/.test(platform);
+  }),
+  linux: tester(function (platform) {
+    return /^Linux/.test(platform);
+  })
+};
+/**
+ * @param {object} [metaObject] The browser identity collection.
+ * @param {object} [metaObject.userAgent] The user agent reported by browser.
+ * @param {object} [metaObject.vendor] The vendor name reported by browser.
+ */
+
 export function setBrowserMeta() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$userAgent = _ref.userAgent,
@@ -52,7 +69,23 @@ export function setBrowserMeta() {
     return void test(userAgent, vendor);
   });
 }
+/**
+ * @param {object} [metaObject] The platform identity collection.
+ * @param {object} [metaObject.platform] The platform ID.
+ */
+
+export function setPlatformMeta() {
+  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref3$platform = _ref3.platform,
+      platform = _ref3$platform === void 0 ? navigator.platform : _ref3$platform;
+
+  objectEach(platforms, function (_ref4) {
+    var test = _ref4.test;
+    return void test(platform);
+  });
+}
 setBrowserMeta();
+setPlatformMeta();
 export function isChrome() {
   return browsers.chrome.value;
 }
@@ -79,4 +112,25 @@ export function isSafari() {
 }
 export function isFirefox() {
   return browsers.firefox.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+export function isWindowsOS() {
+  return platforms.win.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+export function isMacOS() {
+  return platforms.mac.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+export function isLinuxOS() {
+  return platforms.linux.value;
 }

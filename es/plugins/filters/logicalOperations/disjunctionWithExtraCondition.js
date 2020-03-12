@@ -1,4 +1,5 @@
 import "core-js/modules/es.array.slice";
+import "core-js/modules/es.array.some";
 import * as C from '../../../i18n/constants';
 import { registerOperation } from '../logicalOperationRegisterer';
 export var OPERATION_ID = 'disjunctionWithExtraCondition';

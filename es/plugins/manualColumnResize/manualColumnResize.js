@@ -1,6 +1,7 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
@@ -13,7 +14,7 @@ import "core-js/modules/web.dom-collections.for-each";
 import "core-js/modules/web.dom-collections.iterator";
 import "core-js/modules/web.timers";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

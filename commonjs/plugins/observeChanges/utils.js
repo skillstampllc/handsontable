@@ -12,6 +12,8 @@ require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.regexp.exec");
+
 require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");

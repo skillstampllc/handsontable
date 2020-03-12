@@ -1,5 +1,6 @@
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.join";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.replace";
 import "core-js/modules/es.string.split";
 import numbro from 'numbro';

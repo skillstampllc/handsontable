@@ -1,5 +1,6 @@
 import "core-js/modules/es.array.filter";
 import "core-js/modules/es.regexp.constructor";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.split";
 

@@ -25,6 +25,8 @@ var _eventManager = _interopRequireDefault(require("./eventManager"));
 
 var _baseEditor = require("./editors/_baseEditor");
 
+var _element = require("./helpers/dom/element");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -119,7 +121,7 @@ function () {
           _this.instance.runHooks('afterDocumentKeyDown', event);
         }
       });
-      frame = frame.frameElement && frame.frameElement.ownerDocument.defaultView;
+      frame = (0, _element.getParentWindow)(frame);
     } // Open editor when text composition is started (IME editor)
 
 

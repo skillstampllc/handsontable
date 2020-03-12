@@ -10,6 +10,8 @@ require("core-js/modules/es.array.concat");
 
 require("core-js/modules/es.array.filter");
 
+require("core-js/modules/es.array.for-each");
+
 require("core-js/modules/es.array.from");
 
 require("core-js/modules/es.array.index-of");

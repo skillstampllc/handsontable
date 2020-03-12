@@ -16,6 +16,7 @@ import { stopPropagation, stopImmediatePropagation, isImmediatePropagationStoppe
 import { getEditorInstance } from './editors';
 import EventManager from './eventManager';
 import { EditorState } from './editors/_baseEditor';
+import { getParentWindow } from './helpers/dom/element';
 
 var EditorManager =
 /*#__PURE__*/
@@ -103,7 +104,7 @@ function () {
           _this.instance.runHooks('afterDocumentKeyDown', event);
         }
       });
-      frame = frame.frameElement && frame.frameElement.ownerDocument.defaultView;
+      frame = getParentWindow(frame);
     } // Open editor when text composition is started (IME editor)
 
 

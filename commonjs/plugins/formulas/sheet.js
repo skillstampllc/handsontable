@@ -6,6 +6,8 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.for-each");
+
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.object.keys");
@@ -15,6 +17,8 @@ require("core-js/modules/es.object.to-string");
 require("core-js/modules/es.promise");
 
 require("core-js/modules/es.regexp.constructor");
+
+require("core-js/modules/es.regexp.exec");
 
 require("core-js/modules/es.regexp.to-string");
 
@@ -52,6 +56,10 @@ var _matrix = _interopRequireDefault(require("./matrix"));
 var _alterManager = _interopRequireDefault(require("./alterManager"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -183,111 +191,131 @@ function () {
         PromisesList[_key] = arguments[_key];
       }
 
-      return new Promise(function _callee2(resolve) {
-        var output, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, promise;
+      return new Promise(
+      /*#__PURE__*/
+      function () {
+        var _ref = _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee2(resolve) {
+          var output, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, promise;
 
-        return regeneratorRuntime.async(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                output = [];
-                _iteratorNormalCompletion = true;
-                _didIteratorError = false;
-                _iteratorError = undefined;
-                _context2.prev = 4;
-                _iterator = PromisesList[Symbol.iterator]();
+          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  output = [];
+                  _iteratorNormalCompletion = true;
+                  _didIteratorError = false;
+                  _iteratorError = undefined;
+                  _context2.prev = 4;
+                  _iterator = PromisesList[Symbol.iterator]();
 
-              case 6:
-                if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                  _context2.next = 23;
+                case 6:
+                  if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+                    _context2.next = 23;
+                    break;
+                  }
+
+                  promise = _step.value;
+                  _context2.prev = 8;
+                  _context2.t0 = output;
+                  _context2.next = 12;
+                  return promise.then(
+                  /*#__PURE__*/
+                  function () {
+                    var _ref2 = _asyncToGenerator(
+                    /*#__PURE__*/
+                    regeneratorRuntime.mark(function _callee(resolvedData) {
+                      return regeneratorRuntime.wrap(function _callee$(_context) {
+                        while (1) {
+                          switch (_context.prev = _context.next) {
+                            case 0:
+                              _context.next = 2;
+                              return resolvedData;
+
+                            case 2:
+                              return _context.abrupt("return", _context.sent);
+
+                            case 3:
+                            case "end":
+                              return _context.stop();
+                          }
+                        }
+                      }, _callee);
+                    }));
+
+                    return function (_x2) {
+                      return _ref2.apply(this, arguments);
+                    };
+                  }());
+
+                case 12:
+                  _context2.t1 = _context2.sent;
+
+                  _context2.t0.push.call(_context2.t0, _context2.t1);
+
+                  _context2.next = 19;
                   break;
-                }
 
-                promise = _step.value;
-                _context2.prev = 8;
-                _context2.t0 = output;
-                _context2.next = 12;
-                return regeneratorRuntime.awrap(promise.then(function _callee(resolvedData) {
-                  return regeneratorRuntime.async(function _callee$(_context) {
-                    while (1) {
-                      switch (_context.prev = _context.next) {
-                        case 0:
-                          _context.next = 2;
-                          return regeneratorRuntime.awrap(resolvedData);
+                case 16:
+                  _context2.prev = 16;
+                  _context2.t2 = _context2["catch"](8);
+                  return _context2.abrupt("return", output);
 
-                        case 2:
-                          return _context.abrupt("return", _context.sent);
+                case 19:
+                  if (output.length === PromisesList.length) resolve(output);
 
-                        case 3:
-                        case "end":
-                          return _context.stop();
-                      }
-                    }
-                  });
-                }));
-
-              case 12:
-                _context2.t1 = _context2.sent;
-
-                _context2.t0.push.call(_context2.t0, _context2.t1);
-
-                _context2.next = 19;
-                break;
-
-              case 16:
-                _context2.prev = 16;
-                _context2.t2 = _context2["catch"](8);
-                return _context2.abrupt("return", output);
-
-              case 19:
-                if (output.length === PromisesList.length) resolve(output);
-
-              case 20:
-                _iteratorNormalCompletion = true;
-                _context2.next = 6;
-                break;
-
-              case 23:
-                _context2.next = 29;
-                break;
-
-              case 25:
-                _context2.prev = 25;
-                _context2.t3 = _context2["catch"](4);
-                _didIteratorError = true;
-                _iteratorError = _context2.t3;
-
-              case 29:
-                _context2.prev = 29;
-                _context2.prev = 30;
-
-                if (!_iteratorNormalCompletion && _iterator.return != null) {
-                  _iterator.return();
-                }
-
-              case 32:
-                _context2.prev = 32;
-
-                if (!_didIteratorError) {
-                  _context2.next = 35;
+                case 20:
+                  _iteratorNormalCompletion = true;
+                  _context2.next = 6;
                   break;
-                }
 
-                throw _iteratorError;
+                case 23:
+                  _context2.next = 29;
+                  break;
 
-              case 35:
-                return _context2.finish(32);
+                case 25:
+                  _context2.prev = 25;
+                  _context2.t3 = _context2["catch"](4);
+                  _didIteratorError = true;
+                  _iteratorError = _context2.t3;
 
-              case 36:
-                return _context2.finish(29);
+                case 29:
+                  _context2.prev = 29;
+                  _context2.prev = 30;
 
-              case 37:
-              case "end":
-                return _context2.stop();
+                  if (!_iteratorNormalCompletion && _iterator.return != null) {
+                    _iterator.return();
+                  }
+
+                case 32:
+                  _context2.prev = 32;
+
+                  if (!_didIteratorError) {
+                    _context2.next = 35;
+                    break;
+                  }
+
+                  throw _iteratorError;
+
+                case 35:
+                  return _context2.finish(32);
+
+                case 36:
+                  return _context2.finish(29);
+
+                case 37:
+                case "end":
+                  return _context2.stop();
+              }
             }
-          }
-        }, null, null, [[4, 25, 29, 37], [8, 16], [30,, 32, 36]]);
-      });
+          }, _callee2, null, [[4, 25, 29, 37], [8, 16], [30,, 32, 36]]);
+        }));
+
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }());
     }
     /**
      * Recalculate sheet using optimized methods (fast recalculation).
@@ -507,9 +535,9 @@ function () {
 
   }, {
     key: "_onCallCellValue",
-    value: function _onCallCellValue(_ref, done) {
-      var row = _ref.row,
-          column = _ref.column;
+    value: function _onCallCellValue(_ref3, done) {
+      var row = _ref3.row,
+          column = _ref3.column;
       var cell = new _reference.default(row, column);
 
       if (!this.dataProvider.isInDataRange(cell.row, cell.column)) {
@@ -555,13 +583,13 @@ function () {
 
   }, {
     key: "_onCallRangeValue",
-    value: function _onCallRangeValue(_ref2, _ref3, done) {
+    value: function _onCallRangeValue(_ref4, _ref5, done) {
       var _this5 = this;
 
-      var startRow = _ref2.row,
-          startColumn = _ref2.column;
-      var endRow = _ref3.row,
-          endColumn = _ref3.column;
+      var startRow = _ref4.row,
+          startColumn = _ref4.column;
+      var endRow = _ref5.row,
+          endColumn = _ref5.column;
       var cellValues = this.dataProvider.getRawDataByRange(startRow.index, startColumn.index, endRow.index, endColumn.index);
 
       var mapRowData = function mapRowData(rowData, rowIndex) {

@@ -12,6 +12,7 @@ import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.reflect.get";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.includes";
 import "core-js/modules/es.string.iterator";
@@ -19,7 +20,7 @@ import "core-js/modules/es.string.search";
 import "core-js/modules/es.string.split";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 

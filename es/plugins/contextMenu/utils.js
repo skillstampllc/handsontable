@@ -3,6 +3,7 @@ import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.reverse";
 import "core-js/modules/es.array.slice";
 import "core-js/modules/es.function.name";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.replace";
 import { arrayEach, arrayMap } from './../../helpers/array';
 import { hasClass } from './../../helpers/dom/element';

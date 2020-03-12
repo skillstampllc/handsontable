@@ -1,3 +1,4 @@
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.map";

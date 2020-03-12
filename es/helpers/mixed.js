@@ -5,6 +5,7 @@ import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.slice";
 import "core-js/modules/es.object.freeze";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.code-point-at";
 import "core-js/modules/es.string.iterator";
@@ -75,7 +76,7 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 import moment from 'moment';
 import { toSingleLine } from './templateLiteralTag';
@@ -218,7 +219,7 @@ var domMessages = {
 export function _injectProductInfo(key, element) {
   var hasValidType = !isEmpty(key);
   var isNonCommercial = typeof key === 'string' && key.toLowerCase() === 'non-commercial-and-evaluation';
-  var hotVersion = "8.0.0-beta.1";
+  var hotVersion = "7.4.2";
   var keyValidityDate;
   var consoleMessageState = 'invalid';
   var domMessageState = 'invalid';
@@ -228,7 +229,7 @@ export function _injectProductInfo(key, element) {
 
   if (hasValidType || isNonCommercial || schemaValidity) {
     if (schemaValidity) {
-      var releaseDate = moment("14/11/2019", 'DD/MM/YYYY');
+      var releaseDate = moment("19/02/2020", 'DD/MM/YYYY');
       var releaseDays = Math.floor(releaseDate.toDate().getTime() / 8.64e7);
 
       var keyValidityDays = _extractTime(key);

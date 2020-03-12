@@ -3,6 +3,7 @@ import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.filter";
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";

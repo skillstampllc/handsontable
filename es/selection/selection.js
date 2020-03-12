@@ -6,6 +6,7 @@ import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.slice";
+import "core-js/modules/es.array.some";
 import "core-js/modules/es.number.constructor";
 import "core-js/modules/es.number.is-integer";
 import "core-js/modules/es.object.freeze";

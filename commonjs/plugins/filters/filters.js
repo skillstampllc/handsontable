@@ -10,6 +10,8 @@ require("core-js/modules/es.array.concat");
 
 require("core-js/modules/es.array.filter");
 
+require("core-js/modules/es.array.for-each");
+
 require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.index-of");
@@ -95,10 +97,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["The filter conditions have been applied properly, but couldn\u2019t be displayed visually. \n        The overall amount of conditions exceed the capability of the dropdown menu. \n        For more details see the documentation."]);
+  var data = _taggedTemplateLiteral(["The filter conditions have been applied properly, but couldn\u2019t be displayed visually. \n        The overall amount of conditions exceed the capability of the dropdown menu. \n        For more details see the documentation."], ["The filter conditions have been applied properly, but couldn\u2019t be displayed visually.\\x20\n        The overall amount of conditions exceed the capability of the dropdown menu.\\x20\n        For more details see the documentation."]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -268,7 +270,7 @@ function (_BasePlugin) {
         return;
       }
 
-      this.filtersRowsMap = this.hot.rowIndexMapper.registerMap('filters', new _translations.SkipMap());
+      this.trimRowsPlugin = this.hot.getPlugin('trimRows');
       this.dropdownMenuPlugin = this.hot.getPlugin('dropdownMenu');
       var dropdownSettings = this.hot.getSettings().dropdownMenu;
       var menuContainer = dropdownSettings && dropdownSettings.uiContainer || this.hot.rootDocument.body;

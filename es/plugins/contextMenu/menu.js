@@ -3,6 +3,7 @@ import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.keys";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.constructor";
+import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.replace";
 
@@ -13,7 +14,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import Core from './../../core';
-import { addClass, empty, fastInnerHTML, getScrollbarWidth, isChildOf, removeClass } from './../../helpers/dom/element';
+import { addClass, empty, fastInnerHTML, getScrollbarWidth, isChildOf, isInput, removeClass, getParentWindow } from './../../helpers/dom/element';
 import { arrayEach, arrayFilter, arrayReduce } from './../../helpers/array';
 import Cursor from './cursor';
 import EventManager from './../../eventManager';
@@ -24,7 +25,8 @@ import { filterSeparators, hasSubMenu, isDisabled, isItemHidden, isSeparator, is
 import { KEY_CODES } from './../../helpers/unicode';
 import localHooks from './../../mixins/localHooks';
 import { SEPARATOR, NO_ITEMS, predefinedItems } from './predefinedItems';
-import { stopImmediatePropagation } from './../../helpers/dom/event';
+import { stopImmediatePropagation, isRightClick } from './../../helpers/dom/event';
+import { isWindowsOS } from './../../helpers/browser';
 var MIN_WIDTH = 215;
 /**
  * @class Menu
@@ -82,7 +84,7 @@ function () {
         this.eventManager.addEventListener(frame.document, 'mousedown', function (event) {
           return _this.onDocumentMouseDown(event);
         });
-        frame = frame.frameElement && frame.frameElement.ownerDocument.defaultView;
+        frame = getParentWindow(frame);
       }
     }
     /**
@@ -95,6 +97,28 @@ function () {
     key: "setMenuItems",
     value: function setMenuItems(menuItems) {
       this.menuItems = menuItems;
+    }
+    /**
+     * Returns currently selected menu item. Returns `null` if no item was selected.
+     *
+     * @returns {Object|null}
+     */
+
+  }, {
+    key: "getSelectedItem",
+    value: function getSelectedItem() {
+      return this.hasSelectedItem() ? this.hotMenu.getSourceDataAtRow(this.hotMenu.getSelectedLast()[0]) : null;
+    }
+    /**
+     * Checks if the menu has selected (highlighted) any item from the menu list.
+     *
+     * @returns {Boolean}
+     */
+
+  }, {
+    key: "hasSelectedItem",
+    value: function hasSelectedItem() {
+      return Array.isArray(this.hotMenu.getSelectedLast());
     }
     /**
      * Set offset menu position for specified area (`above`, `below`, `left` or `right`).
@@ -155,6 +179,7 @@ function () {
       }
 
       filteredItems = filterSeparators(filteredItems, SEPARATOR);
+      var shouldAutoCloseMenu = false;
       var settings = {
         data: filteredItems,
         colHeaders: false,
@@ -179,6 +204,7 @@ function () {
         }],
         renderAllRows: true,
         fragmentSelection: false,
+        outsideClickDeselects: false,
         disableVisualSelection: 'area',
         beforeKeyDown: function beforeKeyDown(event) {
           return _this2.onBeforeKeyDown(event);
@@ -194,15 +220,34 @@ function () {
           return filteredItems[row].name === SEPARATOR ? 1 : 23;
         },
         afterOnCellContextMenu: function afterOnCellContextMenu(event) {
-          event.preventDefault();
-          stopImmediatePropagation(event);
+          event.preventDefault(); // On the Windows platform, the "contextmenu" is triggered after the "mouseup" so that's
+          // why the closing menu is here. (#6507#issuecomment-582392301).
 
-          _this2.executeCommand(event);
+          if (isWindowsOS() && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
+            _this2.close(true);
+          }
         },
         beforeOnCellMouseUp: function beforeOnCellMouseUp(event) {
-          stopImmediatePropagation(event);
+          if (_this2.hasSelectedItem()) {
+            shouldAutoCloseMenu = !_this2.isCommandPassive(_this2.getSelectedItem());
 
-          _this2.executeCommand(event);
+            _this2.executeCommand(event);
+          }
+        },
+        afterOnCellMouseUp: function afterOnCellMouseUp(event) {
+          // If the code runs on the other platform than Windows, the "mouseup" is triggered
+          // after the "contextmenu". So then "mouseup" closes the menu. Otherwise, the closing
+          // menu responsibility is forwarded to "afterOnCellContextMenu" callback (#6507#issuecomment-582392301).
+          if ((!isWindowsOS() || !isRightClick(event)) && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
+            _this2.close(true);
+          }
+        },
+        afterUnlisten: function afterUnlisten() {
+          // Restore menu focus, fix for `this.instance.unlisten();` call in the tableView.js@260 file.
+          // This prevents losing table responsiveness for keyboard events when filter select menu is closed (#6497).
+          if (!_this2.hasSelectedItem() && _this2.isOpened()) {
+            _this2.hotMenu.listen(false);
+          }
         }
       };
       this.origOutsideClickDeselects = this.hot.getSettings().outsideClickDeselects;
@@ -363,34 +408,44 @@ function () {
   }, {
     key: "executeCommand",
     value: function executeCommand(event) {
-      if (!this.isOpened() || !this.hotMenu.getSelectedLast()) {
+      if (!this.isOpened() || !this.hasSelectedItem()) {
         return;
       }
 
-      var selectedItem = this.hotMenu.getSourceDataAtRow(this.hotMenu.getSelectedLast()[0]);
+      var selectedItem = this.getSelectedItem();
       this.runLocalHooks('select', selectedItem, event);
 
-      if (selectedItem.isCommand === false || selectedItem.name === SEPARATOR) {
+      if (this.isCommandPassive(selectedItem)) {
         return;
       }
 
       var selRanges = this.hot.getSelectedRange();
       var normalizedSelection = selRanges ? normalizeSelection(selRanges) : [];
-      var autoClose = true; // Don't close context menu if item is disabled or it has submenu
-
-      if (selectedItem.disabled === true || typeof selectedItem.disabled === 'function' && selectedItem.disabled.call(this.hot) === true || selectedItem.submenu) {
-        autoClose = false;
-      }
-
       this.runLocalHooks('executeCommand', selectedItem.key, normalizedSelection, event);
 
       if (this.isSubMenu()) {
         this.parentMenu.runLocalHooks('executeCommand', selectedItem.key, normalizedSelection, event);
       }
+    }
+    /**
+     * Checks if the passed command is passive or not. The command is passive when it's marked as
+     * disabled, the descriptor object contains `isCommand` property set to `false`, command
+     * is a separator, or the item is recognized as submenu. For passive items the menu is not
+     * closed automatically after the user trigger the command through the UI.
+     *
+     * @param {Object} commandDescriptor Selected menu item from the menu data source.
+     * @returns {Boolean}
+     */
 
-      if (autoClose) {
-        this.close(true);
-      }
+  }, {
+    key: "isCommandPassive",
+    value: function isCommandPassive(commandDescriptor) {
+      var isCommand = commandDescriptor.isCommand,
+          commandName = commandDescriptor.name,
+          disabled = commandDescriptor.disabled,
+          submenu = commandDescriptor.submenu;
+      var isItemDisabled = disabled === true || typeof disabled === 'function' && disabled.call(this.hot) === true;
+      return isCommand === false || commandName === SEPARATOR || isItemDisabled === true || submenu;
     }
     /**
      * Set menu position based on dom event or based on literal object.
@@ -729,6 +784,13 @@ function () {
   }, {
     key: "onBeforeKeyDown",
     value: function onBeforeKeyDown(event) {
+      // For input elements, prevent event propagation. It allows entering text into an input
+      // element freely - without steeling the key events from the menu module (#6506, #6549).
+      if (isInput(event.target) && this.container.contains(event.target)) {
+        stopImmediatePropagation(event);
+        return;
+      }
+
       var selection = this.hotMenu.getSelectedLast();
       var stopEvent = false;
       this.keyEvent = true;

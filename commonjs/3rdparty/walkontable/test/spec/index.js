@@ -1,5 +1,7 @@
 "use strict";
 
+require("core-js/modules/es.array.for-each");
+
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.object.to-string");

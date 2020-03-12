@@ -2,6 +2,8 @@
 
 require("core-js/modules/es.array.index-of");
 
+require("core-js/modules/es.array.reduce");
+
 require("core-js/modules/es.array.sort");
 
 require("core-js/modules/es.array.splice");
