@@ -149,13 +149,13 @@ function () {
      */
 
     this._state = STATE_NEED_FULL_REBUILD;
-    this.parser.on('callCellValue', function () {
+    this.parser.on("callCellValue", function () {
       return _this._onCallCellValue.apply(_this, arguments);
     });
-    this.parser.on('callRangeValue', function () {
+    this.parser.on("callRangeValue", function () {
       return _this._onCallRangeValue.apply(_this, arguments);
     });
-    this.alterManager.addLocalHook('afterAlter', function () {
+    this.alterManager.addLocalHook("afterAlter", function () {
       return _this._onAfterAlter.apply(_this, arguments);
     });
   }
@@ -338,7 +338,7 @@ function () {
         var value = _this2.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
         if ((0, _utils.isFormulaExpression)(value)) {
-          if (_this2.useCustomGetCellDependencies) {
+          if (!_this2.useCustomGetCellDependencies) {
             _this2.parseExpression(cellValue, value.substr(1));
           } else {
             promisses.push(new Promise(function (resolve) {
@@ -352,7 +352,7 @@ function () {
         }
       });
 
-      if (!this.useCustomGetCellDependencies) {
+      if (this.useCustomGetCellDependencies) {
         promisses.push(new Promise(function (resolve) {
           setTimeout(function () {
             _this2.hot.render();
@@ -365,7 +365,7 @@ function () {
 
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
-      this.runLocalHooks('afterRecalculate', cells, 'optimized');
+      this.runLocalHooks("afterRecalculate", cells, "optimized");
     }
     /**
      * Recalculate whole table by building dependencies from scratch (slow recalculation).
@@ -388,7 +388,7 @@ function () {
       });
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
-      this.runLocalHooks('afterRecalculate', cells, 'full');
+      this.runLocalHooks("afterRecalculate", cells, "full");
     }
     /**
      * Set predefined variable name which can be visible while parsing formula expression.
