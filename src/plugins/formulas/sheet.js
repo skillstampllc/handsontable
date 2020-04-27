@@ -1,12 +1,12 @@
-import { Parser, ERROR_REF, error as isFormulaError } from 'hot-formula-parser';
-import { arrayEach, arrayMap } from '../../helpers/array';
-import localHooks from '../../mixins/localHooks';
-import { mixin } from '../../helpers/object';
-import CellValue from './cell/value';
-import CellReference from './cell/reference';
-import { isFormulaExpression, toUpperCaseFormula } from './utils';
-import Matrix from './matrix';
-import AlterManager from './alterManager';
+import { Parser, ERROR_REF, error as isFormulaError } from "hot-formula-parser";
+import { arrayEach, arrayMap } from "../../helpers/array";
+import localHooks from "../../mixins/localHooks";
+import { mixin } from "../../helpers/object";
+import CellValue from "./cell/value";
+import CellReference from "./cell/reference";
+import { isFormulaExpression, toUpperCaseFormula } from "./utils";
+import Matrix from "./matrix";
+import AlterManager from "./alterManager";
 
 const STATE_UP_TO_DATE = 1;
 const STATE_NEED_REBUILD = 2;
@@ -63,15 +63,17 @@ class Sheet {
      * @private
      * @type boolean
      */
-    this.useCustomGetCellDependencies = this.hot && this.hot.getSettings().useCustomGetCellDependencies || false;
-    
+    this.useCustomGetCellDependencies =
+      (this.hot && this.hot.getSettings().useCustomGetCellDependencies) ||
+      false;
+
     /**
      *
      * @private
      * @type {null}
      */
     this._parsedCells = {};
-    
+
     /**
      * State of the sheet.
      *
@@ -80,9 +82,15 @@ class Sheet {
      */
     this._state = STATE_NEED_FULL_REBUILD;
 
-    this.parser.on('callCellValue', (...args) => this._onCallCellValue(...args));
-    this.parser.on('callRangeValue', (...args) => this._onCallRangeValue(...args));
-    this.alterManager.addLocalHook('afterAlter', (...args) => this._onAfterAlter(...args));
+    this.parser.on("callCellValue", (...args) =>
+      this._onCallCellValue(...args)
+    );
+    this.parser.on("callRangeValue", (...args) =>
+      this._onCallRangeValue(...args)
+    );
+    this.alterManager.addLocalHook("afterAlter", (...args) =>
+      this._onAfterAlter(...args)
+    );
   }
 
   /**
@@ -100,24 +108,26 @@ class Sheet {
         break;
     }
   }
-  
+
   /**
    * AsyncPromises.
    */
-  allPromiseAsync (...PromisesList) {
-    return new Promise(async resolve => {
-      let output = []
+  allPromiseAsync(...PromisesList) {
+    return new Promise(async (resolve) => {
+      let output = [];
       for (let promise of PromisesList) {
         try {
-          output.push(await promise.then(async resolvedData => await resolvedData))
+          output.push(
+            await promise.then(async (resolvedData) => await resolvedData)
+          );
         } catch (e) {
           return output;
         }
-        if (output.length === PromisesList.length) resolve(output)
+        if (output.length === PromisesList.length) resolve(output);
       }
-    }) 
+    });
   }
-  
+
   /**
    * Recalculate sheet using optimized methods (fast recalculation).
    */
@@ -125,45 +135,48 @@ class Sheet {
     const cells = this.matrix.getOutOfDateCells();
     let promisses = [];
     this._parsedCells = {};
-    this.matrix.data.forEach(cell => {
-      if(cell.state === 3 && Object.keys(cell.precedentsList).length > 0) {
+    this.matrix.data.forEach((cell) => {
+      if (cell.state === 3 && Object.keys(cell.precedentsList).length > 0) {
         this._parsedCells[cell.key] = cell.value;
       }
     });
 
     arrayEach(cells, (cellValue) => {
-      const value = this.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
+      const value = this.dataProvider.getSourceDataAtCell(
+        cellValue.row,
+        cellValue.column
+      );
 
       if (isFormulaExpression(value)) {
-        if(this.useCustomGetCellDependencies) {
+        if (!this.useCustomGetCellDependencies) {
           this.parseExpression(cellValue, value.substr(1));
         } else {
           promisses.push(
-            new Promise(resolve => {
+            new Promise((resolve) => {
               setTimeout(() => {
                 this.parseExpression(cellValue, value.substr(1));
                 resolve();
-              },10)
+              }, 10);
             })
           );
         }
       }
     });
-    if(!this.useCustomGetCellDependencies) {
+    if (this.useCustomGetCellDependencies) {
       promisses.push(
-        new Promise(resolve => {
+        new Promise((resolve) => {
           setTimeout(() => {
             this.hot.render();
             resolve();
-          },10);
+          }, 10);
         })
       );
       this.allPromiseAsync(promisses);
     }
-    
+
     this._state = STATE_UP_TO_DATE;
     this._parsedCells = {};
-    this.runLocalHooks('afterRecalculate', cells, 'optimized');
+    this.runLocalHooks("afterRecalculate", cells, "optimized");
   }
 
   /**
@@ -185,7 +198,7 @@ class Sheet {
 
     this._state = STATE_UP_TO_DATE;
     this._parsedCells = {};
-    this.runLocalHooks('afterRecalculate', cells, 'full');
+    this.runLocalHooks("afterRecalculate", cells, "full");
   }
 
   /**
@@ -227,11 +240,16 @@ class Sheet {
     }
 
     var deps = [];
-    var maxDependenciesDeep = this.hot && this.hot.getSettings().maxDependenciesDeep > -1
-      ? this.hot.getSettings().maxDependenciesDeep : -1;
+    var maxDependenciesDeep =
+      this.hot && this.hot.getSettings().maxDependenciesDeep > -1
+        ? this.hot.getSettings().maxDependenciesDeep
+        : -1;
 
-    if(maxDependenciesDeep !== 0) {
-      deps = this.getCellDependencies(this.hot.toVisualRow(row), this.hot.toVisualColumn(column));
+    if (maxDependenciesDeep !== 0) {
+      deps = this.getCellDependencies(
+        this.hot.toVisualRow(row),
+        this.hot.toVisualColumn(column)
+      );
     }
 
     arrayEach(deps, (cellValue) => {
@@ -253,23 +271,31 @@ class Sheet {
 
     let oldFormula = toUpperCaseFormula(formula);
     let newFormula = toUpperCaseFormula(formula);
-    Object.keys(this._parsedCells).forEach(cell => {
-      if(this._parsedCells[cell]) {
-        newFormula = newFormula.replace(new RegExp(`${cell}+`), `${this._parsedCells[cell]}`)
-        newFormula = newFormula.replace(new RegExp(`${cell}\,`), `${this._parsedCells[cell]},`)
-        newFormula = newFormula.replace(new RegExp(`${cell}$`), `${this._parsedCells[cell]}`)
+    Object.keys(this._parsedCells).forEach((cell) => {
+      if (this._parsedCells[cell]) {
+        newFormula = newFormula.replace(
+          new RegExp(`${cell}+`),
+          `${this._parsedCells[cell]}`
+        );
+        newFormula = newFormula.replace(
+          new RegExp(`${cell}\,`),
+          `${this._parsedCells[cell]},`
+        );
+        newFormula = newFormula.replace(
+          new RegExp(`${cell}$`),
+          `${this._parsedCells[cell]}`
+        );
       }
     });
 
     const { error, result } = this.parser.parse(toUpperCaseFormula(formula));
-    
-    if(result && !this._parsedCells[cellValue.key]) {
+
+    if (result && !this._parsedCells[cellValue.key]) {
       this._parsedCells[cellValue.key] = result;
     }
 
     if (isFormulaExpression(result)) {
       this.parseExpression(cellValue, result.substr(1));
-
     } else {
       cellValue.setValue(result);
       cellValue.setError(error);
@@ -301,16 +327,15 @@ class Sheet {
    * @returns {Array}
    */
   getCellDependencies(row, column) {
-    
     return this.useCustomGetCellDependencies
       ? this.matrix.getDependenciesCustom({
-        row,
-        column
-      })
+          row,
+          column,
+        })
       : this.matrix.getDependencies({
-        row,
-        column
-      });
+          row,
+          column,
+        });
   }
 
   /**
@@ -330,7 +355,10 @@ class Sheet {
     this.matrix.registerCellRef(cell);
     this._processingCell.addPrecedent(cell);
 
-    const cellValue = this.dataProvider.getRawDataAtCell(row.index, column.index);
+    const cellValue = this.dataProvider.getRawDataAtCell(
+      row.index,
+      column.index
+    );
 
     if (isFormulaError(cellValue)) {
       const computedCell = this.matrix.getCellAt(row.index, column.index);
@@ -361,45 +389,57 @@ class Sheet {
    * @param {Object} endCell Cell coordinates (bottom-right corner coordinate).
    * @param {Function} done Function to call with valid cells values.
    */
-  _onCallRangeValue({ row: startRow, column: startColumn }, { row: endRow, column: endColumn }, done) {
-    const cellValues = this.dataProvider.getRawDataByRange(startRow.index, startColumn.index, endRow.index, endColumn.index);
+  _onCallRangeValue(
+    { row: startRow, column: startColumn },
+    { row: endRow, column: endColumn },
+    done
+  ) {
+    const cellValues = this.dataProvider.getRawDataByRange(
+      startRow.index,
+      startColumn.index,
+      endRow.index,
+      endColumn.index
+    );
 
-    const mapRowData = (rowData, rowIndex) => arrayMap(rowData, (cellData, columnIndex) => {
-      const rowCellCoord = startRow.index + rowIndex;
-      const columnCellCoord = startColumn.index + columnIndex;
-      const cell = new CellReference(rowCellCoord, columnCellCoord);
+    const mapRowData = (rowData, rowIndex) =>
+      arrayMap(rowData, (cellData, columnIndex) => {
+        const rowCellCoord = startRow.index + rowIndex;
+        const columnCellCoord = startColumn.index + columnIndex;
+        const cell = new CellReference(rowCellCoord, columnCellCoord);
 
-      if (!this.dataProvider.isInDataRange(cell.row, cell.column)) {
-        throw Error(ERROR_REF);
-      }
-
-      this.matrix.registerCellRef(cell);
-      this._processingCell.addPrecedent(cell);
-
-      let newCellData = cellData;
-
-      if (isFormulaError(newCellData)) {
-        const computedCell = this.matrix.getCellAt(cell.row, cell.column);
-
-        if (computedCell && computedCell.hasError()) {
-          throw Error(newCellData);
-        }
-      }
-
-      if (isFormulaExpression(newCellData)) {
-        const { error, result } = this.parser.parse(newCellData.substr(1));
-
-        if (error) {
-          throw Error(error);
+        if (!this.dataProvider.isInDataRange(cell.row, cell.column)) {
+          throw Error(ERROR_REF);
         }
 
-        newCellData = result;
-      }
+        this.matrix.registerCellRef(cell);
+        this._processingCell.addPrecedent(cell);
 
-      return newCellData;
-    });
+        let newCellData = cellData;
 
-    const calculatedCellValues = arrayMap(cellValues, (rowData, rowIndex) => mapRowData(rowData, rowIndex));
+        if (isFormulaError(newCellData)) {
+          const computedCell = this.matrix.getCellAt(cell.row, cell.column);
+
+          if (computedCell && computedCell.hasError()) {
+            throw Error(newCellData);
+          }
+        }
+
+        if (isFormulaExpression(newCellData)) {
+          const { error, result } = this.parser.parse(newCellData.substr(1));
+
+          if (error) {
+            throw Error(error);
+          }
+
+          newCellData = result;
+        }
+
+        return newCellData;
+      });
+
+    const calculatedCellValues = arrayMap(cellValues, (rowData, rowIndex) =>
+      mapRowData(rowData, rowIndex)
+    );
 
     done(calculatedCellValues);
   }
