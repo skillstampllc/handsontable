@@ -369,6 +369,10 @@ class Sheet {
     }
 
     if (isFormulaExpression(cellValue)) {
+      if (this._parsedCells && this._parsedCells[arguments[0].label]) {
+        return done(this._parsedCells[arguments[0].label]);
+      }
+
       const { error, result } = this.parser.parse(cellValue.substr(1));
 
       if (error) {
