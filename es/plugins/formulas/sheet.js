@@ -527,6 +527,10 @@ function () {
       }
 
       if (isFormulaExpression(cellValue)) {
+        if (this._parsedCells && this._parsedCells[arguments[0].label]) {
+          return done(this._parsedCells[arguments[0].label]);
+        }
+
         var _this$parser$parse2 = this.parser.parse(cellValue.substr(1)),
             error = _this$parser$parse2.error,
             result = _this$parser$parse2.result;
