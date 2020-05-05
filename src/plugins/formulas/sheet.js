@@ -222,7 +222,7 @@ class Sheet {
     });
     cellsWithFormula = this.sortCellsByUsed(cellsWithFormula);
 
-    arrayEach(cellsWithFormula, function (cellValue) {
+    arrayEach(cellsWithFormula, (cellValue) => {
       var value = this.dataProvider.getSourceDataAtCell(
         cellValue.row,
         cellValue.column
