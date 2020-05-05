@@ -1,6 +1,6 @@
-import { ERROR_REF } from 'hot-formula-parser';
-import { arrayFilter } from '../../../helpers/array';
-import BaseCell from './_base';
+import { ERROR_REF } from "hot-formula-parser";
+import { arrayFilter } from "../../../helpers/array";
+import BaseCell from "./_base";
 
 const STATE_OUT_OFF_DATE = 1;
 const STATE_COMPUTING = 2;
@@ -59,7 +59,14 @@ class CellValue extends BaseCell {
      * @type {Array}
      */
     this.precedentsList = {};
-    
+
+    /**
+     * List of precedents cells.
+     *
+     * @type {Array}
+     */
+    this.precedentsListString = "";
+
     /**
      * Computed value.
      *
@@ -78,14 +85,13 @@ class CellValue extends BaseCell {
      * @type {String}
      */
     this.state = CellValue.STATE_UP_TO_DATE;
-    
+
     /**
      * Indicates cell key.
      *
      * @type {String}
      */
-    this.key = `${this.stringifyCol(column)}${row+1}`;
-    ;
+    this.key = `${this.stringifyCol(column)}${row + 1}`;
   }
 
   /**
@@ -103,13 +109,14 @@ class CellValue extends BaseCell {
    * @param {*} value
    */
   parseCol(value) {
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       return value;
     }
 
     let coord = -1;
     for (let i = 0; i < value.length; i++) {
-      coord += (value[i].charCodeAt(0) - 64) * Math.pow(26, value.length - 1 - i);
+      coord +=
+        (value[i].charCodeAt(0) - 64) * Math.pow(26, value.length - 1 - i);
     }
     return coord;
   }
@@ -120,11 +127,11 @@ class CellValue extends BaseCell {
    * @param {*} value
    */
   stringifyCol(value) {
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       return value;
     }
 
-    let col = '';
+    let col = "";
 
     while (value >= 0) {
       if (value / 26 >= 1) {
@@ -147,38 +154,47 @@ class CellValue extends BaseCell {
   setPrecedents(value) {
     let precedents = {};
 
-    if (!value || typeof value === 'number' || value[0] !== '=') {
+    if (!value || typeof value === "number" || value[0] !== "=") {
       return {};
     }
 
     let regex = /(\$?[A-Z]+\$?[0-9]+:\$?[A-Z]+\$?[0-9]+)|(\$?[A-Z]+\$?[0-9]+)/g;
 
     try {
-      (value.match(regex) || []).forEach(cell => {
-        if(cell.indexOf(':') > -1) {
-          let [startCell, endCell] = cell.split(':');
+      (value.match(regex) || []).forEach((cell) => {
+        if (cell.indexOf(":") > -1) {
+          let [startCell, endCell] = cell.split(":");
           startCell = startCell.match(/(\D+)(\d+)/);
           endCell = endCell.match(/(\D+)(\d+)/);
 
-          for(let i = this.parseCol(startCell[1]); i <= this.parseCol(endCell[1]); i++) {
-            for(let j = parseInt(startCell[2]); j <=parseInt(endCell[2]); j++) {
+          for (
+            let i = this.parseCol(startCell[1]);
+            i <= this.parseCol(endCell[1]);
+            i++
+          ) {
+            for (
+              let j = parseInt(startCell[2]);
+              j <= parseInt(endCell[2]);
+              j++
+            ) {
               let newCell = `${this.stringifyCol(i)}${j}`;
-              if(!precedents[newCell]) {
+              if (!precedents[newCell]) {
                 precedents[newCell] = newCell;
               }
             }
           }
         } else {
-          if(!precedents[cell]) {
+          if (!precedents[cell]) {
             precedents[cell] = cell;
           }
         }
       });
     } catch (e) {
-      console.log('e',e);
+      console.log("e", e);
     }
 
     this.precedentsList = precedents;
+    this.precedentsListString = this.precedentsList.join(" ");
   }
 
   /**
@@ -261,7 +277,10 @@ class CellValue extends BaseCell {
     if (this.isEqual(cellReference)) {
       throw Error(ERROR_REF);
     }
-    this.precedents = arrayFilter(this.precedents, cell => !cell.isEqual(cellReference));
+    this.precedents = arrayFilter(
+      this.precedents,
+      (cell) => !cell.isEqual(cellReference)
+    );
   }
 
   /**
@@ -296,7 +315,10 @@ class CellValue extends BaseCell {
    * @returns {Boolean}
    */
   hasPrecedent(cellReference) {
-    return arrayFilter(this.precedents, cell => cell.isEqual(cellReference)).length > 0;
+    return (
+      arrayFilter(this.precedents, (cell) => cell.isEqual(cellReference))
+        .length > 0
+    );
   }
 }
 

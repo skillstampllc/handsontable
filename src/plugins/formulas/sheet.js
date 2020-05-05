@@ -129,10 +129,32 @@ class Sheet {
   }
 
   /**
+   * sortCellsByUsed.
+   */
+  sortCellsByUsed(array) {
+    let result = [];
+    let used = "";
+    cells.forEach((cell) => {
+      if (used.indexOf(cell.key) > -1) {
+        let index = result.findIndex(
+          (resultCell) => resultCell.precedentsListString.indexOf(cell.key) > -1
+        );
+        result.splice(index, 0, cell);
+      } else {
+        result.push(cell);
+      }
+
+      used += "__" + cell.precedentsListString;
+    });
+    return result;
+  }
+
+  /**
    * Recalculate sheet using optimized methods (fast recalculation).
    */
   recalculateOptimized() {
-    const cells = this.matrix.getOutOfDateCells();
+    let cells = this.matrix.getOutOfDateCells();
+    cells = this.sortCellsByUsed(cells);
     let promisses = [];
     this._parsedCells = {};
     this.matrix.data.forEach((cell) => {
@@ -148,7 +170,7 @@ class Sheet {
       );
 
       if (isFormulaExpression(value)) {
-        if (!this.useCustomGetCellDependencies) {
+        if (this.useCustomGetCellDependencies) {
           this.parseExpression(cellValue, value.substr(1));
         } else {
           promisses.push(
@@ -162,7 +184,7 @@ class Sheet {
         }
       }
     });
-    if (this.useCustomGetCellDependencies) {
+    if (!this.useCustomGetCellDependencies) {
       promisses.push(
         new Promise((resolve) => {
           setTimeout(() => {
