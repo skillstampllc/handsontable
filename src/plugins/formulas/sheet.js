@@ -131,7 +131,7 @@ class Sheet {
   /**
    * sortCellsByUsed.
    */
-  sortCellsByUsed(array) {
+  sortCellsByUsed(cells) {
     let result = [];
     let used = "";
     cells.forEach((cell) => {
@@ -210,12 +210,25 @@ class Sheet {
     this.matrix.reset();
     this._parsedCells = {};
 
-    arrayEach(cells, (rowData, row) => {
-      arrayEach(rowData, (value, column) => {
+    let cellsWithFormula = [];
+    arrayEach(cells, function (rowData, row) {
+      arrayEach(rowData, function (value, column) {
         if (isFormulaExpression(value)) {
-          this.parseExpression(new CellValue(row, column), value.substr(1));
+          let cell = new CellValue(row, column);
+          cell.setPrecedents(value);
+          cellsWithFormula.push(cell);
         }
       });
+    });
+    cellsWithFormula = this.sortCellsByUsed(cellsWithFormula);
+
+    arrayEach(cellsWithFormula, function (cellValue) {
+      var value = _this3.dataProvider.getSourceDataAtCell(
+        cellValue.row,
+        cellValue.column
+      );
+
+      let result = _this3.parseExpression(cellValue, value.substr(1));
     });
 
     this._state = STATE_UP_TO_DATE;
@@ -290,26 +303,6 @@ class Sheet {
   parseExpression(cellValue, formula) {
     cellValue.setState(CellValue.STATE_COMPUTING);
     this._processingCell = cellValue;
-
-    let oldFormula = toUpperCaseFormula(formula);
-    let newFormula = toUpperCaseFormula(formula);
-    Object.keys(this._parsedCells).forEach((cell) => {
-      if (this._parsedCells[cell]) {
-        newFormula = newFormula.replace(
-          new RegExp(`${cell}+`),
-          `${this._parsedCells[cell]}`
-        );
-        newFormula = newFormula.replace(
-          new RegExp(`${cell}\,`),
-          `${this._parsedCells[cell]},`
-        );
-        newFormula = newFormula.replace(
-          new RegExp(`${cell}$`),
-          `${this._parsedCells[cell]}`
-        );
-      }
-    });
-
     const { error, result } = this.parser.parse(toUpperCaseFormula(formula));
 
     if (result && !this._parsedCells[cellValue.key]) {
@@ -328,6 +321,8 @@ class Sheet {
 
     this.matrix.add(cellValue);
     this._processingCell = null;
+
+    return result;
   }
 
   /**
@@ -432,11 +427,14 @@ class Sheet {
         const rowCellCoord = startRow.index + rowIndex;
         const columnCellCoord = startColumn.index + columnIndex;
         const cell = new CellReference(rowCellCoord, columnCellCoord);
+        let cellDataValue = new CellValue(rowCellCoord, columnCellCoord);
 
         if (!this.dataProvider.isInDataRange(cell.row, cell.column)) {
           throw Error(ERROR_REF);
         }
-
+        if (this._parsedCells[cellDataValue.key]) {
+          return this._parsedCells[cellDataValue.key];
+        }
         this.matrix.registerCellRef(cell);
         this._processingCell.addPrecedent(cell);
 
@@ -458,6 +456,7 @@ class Sheet {
           }
 
           newCellData = result;
+          this._parsedCells[cellDataValue.key] = newCellData;
         }
 
         return newCellData;

@@ -194,7 +194,7 @@ class CellValue extends BaseCell {
     }
 
     this.precedentsList = precedents;
-    this.precedentsListString = this.precedentsList.join(" ");
+    this.precedentsListString = Object.keys(this.precedentsList).join(" ");
   }
 
   /**
