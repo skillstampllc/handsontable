@@ -22,15 +22,7 @@ require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.promise");
 
-require("core-js/modules/es.regexp.constructor");
-
-require("core-js/modules/es.regexp.exec");
-
-require("core-js/modules/es.regexp.to-string");
-
 require("core-js/modules/es.string.iterator");
-
-require("core-js/modules/es.string.replace");
 
 require("core-js/modules/web.dom-collections.for-each");
 
@@ -329,7 +321,7 @@ function () {
 
   }, {
     key: "sortCellsByUsed",
-    value: function sortCellsByUsed(array) {
+    value: function sortCellsByUsed(cells) {
       var result = [];
       var used = "";
       cells.forEach(function (cell) {
@@ -404,17 +396,24 @@ function () {
   }, {
     key: "recalculateFull",
     value: function recalculateFull() {
-      var _this3 = this;
-
       var cells = this.dataProvider.getSourceDataByRange();
       this.matrix.reset();
       this._parsedCells = {};
+      var cellsWithFormula = [];
       (0, _array.arrayEach)(cells, function (rowData, row) {
         (0, _array.arrayEach)(rowData, function (value, column) {
           if ((0, _utils.isFormulaExpression)(value)) {
-            _this3.parseExpression(new _value.default(row, column), value.substr(1));
+            var cell = new _value.default(row, column);
+            cell.setPrecedents(value);
+            cellsWithFormula.push(cell);
           }
         });
+      });
+      cellsWithFormula = this.sortCellsByUsed(cellsWithFormula);
+      (0, _array.arrayEach)(cellsWithFormula, function (cellValue) {
+        var value = _this3.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
+
+        var result = _this3.parseExpression(cellValue, value.substr(1));
       });
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
@@ -489,19 +488,8 @@ function () {
   }, {
     key: "parseExpression",
     value: function parseExpression(cellValue, formula) {
-      var _this4 = this;
-
       cellValue.setState(_value.default.STATE_COMPUTING);
       this._processingCell = cellValue;
-      var oldFormula = (0, _utils.toUpperCaseFormula)(formula);
-      var newFormula = (0, _utils.toUpperCaseFormula)(formula);
-      Object.keys(this._parsedCells).forEach(function (cell) {
-        if (_this4._parsedCells[cell]) {
-          newFormula = newFormula.replace(new RegExp("".concat(cell, "+")), "".concat(_this4._parsedCells[cell]));
-          newFormula = newFormula.replace(new RegExp("".concat(cell, ",")), "".concat(_this4._parsedCells[cell], ","));
-          newFormula = newFormula.replace(new RegExp("".concat(cell, "$")), "".concat(_this4._parsedCells[cell]));
-        }
-      });
 
       var _this$parser$parse = this.parser.parse((0, _utils.toUpperCaseFormula)(formula)),
           error = _this$parser$parse.error,
@@ -522,6 +510,7 @@ function () {
       cellValue.setPrecedents("=" + (0, _utils.toUpperCaseFormula)(formula));
       this.matrix.add(cellValue);
       this._processingCell = null;
+      return result;
     }
     /**
      * Get cell value object at specified physical coordinates.
@@ -618,7 +607,7 @@ function () {
   }, {
     key: "_onCallRangeValue",
     value: function _onCallRangeValue(_ref4, _ref5, done) {
-      var _this5 = this;
+      var _this4 = this;
 
       var startRow = _ref4.row,
           startColumn = _ref4.column;
@@ -631,19 +620,24 @@ function () {
           var rowCellCoord = startRow.index + rowIndex;
           var columnCellCoord = startColumn.index + columnIndex;
           var cell = new _reference.default(rowCellCoord, columnCellCoord);
+          var cellDataValue = new _value.default(rowCellCoord, columnCellCoord);
 
-          if (!_this5.dataProvider.isInDataRange(cell.row, cell.column)) {
+          if (!_this4.dataProvider.isInDataRange(cell.row, cell.column)) {
             throw Error(_hotFormulaParser.ERROR_REF);
           }
 
-          _this5.matrix.registerCellRef(cell);
+          if (_this4._parsedCells[cellDataValue.key]) {
+            return _this4._parsedCells[cellDataValue.key];
+          }
 
-          _this5._processingCell.addPrecedent(cell);
+          _this4.matrix.registerCellRef(cell);
+
+          _this4._processingCell.addPrecedent(cell);
 
           var newCellData = cellData;
 
           if ((0, _hotFormulaParser.error)(newCellData)) {
-            var computedCell = _this5.matrix.getCellAt(cell.row, cell.column);
+            var computedCell = _this4.matrix.getCellAt(cell.row, cell.column);
 
             if (computedCell && computedCell.hasError()) {
               throw Error(newCellData);
@@ -651,15 +645,16 @@ function () {
           }
 
           if ((0, _utils.isFormulaExpression)(newCellData)) {
-            var _this5$parser$parse = _this5.parser.parse(newCellData.substr(1)),
-                error = _this5$parser$parse.error,
-                result = _this5$parser$parse.result;
+            var _this4$parser$parse = _this4.parser.parse(newCellData.substr(1)),
+                error = _this4$parser$parse.error,
+                result = _this4$parser$parse.result;
 
             if (error) {
               throw Error(error);
             }
 
             newCellData = result;
+            _this4._parsedCells[cellDataValue.key] = newCellData;
           }
 
           return newCellData;

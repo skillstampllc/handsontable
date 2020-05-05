@@ -18,6 +18,8 @@ require("core-js/modules/es.array.join");
 
 require("core-js/modules/es.object.get-prototype-of");
 
+require("core-js/modules/es.object.keys");
+
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
@@ -293,7 +295,7 @@ function (_BaseCell) {
       }
 
       this.precedentsList = precedents;
-      this.precedentsListString = this.precedentsList.join(" ");
+      this.precedentsListString = Object.keys(this.precedentsList).join(" ");
     }
     /**
      * Get computed value.

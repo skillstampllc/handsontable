@@ -7,6 +7,7 @@ import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.join";
 import "core-js/modules/es.object.get-prototype-of";
+import "core-js/modules/es.object.keys";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.exec";
@@ -266,7 +267,7 @@ function (_BaseCell) {
       }
 
       this.precedentsList = precedents;
-      this.precedentsListString = this.precedentsList.join(" ");
+      this.precedentsListString = Object.keys(this.precedentsList).join(" ");
     }
     /**
      * Get computed value.
