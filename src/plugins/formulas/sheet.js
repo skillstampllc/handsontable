@@ -223,12 +223,12 @@ class Sheet {
     cellsWithFormula = this.sortCellsByUsed(cellsWithFormula);
 
     arrayEach(cellsWithFormula, function (cellValue) {
-      var value = _this3.dataProvider.getSourceDataAtCell(
+      var value = this.dataProvider.getSourceDataAtCell(
         cellValue.row,
         cellValue.column
       );
 
-      let result = _this3.parseExpression(cellValue, value.substr(1));
+      let result = this.parseExpression(cellValue, value.substr(1));
     });
 
     this._state = STATE_UP_TO_DATE;
@@ -395,9 +395,10 @@ class Sheet {
       if (error) {
         throw Error(error);
       }
-
+      this._parsedCells[arguments[0].label] = result;
       done(result);
     } else {
+      this._parsedCells[arguments[0].label] = cellValue;
       done(cellValue);
     }
   }
@@ -456,8 +457,8 @@ class Sheet {
           }
 
           newCellData = result;
-          this._parsedCells[cellDataValue.key] = newCellData;
         }
+        this._parsedCells[cellDataValue.key] = newCellData;
 
         return newCellData;
       });

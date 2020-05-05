@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 05/05/2020 15:31:03)
+ * Release date: 19/02/2020 (built at 05/05/2020 15:57:15)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -41578,7 +41578,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "05/05/2020 15:31:03";
+Handsontable.buildDate = "05/05/2020 15:57:15";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -81805,9 +81805,8 @@ function () {
       });
       cellsWithFormula = this.sortCellsByUsed(cellsWithFormula);
       (0, _array.arrayEach)(cellsWithFormula, function (cellValue) {
-        var value = _this3.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
-
-        var result = _this3.parseExpression(cellValue, value.substr(1));
+        var value = this.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
+        var result = this.parseExpression(cellValue, value.substr(1));
       });
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
@@ -81984,8 +81983,10 @@ function () {
           throw Error(error);
         }
 
+        this._parsedCells[arguments[0].label] = result;
         done(result);
       } else {
+        this._parsedCells[arguments[0].label] = cellValue;
         done(cellValue);
       }
     }
@@ -82001,7 +82002,7 @@ function () {
   }, {
     key: "_onCallRangeValue",
     value: function _onCallRangeValue(_ref4, _ref5, done) {
-      var _this4 = this;
+      var _this3 = this;
 
       var startRow = _ref4.row,
           startColumn = _ref4.column;
@@ -82016,22 +82017,22 @@ function () {
           var cell = new _reference.default(rowCellCoord, columnCellCoord);
           var cellDataValue = new _value.default(rowCellCoord, columnCellCoord);
 
-          if (!_this4.dataProvider.isInDataRange(cell.row, cell.column)) {
+          if (!_this3.dataProvider.isInDataRange(cell.row, cell.column)) {
             throw Error(_hotFormulaParser.ERROR_REF);
           }
 
-          if (_this4._parsedCells[cellDataValue.key]) {
-            return _this4._parsedCells[cellDataValue.key];
+          if (_this3._parsedCells[cellDataValue.key]) {
+            return _this3._parsedCells[cellDataValue.key];
           }
 
-          _this4.matrix.registerCellRef(cell);
+          _this3.matrix.registerCellRef(cell);
 
-          _this4._processingCell.addPrecedent(cell);
+          _this3._processingCell.addPrecedent(cell);
 
           var newCellData = cellData;
 
           if ((0, _hotFormulaParser.error)(newCellData)) {
-            var computedCell = _this4.matrix.getCellAt(cell.row, cell.column);
+            var computedCell = _this3.matrix.getCellAt(cell.row, cell.column);
 
             if (computedCell && computedCell.hasError()) {
               throw Error(newCellData);
@@ -82039,18 +82040,18 @@ function () {
           }
 
           if ((0, _utils.isFormulaExpression)(newCellData)) {
-            var _this4$parser$parse = _this4.parser.parse(newCellData.substr(1)),
-                error = _this4$parser$parse.error,
-                result = _this4$parser$parse.result;
+            var _this3$parser$parse = _this3.parser.parse(newCellData.substr(1)),
+                error = _this3$parser$parse.error,
+                result = _this3$parser$parse.result;
 
             if (error) {
               throw Error(error);
             }
 
             newCellData = result;
-            _this4._parsedCells[cellDataValue.key] = newCellData;
           }
 
+          _this3._parsedCells[cellDataValue.key] = newCellData;
           return newCellData;
         });
       };

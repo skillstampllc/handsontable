@@ -380,9 +380,8 @@ function () {
       });
       cellsWithFormula = this.sortCellsByUsed(cellsWithFormula);
       arrayEach(cellsWithFormula, function (cellValue) {
-        var value = _this3.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
-
-        var result = _this3.parseExpression(cellValue, value.substr(1));
+        var value = this.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
+        var result = this.parseExpression(cellValue, value.substr(1));
       });
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
@@ -559,8 +558,10 @@ function () {
           throw Error(error);
         }
 
+        this._parsedCells[arguments[0].label] = result;
         done(result);
       } else {
+        this._parsedCells[arguments[0].label] = cellValue;
         done(cellValue);
       }
     }
@@ -576,7 +577,7 @@ function () {
   }, {
     key: "_onCallRangeValue",
     value: function _onCallRangeValue(_ref4, _ref5, done) {
-      var _this4 = this;
+      var _this3 = this;
 
       var startRow = _ref4.row,
           startColumn = _ref4.column;
@@ -591,22 +592,22 @@ function () {
           var cell = new CellReference(rowCellCoord, columnCellCoord);
           var cellDataValue = new CellValue(rowCellCoord, columnCellCoord);
 
-          if (!_this4.dataProvider.isInDataRange(cell.row, cell.column)) {
+          if (!_this3.dataProvider.isInDataRange(cell.row, cell.column)) {
             throw Error(ERROR_REF);
           }
 
-          if (_this4._parsedCells[cellDataValue.key]) {
-            return _this4._parsedCells[cellDataValue.key];
+          if (_this3._parsedCells[cellDataValue.key]) {
+            return _this3._parsedCells[cellDataValue.key];
           }
 
-          _this4.matrix.registerCellRef(cell);
+          _this3.matrix.registerCellRef(cell);
 
-          _this4._processingCell.addPrecedent(cell);
+          _this3._processingCell.addPrecedent(cell);
 
           var newCellData = cellData;
 
           if (isFormulaError(newCellData)) {
-            var computedCell = _this4.matrix.getCellAt(cell.row, cell.column);
+            var computedCell = _this3.matrix.getCellAt(cell.row, cell.column);
 
             if (computedCell && computedCell.hasError()) {
               throw Error(newCellData);
@@ -614,18 +615,18 @@ function () {
           }
 
           if (isFormulaExpression(newCellData)) {
-            var _this4$parser$parse = _this4.parser.parse(newCellData.substr(1)),
-                error = _this4$parser$parse.error,
-                result = _this4$parser$parse.result;
+            var _this3$parser$parse = _this3.parser.parse(newCellData.substr(1)),
+                error = _this3$parser$parse.error,
+                result = _this3$parser$parse.result;
 
             if (error) {
               throw Error(error);
             }
 
             newCellData = result;
-            _this4._parsedCells[cellDataValue.key] = newCellData;
           }
 
+          _this3._parsedCells[cellDataValue.key] = newCellData;
           return newCellData;
         });
       };
