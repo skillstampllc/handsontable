@@ -5,6 +5,7 @@ import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.join";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
@@ -42,9 +43,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-import { ERROR_REF } from 'hot-formula-parser';
-import { arrayFilter } from '../../../helpers/array';
-import BaseCell from './_base';
+import { ERROR_REF } from "hot-formula-parser";
+import { arrayFilter } from "../../../helpers/array";
+import BaseCell from "./_base";
 var STATE_OUT_OFF_DATE = 1;
 var STATE_COMPUTING = 2;
 var STATE_UP_TO_DATE = 3;
@@ -119,6 +120,13 @@ function (_BaseCell) {
 
     _this.precedentsList = {};
     /**
+     * List of precedents cells.
+     *
+     * @type {Array}
+     */
+
+    _this.precedentsListString = "";
+    /**
      * Computed value.
      *
      * @type {*}
@@ -146,7 +154,6 @@ function (_BaseCell) {
      */
 
     _this.key = "".concat(_this.stringifyCol(column)).concat(row + 1);
-    ;
     return _this;
   }
   /**
@@ -170,7 +177,7 @@ function (_BaseCell) {
   }, {
     key: "parseCol",
     value: function parseCol(value) {
-      if (typeof value === 'number') {
+      if (typeof value === "number") {
         return value;
       }
 
@@ -191,11 +198,11 @@ function (_BaseCell) {
   }, {
     key: "stringifyCol",
     value: function stringifyCol(value) {
-      if (typeof value === 'string') {
+      if (typeof value === "string") {
         return value;
       }
 
-      var col = '';
+      var col = "";
 
       while (value >= 0) {
         if (value / 26 >= 1) {
@@ -222,7 +229,7 @@ function (_BaseCell) {
 
       var precedents = {};
 
-      if (!value || typeof value === 'number' || value[0] !== '=') {
+      if (!value || typeof value === "number" || value[0] !== "=") {
         return {};
       }
 
@@ -230,8 +237,8 @@ function (_BaseCell) {
 
       try {
         (value.match(regex) || []).forEach(function (cell) {
-          if (cell.indexOf(':') > -1) {
-            var _cell$split = cell.split(':'),
+          if (cell.indexOf(":") > -1) {
+            var _cell$split = cell.split(":"),
                 _cell$split2 = _slicedToArray(_cell$split, 2),
                 startCell = _cell$split2[0],
                 endCell = _cell$split2[1];
@@ -255,10 +262,11 @@ function (_BaseCell) {
           }
         });
       } catch (e) {
-        console.log('e', e);
+        console.log("e", e);
       }
 
       this.precedentsList = precedents;
+      this.precedentsListString = this.precedentsList.join(" ");
     }
     /**
      * Get computed value.

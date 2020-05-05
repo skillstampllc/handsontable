@@ -1,8 +1,11 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.find-index";
 import "core-js/modules/es.array.for-each";
+import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.splice";
 import "core-js/modules/es.object.keys";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.promise";
@@ -286,6 +289,29 @@ function () {
       }());
     }
     /**
+     * sortCellsByUsed.
+     */
+
+  }, {
+    key: "sortCellsByUsed",
+    value: function sortCellsByUsed(array) {
+      var result = [];
+      var used = "";
+      cells.forEach(function (cell) {
+        if (used.indexOf(cell.key) > -1) {
+          var index = result.findIndex(function (resultCell) {
+            return resultCell.precedentsListString.indexOf(cell.key) > -1;
+          });
+          result.splice(index, 0, cell);
+        } else {
+          result.push(cell);
+        }
+
+        used += "__" + cell.precedentsListString;
+      });
+      return result;
+    }
+    /**
      * Recalculate sheet using optimized methods (fast recalculation).
      */
 
@@ -295,6 +321,7 @@ function () {
       var _this2 = this;
 
       var cells = this.matrix.getOutOfDateCells();
+      cells = this.sortCellsByUsed(cells);
       var promisses = [];
       this._parsedCells = {};
       this.matrix.data.forEach(function (cell) {
@@ -306,7 +333,7 @@ function () {
         var value = _this2.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
         if (isFormulaExpression(value)) {
-          if (!_this2.useCustomGetCellDependencies) {
+          if (_this2.useCustomGetCellDependencies) {
             _this2.parseExpression(cellValue, value.substr(1));
           } else {
             promisses.push(new Promise(function (resolve) {
@@ -320,7 +347,7 @@ function () {
         }
       });
 
-      if (this.useCustomGetCellDependencies) {
+      if (!this.useCustomGetCellDependencies) {
         promisses.push(new Promise(function (resolve) {
           setTimeout(function () {
             _this2.hot.render();

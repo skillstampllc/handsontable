@@ -6,9 +6,15 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.find-index");
+
 require("core-js/modules/es.array.for-each");
 
+require("core-js/modules/es.array.index-of");
+
 require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.array.splice");
 
 require("core-js/modules/es.object.keys");
 
@@ -318,6 +324,29 @@ function () {
       }());
     }
     /**
+     * sortCellsByUsed.
+     */
+
+  }, {
+    key: "sortCellsByUsed",
+    value: function sortCellsByUsed(array) {
+      var result = [];
+      var used = "";
+      cells.forEach(function (cell) {
+        if (used.indexOf(cell.key) > -1) {
+          var index = result.findIndex(function (resultCell) {
+            return resultCell.precedentsListString.indexOf(cell.key) > -1;
+          });
+          result.splice(index, 0, cell);
+        } else {
+          result.push(cell);
+        }
+
+        used += "__" + cell.precedentsListString;
+      });
+      return result;
+    }
+    /**
      * Recalculate sheet using optimized methods (fast recalculation).
      */
 
@@ -327,6 +356,7 @@ function () {
       var _this2 = this;
 
       var cells = this.matrix.getOutOfDateCells();
+      cells = this.sortCellsByUsed(cells);
       var promisses = [];
       this._parsedCells = {};
       this.matrix.data.forEach(function (cell) {
@@ -338,7 +368,7 @@ function () {
         var value = _this2.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
         if ((0, _utils.isFormulaExpression)(value)) {
-          if (!_this2.useCustomGetCellDependencies) {
+          if (_this2.useCustomGetCellDependencies) {
             _this2.parseExpression(cellValue, value.substr(1));
           } else {
             promisses.push(new Promise(function (resolve) {
@@ -352,7 +382,7 @@ function () {
         }
       });
 
-      if (this.useCustomGetCellDependencies) {
+      if (!this.useCustomGetCellDependencies) {
         promisses.push(new Promise(function (resolve) {
           setTimeout(function () {
             _this2.hot.render();
