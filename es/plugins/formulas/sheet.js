@@ -295,10 +295,11 @@ function () {
       var used = "";
       cells.forEach(function (cell) {
         if (used.indexOf(cell.key) > -1) {
-          var index = result.findIndex(function (resultCell) {
+          var _index = result.findIndex(function (resultCell) {
             return resultCell.precedentsListString.indexOf(cell.key) > -1;
           });
-          result.splice(index, 0, cell);
+
+          result.splice(_index, 0, cell);
         } else {
           result.push(cell);
         }
@@ -307,6 +308,92 @@ function () {
       });
       return result;
     }
+    /**
+     *
+     * @param {Array} promisses
+     */
+
+  }, {
+    key: "runPromiseAsync",
+    value: function () {
+      var _runPromiseAsync = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(promisses) {
+        var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, pr;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _iteratorNormalCompletion2 = true;
+                _didIteratorError2 = false;
+                _iteratorError2 = undefined;
+                _context3.prev = 3;
+                _iterator2 = promisses[Symbol.iterator]();
+
+              case 5:
+                if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
+                  _context3.next = 12;
+                  break;
+                }
+
+                pr = _step2.value;
+                _context3.next = 9;
+                return pr();
+
+              case 9:
+                _iteratorNormalCompletion2 = true;
+                _context3.next = 5;
+                break;
+
+              case 12:
+                _context3.next = 18;
+                break;
+
+              case 14:
+                _context3.prev = 14;
+                _context3.t0 = _context3["catch"](3);
+                _didIteratorError2 = true;
+                _iteratorError2 = _context3.t0;
+
+              case 18:
+                _context3.prev = 18;
+                _context3.prev = 19;
+
+                if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+                  _iterator2.return();
+                }
+
+              case 21:
+                _context3.prev = 21;
+
+                if (!_didIteratorError2) {
+                  _context3.next = 24;
+                  break;
+                }
+
+                throw _iteratorError2;
+
+              case 24:
+                return _context3.finish(21);
+
+              case 25:
+                return _context3.finish(18);
+
+              case 26:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[3, 14, 18, 26], [19,, 21, 25]]);
+      }));
+
+      function runPromiseAsync(_x3) {
+        return _runPromiseAsync.apply(this, arguments);
+      }
+
+      return runPromiseAsync;
+    }()
     /**
      * Recalculate sheet using optimized methods (fast recalculation).
      */
@@ -329,34 +416,77 @@ function () {
         var value = _this2.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
         if (isFormulaExpression(value)) {
-          if (_this2.useCustomGetCellDependencies) {
+          if (!_this2.useCustomGetCellDependencies) {
             _this2.parseExpression(cellValue, value.substr(1));
           } else {
-            promisses.push(new Promise(function (resolve) {
-              setTimeout(function () {
-                _this2.parseExpression(cellValue, value.substr(1));
+            promisses.push(
+            /*#__PURE__*/
+            _asyncToGenerator(
+            /*#__PURE__*/
+            regeneratorRuntime.mark(function _callee4() {
+              return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                while (1) {
+                  switch (_context4.prev = _context4.next) {
+                    case 0:
+                      return _context4.abrupt("return", new Promise(function (resolve) {
+                        _this2.parseExpression(cellValue, value.substr(1));
 
-                resolve();
-              }, 10);
-            }));
+                        if (!(index % 10)) {
+                          setTimeout(function () {
+                            resolve();
+                          }, 0);
+                        } else {
+                          resolve();
+                        }
+                      }));
+
+                    case 1:
+                    case "end":
+                      return _context4.stop();
+                  }
+                }
+              }, _callee4);
+            })));
           }
         }
       });
 
-      if (!this.useCustomGetCellDependencies) {
-        promisses.push(new Promise(function (resolve) {
-          setTimeout(function () {
-            _this2.hot.render();
+      if (this.useCustomGetCellDependencies) {
+        promisses.push(
+        /*#__PURE__*/
+        _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee5() {
+          return regeneratorRuntime.wrap(function _callee5$(_context5) {
+            while (1) {
+              switch (_context5.prev = _context5.next) {
+                case 0:
+                  return _context5.abrupt("return", new Promise(function (resolve) {
+                    setTimeout(function () {
+                      _this2.hot.render();
 
-            resolve();
-          }, 10);
-        }));
-        this.allPromiseAsync(promisses);
+                      _this2._state = STATE_UP_TO_DATE;
+                      _this2._parsedCells = {};
+
+                      _this2.runLocalHooks("afterRecalculate", cells, "optimized");
+
+                      resolve();
+                    }, 10);
+                  }));
+
+                case 1:
+                case "end":
+                  return _context5.stop();
+              }
+            }
+          }, _callee5);
+        })));
+        this.runPromiseAsync(promisses);
+      } else {
+        this._state = STATE_UP_TO_DATE;
+        this._parsedCells = {};
+        this.runLocalHooks("afterRecalculate", cells, "optimized");
       }
-
-      this._state = STATE_UP_TO_DATE;
-      this._parsedCells = {};
-      this.runLocalHooks("afterRecalculate", cells, "optimized");
     }
     /**
      * Recalculate whole table by building dependencies from scratch (slow recalculation).
@@ -525,9 +655,9 @@ function () {
 
   }, {
     key: "_onCallCellValue",
-    value: function _onCallCellValue(_ref3, done) {
-      var row = _ref3.row,
-          column = _ref3.column;
+    value: function _onCallCellValue(_ref5, done) {
+      var row = _ref5.row,
+          column = _ref5.column;
       var cell = new CellReference(row, column);
 
       if (!this.dataProvider.isInDataRange(cell.row, cell.column)) {
@@ -579,13 +709,13 @@ function () {
 
   }, {
     key: "_onCallRangeValue",
-    value: function _onCallRangeValue(_ref4, _ref5, done) {
+    value: function _onCallRangeValue(_ref6, _ref7, done) {
       var _this4 = this;
 
-      var startRow = _ref4.row,
-          startColumn = _ref4.column;
-      var endRow = _ref5.row,
-          endColumn = _ref5.column;
+      var startRow = _ref6.row,
+          startColumn = _ref6.column;
+      var endRow = _ref7.row,
+          endColumn = _ref7.column;
       var cellValues = this.dataProvider.getRawDataByRange(startRow.index, startColumn.index, endRow.index, endColumn.index);
 
       var mapRowData = function mapRowData(rowData, rowIndex) {
