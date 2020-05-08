@@ -172,7 +172,7 @@ class Sheet {
       }
     });
 
-    arrayEach(cells, (cellValue) => {
+    arrayEach(cells, (cellValue, index) => {
       const value = this.dataProvider.getSourceDataAtCell(
         cellValue.row,
         cellValue.column

@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 08/05/2020 11:38:06)
+ * Release date: 19/02/2020 (built at 08/05/2020 12:29:20)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -41578,7 +41578,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "08/05/2020 11:38:06";
+Handsontable.buildDate = "08/05/2020 12:29:20";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -81720,11 +81720,10 @@ function () {
       var used = "";
       cells.forEach(function (cell) {
         if (used.indexOf(cell.key) > -1) {
-          var _index = result.findIndex(function (resultCell) {
+          var index = result.findIndex(function (resultCell) {
             return resultCell.precedentsListString.indexOf(cell.key) > -1;
           });
-
-          result.splice(_index, 0, cell);
+          result.splice(index, 0, cell);
         } else {
           result.push(cell);
         }
@@ -81837,7 +81836,7 @@ function () {
           _this2._parsedCells[cell.key] = cell.value;
         }
       });
-      (0, _array.arrayEach)(cells, function (cellValue) {
+      (0, _array.arrayEach)(cells, function (cellValue, index) {
         var value = _this2.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
         if ((0, _utils.isFormulaExpression)(value)) {

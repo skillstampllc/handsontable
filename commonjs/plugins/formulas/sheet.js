@@ -326,11 +326,10 @@ function () {
       var used = "";
       cells.forEach(function (cell) {
         if (used.indexOf(cell.key) > -1) {
-          var _index = result.findIndex(function (resultCell) {
+          var index = result.findIndex(function (resultCell) {
             return resultCell.precedentsListString.indexOf(cell.key) > -1;
           });
-
-          result.splice(_index, 0, cell);
+          result.splice(index, 0, cell);
         } else {
           result.push(cell);
         }
@@ -443,7 +442,7 @@ function () {
           _this2._parsedCells[cell.key] = cell.value;
         }
       });
-      (0, _array.arrayEach)(cells, function (cellValue) {
+      (0, _array.arrayEach)(cells, function (cellValue, index) {
         var value = _this2.dataProvider.getSourceDataAtCell(cellValue.row, cellValue.column);
 
         if ((0, _utils.isFormulaExpression)(value)) {
