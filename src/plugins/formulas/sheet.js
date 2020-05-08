@@ -150,6 +150,15 @@ class Sheet {
   }
 
   /**
+   *
+   * @param {Array} promisses
+   */
+  async runPromiseAsync(promisses) {
+    for (const pr of promisses) {
+      await pr();
+    }
+  }
+  /**
    * Recalculate sheet using optimized methods (fast recalculation).
    */
   recalculateOptimized() {
@@ -170,35 +179,45 @@ class Sheet {
       );
 
       if (isFormulaExpression(value)) {
-        if (this.useCustomGetCellDependencies) {
+        if (!this.useCustomGetCellDependencies) {
           this.parseExpression(cellValue, value.substr(1));
         } else {
           promisses.push(
-            new Promise((resolve) => {
-              setTimeout(() => {
+            async () =>
+              new Promise((resolve) => {
                 this.parseExpression(cellValue, value.substr(1));
-                resolve();
-              }, 10);
-            })
+
+                if (!(index % 10)) {
+                  setTimeout(function () {
+                    resolve();
+                  }, 0);
+                } else {
+                  resolve();
+                }
+              })
           );
         }
       }
     });
-    if (!this.useCustomGetCellDependencies) {
+    if (this.useCustomGetCellDependencies) {
       promisses.push(
-        new Promise((resolve) => {
-          setTimeout(() => {
-            this.hot.render();
-            resolve();
-          }, 10);
-        })
+        async () =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              this.hot.render();
+              this._state = STATE_UP_TO_DATE;
+              this._parsedCells = {};
+              this.runLocalHooks("afterRecalculate", cells, "optimized");
+              resolve();
+            }, 10);
+          })
       );
-      this.allPromiseAsync(promisses);
+      this.runPromiseAsync(promisses);
+    } else {
+      this._state = STATE_UP_TO_DATE;
+      this._parsedCells = {};
+      this.runLocalHooks("afterRecalculate", cells, "optimized");
     }
-
-    this._state = STATE_UP_TO_DATE;
-    this._parsedCells = {};
-    this.runLocalHooks("afterRecalculate", cells, "optimized");
   }
 
   /**
