@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 08/07/2020 18:03:28)
+ * Release date: 19/02/2020 (built at 08/07/2020 18:15:55)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -62452,7 +62452,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "08/07/2020 18:03:28";
+Handsontable.buildDate = "08/07/2020 18:15:55";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -103369,55 +103369,55 @@ function (_BasePlugin) {
         }
       }
 
-      this.addHook('afterColumnSort', function () {
+      this.addHook("afterColumnSort", function () {
         return _this2.onAfterColumnSort.apply(_this2, arguments);
       });
-      this.addHook('afterCreateCol', function () {
+      this.addHook("afterCreateCol", function () {
         return _this2.onAfterCreateCol.apply(_this2, arguments);
       });
-      this.addHook('afterCreateRow', function () {
+      this.addHook("afterCreateRow", function () {
         return _this2.onAfterCreateRow.apply(_this2, arguments);
       });
-      this.addHook('afterLoadData', function () {
+      this.addHook("afterLoadData", function () {
         return _this2.onAfterLoadData();
       });
-      this.addHook('afterRemoveCol', function () {
+      this.addHook("afterRemoveCol", function () {
         return _this2.onAfterRemoveCol.apply(_this2, arguments);
       });
-      this.addHook('afterRemoveRow', function () {
+      this.addHook("afterRemoveRow", function () {
         return _this2.onAfterRemoveRow.apply(_this2, arguments);
       });
-      this.addHook('afterSetDataAtCell', function () {
+      this.addHook("afterSetDataAtCell", function () {
         return _this2.onAfterSetDataAtCell.apply(_this2, arguments);
       });
-      this.addHook('afterSetDataAtRowProp', function () {
+      this.addHook("afterSetDataAtRowProp", function () {
         return _this2.onAfterSetDataAtCell.apply(_this2, arguments);
       });
-      this.addHook('beforeColumnSort', function () {
+      this.addHook("beforeColumnSort", function () {
         return _this2.onBeforeColumnSort.apply(_this2, arguments);
       });
-      this.addHook('beforeCreateCol', function () {
+      this.addHook("beforeCreateCol", function () {
         return _this2.onBeforeCreateCol.apply(_this2, arguments);
       });
-      this.addHook('beforeCreateRow', function () {
+      this.addHook("beforeCreateRow", function () {
         return _this2.onBeforeCreateRow.apply(_this2, arguments);
       });
-      this.addHook('beforeRemoveCol', function () {
+      this.addHook("beforeRemoveCol", function () {
         return _this2.onBeforeRemoveCol.apply(_this2, arguments);
       });
-      this.addHook('beforeRemoveRow', function () {
+      this.addHook("beforeRemoveRow", function () {
         return _this2.onBeforeRemoveRow.apply(_this2, arguments);
       });
-      this.addHook('beforeValidate', function () {
+      this.addHook("beforeValidate", function () {
         return _this2.onBeforeValidate.apply(_this2, arguments);
       });
-      this.addHook('beforeValueRender', function () {
+      this.addHook("beforeValueRender", function () {
         return _this2.onBeforeValueRender.apply(_this2, arguments);
       });
-      this.addHook('modifyData', function () {
+      this.addHook("modifyData", function () {
         return _this2.onModifyData.apply(_this2, arguments);
       });
-      this.sheet.addLocalHook('afterRecalculate', function () {
+      this.sheet.addLocalHook("afterRecalculate", function () {
         return _this2.onSheetAfterRecalculate.apply(_this2, arguments);
       });
       (0, _get2.default)((0, _getPrototypeOf2.default)(Formulas.prototype), "enablePlugin", this).call(this);
@@ -103524,12 +103524,10 @@ function (_BasePlugin) {
         return;
       }
 
-      var hot = this.hot;
-      (0, _array.arrayEach)(cells, function (_ref) {
-        var row = _ref.row,
-            column = _ref.column;
-        hot.validateCell(hot.getDataAtCell(row, column), hot.getCellMeta(row, column), function () {});
-      });
+      var hot = this.hot; // arrayEach(cells, ({ row, column }) => {
+      //   hot.validateCell(hot.getDataAtCell(row, column), hot.getCellMeta(row, column), () => {});
+      // });
+
       hot.render();
     }
     /**
@@ -103546,9 +103544,9 @@ function (_BasePlugin) {
   }, {
     key: "onModifyData",
     value: function onModifyData(row, column, valueHolder, ioMode) {
-      if (ioMode === 'get' && this.hasComputedCellValue(row, column)) {
+      if (ioMode === "get" && this.hasComputedCellValue(row, column)) {
         valueHolder.value = this.getCellValue(row, column);
-      } else if (ioMode === 'set' && (0, _utils.isFormulaExpression)(valueHolder.value)) {
+      } else if (ioMode === "set" && (0, _utils.isFormulaExpression)(valueHolder.value)) {
         valueHolder.value = (0, _utils.toUpperCaseFormula)(valueHolder.value);
       }
     }
@@ -103605,18 +103603,18 @@ function (_BasePlugin) {
     value: function onAfterSetDataAtCell(changes, source) {
       var _this3 = this;
 
-      if (source === 'loadData') {
+      if (source === "loadData") {
         return;
       }
 
       this.dataProvider.clearChanges();
       var needRecalculate = false;
-      (0, _array.arrayEach)(changes, function (_ref2) {
-        var _ref3 = (0, _slicedToArray2.default)(_ref2, 4),
-            row = _ref3[0],
-            column = _ref3[1],
-            oldValue = _ref3[2],
-            newValue = _ref3[3];
+      (0, _array.arrayEach)(changes, function (_ref) {
+        var _ref2 = (0, _slicedToArray2.default)(_ref, 4),
+            row = _ref2[0],
+            column = _ref2[1],
+            oldValue = _ref2[2],
+            newValue = _ref2[3];
 
         var physicalColumn = _this3.hot.propToCol(column);
 
@@ -103653,7 +103651,7 @@ function (_BasePlugin) {
   }, {
     key: "onBeforeCreateRow",
     value: function onBeforeCreateRow(row, amount, source) {
-      if (source === 'UndoRedo.undo') {
+      if (source === "UndoRedo.undo") {
         this.undoRedoSnapshot.restore();
       }
     }
@@ -103669,7 +103667,7 @@ function (_BasePlugin) {
   }, {
     key: "onAfterCreateRow",
     value: function onAfterCreateRow(row, amount, source) {
-      this.sheet.alterManager.triggerAlter('insert_row', row, amount, source !== 'UndoRedo.undo');
+      this.sheet.alterManager.triggerAlter("insert_row", row, amount, source !== "UndoRedo.undo");
     }
     /**
      * On before remove row listener.
@@ -103682,7 +103680,7 @@ function (_BasePlugin) {
   }, {
     key: "onBeforeRemoveRow",
     value: function onBeforeRemoveRow(row, amount) {
-      this.undoRedoSnapshot.save('row', row, amount);
+      this.undoRedoSnapshot.save("row", row, amount);
     }
     /**
      * On after remove row listener.
@@ -103695,7 +103693,7 @@ function (_BasePlugin) {
   }, {
     key: "onAfterRemoveRow",
     value: function onAfterRemoveRow(row, amount) {
-      this.sheet.alterManager.triggerAlter('remove_row', row, amount);
+      this.sheet.alterManager.triggerAlter("remove_row", row, amount);
     }
     /**
      * On before create column listener.
@@ -103709,7 +103707,7 @@ function (_BasePlugin) {
   }, {
     key: "onBeforeCreateCol",
     value: function onBeforeCreateCol(column, amount, source) {
-      if (source === 'UndoRedo.undo') {
+      if (source === "UndoRedo.undo") {
         this.undoRedoSnapshot.restore();
       }
     }
@@ -103725,7 +103723,7 @@ function (_BasePlugin) {
   }, {
     key: "onAfterCreateCol",
     value: function onAfterCreateCol(column, amount, source) {
-      this.sheet.alterManager.triggerAlter('insert_column', column, amount, source !== 'UndoRedo.undo');
+      this.sheet.alterManager.triggerAlter("insert_column", column, amount, source !== "UndoRedo.undo");
     }
     /**
      * On before remove column listener.
@@ -103738,7 +103736,7 @@ function (_BasePlugin) {
   }, {
     key: "onBeforeRemoveCol",
     value: function onBeforeRemoveCol(column, amount) {
-      this.undoRedoSnapshot.save('column', column, amount);
+      this.undoRedoSnapshot.save("column", column, amount);
     }
     /**
      * On after remove column listener.
@@ -103751,7 +103749,7 @@ function (_BasePlugin) {
   }, {
     key: "onAfterRemoveCol",
     value: function onAfterRemoveCol(column, amount) {
-      this.sheet.alterManager.triggerAlter('remove_column', column, amount);
+      this.sheet.alterManager.triggerAlter("remove_column", column, amount);
     }
     /**
      * On before column sorting listener.
@@ -103764,7 +103762,7 @@ function (_BasePlugin) {
   }, {
     key: "onBeforeColumnSort",
     value: function onBeforeColumnSort(column, order) {
-      this.sheet.alterManager.prepareAlter('column_sorting', column, order);
+      this.sheet.alterManager.prepareAlter("column_sorting", column, order);
     }
     /**
      * On after column sorting listener.
@@ -103777,7 +103775,7 @@ function (_BasePlugin) {
   }, {
     key: "onAfterColumnSort",
     value: function onAfterColumnSort(column, order) {
-      this.sheet.alterManager.triggerAlter('column_sorting', column, order);
+      this.sheet.alterManager.triggerAlter("column_sorting", column, order);
     }
     /**
      * On after load data listener.
@@ -103808,7 +103806,7 @@ function (_BasePlugin) {
   return Formulas;
 }(_base.default);
 
-(0, _plugins.registerPlugin)('formulas', Formulas);
+(0, _plugins.registerPlugin)("formulas", Formulas);
 var _default = Formulas;
 exports.default = _default;
 

@@ -1,12 +1,17 @@
-import BasePlugin from '../_base';
-import { arrayEach } from '../../helpers/array';
-import { isObject, objectEach } from '../../helpers/object';
-import EventManager from '../../eventManager';
-import { registerPlugin } from '../../plugins';
-import { isFormulaExpression, toUpperCaseFormula, isFormulaExpressionEscaped, unescapeFormulaExpression } from './utils';
-import Sheet from './sheet';
-import DataProvider from './dataProvider';
-import UndoRedoSnapshot from './undoRedoSnapshot';
+import BasePlugin from "../_base";
+import { arrayEach } from "../../helpers/array";
+import { isObject, objectEach } from "../../helpers/object";
+import EventManager from "../../eventManager";
+import { registerPlugin } from "../../plugins";
+import {
+  isFormulaExpression,
+  toUpperCaseFormula,
+  isFormulaExpressionEscaped,
+  unescapeFormulaExpression,
+} from "./utils";
+import Sheet from "./sheet";
+import DataProvider from "./dataProvider";
+import UndoRedoSnapshot from "./undoRedoSnapshot";
 
 /**
  * The formulas plugin.
@@ -77,28 +82,50 @@ class Formulas extends BasePlugin {
 
     if (isObject(settings)) {
       if (isObject(settings.variables)) {
-        objectEach(settings.variables, (value, name) => this.setVariable(name, value));
+        objectEach(settings.variables, (value, name) =>
+          this.setVariable(name, value)
+        );
       }
     }
 
-    this.addHook('afterColumnSort', (...args) => this.onAfterColumnSort(...args));
-    this.addHook('afterCreateCol', (...args) => this.onAfterCreateCol(...args));
-    this.addHook('afterCreateRow', (...args) => this.onAfterCreateRow(...args));
-    this.addHook('afterLoadData', () => this.onAfterLoadData());
-    this.addHook('afterRemoveCol', (...args) => this.onAfterRemoveCol(...args));
-    this.addHook('afterRemoveRow', (...args) => this.onAfterRemoveRow(...args));
-    this.addHook('afterSetDataAtCell', (...args) => this.onAfterSetDataAtCell(...args));
-    this.addHook('afterSetDataAtRowProp', (...args) => this.onAfterSetDataAtCell(...args));
-    this.addHook('beforeColumnSort', (...args) => this.onBeforeColumnSort(...args));
-    this.addHook('beforeCreateCol', (...args) => this.onBeforeCreateCol(...args));
-    this.addHook('beforeCreateRow', (...args) => this.onBeforeCreateRow(...args));
-    this.addHook('beforeRemoveCol', (...args) => this.onBeforeRemoveCol(...args));
-    this.addHook('beforeRemoveRow', (...args) => this.onBeforeRemoveRow(...args));
-    this.addHook('beforeValidate', (...args) => this.onBeforeValidate(...args));
-    this.addHook('beforeValueRender', (...args) => this.onBeforeValueRender(...args));
-    this.addHook('modifyData', (...args) => this.onModifyData(...args));
+    this.addHook("afterColumnSort", (...args) =>
+      this.onAfterColumnSort(...args)
+    );
+    this.addHook("afterCreateCol", (...args) => this.onAfterCreateCol(...args));
+    this.addHook("afterCreateRow", (...args) => this.onAfterCreateRow(...args));
+    this.addHook("afterLoadData", () => this.onAfterLoadData());
+    this.addHook("afterRemoveCol", (...args) => this.onAfterRemoveCol(...args));
+    this.addHook("afterRemoveRow", (...args) => this.onAfterRemoveRow(...args));
+    this.addHook("afterSetDataAtCell", (...args) =>
+      this.onAfterSetDataAtCell(...args)
+    );
+    this.addHook("afterSetDataAtRowProp", (...args) =>
+      this.onAfterSetDataAtCell(...args)
+    );
+    this.addHook("beforeColumnSort", (...args) =>
+      this.onBeforeColumnSort(...args)
+    );
+    this.addHook("beforeCreateCol", (...args) =>
+      this.onBeforeCreateCol(...args)
+    );
+    this.addHook("beforeCreateRow", (...args) =>
+      this.onBeforeCreateRow(...args)
+    );
+    this.addHook("beforeRemoveCol", (...args) =>
+      this.onBeforeRemoveCol(...args)
+    );
+    this.addHook("beforeRemoveRow", (...args) =>
+      this.onBeforeRemoveRow(...args)
+    );
+    this.addHook("beforeValidate", (...args) => this.onBeforeValidate(...args));
+    this.addHook("beforeValueRender", (...args) =>
+      this.onBeforeValueRender(...args)
+    );
+    this.addHook("modifyData", (...args) => this.onModifyData(...args));
 
-    this.sheet.addLocalHook('afterRecalculate', (...args) => this.onSheetAfterRecalculate(...args));
+    this.sheet.addLocalHook("afterRecalculate", (...args) =>
+      this.onSheetAfterRecalculate(...args)
+    );
 
     super.enablePlugin();
   }
@@ -120,7 +147,7 @@ class Formulas extends BasePlugin {
   getCellValue(row, column) {
     const cell = this.sheet.getCellAt(row, column);
 
-    return cell ? (cell.getError() || cell.getValue()) : void 0;
+    return cell ? cell.getError() || cell.getValue() : void 0;
   }
 
   /**
@@ -189,9 +216,9 @@ class Formulas extends BasePlugin {
     }
     const hot = this.hot;
 
-    arrayEach(cells, ({ row, column }) => {
-      hot.validateCell(hot.getDataAtCell(row, column), hot.getCellMeta(row, column), () => {});
-    });
+    // arrayEach(cells, ({ row, column }) => {
+    //   hot.validateCell(hot.getDataAtCell(row, column), hot.getCellMeta(row, column), () => {});
+    // });
     hot.render();
   }
 
@@ -206,10 +233,9 @@ class Formulas extends BasePlugin {
    * @returns {Array|undefined} Returns modified row data.
    */
   onModifyData(row, column, valueHolder, ioMode) {
-    if (ioMode === 'get' && this.hasComputedCellValue(row, column)) {
+    if (ioMode === "get" && this.hasComputedCellValue(row, column)) {
       valueHolder.value = this.getCellValue(row, column);
-
-    } else if (ioMode === 'set' && isFormulaExpression(valueHolder.value)) {
+    } else if (ioMode === "set" && isFormulaExpression(valueHolder.value)) {
       valueHolder.value = toUpperCaseFormula(valueHolder.value);
     }
   }
@@ -258,14 +284,14 @@ class Formulas extends BasePlugin {
    * @param {String} [source] Source of changes.
    */
   onAfterSetDataAtCell(changes, source) {
-    if (source === 'loadData') {
+    if (source === "loadData") {
       return;
     }
-    
+
     this.dataProvider.clearChanges();
 
     let needRecalculate = false;
-    
+
     arrayEach(changes, ([row, column, oldValue, newValue]) => {
       const physicalColumn = this.hot.propToCol(column);
       const physicalRow = this.hot.toPhysicalRow(row);
@@ -274,7 +300,7 @@ class Formulas extends BasePlugin {
       if (isFormulaExpression(value)) {
         value = toUpperCaseFormula(value);
       }
-      
+
       if (oldValue !== value) {
         needRecalculate = true;
         this.dataProvider.collectChanges(physicalRow, physicalColumn, value);
@@ -282,7 +308,7 @@ class Formulas extends BasePlugin {
       }
     });
 
-    if(needRecalculate) {
+    if (needRecalculate) {
       this.recalculate();
     }
   }
@@ -296,7 +322,7 @@ class Formulas extends BasePlugin {
    * @param {String} source Source of method call.
    */
   onBeforeCreateRow(row, amount, source) {
-    if (source === 'UndoRedo.undo') {
+    if (source === "UndoRedo.undo") {
       this.undoRedoSnapshot.restore();
     }
   }
@@ -310,7 +336,12 @@ class Formulas extends BasePlugin {
    * @param {String} source Source of method call.
    */
   onAfterCreateRow(row, amount, source) {
-    this.sheet.alterManager.triggerAlter('insert_row', row, amount, source !== 'UndoRedo.undo');
+    this.sheet.alterManager.triggerAlter(
+      "insert_row",
+      row,
+      amount,
+      source !== "UndoRedo.undo"
+    );
   }
 
   /**
@@ -321,7 +352,7 @@ class Formulas extends BasePlugin {
    * @param {Number} amount An amount of removed rows.
    */
   onBeforeRemoveRow(row, amount) {
-    this.undoRedoSnapshot.save('row', row, amount);
+    this.undoRedoSnapshot.save("row", row, amount);
   }
 
   /**
@@ -332,7 +363,7 @@ class Formulas extends BasePlugin {
    * @param {Number} amount An amount of removed rows.
    */
   onAfterRemoveRow(row, amount) {
-    this.sheet.alterManager.triggerAlter('remove_row', row, amount);
+    this.sheet.alterManager.triggerAlter("remove_row", row, amount);
   }
 
   /**
@@ -344,7 +375,7 @@ class Formulas extends BasePlugin {
    * @param {String} source Source of method call.
    */
   onBeforeCreateCol(column, amount, source) {
-    if (source === 'UndoRedo.undo') {
+    if (source === "UndoRedo.undo") {
       this.undoRedoSnapshot.restore();
     }
   }
@@ -358,7 +389,12 @@ class Formulas extends BasePlugin {
    * @param {String} source Source of method call.
    */
   onAfterCreateCol(column, amount, source) {
-    this.sheet.alterManager.triggerAlter('insert_column', column, amount, source !== 'UndoRedo.undo');
+    this.sheet.alterManager.triggerAlter(
+      "insert_column",
+      column,
+      amount,
+      source !== "UndoRedo.undo"
+    );
   }
 
   /**
@@ -369,7 +405,7 @@ class Formulas extends BasePlugin {
    * @param {Number} amount An amount of removed columns.
    */
   onBeforeRemoveCol(column, amount) {
-    this.undoRedoSnapshot.save('column', column, amount);
+    this.undoRedoSnapshot.save("column", column, amount);
   }
 
   /**
@@ -380,7 +416,7 @@ class Formulas extends BasePlugin {
    * @param {Number} amount An amount of created columns.
    */
   onAfterRemoveCol(column, amount) {
-    this.sheet.alterManager.triggerAlter('remove_column', column, amount);
+    this.sheet.alterManager.triggerAlter("remove_column", column, amount);
   }
 
   /**
@@ -391,7 +427,7 @@ class Formulas extends BasePlugin {
    * @param {Boolean} order Order type.
    */
   onBeforeColumnSort(column, order) {
-    this.sheet.alterManager.prepareAlter('column_sorting', column, order);
+    this.sheet.alterManager.prepareAlter("column_sorting", column, order);
   }
 
   /**
@@ -402,7 +438,7 @@ class Formulas extends BasePlugin {
    * @param {Boolean} order Order type.
    */
   onAfterColumnSort(column, order) {
-    this.sheet.alterManager.triggerAlter('column_sorting', column, order);
+    this.sheet.alterManager.triggerAlter("column_sorting", column, order);
   }
 
   /**
@@ -428,6 +464,6 @@ class Formulas extends BasePlugin {
   }
 }
 
-registerPlugin('formulas', Formulas);
+registerPlugin("formulas", Formulas);
 
 export default Formulas;
