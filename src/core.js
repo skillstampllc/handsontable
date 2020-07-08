@@ -1211,23 +1211,26 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
         prop = datamap.colToProp(input[i][1]);
       }
 
-      changes.push([
-        input[i][0],
-        prop,
-        dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]),
-        input[i][2],
-      ]);
+      let oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
+      if(oldV != input[i][1]) {
+        changes.push([
+          input[i][0],
+          prop,
+          oldV,
+          input[i][2],
+        ]);  
+      }
     }
 
     if (!changeSource && typeof row === 'object') {
       changeSource = column;
     }
 
-    instance.runHooks('afterSetDataAtCell', changes, changeSource);
+    if(changes.length > 0) {
+      instance.runHooks('afterSetDataAtCell', changes, changeSource);
 
-    validateChanges(changes, changeSource, () => {
-      applyChanges(changes, changeSource);
-    });
+      applyChanges(changes, changeSource);  
+    }
   };
 
   /**

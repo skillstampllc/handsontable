@@ -1374,17 +1374,21 @@ function Core(rootElement, userSettings) {
         prop = datamap.colToProp(input[i][1]);
       }
 
-      changes.push([input[i][0], prop, dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]), input[i][2]]);
+      var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
+
+      if (oldV != input[i][1]) {
+        changes.push([input[i][0], prop, oldV, input[i][2]]);
+      }
     }
 
     if (!changeSource && _typeof(row) === 'object') {
       changeSource = column;
     }
 
-    instance.runHooks('afterSetDataAtCell', changes, changeSource);
-    validateChanges(changes, changeSource, function () {
+    if (changes.length > 0) {
+      instance.runHooks('afterSetDataAtCell', changes, changeSource);
       applyChanges(changes, changeSource);
-    });
+    }
   };
   /**
    * @description
