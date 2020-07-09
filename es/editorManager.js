@@ -10,13 +10,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { CellCoords } from './3rdparty/walkontable/src';
-import { KEY_CODES, isMetaKey, isCtrlMetaKey } from './helpers/unicode';
-import { stopPropagation, stopImmediatePropagation, isImmediatePropagationStopped } from './helpers/dom/event';
-import { getEditorInstance } from './editors';
-import EventManager from './eventManager';
-import { EditorState } from './editors/_baseEditor';
-import { getParentWindow } from './helpers/dom/element';
+import { CellCoords } from "./3rdparty/walkontable/src";
+import { KEY_CODES, isMetaKey, isCtrlMetaKey } from "./helpers/unicode";
+import { stopPropagation, stopImmediatePropagation, isImmediatePropagationStopped } from "./helpers/dom/event";
+import { getEditorInstance } from "./editors";
+import EventManager from "./eventManager";
+import { EditorState } from "./editors/_baseEditor";
+import { getParentWindow } from "./helpers/dom/element";
 
 var EditorManager =
 /*#__PURE__*/
@@ -93,27 +93,27 @@ function () {
      */
 
     this.cellProperties = void 0;
-    this.instance.addHook('afterDocumentKeyDown', function (event) {
+    this.instance.addHook("afterDocumentKeyDown", function (event) {
       return _this.onAfterDocumentKeyDown(event);
     });
     var frame = this.instance.rootWindow;
 
     while (frame) {
-      this.eventManager.addEventListener(frame.document.documentElement, 'keydown', function (event) {
+      this.eventManager.addEventListener(frame.document.documentElement, "keydown", function (event) {
         if (!_this.destroyed) {
-          _this.instance.runHooks('afterDocumentKeyDown', event);
+          _this.instance.runHooks("afterDocumentKeyDown", event);
         }
       });
       frame = getParentWindow(frame);
     } // Open editor when text composition is started (IME editor)
 
 
-    this.eventManager.addEventListener(this.instance.rootDocument.documentElement, 'compositionstart', function (event) {
+    this.eventManager.addEventListener(this.instance.rootDocument.documentElement, "compositionstart", function (event) {
       if (!_this.destroyed && _this.activeEditor && !_this.activeEditor.isOpened() && _this.instance.isListening()) {
-        _this.openEditor('', event);
+        _this.openEditor("", event);
       }
     });
-    this.instance.view.wt.update('onCellDblClick', function (event, coords, elem) {
+    this.instance.view.wt.update("onCellDblClick", function (event, coords, elem) {
       return _this.onCellDblClick(event, coords, elem);
     });
   }
@@ -147,7 +147,7 @@ function () {
   }, {
     key: "destroyEditor",
     value: function destroyEditor(revertOriginal) {
-      if (!this.lock) {
+      if (!this.lock && this.activeEditor && this.activeEditor._opened) {
         this.closeEditor(revertOriginal);
       }
     }
@@ -293,7 +293,7 @@ function () {
   }, {
     key: "moveSelectionAfterEnter",
     value: function moveSelectionAfterEnter(isShiftPressed) {
-      var enterMoves = typeof this.priv.settings.enterMoves === 'function' ? this.priv.settings.enterMoves(event) : this.priv.settings.enterMoves;
+      var enterMoves = typeof this.priv.settings.enterMoves === "function" ? this.priv.settings.enterMoves(event) : this.priv.settings.enterMoves;
 
       if (isShiftPressed) {
         // move selection up
@@ -382,7 +382,7 @@ function () {
         return;
       }
 
-      this.instance.runHooks('beforeKeyDown', event); // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
+      this.instance.runHooks("beforeKeyDown", event); // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
       // character is entering (using IME editor). It is fired mainly on linux (ubuntu) with installed ibus-pinyin package.
 
       if (this.destroyed || event.keyCode === 229) {
@@ -404,7 +404,7 @@ function () {
 
       if (this.activeEditor && !this.activeEditor.isWaiting()) {
         if (!isMetaKey(event.keyCode) && !isCtrlMetaKey(event.keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
-          this.openEditor('', event);
+          this.openEditor("", event);
           return;
         }
       }
@@ -464,7 +464,7 @@ function () {
           break;
 
         case KEY_CODES.TAB:
-          tabMoves = typeof this.priv.settings.tabMoves === 'function' ? this.priv.settings.tabMoves(event) : this.priv.settings.tabMoves;
+          tabMoves = typeof this.priv.settings.tabMoves === "function" ? this.priv.settings.tabMoves(event) : this.priv.settings.tabMoves;
 
           if (isShiftPressed) {
             // move selection left
@@ -585,7 +585,7 @@ function () {
     key: "onCellDblClick",
     value: function onCellDblClick(event, coords, elem) {
       // may be TD or TH
-      if (elem.nodeName === 'TD') {
+      if (elem.nodeName === "TD") {
         if (this.activeEditor) {
           this.activeEditor.enableFullEditMode();
         }
