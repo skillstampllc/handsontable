@@ -1376,7 +1376,7 @@ function Core(rootElement, userSettings) {
 
       var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
 
-      if (oldV != input[i][1]) {
+      if (oldV != input[i][2]) {
         changes.push([input[i][0], prop, oldV, input[i][2]]);
       }
     }
