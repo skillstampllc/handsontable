@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 14/07/2020 15:34:17)
+ * Release date: 19/02/2020 (built at 14/07/2020 15:55:24)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -996,7 +996,7 @@ var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(39));
 
 var _browser = __webpack_require__(79);
 
-var _feature = __webpack_require__(88);
+var _feature = __webpack_require__(89);
 
 /**
  * Get the parent of the specified node in the DOM tree.
@@ -2576,7 +2576,7 @@ addToUnscopables('entries');
 
 var $ = __webpack_require__(19);
 var $indexOf = __webpack_require__(161).indexOf;
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 var arrayMethodUsesToLength = __webpack_require__(63);
 
 var nativeIndexOf = [].indexOf;
@@ -3739,7 +3739,7 @@ var _element = __webpack_require__(8);
 
 var _object = __webpack_require__(4);
 
-var _feature = __webpack_require__(88);
+var _feature = __webpack_require__(89);
 
 var _event = __webpack_require__(33);
 
@@ -4544,7 +4544,7 @@ module.exports = function (name) {
 
 var $ = __webpack_require__(19);
 var toAbsoluteIndex = __webpack_require__(138);
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 var toLength = __webpack_require__(50);
 var toObject = __webpack_require__(62);
 var arraySpeciesCreate = __webpack_require__(171);
@@ -4701,7 +4701,7 @@ var fixRegExpWellKnownSymbolLogic = __webpack_require__(146);
 var anObject = __webpack_require__(47);
 var toObject = __webpack_require__(62);
 var toLength = __webpack_require__(50);
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 var requireObjectCoercible = __webpack_require__(56);
 var advanceStringIndex = __webpack_require__(176);
 var regExpExec = __webpack_require__(147);
@@ -4871,7 +4871,7 @@ exports.__esModule = true;
 exports.getRenderer = _getItem;
 exports.getRegisteredRenderers = exports.getRegisteredRendererNames = exports.hasRenderer = exports.registerRenderer = void 0;
 
-var _staticRegister2 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister2 = _interopRequireDefault(__webpack_require__(87));
 
 var _cellDecorator = _interopRequireDefault(__webpack_require__(478));
 
@@ -7117,7 +7117,7 @@ module.exports = function (it, key) {
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 
 var min = Math.min;
 
@@ -7404,7 +7404,7 @@ exports.f = DESCRIPTORS ? nativeDefineProperty : function defineProperty(O, P, A
 var $ = __webpack_require__(19);
 var IndexedObject = __webpack_require__(107);
 var toIndexedObject = __webpack_require__(65);
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 
 var nativeJoin = [].join;
 
@@ -7740,7 +7740,7 @@ exports.registerEditor = _register;
 exports.getEditor = _getItem;
 exports.getRegisteredEditors = exports.getRegisteredEditorNames = exports.hasEditor = void 0;
 
-var _staticRegister2 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister2 = _interopRequireDefault(__webpack_require__(87));
 
 var _pluginHooks = _interopRequireDefault(__webpack_require__(48));
 
@@ -12926,7 +12926,7 @@ for (var COLLECTION_NAME in DOMIterables) {
 
 var $ = __webpack_require__(19);
 var $some = __webpack_require__(83).some;
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 var arrayMethodUsesToLength = __webpack_require__(63);
 
 var STRICT_METHOD = arrayMethodIsStrict('some');
@@ -13825,6 +13825,91 @@ function stripTags(string) {
 
 /***/ }),
 /* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var DESCRIPTORS = __webpack_require__(46);
+var global = __webpack_require__(31);
+var isForced = __webpack_require__(111);
+var redefine = __webpack_require__(72);
+var has = __webpack_require__(49);
+var classof = __webpack_require__(76);
+var inheritIfRequired = __webpack_require__(170);
+var toPrimitive = __webpack_require__(108);
+var fails = __webpack_require__(27);
+var create = __webpack_require__(113);
+var getOwnPropertyNames = __webpack_require__(110).f;
+var getOwnPropertyDescriptor = __webpack_require__(81).f;
+var defineProperty = __webpack_require__(54).f;
+var trim = __webpack_require__(223).trim;
+
+var NUMBER = 'Number';
+var NativeNumber = global[NUMBER];
+var NumberPrototype = NativeNumber.prototype;
+
+// Opera ~12 has broken Object#toString
+var BROKEN_CLASSOF = classof(create(NumberPrototype)) == NUMBER;
+
+// `ToNumber` abstract operation
+// https://tc39.github.io/ecma262/#sec-tonumber
+var toNumber = function (argument) {
+  var it = toPrimitive(argument, false);
+  var first, third, radix, maxCode, digits, length, index, code;
+  if (typeof it == 'string' && it.length > 2) {
+    it = trim(it);
+    first = it.charCodeAt(0);
+    if (first === 43 || first === 45) {
+      third = it.charCodeAt(2);
+      if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
+    } else if (first === 48) {
+      switch (it.charCodeAt(1)) {
+        case 66: case 98: radix = 2; maxCode = 49; break; // fast equal of /^0b[01]+$/i
+        case 79: case 111: radix = 8; maxCode = 55; break; // fast equal of /^0o[0-7]+$/i
+        default: return +it;
+      }
+      digits = it.slice(2);
+      length = digits.length;
+      for (index = 0; index < length; index++) {
+        code = digits.charCodeAt(index);
+        // parseInt parses a string to a first unavailable symbol
+        // but ToNumber should return NaN if a string contains unavailable symbols
+        if (code < 48 || code > maxCode) return NaN;
+      } return parseInt(digits, radix);
+    }
+  } return +it;
+};
+
+// `Number` constructor
+// https://tc39.github.io/ecma262/#sec-number-constructor
+if (isForced(NUMBER, !NativeNumber(' 0o1') || !NativeNumber('0b1') || NativeNumber('+0x1'))) {
+  var NumberWrapper = function Number(value) {
+    var it = arguments.length < 1 ? 0 : value;
+    var dummy = this;
+    return dummy instanceof NumberWrapper
+      // check on 1..constructor(foo) case
+      && (BROKEN_CLASSOF ? fails(function () { NumberPrototype.valueOf.call(dummy); }) : classof(dummy) != NUMBER)
+        ? inheritIfRequired(new NativeNumber(toNumber(it)), dummy, NumberWrapper) : toNumber(it);
+  };
+  for (var keys = DESCRIPTORS ? getOwnPropertyNames(NativeNumber) : (
+    // ES3:
+    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
+    // ES2015 (in case, if modules with ES2015 Number statics required before):
+    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
+    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
+  ).split(','), j = 0, key; keys.length > j; j++) {
+    if (has(NativeNumber, key = keys[j]) && !has(NumberWrapper, key)) {
+      defineProperty(NumberWrapper, key, getOwnPropertyDescriptor(NativeNumber, key));
+    }
+  }
+  NumberWrapper.prototype = NumberPrototype;
+  NumberPrototype.constructor = NumberWrapper;
+  redefine(global, NUMBER, NumberWrapper);
+}
+
+
+/***/ }),
+/* 86 */
 /***/ (function(module, exports) {
 
 var ceil = Math.ceil;
@@ -13838,7 +13923,7 @@ module.exports = function (argument) {
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13936,7 +14021,7 @@ function staticRegister() {
 }
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13953,7 +14038,7 @@ module.exports = function (METHOD_NAME, argument) {
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14161,7 +14246,7 @@ function isPassiveEventSupported() {
 }
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14170,7 +14255,7 @@ var $ = __webpack_require__(19);
 var aFunction = __webpack_require__(100);
 var toObject = __webpack_require__(62);
 var fails = __webpack_require__(27);
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 
 var test = [];
 var nativeSort = test.sort;
@@ -14200,7 +14285,7 @@ $({ target: 'Array', proto: true, forced: FORCED }, {
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14212,7 +14297,7 @@ exports.__esModule = true;
 exports.getValidator = _getItem;
 exports.getRegisteredValidators = exports.getRegisteredValidatorNames = exports.hasValidator = exports.registerValidator = void 0;
 
-var _staticRegister2 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister2 = _interopRequireDefault(__webpack_require__(87));
 
 var _autocompleteValidator = _interopRequireDefault(__webpack_require__(494));
 
@@ -14255,91 +14340,6 @@ function _getItem(name) {
 
   return getItem(name);
 }
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var DESCRIPTORS = __webpack_require__(46);
-var global = __webpack_require__(31);
-var isForced = __webpack_require__(111);
-var redefine = __webpack_require__(72);
-var has = __webpack_require__(49);
-var classof = __webpack_require__(76);
-var inheritIfRequired = __webpack_require__(170);
-var toPrimitive = __webpack_require__(108);
-var fails = __webpack_require__(27);
-var create = __webpack_require__(113);
-var getOwnPropertyNames = __webpack_require__(110).f;
-var getOwnPropertyDescriptor = __webpack_require__(81).f;
-var defineProperty = __webpack_require__(54).f;
-var trim = __webpack_require__(223).trim;
-
-var NUMBER = 'Number';
-var NativeNumber = global[NUMBER];
-var NumberPrototype = NativeNumber.prototype;
-
-// Opera ~12 has broken Object#toString
-var BROKEN_CLASSOF = classof(create(NumberPrototype)) == NUMBER;
-
-// `ToNumber` abstract operation
-// https://tc39.github.io/ecma262/#sec-tonumber
-var toNumber = function (argument) {
-  var it = toPrimitive(argument, false);
-  var first, third, radix, maxCode, digits, length, index, code;
-  if (typeof it == 'string' && it.length > 2) {
-    it = trim(it);
-    first = it.charCodeAt(0);
-    if (first === 43 || first === 45) {
-      third = it.charCodeAt(2);
-      if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
-    } else if (first === 48) {
-      switch (it.charCodeAt(1)) {
-        case 66: case 98: radix = 2; maxCode = 49; break; // fast equal of /^0b[01]+$/i
-        case 79: case 111: radix = 8; maxCode = 55; break; // fast equal of /^0o[0-7]+$/i
-        default: return +it;
-      }
-      digits = it.slice(2);
-      length = digits.length;
-      for (index = 0; index < length; index++) {
-        code = digits.charCodeAt(index);
-        // parseInt parses a string to a first unavailable symbol
-        // but ToNumber should return NaN if a string contains unavailable symbols
-        if (code < 48 || code > maxCode) return NaN;
-      } return parseInt(digits, radix);
-    }
-  } return +it;
-};
-
-// `Number` constructor
-// https://tc39.github.io/ecma262/#sec-number-constructor
-if (isForced(NUMBER, !NativeNumber(' 0o1') || !NativeNumber('0b1') || NativeNumber('+0x1'))) {
-  var NumberWrapper = function Number(value) {
-    var it = arguments.length < 1 ? 0 : value;
-    var dummy = this;
-    return dummy instanceof NumberWrapper
-      // check on 1..constructor(foo) case
-      && (BROKEN_CLASSOF ? fails(function () { NumberPrototype.valueOf.call(dummy); }) : classof(dummy) != NUMBER)
-        ? inheritIfRequired(new NativeNumber(toNumber(it)), dummy, NumberWrapper) : toNumber(it);
-  };
-  for (var keys = DESCRIPTORS ? getOwnPropertyNames(NativeNumber) : (
-    // ES3:
-    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
-    // ES2015 (in case, if modules with ES2015 Number statics required before):
-    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
-    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
-  ).split(','), j = 0, key; keys.length > j; j++) {
-    if (has(NativeNumber, key = keys[j]) && !has(NumberWrapper, key)) {
-      defineProperty(NumberWrapper, key, getOwnPropertyDescriptor(NativeNumber, key));
-    }
-  }
-  NumberWrapper.prototype = NumberPrototype;
-  NumberPrototype.constructor = NumberWrapper;
-  redefine(global, NUMBER, NumberWrapper);
-}
-
 
 /***/ }),
 /* 92 */
@@ -16907,7 +16907,7 @@ hiddenKeys[HIDDEN] = true;
 
 var $ = __webpack_require__(19);
 var $every = __webpack_require__(83).every;
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 var arrayMethodUsesToLength = __webpack_require__(63);
 
 var STRICT_METHOD = arrayMethodIsStrict('every');
@@ -19148,7 +19148,7 @@ __webpack_require__(14);
 
 __webpack_require__(13);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 __webpack_require__(9);
 
@@ -19166,7 +19166,7 @@ exports.toEmptyString = toEmptyString;
 exports.unifyColumnValues = unifyColumnValues;
 exports.intersectValues = intersectValues;
 
-var _feature = __webpack_require__(88);
+var _feature = __webpack_require__(89);
 
 var _array = __webpack_require__(3);
 
@@ -35602,7 +35602,7 @@ module.exports = function (key) {
 /* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 
 var max = Math.max;
 var min = Math.min;
@@ -36429,7 +36429,7 @@ var _object = __webpack_require__(4);
 
 var _utils = __webpack_require__(401);
 
-var _staticRegister2 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister2 = _interopRequireDefault(__webpack_require__(87));
 
 var _enUS = _interopRequireDefault(__webpack_require__(521));
 
@@ -36678,7 +36678,7 @@ __webpack_require__(13);
 
 __webpack_require__(70);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 __webpack_require__(9);
 
@@ -37380,7 +37380,7 @@ module.exports = String(test) === '[object z]';
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 var requireObjectCoercible = __webpack_require__(56);
 
 // `String.prototype.{ codePointAt, at }` methods implementation
@@ -37921,13 +37921,13 @@ exports.registerCellType = _register;
 exports.getCellType = _getItem;
 exports.getRegisteredCellTypes = exports.getRegisteredCellTypeNames = exports.hasCellType = void 0;
 
-var _staticRegister2 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister2 = _interopRequireDefault(__webpack_require__(87));
 
 var _editors = __webpack_require__(61);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var _autocompleteType = _interopRequireDefault(__webpack_require__(499));
 
@@ -39399,7 +39399,7 @@ __webpack_require__(13);
 
 __webpack_require__(128);
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
@@ -44462,7 +44462,7 @@ $({ target: 'String', proto: true, forced: WEBKIT_BUG }, {
 
 "use strict";
 
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 var requireObjectCoercible = __webpack_require__(56);
 
 // `String.prototype.repeat` method implementation
@@ -45584,7 +45584,7 @@ var _element = __webpack_require__(8);
 
 var _function = __webpack_require__(66);
 
-var _feature = __webpack_require__(88);
+var _feature = __webpack_require__(89);
 
 var _browser = __webpack_require__(79);
 
@@ -46610,7 +46610,7 @@ exports.default = _default;
 "use strict";
 
 var $forEach = __webpack_require__(83).forEach;
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 var arrayMethodUsesToLength = __webpack_require__(63);
 
 var STRICT_METHOD = arrayMethodIsStrict('forEach');
@@ -48812,7 +48812,7 @@ __webpack_require__(14);
 
 __webpack_require__(13);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 __webpack_require__(9);
 
@@ -49841,11 +49841,11 @@ __webpack_require__(51);
 
 __webpack_require__(14);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 __webpack_require__(37);
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
@@ -49898,7 +49898,7 @@ var _plugins = __webpack_require__(21);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var _string = __webpack_require__(84);
 
@@ -54084,7 +54084,7 @@ addToUnscopables(FIND_INDEX);
 
 var $ = __webpack_require__(19);
 var $reduce = __webpack_require__(514).left;
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 var arrayMethodUsesToLength = __webpack_require__(63);
 
 var STRICT_METHOD = arrayMethodIsStrict('reduce');
@@ -58659,11 +58659,11 @@ __webpack_require__(128);
 
 __webpack_require__(34);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 __webpack_require__(57);
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
@@ -59664,7 +59664,7 @@ var _numeric = __webpack_require__(550);
 
 var _date = __webpack_require__(551);
 
-var _staticRegister3 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister3 = _interopRequireDefault(__webpack_require__(87));
 
 var _staticRegister = (0, _staticRegister3.default)('sorting.compareFunctionFactory'),
     registerCompareFunctionFactory = _staticRegister.register,
@@ -62381,7 +62381,7 @@ var _editors = __webpack_require__(61);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var _cellTypes = __webpack_require__(183);
 
@@ -62407,7 +62407,7 @@ var dataHelpers = _interopRequireWildcard(__webpack_require__(151));
 
 var dateHelpers = _interopRequireWildcard(__webpack_require__(382));
 
-var featureHelpers = _interopRequireWildcard(__webpack_require__(88));
+var featureHelpers = _interopRequireWildcard(__webpack_require__(89));
 
 var functionHelpers = _interopRequireWildcard(__webpack_require__(66));
 
@@ -62461,7 +62461,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "14/07/2020 15:34:17";
+Handsontable.buildDate = "14/07/2020 15:55:24";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -70570,7 +70570,7 @@ var _editors = __webpack_require__(61);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var CELL_TYPE = 'autocomplete';
 var _default = {
@@ -70615,7 +70615,7 @@ var _editors = __webpack_require__(61);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var CELL_TYPE = 'date';
 var _default = {
@@ -70640,7 +70640,7 @@ var _editors = __webpack_require__(61);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var CELL_TYPE = 'dropdown';
 var _default = {
@@ -70687,7 +70687,7 @@ var _editors = __webpack_require__(61);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var CELL_TYPE = 'numeric';
 var _default = {
@@ -70755,7 +70755,7 @@ var _editors = __webpack_require__(61);
 
 var _renderers = __webpack_require__(44);
 
-var _validators = __webpack_require__(90);
+var _validators = __webpack_require__(91);
 
 var CELL_TYPE = 'time';
 var _default = {
@@ -70819,7 +70819,7 @@ __webpack_require__(13);
 
 __webpack_require__(34);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 __webpack_require__(37);
 
@@ -72518,9 +72518,9 @@ $({ target: 'Array', proto: true, forced: lastIndexOf !== [].lastIndexOf }, {
 "use strict";
 
 var toIndexedObject = __webpack_require__(65);
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 var toLength = __webpack_require__(50);
-var arrayMethodIsStrict = __webpack_require__(87);
+var arrayMethodIsStrict = __webpack_require__(88);
 var arrayMethodUsesToLength = __webpack_require__(63);
 
 var min = Math.min;
@@ -72594,22 +72594,24 @@ module.exports = {
 
 /***/ }),
 /* 515 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isFloat", function() { return isFloat; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isInt", function() { return isInt; });
-function isFloat(n){
 
-	return Number(n) == n && n % 1 !== 0;
+
+__webpack_require__(85);
+
+exports.__esModule = true;
+exports.isFloat = isFloat;
+exports.isInt = isInt;
+
+function isFloat(n) {
+  return Number(n) == n && n % 1 !== 0;
 }
 
-function isInt(n){
-
-	return Number(n) == n && n % 1 === 0;
+function isInt(n) {
+  return Number(n) == n && n % 1 === 0;
 }
-
 
 /***/ }),
 /* 516 */
@@ -74502,7 +74504,7 @@ exports.__esModule = true;
 exports.registerPhraseFormatter = exports.register = register;
 exports.getPhraseFormatters = exports.getAll = getAll;
 
-var _staticRegister2 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister2 = _interopRequireDefault(__webpack_require__(87));
 
 var _pluralize = _interopRequireDefault(__webpack_require__(523));
 
@@ -74540,7 +74542,7 @@ register('pluralize', _pluralize.default);
 "use strict";
 
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
@@ -74577,7 +74579,7 @@ var _interopRequireDefault = __webpack_require__(0);
 exports.__esModule = true;
 exports.createHighlight = createHighlight;
 
-var _staticRegister2 = _interopRequireDefault(__webpack_require__(86));
+var _staticRegister2 = _interopRequireDefault(__webpack_require__(87));
 
 var _activeHeader = _interopRequireDefault(__webpack_require__(525));
 
@@ -74818,7 +74820,7 @@ __webpack_require__(13);
 
 __webpack_require__(70);
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
@@ -76526,7 +76528,7 @@ var _base = _interopRequireDefault(__webpack_require__(22));
 
 var _array = __webpack_require__(3);
 
-var _feature = __webpack_require__(88);
+var _feature = __webpack_require__(89);
 
 var _ghostTable = _interopRequireDefault(__webpack_require__(190));
 
@@ -78812,7 +78814,7 @@ var _base = _interopRequireDefault(__webpack_require__(22));
 
 var _array = __webpack_require__(3);
 
-var _feature = __webpack_require__(88);
+var _feature = __webpack_require__(89);
 
 var _element = __webpack_require__(8);
 
@@ -91951,7 +91953,7 @@ var _interopRequireDefault = __webpack_require__(0);
 
 __webpack_require__(17);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 exports.__esModule = true;
 exports.default = void 0;
@@ -94210,7 +94212,7 @@ var _base = _interopRequireDefault(__webpack_require__(22));
 
 var _plugins = __webpack_require__(21);
 
-var _feature = __webpack_require__(88);
+var _feature = __webpack_require__(89);
 
 /**
  * @private
@@ -94458,7 +94460,7 @@ __webpack_require__(387);
 
 __webpack_require__(34);
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 __webpack_require__(37);
 
@@ -97540,7 +97542,7 @@ exports.default = _default;
 "use strict";
 
 var $ = __webpack_require__(19);
-var toInteger = __webpack_require__(85);
+var toInteger = __webpack_require__(86);
 var thisNumberValue = __webpack_require__(629);
 var repeat = __webpack_require__(238);
 var fails = __webpack_require__(27);
@@ -112648,7 +112650,7 @@ __webpack_require__(55);
 
 __webpack_require__(37);
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
@@ -113657,7 +113659,7 @@ __webpack_require__(55);
 
 __webpack_require__(37);
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
@@ -114672,7 +114674,7 @@ __webpack_require__(29);
 
 __webpack_require__(13);
 
-__webpack_require__(91);
+__webpack_require__(85);
 
 __webpack_require__(92);
 
