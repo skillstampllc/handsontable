@@ -29,11 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
-<<<<<<< HEAD
- * Release date: 19/02/2020 (built at 15/07/2020 11:54:43)
-=======
- * Release date: 19/02/2020 (built at 15/07/2020 11:40:04)
->>>>>>> headless
+ * Release date: 19/02/2020 (built at 15/07/2020 11:57:35)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -62504,11 +62500,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-<<<<<<< HEAD
-Handsontable.buildDate = "15/07/2020 11:54:43";
-=======
-Handsontable.buildDate = "15/07/2020 11:40:04";
->>>>>>> headless
+Handsontable.buildDate = "15/07/2020 11:57:35";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module

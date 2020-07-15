@@ -52,11 +52,7 @@ Handsontable._getListenersCounter = getListenersCounter; // For MemoryLeak tests
 Handsontable._getRegisteredMapsCounter = getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-<<<<<<< HEAD
-Handsontable.buildDate = "15/07/2020 11:54:25";
-=======
-Handsontable.buildDate = "15/07/2020 11:39:52";
->>>>>>> headless
+Handsontable.buildDate = "15/07/2020 11:57:13";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = Hooks.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
