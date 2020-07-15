@@ -1,6 +1,6 @@
-import { arrayEach } from '../../helpers/array';
-import { rangeEach } from '../../helpers/number';
-import { hasOwnProperty } from '../../helpers/object';
+import { arrayEach } from "../../helpers/array";
+import { rangeEach } from "../../helpers/number";
+import { hasOwnProperty } from "../../helpers/object";
 
 /**
  * Data class provider responsible for providing a set of range data types, necessary for calculating formulas.
@@ -54,7 +54,12 @@ class DataProvider {
    * @returns {Boolean}
    */
   isInDataRange(visualRow, visualColumn) {
-    return visualRow >= 0 && visualRow < this.hot.countRows() && visualColumn >= 0 && visualColumn < this.hot.countCols();
+    return (
+      visualRow >= 0 &&
+      visualRow < this.hot.countRows() &&
+      visualColumn >= 0 &&
+      visualColumn < this.hot.countPhysicalCols()
+    );
   }
 
   /**
@@ -65,7 +70,10 @@ class DataProvider {
    * @returns {*}
    */
   getDataAtCell(visualRow, visualColumn) {
-    const id = this._coordId(this.hot.toPhysicalRow(visualRow), this.hot.toPhysicalColumn(visualColumn));
+    const id = this._coordId(
+      this.hot.toPhysicalRow(visualRow),
+      this.hot.toPhysicalColumn(visualColumn)
+    );
     let result;
 
     if (hasOwnProperty(this.changes, id)) {
@@ -87,11 +95,19 @@ class DataProvider {
    * @returns {Array}
    */
   getDataByRange(visualRow1, visualColumn1, visualRow2, visualColumn2) {
-    const result = this.hot.getData(visualRow1, visualColumn1, visualRow2, visualColumn2);
+    const result = this.hot.getData(
+      visualRow1,
+      visualColumn1,
+      visualRow2,
+      visualColumn2
+    );
 
     arrayEach(result, (rowData, rowIndex) => {
       arrayEach(rowData, (value, columnIndex) => {
-        const id = this._coordId(this.hot.toPhysicalRow(rowIndex + visualRow1), this.hot.toPhysicalColumn(columnIndex + visualColumn1));
+        const id = this._coordId(
+          this.hot.toPhysicalRow(rowIndex + visualRow1),
+          this.hot.toPhysicalColumn(columnIndex + visualColumn1)
+        );
 
         if (hasOwnProperty(this.changes, id)) {
           result[rowIndex][columnIndex] = this.changes[id];
@@ -131,8 +147,18 @@ class DataProvider {
    * @param {Number} [physicalColumn2] Physical column index.
    * @returns {Array}
    */
-  getSourceDataByRange(physicalRow1, physicalColumn1, physicalRow2, physicalColumn2) {
-    return this.hot.getSourceDataArray(physicalRow1, physicalColumn1, physicalRow2, physicalColumn2);
+  getSourceDataByRange(
+    physicalRow1,
+    physicalColumn1,
+    physicalRow2,
+    physicalColumn2
+  ) {
+    return this.hot.getSourceDataArray(
+      physicalRow1,
+      physicalColumn1,
+      physicalRow2,
+      physicalColumn2
+    );
   }
 
   /**
@@ -143,7 +169,10 @@ class DataProvider {
    * @returns {*}
    */
   getRawDataAtCell(visualRow, visualColumn) {
-    return this.getSourceDataAtCell(this.hot.toPhysicalRow(visualRow), this.hot.toPhysicalColumn(visualColumn));
+    return this.getSourceDataAtCell(
+      this.hot.toPhysicalRow(visualRow),
+      this.hot.toPhysicalColumn(visualColumn)
+    );
   }
 
   /**
@@ -162,7 +191,10 @@ class DataProvider {
       const row = [];
 
       rangeEach(visualColumn1, visualColumn2, (visualColumn) => {
-        const [physicalRow, physicalColumn] = [this.hot.toPhysicalRow(visualRow), this.hot.toPhysicalColumn(visualColumn)];
+        const [physicalRow, physicalColumn] = [
+          this.hot.toPhysicalRow(visualRow),
+          this.hot.toPhysicalColumn(visualColumn),
+        ];
         const id = this._coordId(physicalRow, physicalColumn);
 
         if (hasOwnProperty(this.changes, id)) {
@@ -186,7 +218,9 @@ class DataProvider {
    * @param {*} value Value to update.
    */
   updateSourceData(physicalRow, physicalColumn, value) {
-    this.hot.getSourceData()[physicalRow][this.hot.colToProp(physicalColumn)] = value;
+    this.hot.getSourceData()[physicalRow][
+      this.hot.colToProp(physicalColumn)
+    ] = value;
   }
 
   /**

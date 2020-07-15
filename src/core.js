@@ -3528,6 +3528,50 @@ export default function Core(
 
     return Math.min(maxCols, dataLen);
   };
+  
+  /**
+   * Returns the total number of physical columns in the table.
+   *
+   * @memberof Core#
+   * @function countCols
+   * @returns {Number} Total number of columns.
+   */
+  this.countPhysicalCols = function () {
+    const maxCols = this.getSettings().maxCols;
+    let dataLen = this.columnIndexMapper.getNotSkippedIndexesLength();
+
+    if (priv.settings.columns) {
+      const columnsIsFunction = isFunction(priv.settings.columns);
+
+      if (columnsIsFunction) {
+        if (instance.dataType === "array") {
+          let columnLen = 0;
+
+          for (let i = 0; i < dataLen; i++) {
+            if (priv.settings.columns(i)) {
+              columnLen += 1;
+            }
+          }
+
+          dataLen = columnLen;
+        } else if (
+          instance.dataType === "object" ||
+          instance.dataType === "function"
+        ) {
+          dataLen = datamap.colToPropCache.length;
+        }
+      } else {
+        dataLen = priv.settings.columns.length;
+      }
+    } else if (
+      instance.dataType === "object" ||
+      instance.dataType === "function"
+    ) {
+      dataLen = datamap.colToPropCache.length;
+    }
+
+    return Math.max(maxCols, dataLen);
+  };
 
   /**
    * Returns an visual index of the first rendered row.
