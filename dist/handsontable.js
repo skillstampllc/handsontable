@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 15/07/2020 11:40:04)
+ * Release date: 19/02/2020 (built at 15/07/2020 11:54:43)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -32308,6 +32308,45 @@ function Core(rootElement, userSettings) {
     return Math.min(maxCols, dataLen);
   };
   /**
+   * Returns the total number of physical columns in the table.
+   *
+   * @memberof Core#
+   * @function countCols
+   * @returns {Number} Total number of columns.
+   */
+
+
+  this.countPhysicalCols = function () {
+    var maxCols = this.getSettings().maxCols;
+    var dataLen = this.columnIndexMapper.getNotSkippedIndexesLength();
+
+    if (priv.settings.columns) {
+      var columnsIsFunction = (0, _function.isFunction)(priv.settings.columns);
+
+      if (columnsIsFunction) {
+        if (instance.dataType === "array") {
+          var columnLen = 0;
+
+          for (var i = 0; i < dataLen; i++) {
+            if (priv.settings.columns(i)) {
+              columnLen += 1;
+            }
+          }
+
+          dataLen = columnLen;
+        } else if (instance.dataType === "object" || instance.dataType === "function") {
+          dataLen = datamap.colToPropCache.length;
+        }
+      } else {
+        dataLen = priv.settings.columns.length;
+      }
+    } else if (instance.dataType === "object" || instance.dataType === "function") {
+      dataLen = datamap.colToPropCache.length;
+    }
+
+    return Math.max(maxCols, dataLen);
+  };
+  /**
    * Returns an visual index of the first rendered row.
    * Returns -1 if no row is rendered.
    *
@@ -41591,7 +41630,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "15/07/2020 11:40:04";
+Handsontable.buildDate = "15/07/2020 11:54:43";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -84108,7 +84147,7 @@ function () {
   }, {
     key: "isInDataRange",
     value: function isInDataRange(visualRow, visualColumn) {
-      return visualRow >= 0 && visualRow < this.hot.countRows() && visualColumn >= 0 && visualColumn < this.hot.countCols();
+      return visualRow >= 0 && visualRow < this.hot.countRows() && visualColumn >= 0 && visualColumn < this.hot.countPhysicalCols();
     }
     /**
      * Get calculated data at specified cell.

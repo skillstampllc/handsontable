@@ -6,9 +6,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { arrayEach } from '../../helpers/array';
-import { rangeEach } from '../../helpers/number';
-import { hasOwnProperty } from '../../helpers/object';
+import { arrayEach } from "../../helpers/array";
+import { rangeEach } from "../../helpers/number";
+import { hasOwnProperty } from "../../helpers/object";
 /**
  * Data class provider responsible for providing a set of range data types, necessary for calculating formulas.
  * Those methods strongly using hot.getData and hot.getSourceData methods with some changes. Data provider additionally
@@ -74,7 +74,7 @@ function () {
   }, {
     key: "isInDataRange",
     value: function isInDataRange(visualRow, visualColumn) {
-      return visualRow >= 0 && visualRow < this.hot.countRows() && visualColumn >= 0 && visualColumn < this.hot.countCols();
+      return visualRow >= 0 && visualRow < this.hot.countRows() && visualColumn >= 0 && visualColumn < this.hot.countPhysicalCols();
     }
     /**
      * Get calculated data at specified cell.
