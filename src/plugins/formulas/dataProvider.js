@@ -56,7 +56,7 @@ class DataProvider {
   isInDataRange(visualRow, visualColumn) {
     return (
       visualRow >= 0 &&
-      visualRow < this.hot.countRows() &&
+      visualRow < this.hot.countPhysicalRows() &&
       visualColumn >= 0 &&
       visualColumn < this.hot.countPhysicalCols()
     );
