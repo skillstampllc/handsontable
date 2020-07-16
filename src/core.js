@@ -3493,7 +3493,7 @@ export default function Core(
    * @returns {Number} Total number of rows.
    */
   this.countPhysicalRows = function () {
-    return datamap.dataSource.length();
+    return datamap.dataSource.length;
   };
 
   /**

@@ -3285,7 +3285,7 @@ export default function Core(rootElement, userSettings) {
 
 
   this.countPhysicalRows = function () {
-    return datamap.dataSource.length();
+    return datamap.dataSource.length;
   };
   /**
    * Returns the total number of visible columns in the table.

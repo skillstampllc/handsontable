@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 16/07/2020 15:36:13)
+ * Release date: 19/02/2020 (built at 16/07/2020 15:55:33)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -53148,7 +53148,7 @@ function Core(rootElement, userSettings) {
 
 
   this.countPhysicalRows = function () {
-    return datamap.dataSource.length();
+    return datamap.dataSource.length;
   };
   /**
    * Returns the total number of visible columns in the table.
@@ -62512,7 +62512,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "16/07/2020 15:36:13";
+Handsontable.buildDate = "16/07/2020 15:55:33";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
