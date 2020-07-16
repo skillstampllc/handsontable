@@ -81,7 +81,7 @@ function () {
   }, {
     key: "isInDataRange",
     value: function isInDataRange(visualRow, visualColumn) {
-      return visualRow >= 0 && visualRow < this.hot.countRows() && visualColumn >= 0 && visualColumn < this.hot.countPhysicalCols();
+      return visualRow >= 0 && visualRow < this.hot.countPhysicalRows() && visualColumn >= 0 && visualColumn < this.hot.countPhysicalCols();
     }
     /**
      * Get calculated data at specified cell.

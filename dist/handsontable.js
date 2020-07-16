@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 15/07/2020 11:57:35)
+ * Release date: 19/02/2020 (built at 16/07/2020 15:36:13)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -32269,6 +32269,18 @@ function Core(rootElement, userSettings) {
     return datamap.getLength();
   };
   /**
+   * Returns the total number of visual rows in the table.
+   *
+   * @memberof Core#
+   * @function countPhysicalRows
+   * @returns {Number} Total number of rows.
+   */
+
+
+  this.countPhysicalRows = function () {
+    return datamap.dataSource.length();
+  };
+  /**
    * Returns the total number of visible columns in the table.
    *
    * @memberof Core#
@@ -41630,7 +41642,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "15/07/2020 11:57:35";
+Handsontable.buildDate = "16/07/2020 15:36:13";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -84147,7 +84159,7 @@ function () {
   }, {
     key: "isInDataRange",
     value: function isInDataRange(visualRow, visualColumn) {
-      return visualRow >= 0 && visualRow < this.hot.countRows() && visualColumn >= 0 && visualColumn < this.hot.countPhysicalCols();
+      return visualRow >= 0 && visualRow < this.hot.countPhysicalRows() && visualColumn >= 0 && visualColumn < this.hot.countPhysicalCols();
     }
     /**
      * Get calculated data at specified cell.

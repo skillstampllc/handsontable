@@ -3276,6 +3276,18 @@ export default function Core(rootElement, userSettings) {
     return datamap.getLength();
   };
   /**
+   * Returns the total number of visual rows in the table.
+   *
+   * @memberof Core#
+   * @function countPhysicalRows
+   * @returns {Number} Total number of rows.
+   */
+
+
+  this.countPhysicalRows = function () {
+    return datamap.dataSource.length();
+  };
+  /**
    * Returns the total number of visible columns in the table.
    *
    * @memberof Core#
