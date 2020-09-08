@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 08/09/2020 11:30:43)
+ * Release date: 19/02/2020 (built at 08/09/2020 11:48:55)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -67466,7 +67466,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "08/09/2020 11:30:43";
+Handsontable.buildDate = "08/09/2020 11:48:55";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -110285,9 +110285,7 @@ function toNumber(number) {
       result = 1;
     } else if (number.toLowerCase() === 'false') {
       result = 0;
-    }
-
-    if (number.trim() === '') {
+    } else if (number.trim() === '') {
       result = 0;
     } else {
       result = number.indexOf('.') > -1 ? parseFloat(number) : parseInt(number, 10);
@@ -110308,6 +110306,7 @@ function toNumber(number) {
 function invertNumber(number) {
   return -1 * toNumber(number);
 }
+
 
 /***/ }),
 /* 681 */
