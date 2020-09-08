@@ -420,7 +420,7 @@ class Sheet {
       done(result);
     } else {
       this._parsedCells[arguments[0].label] = toNumber(cellValue);
-      done(cellValue);
+      done(toNumber(cellValue));
     }
   }
 
