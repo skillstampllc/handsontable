@@ -1287,7 +1287,7 @@ export default function Core(
       }
 
       if (priv.settings.allowInsertRow) {
-        while (changes[i][0] > instance.countRows() - 1) {
+        while (changes[i][0] > instance.countSourceRows() - 1) {
           const numberOfCreatedRows = datamap.createRow(void 0, void 0, source);
 
           if (numberOfCreatedRows === 0) {
@@ -1302,7 +1302,10 @@ export default function Core(
         (!priv.settings.columns || priv.settings.columns.length === 0) &&
         priv.settings.allowInsertColumn
       ) {
-        while (datamap.propToCol(changes[i][1]) > instance.countCols() - 1) {
+        while (
+          datamap.propToCol(changes[i][1]) >
+          instance.countSourceCols() - 1
+        ) {
           const numberOfCreatedColumns = datamap.createCol(
             void 0,
             void 0,
