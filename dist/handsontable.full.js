@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 31/08/2020 11:48:55)
+ * Release date: 19/02/2020 (built at 08/09/2020 10:25:56)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -20099,13 +20099,21 @@ exports.invertNumber = invertNumber;
 function toNumber(number) {
   var result = void 0;
 
-  if (typeof number === "number") {
+  if (typeof number === 'boolean') {
+    result = number ? 1 : 0;
+  } else if (typeof number === 'number') {
     result = number;
-  } else if (typeof number === "string") {
-    if (number.trim() === "") {
+  } else if (typeof number === 'string') {
+    if (number.toLowerCase() === 'true') {
+      result = 1;
+    } else if (number.toLowerCase() === 'false') {
+      result = 0;
+    }
+
+    if (number.trim() === '') {
       result = 0;
     } else {
-      result = number.indexOf(".") > -1 ? parseFloat(number) : parseInt(number, 10);
+      result = number.indexOf('.') > -1 ? parseFloat(number) : parseInt(number, 10);
     }
   } else if (number === null || number === undefined) {
     result = 0;
@@ -36642,7 +36650,7 @@ function func(first) {
 
     var result = rest.reduce(function (acc, value) {
       return new _decimal2['default'](acc).plus(new _decimal2['default'](value)).toNumber();
-    }, first);
+    }, (0, _number.toNumber)(first));
 
     if (isNaN(result)) {
       throw Error(_error.ERROR_VALUE);
@@ -39012,7 +39020,7 @@ function func(first) {
 
     var result = rest.reduce(function (acc, value) {
       return new _decimal2['default'](acc).minus(new _decimal2['default'](value)).toNumber();
-    }, first);
+    }, (0, _number.toNumber)(first));
 
     if (isNaN(result)) {
       throw Error(_error.ERROR_VALUE);
@@ -39057,7 +39065,7 @@ function func(first) {
 
     var result = rest.reduce(function (acc, value) {
       return new _decimal2['default'](acc).mul(new _decimal2['default'](value)).toNumber();
-    }, first);
+    }, (0, _number.toNumber)(first));
 
     if (isNaN(result)) {
       throw Error(_error.ERROR_VALUE);
@@ -67458,7 +67466,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "31/08/2020 11:48:55";
+Handsontable.buildDate = "08/09/2020 10:25:56";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
