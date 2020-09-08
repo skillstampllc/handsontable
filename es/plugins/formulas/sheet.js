@@ -26,6 +26,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import { Parser, ERROR_REF, error as isFormulaError } from "hot-formula-parser";
+import { toNumber } from "hot-formula-parser/es/helper/number";
 import { arrayEach, arrayMap } from "../../helpers/array";
 import localHooks from "../../mixins/localHooks";
 import { mixin } from "../../helpers/object";
@@ -693,7 +694,7 @@ function () {
         this._parsedCells[arguments[0].label] = result;
         done(result);
       } else {
-        this._parsedCells[arguments[0].label] = cellValue;
+        this._parsedCells[arguments[0].label] = toNumber(cellValue);
         done(cellValue);
       }
     }

@@ -37,6 +37,8 @@ require("regenerator-runtime/runtime");
 
 var _hotFormulaParser = require("hot-formula-parser");
 
+var _number = require("hot-formula-parser/es/helper/number");
+
 var _array = require("../../helpers/array");
 
 var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
@@ -724,7 +726,7 @@ function () {
         this._parsedCells[arguments[0].label] = result;
         done(result);
       } else {
-        this._parsedCells[arguments[0].label] = cellValue;
+        this._parsedCells[arguments[0].label] = (0, _number.toNumber)(cellValue);
         done(cellValue);
       }
     }
