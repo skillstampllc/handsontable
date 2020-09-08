@@ -727,7 +727,7 @@ function () {
         done(result);
       } else {
         this._parsedCells[arguments[0].label] = (0, _number.toNumber)(cellValue);
-        done(cellValue);
+        done((0, _number.toNumber)(cellValue));
       }
     }
     /**

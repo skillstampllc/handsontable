@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 08/09/2020 11:48:55)
+ * Release date: 19/02/2020 (built at 08/09/2020 14:53:22)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -20108,9 +20108,7 @@ function toNumber(number) {
       result = 1;
     } else if (number.toLowerCase() === 'false') {
       result = 0;
-    }
-
-    if (number.trim() === '') {
+    } else if (number.trim() === '') {
       result = 0;
     } else {
       result = number.indexOf('.') > -1 ? parseFloat(number) : parseInt(number, 10);
@@ -55978,7 +55976,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (priv.settings.allowInsertRow) {
-        while (changes[i][0] > instance.countRows() - 1) {
+        while (changes[i][0] > instance.countSourceRows() - 1) {
           var numberOfCreatedRows = datamap.createRow(void 0, void 0, source);
 
           if (numberOfCreatedRows === 0) {
@@ -55989,7 +55987,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (instance.dataType === "array" && (!priv.settings.columns || priv.settings.columns.length === 0) && priv.settings.allowInsertColumn) {
-        while (datamap.propToCol(changes[i][1]) > instance.countCols() - 1) {
+        while (datamap.propToCol(changes[i][1]) > instance.countSourceCols() - 1) {
           var numberOfCreatedColumns = datamap.createCol(void 0, void 0, source);
 
           if (numberOfCreatedColumns === 0) {
@@ -67466,7 +67464,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "08/09/2020 11:48:55";
+Handsontable.buildDate = "08/09/2020 14:53:22";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -109577,7 +109575,7 @@ function () {
         done(result);
       } else {
         this._parsedCells[arguments[0].label] = (0, _number.toNumber)(cellValue);
-        done(cellValue);
+        done((0, _number.toNumber)(cellValue));
       }
     }
     /**
@@ -110306,7 +110304,6 @@ function toNumber(number) {
 function invertNumber(number) {
   return -1 * toNumber(number);
 }
-
 
 /***/ }),
 /* 681 */
