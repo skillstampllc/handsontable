@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 7.4.2
- * Release date: 19/02/2020 (built at 09/09/2020 10:28:04)
+ * Release date: 19/02/2020 (built at 09/09/2020 12:36:18)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -30331,8 +30331,8 @@ function Core(rootElement, userSettings) {
     }
 
     if (changes.length > 0) {
-      instance.runHooks("afterSetDataAtCell", changes, changeSource);
       applyChanges(changes, changeSource);
+      instance.runHooks("afterSetDataAtCell", changes, changeSource);
     }
   };
   /**
@@ -30364,10 +30364,10 @@ function Core(rootElement, userSettings) {
       changeSource = prop;
     }
 
-    instance.runHooks("afterSetDataAtRowProp", changes, changeSource);
     validateChanges(changes, changeSource, function () {
       applyChanges(changes, changeSource);
     });
+    instance.runHooks("afterSetDataAtRowProp", changes, changeSource);
   };
   /**
    * Listen to the keyboard input on document body. This allows Handsontable to capture keyboard events and respond
@@ -41642,7 +41642,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "09/09/2020 10:28:04";
+Handsontable.buildDate = "09/09/2020 12:36:18";
 Handsontable.version = "7.4.2"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module

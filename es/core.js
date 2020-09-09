@@ -1338,8 +1338,8 @@ export default function Core(rootElement, userSettings) {
     }
 
     if (changes.length > 0) {
-      instance.runHooks("afterSetDataAtCell", changes, changeSource);
       applyChanges(changes, changeSource);
+      instance.runHooks("afterSetDataAtCell", changes, changeSource);
     }
   };
   /**
@@ -1371,10 +1371,10 @@ export default function Core(rootElement, userSettings) {
       changeSource = prop;
     }
 
-    instance.runHooks("afterSetDataAtRowProp", changes, changeSource);
     validateChanges(changes, changeSource, function () {
       applyChanges(changes, changeSource);
     });
+    instance.runHooks("afterSetDataAtRowProp", changes, changeSource);
   };
   /**
    * Listen to the keyboard input on document body. This allows Handsontable to capture keyboard events and respond
