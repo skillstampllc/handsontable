@@ -1495,9 +1495,8 @@ export default function Core(
     }
 
     if (changes.length > 0) {
-      instance.runHooks("afterSetDataAtCell", changes, changeSource);
-
       applyChanges(changes, changeSource);
+      instance.runHooks("afterSetDataAtCell", changes, changeSource);
     }
   };
 
@@ -1533,11 +1532,10 @@ export default function Core(
       changeSource = prop;
     }
 
-    instance.runHooks("afterSetDataAtRowProp", changes, changeSource);
-
     validateChanges(changes, changeSource, () => {
       applyChanges(changes, changeSource);
     });
+    instance.runHooks("afterSetDataAtRowProp", changes, changeSource);
   };
 
   /**
