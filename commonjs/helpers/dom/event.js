@@ -9,12 +9,10 @@ exports.pageY = pageY;
 exports.isRightClick = isRightClick;
 exports.isLeftClick = isLeftClick;
 
-var _element = require("./element");
-
 /**
  * Prevent other listeners of the same event from being called.
  *
- * @param {Event} event
+ * @param {Event} event The mouse event object.
  */
 function stopImmediatePropagation(event) {
   event.isImmediatePropagationEnabled = false;
@@ -23,8 +21,8 @@ function stopImmediatePropagation(event) {
 /**
  * Check if event was stopped by `stopImmediatePropagation`.
  *
- * @param event {Event}
- * @returns {Boolean}
+ * @param {Event} event The mouse event object.
+ * @returns {boolean}
  */
 
 
@@ -61,7 +59,7 @@ function pageX(event) {
   }
 
   var rootWindow = event.target.ownerDocument.defaultView;
-  return event.clientX + (0, _element.getWindowScrollLeft)(rootWindow);
+  return event.clientX + getWindowScrollLeft(rootWindow);
 }
 /**
  * Get vertical coordinate of the event object relative to the whole document.
@@ -77,12 +75,12 @@ function pageY(event) {
   }
 
   var frame = event.target.ownerDocument.defaultView;
-  var offset = (0, _element.getWindowScrollTop)(frame);
-  frame = (0, _element.getParentWindow)(frame);
+  var offset = getWindowScrollTop(frame);
+  frame = getParentWindow(frame);
 
   while (frame) {
-    offset -= (0, _element.getWindowScrollTop)(frame);
-    frame = (0, _element.getParentWindow)(frame);
+    offset -= getWindowScrollTop(frame);
+    frame = getParentWindow(frame);
   }
 
   return event.clientY + offset;
@@ -90,8 +88,8 @@ function pageY(event) {
 /**
  * Check if provided event was triggered by clicking the right mouse button.
  *
- * @param {Event} event DOM Event.
- * @returns {Boolean}
+ * @param {Event} event The mouse event object.
+ * @returns {boolean}
  */
 
 
@@ -101,8 +99,8 @@ function isRightClick(event) {
 /**
  * Check if provided event was triggered by clicking the left mouse button.
  *
- * @param {Event} event DOM Event.
- * @returns {Boolean}
+ * @param {Event} event The mouse event object.
+ * @returns {boolean}
  */
 
 

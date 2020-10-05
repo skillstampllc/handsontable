@@ -20,9 +20,7 @@ var UNIT = 'px';
  * @private
  */
 
-var BaseUI =
-/*#__PURE__*/
-function () {
+var BaseUI = /*#__PURE__*/function () {
   function BaseUI(hotInstance) {
     _classCallCheck(this, BaseUI);
 
@@ -43,7 +41,7 @@ function () {
     /**
      * Flag which determines build state of element.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.state = STATE_INITIALIZED;
@@ -92,7 +90,7 @@ function () {
     /**
      * Check if UI element are appended.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -103,7 +101,7 @@ function () {
     /**
      * Check if UI element are built.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -114,8 +112,8 @@ function () {
     /**
      * Setter for position.
      *
-     * @param {Number} top New top position of the element.
-     * @param {Number} left New left position of the element.
+     * @param {number} top New top position of the element.
+     * @param {number} left New left position of the element.
      */
 
   }, {
@@ -132,7 +130,7 @@ function () {
     /**
      * Getter for the element position.
      *
-     * @returns {Object} Object contains left and top position of the element.
+     * @returns {object} Object contains left and top position of the element.
      */
 
   }, {
@@ -146,8 +144,8 @@ function () {
     /**
      * Setter for the element size.
      *
-     * @param {Number} width New width of the element.
-     * @param {Number} height New height of the element.
+     * @param {number} width New width of the element.
+     * @param {number} height New height of the element.
      */
 
   }, {
@@ -164,7 +162,7 @@ function () {
     /**
      * Getter for the element position.
      *
-     * @returns {Object} Object contains height and width of the element.
+     * @returns {object} Object contains height and width of the element.
      */
 
   }, {
@@ -178,8 +176,8 @@ function () {
     /**
      * Setter for the element offset. Offset means marginTop and marginLeft of the element.
      *
-     * @param {Number} top New margin top of the element.
-     * @param {Number} left New margin left of the element.
+     * @param {number} top New margin top of the element.
+     * @param {number} left New margin left of the element.
      */
 
   }, {
@@ -196,7 +194,7 @@ function () {
     /**
      * Getter for the element offset.
      *
-     * @returns {Object} Object contains top and left offset of the element.
+     * @returns {object} Object contains top and left offset of the element.
      */
 
   }, {

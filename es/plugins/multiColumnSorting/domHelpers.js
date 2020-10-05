@@ -9,9 +9,9 @@ var COLUMN_ORDER_PREFIX = 'sort';
 /**
  * Get CSS classes which should be added to particular column header.
  *
- * @param {Object} columnStatesManager Instance of column state manager.
- * @param {Number} column Physical column index.
- * @param {Boolean} showSortIndicator Indicates if indicator should be shown for the particular column.
+ * @param {object} columnStatesManager Instance of column state manager.
+ * @param {number} column Physical column index.
+ * @param {boolean} showSortIndicator Indicates if indicator should be shown for the particular column.
  * @returns {Array} Array of CSS classes.
  */
 
@@ -31,7 +31,7 @@ export function getClassesToAdd(columnStatesManager, column, showSortIndicator) 
 /**
  * Get CSS classes which should be removed from column header.
  *
- * @param {HTMLElement} htmlElement
+ * @param {HTMLElement} htmlElement An element to process.
  * @returns {Array} Array of CSS classes.
  */
 

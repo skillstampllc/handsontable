@@ -17,9 +17,7 @@ import { hasOwnProperty } from './../../helpers/object';
  * @plugin ContextMenu
  */
 
-var CommandExecutor =
-/*#__PURE__*/
-function () {
+var CommandExecutor = /*#__PURE__*/function () {
   function CommandExecutor(hotInstance) {
     _classCallCheck(this, CommandExecutor);
 
@@ -30,8 +28,8 @@ function () {
   /**
    * Register command.
    *
-   * @param {String} name Command name.
-   * @param {Object} commandDescriptor Command descriptor object with properties like `key` (command id),
+   * @param {string} name Command name.
+   * @param {object} commandDescriptor Command descriptor object with properties like `key` (command id),
    *                                   `callback` (task to execute), `name` (command name), `disabled` (command availability).
    */
 
@@ -55,7 +53,7 @@ function () {
     /**
      * Execute command by its name.
      *
-     * @param {String} commandName Command id.
+     * @param {string} commandName Command id.
      * @param {*} params Arguments passed to command task.
      */
 
@@ -112,6 +110,12 @@ function () {
 
   return CommandExecutor;
 }();
+/**
+ * @param {string} subCommandName The subcommand name.
+ * @param {string[]} subCommands The collection of the commands.
+ * @returns {boolean}
+ */
+
 
 function findSubCommand(subCommandName, subCommands) {
   var command;

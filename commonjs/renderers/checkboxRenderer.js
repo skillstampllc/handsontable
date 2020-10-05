@@ -1,7 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.concat");
-
 require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.iterator");
@@ -43,26 +41,21 @@ var isListeningKeyDownEvent = new WeakMap();
 var isCheckboxListenerAdded = new WeakMap();
 var BAD_VALUE_CLASS = 'htBadValue';
 /**
- * Checkbox renderer
+ * Checkbox renderer.
  *
  * @private
- * @param {Object} instance Handsontable instance
- * @param {Element} TD Table cell where to render
- * @param {Number} row
- * @param {Number} col
- * @param {String|Number} prop Row object property name
- * @param value Value to render (remember to escape unsafe HTML before inserting to DOM!)
- * @param {Object} cellProperties Cell properties (shared by cell renderer and editor)
+ * @param {Core} instance The Handsontable instance.
+ * @param {HTMLTableCellElement} TD The rendered cell element.
+ * @param {number} row The visual row index.
+ * @param {number} col The visual column index.
+ * @param {number|string} prop The column property (passed when datasource is an array of objects).
+ * @param {*} value The rendered value.
+ * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
 function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
   var rootDocument = instance.rootDocument;
-
-  for (var _len = arguments.length, args = new Array(_len > 7 ? _len - 7 : 0), _key = 7; _key < _len; _key++) {
-    args[_key - 7] = arguments[_key];
-  }
-
-  (0, _index.getRenderer)('base').apply(this, [instance, TD, row, col, prop, value, cellProperties].concat(args));
+  (0, _index.getRenderer)('base').apply(this, [instance, TD, row, col, prop, value, cellProperties]);
   registerEvents(instance);
   var input = createInput(rootDocument);
   var labelOptions = cellProperties.label;
@@ -129,7 +122,7 @@ function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
    * On before key down DOM listener.
    *
    * @private
-   * @param {Event} event
+   * @param {Event} event The keyboard event object.
    */
 
 
@@ -158,106 +151,112 @@ function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
     }
   }
   /**
-   * Change checkbox checked property
+   * Change checkbox checked property.
    *
    * @private
-   * @param {Boolean} [uncheckCheckbox=false]
+   * @param {boolean} [uncheckCheckbox=false] The new "checked" state for the checkbox elements.
    */
 
 
   function changeSelectedCheckboxesState() {
     var uncheckCheckbox = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-    var selRange = instance.getSelectedRangeLast();
+    var selRange = instance.getSelectedRange();
 
     if (!selRange) {
       return;
     }
 
-    var _selRange$getTopLeftC = selRange.getTopLeftCorner(),
-        startRow = _selRange$getTopLeftC.row,
-        startColumn = _selRange$getTopLeftC.col;
+    for (var key = 0; key < selRange.length; key++) {
+      var _selRange$key$getTopL = selRange[key].getTopLeftCorner(),
+          startRow = _selRange$key$getTopL.row,
+          startColumn = _selRange$key$getTopL.col;
 
-    var _selRange$getBottomRi = selRange.getBottomRightCorner(),
-        endRow = _selRange$getBottomRi.row,
-        endColumn = _selRange$getBottomRi.col;
+      var _selRange$key$getBott = selRange[key].getBottomRightCorner(),
+          endRow = _selRange$key$getBott.row,
+          endColumn = _selRange$key$getBott.col;
 
-    var changes = [];
+      var changes = [];
 
-    for (var visualRow = startRow; visualRow <= endRow; visualRow += 1) {
-      for (var visualColumn = startColumn; visualColumn <= endColumn; visualColumn += 1) {
-        var cachedCellProperties = instance.getCellMeta(visualRow, visualColumn);
+      for (var visualRow = startRow; visualRow <= endRow; visualRow += 1) {
+        for (var visualColumn = startColumn; visualColumn <= endColumn; visualColumn += 1) {
+          var cachedCellProperties = instance.getCellMeta(visualRow, visualColumn);
 
-        if (cachedCellProperties.type !== 'checkbox') {
-          return;
-        }
-        /* eslint-disable no-continue */
-
-
-        if (cachedCellProperties.readOnly === true) {
-          continue;
-        }
-
-        if (typeof cachedCellProperties.checkedTemplate === 'undefined') {
-          cachedCellProperties.checkedTemplate = true;
-        }
-
-        if (typeof cachedCellProperties.uncheckedTemplate === 'undefined') {
-          cachedCellProperties.uncheckedTemplate = false;
-        }
-
-        var dataAtCell = instance.getDataAtCell(visualRow, visualColumn);
-
-        if (uncheckCheckbox === false) {
-          if ([cachedCellProperties.checkedTemplate, cachedCellProperties.checkedTemplate.toString()].includes(dataAtCell)) {
-            changes.push([visualRow, visualColumn, cachedCellProperties.uncheckedTemplate]);
-          } else if ([cachedCellProperties.uncheckedTemplate, cachedCellProperties.uncheckedTemplate.toString(), null, void 0].includes(dataAtCell)) {
-            changes.push([visualRow, visualColumn, cachedCellProperties.checkedTemplate]);
+          if (cachedCellProperties.type !== 'checkbox') {
+            return;
           }
-        } else {
-          changes.push([visualRow, visualColumn, cachedCellProperties.uncheckedTemplate]);
+          /* eslint-disable no-continue */
+
+
+          if (cachedCellProperties.readOnly === true) {
+            continue;
+          }
+
+          if (typeof cachedCellProperties.checkedTemplate === 'undefined') {
+            cachedCellProperties.checkedTemplate = true;
+          }
+
+          if (typeof cachedCellProperties.uncheckedTemplate === 'undefined') {
+            cachedCellProperties.uncheckedTemplate = false;
+          }
+
+          var dataAtCell = instance.getDataAtCell(visualRow, visualColumn);
+
+          if (uncheckCheckbox === false) {
+            if ([cachedCellProperties.checkedTemplate, cachedCellProperties.checkedTemplate.toString()].includes(dataAtCell)) {
+              // eslint-disable-line max-len
+              changes.push([visualRow, visualColumn, cachedCellProperties.uncheckedTemplate]);
+            } else if ([cachedCellProperties.uncheckedTemplate, cachedCellProperties.uncheckedTemplate.toString(), null, void 0].includes(dataAtCell)) {
+              // eslint-disable-line max-len
+              changes.push([visualRow, visualColumn, cachedCellProperties.checkedTemplate]);
+            }
+          } else {
+            changes.push([visualRow, visualColumn, cachedCellProperties.uncheckedTemplate]);
+          }
         }
       }
-    }
 
-    if (changes.length > 0) {
-      instance.setDataAtCell(changes);
+      if (changes.length > 0) {
+        instance.setDataAtCell(changes);
+      }
     }
   }
   /**
    * Call callback for each found selected cell with checkbox type.
    *
    * @private
-   * @param {Function} callback
+   * @param {Function} callback The callback function.
    */
 
 
   function eachSelectedCheckboxCell(callback) {
-    var selRange = instance.getSelectedRangeLast();
+    var selRange = instance.getSelectedRange();
 
     if (!selRange) {
       return;
     }
 
-    var topLeft = selRange.getTopLeftCorner();
-    var bottomRight = selRange.getBottomRightCorner();
+    for (var key = 0; key < selRange.length; key++) {
+      var topLeft = selRange[key].getTopLeftCorner();
+      var bottomRight = selRange[key].getBottomRightCorner();
 
-    for (var visualRow = topLeft.row; visualRow <= bottomRight.row; visualRow++) {
-      for (var visualColumn = topLeft.col; visualColumn <= bottomRight.col; visualColumn++) {
-        var cachedCellProperties = instance.getCellMeta(visualRow, visualColumn);
+      for (var visualRow = topLeft.row; visualRow <= bottomRight.row; visualRow++) {
+        for (var visualColumn = topLeft.col; visualColumn <= bottomRight.col; visualColumn++) {
+          var cachedCellProperties = instance.getCellMeta(visualRow, visualColumn);
 
-        if (cachedCellProperties.type !== 'checkbox') {
-          return;
-        }
+          if (cachedCellProperties.type !== 'checkbox') {
+            return;
+          }
 
-        var cell = instance.getCell(visualRow, visualColumn);
+          var cell = instance.getCell(visualRow, visualColumn);
 
-        if (cell === null || cell === void 0) {
-          callback(visualRow, visualColumn, cachedCellProperties);
-        } else {
-          var checkboxes = cell.querySelectorAll('input[type=checkbox]');
+          if (cell === null || cell === void 0) {
+            callback(visualRow, visualColumn, cachedCellProperties);
+          } else {
+            var checkboxes = cell.querySelectorAll('input[type=checkbox]');
 
-          if (checkboxes.length > 0 && !cachedCellProperties.readOnly) {
-            callback(checkboxes);
+            if (checkboxes.length > 0 && !cachedCellProperties.readOnly) {
+              callback(checkboxes);
+            }
           }
         }
       }
@@ -267,7 +266,7 @@ function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
 /**
  * Register checkbox listeners.
  *
- * @param {Handsontable} instance Handsontable instance.
+ * @param {Core} instance The Handsontable instance.
  * @returns {EventManager}
  */
 
@@ -295,7 +294,7 @@ function registerEvents(instance) {
 /**
  * Create input element.
  *
- * @param {Document} rootDocument
+ * @param {Document} rootDocument The document owner.
  * @returns {Node}
  */
 
@@ -311,8 +310,8 @@ function createInput(rootDocument) {
 /**
  * Create label element.
  *
- * @param {Document} rootDocument
- * @param {String} text
+ * @param {Document} rootDocument The document owner.
+ * @param {string} text The label text.
  * @returns {Node}
  */
 
@@ -328,7 +327,7 @@ function createLabel(rootDocument, text) {
  *
  * @private
  * @param {Event} event `mouseup` event.
- * @param {Object} instance Handsontable instance.
+ * @param {Core} instance The Handsontable instance.
  */
 
 
@@ -344,7 +343,8 @@ function onMouseUp(event, instance) {
  *
  * @private
  * @param {Event} event `click` event.
- * @param {Object} instance Handsontable instance.
+ * @param {Core} instance The Handsontable instance.
+ * @returns {boolean|undefined}
  */
 
 
@@ -365,9 +365,8 @@ function onClick(event, instance) {
  * `change` callback.
  *
  * @param {Event} event `change` event.
- * @param {Object} instance Handsontable instance.
- * @param {Object} cellProperties Reference to cell properties.
- * @returns {Boolean}
+ * @param {Core} instance The Handsontable instance.
+ * @returns {boolean}
  */
 
 
@@ -397,7 +396,7 @@ function onChange(event, instance) {
  *
  * @private
  * @param {HTMLElement} element The element in question.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 

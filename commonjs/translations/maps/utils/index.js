@@ -18,21 +18,21 @@ var _actionsOnIndexes = require("./actionsOnIndexes");
 exports.getDecreasedIndexes = _actionsOnIndexes.getDecreasedIndexes;
 exports.getIncreasedIndexes = _actionsOnIndexes.getIncreasedIndexes;
 
-var _visuallyIndexed = require("./visuallyIndexed");
+var _indexesSequence = require("./indexesSequence");
 
 var _physicallyIndexed = require("./physicallyIndexed");
 
-var alterStrategies = new Map([['visually', {
-  getListWithInsertedItems: _visuallyIndexed.getListWithInsertedItems,
-  getListWithRemovedItems: _visuallyIndexed.getListWithRemovedItems
-}], ['physically', {
+var alterStrategies = new Map([['indexesSequence', {
+  getListWithInsertedItems: _indexesSequence.getListWithInsertedItems,
+  getListWithRemovedItems: _indexesSequence.getListWithRemovedItems
+}], ['physicallyIndexed', {
   getListWithInsertedItems: _physicallyIndexed.getListWithInsertedItems,
   getListWithRemovedItems: _physicallyIndexed.getListWithRemovedItems
 }]]);
 
 var alterUtilsFactory = function alterUtilsFactory(indexationStrategy) {
   if (alterStrategies.has(indexationStrategy) === false) {
-    throw new Error("Alter strategy for '".concat(indexationStrategy, "' indexed map does not exist."));
+    throw new Error("Alter strategy with ID '".concat(indexationStrategy, "' does not exist."));
   }
 
   return alterStrategies.get(indexationStrategy);

@@ -2,6 +2,10 @@ import { checkSelectionConsistency, markLabelAsSelected } from './../utils';
 import { arrayEach } from './../../../helpers/array';
 import * as C from './../../../i18n/constants';
 export var KEY = 'make_read_only';
+/**
+ * @returns {object}
+ */
+
 export default function readOnlyItem() {
   return {
     key: KEY,
@@ -28,13 +32,27 @@ export default function readOnlyItem() {
       });
       arrayEach(ranges, function (range) {
         range.forAll(function (row, col) {
-          _this2.setCellMeta(row, col, 'readOnly', !atLeastOneReadOnly);
+          if (row >= 0 && col >= 0) {
+            _this2.setCellMeta(row, col, 'readOnly', !atLeastOneReadOnly);
+          }
         });
       });
       this.render();
     },
     disabled: function disabled() {
-      return !(this.getSelectedRange() && !this.selection.isSelectedByCorner());
+      if (this.selection.isSelectedByCorner()) {
+        return true;
+      }
+
+      if (this.countRows() === 0 || this.countCols() === 0) {
+        return true;
+      }
+
+      if (!this.getSelectedRange() || this.getSelectedRange().length === 0) {
+        return true;
+      }
+
+      return false;
     }
   };
 }

@@ -6,6 +6,10 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.for-each");
+
+require("core-js/modules/es.array.includes");
+
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.object.to-string");
@@ -14,9 +18,13 @@ require("core-js/modules/es.regexp.exec");
 
 require("core-js/modules/es.regexp.to-string");
 
+require("core-js/modules/es.string.includes");
+
 require("core-js/modules/es.string.iterator");
 
 require("core-js/modules/es.string.split");
+
+require("core-js/modules/web.dom-collections.for-each");
 
 require("core-js/modules/web.dom-collections.iterator");
 
@@ -33,6 +41,7 @@ exports.isObject = isObject;
 exports.defineGetter = defineGetter;
 exports.objectEach = objectEach;
 exports.getProperty = getProperty;
+exports.setProperty = setProperty;
 exports.deepObjectSize = deepObjectSize;
 exports.createObjectPropListener = createObjectPropListener;
 exports.hasOwnProperty = hasOwnProperty;
@@ -46,8 +55,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 /**
  * Generate schema for passed object.
  *
- * @param {Array|Object} object
- * @returns {Array|Object}
+ * @param {Array|object} object An object to analyze.
+ * @returns {Array|object}
  */
 function duckSchema(object) {
   var schema;
@@ -80,11 +89,11 @@ function duckSchema(object) {
 /**
  * Inherit without without calling parent constructor, and setting `Child.prototype.constructor` to `Child` instead of `Parent`.
  * Creates temporary dummy function to call it as constructor.
- * Described in ticket: https://github.com/handsontable/handsontable/pull/516
+ * Described in ticket: https://github.com/handsontable/handsontable/pull/516.
  *
- * @param  {Object} Child  child class
- * @param  {Object} Parent parent class
- * @return {Object}        extended Child
+ * @param {object} Child The child class.
+ * @param {object} Parent The parent class.
+ * @returns {object}
  */
 
 
@@ -97,22 +106,27 @@ function inherit(Child, Parent) {
 /**
  * Perform shallow extend of a target object with extension's own properties.
  *
- * @param {Object} target An object that will receive the new properties.
- * @param {Object} extension An object containing additional properties to merge into the target.
+ * @param {object} target An object that will receive the new properties.
+ * @param {object} extension An object containing additional properties to merge into the target.
+ * @param {string[]} [writableKeys] An array of keys that are writable to target object.
+ * @returns {object}
  */
 
 
-function extend(target, extension) {
+function extend(target, extension, writableKeys) {
+  var hasWritableKeys = Array.isArray(writableKeys);
   objectEach(extension, function (value, key) {
-    target[key] = value;
+    if (hasWritableKeys === false || writableKeys.includes(key)) {
+      target[key] = value;
+    }
   });
   return target;
 }
 /**
  * Perform deep extend of a target object with extension's own properties.
  *
- * @param {Object} target An object that will receive the new properties.
- * @param {Object} extension An object containing additional properties to merge into the target.
+ * @param {object} target An object that will receive the new properties.
+ * @param {object} extension An object containing additional properties to merge into the target.
  */
 
 
@@ -139,8 +153,8 @@ function deepExtend(target, extension) {
  * Perform deep clone of an object.
  * WARNING! Only clones JSON properties. Will cause error when `obj` contains a function, Date, etc.
  *
- * @param {Object} obj An object that will be cloned
- * @return {Object}
+ * @param {object} obj An object that will be cloned.
+ * @returns {object}
  */
 
 
@@ -154,8 +168,8 @@ function deepClone(obj) {
 /**
  * Shallow clone object.
  *
- * @param {Object} object
- * @returns {Object}
+ * @param {object} object An object to clone.
+ * @returns {object}
  */
 
 
@@ -169,9 +183,9 @@ function clone(object) {
 /**
  * Extend the Base object (usually prototype) of the functionality the `mixins` objects.
  *
- * @param {Object} Base Base object which will be extended.
- * @param {Object} mixins The object of the functionality will be "copied".
- * @returns {Object}
+ * @param {object} Base Base object which will be extended.
+ * @param {object} mixins The object of the functionality will be "copied".
+ * @returns {object}
  */
 
 
@@ -234,11 +248,11 @@ function mixin(Base) {
   return Base;
 }
 /**
- * Checks if two objects or arrays are (deep) equal
+ * Checks if two objects or arrays are (deep) equal.
  *
- * @param {Object|Array} object1
- * @param {Object|Array} object2
- * @returns {Boolean}
+ * @param {object|Array} object1 The first object to compare.
+ * @param {object|Array} object2 The second object to compare.
+ * @returns {boolean}
  */
 
 
@@ -247,15 +261,23 @@ function isObjectEqual(object1, object2) {
 }
 /**
  * Determines whether given object is a plain Object.
- * Note: String and Array are not plain Objects
- * @param {*} obj
+ * Note: String and Array are not plain Objects.
+ *
+ * @param {*} object An object to check.
  * @returns {boolean}
  */
 
 
-function isObject(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]';
+function isObject(object) {
+  return Object.prototype.toString.call(object) === '[object Object]';
 }
+/**
+ * @param {object} object The object on which to define the property.
+ * @param {string} property The name of the property to be defined or modified.
+ * @param {*} value The value associated with the property.
+ * @param {object} options The descriptor for the property being defined or modified.
+ */
+
 
 function defineGetter(object, property, value, options) {
   options.value = value;
@@ -267,9 +289,9 @@ function defineGetter(object, property, value, options) {
 /**
  * A specialized version of `.forEach` for objects.
  *
- * @param {Object} object The object to iterate over.
+ * @param {object} object The object to iterate over.
  * @param {Function} iteratee The function invoked per iteration.
- * @returns {Object} Returns `object`.
+ * @returns {object} Returns `object`.
  */
 
 
@@ -288,8 +310,8 @@ function objectEach(object, iteratee) {
 /**
  * Get object property by its name. Access to sub properties can be achieved by dot notation (e.q. `'foo.bar.baz'`).
  *
- * @param {Object} object Object which value will be exported.
- * @param {String} name Object property name.
+ * @param {object} object Object which value will be exported.
+ * @param {string} name Object property name.
  * @returns {*}
  */
 
@@ -308,10 +330,34 @@ function getProperty(object, name) {
   return result;
 }
 /**
+ * Set a property value on the provided object. Works on nested object prop names as well (e.g. `first.name`).
+ *
+ * @param {object} object Object to work on.
+ * @param {string} name Prop name.
+ * @param {*} value Value to be assigned at the provided property.
+ */
+
+
+function setProperty(object, name, value) {
+  var names = name.split('.');
+  var workingObject = object;
+  names.forEach(function (propName, index) {
+    if (index !== names.length - 1) {
+      if (!hasOwnProperty(workingObject, propName)) {
+        workingObject[propName] = {};
+      }
+
+      workingObject = workingObject[propName];
+    } else {
+      workingObject[propName] = value;
+    }
+  });
+}
+/**
  * Return object length (recursively).
  *
  * @param {*} object Object for which we want get length.
- * @returns {Number}
+ * @returns {number}
  */
 
 
@@ -324,8 +370,12 @@ function deepObjectSize(object) {
     var result = 0;
 
     if (isObject(obj)) {
-      objectEach(obj, function (key) {
-        result += recursObjLen(key);
+      objectEach(obj, function (value, key) {
+        if (key === '__children') {
+          return;
+        }
+
+        result += recursObjLen(value);
       });
     } else {
       result += 1;
@@ -340,8 +390,8 @@ function deepObjectSize(object) {
  * Create object with property where its value change will be observed.
  *
  * @param {*} [defaultValue=undefined] Default value.
- * @param {String} [propertyToListen='value'] Property to listen.
- * @returns {Object}
+ * @param {string} [propertyToListen='value'] Property to listen.
+ * @returns {object}
  */
 
 
@@ -371,8 +421,9 @@ function createObjectPropListener(defaultValue) {
 /**
  * Check if at specified `key` there is any value for `object`.
  *
- * @param {Object} object Object to search value at specyfic key.
- * @param {String} key String key to check.
+ * @param {object} object Object to search value at specyfic key.
+ * @param {string} key String key to check.
+ * @returns {boolean}
  */
 
 

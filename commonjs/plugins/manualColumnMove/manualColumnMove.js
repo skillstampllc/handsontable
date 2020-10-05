@@ -20,7 +20,11 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -61,19 +65,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 _pluginHooks.default.getSingleton().register('beforeColumnMove');
 
@@ -108,19 +116,19 @@ var CSS_AFTER_SELECTION = 'after-selection--columns';
  * @plugin ManualColumnMove
  */
 
-var ManualColumnMove =
-/*#__PURE__*/
-function (_BasePlugin) {
+var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualColumnMove, _BasePlugin);
+
+  var _super = _createSuper(ManualColumnMove);
 
   function ManualColumnMove(hotInstance) {
     var _this;
 
     _classCallCheck(this, ManualColumnMove);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ManualColumnMove).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
-     * Set up WeakMap of plugin to sharing private parameters;
+     * Set up WeakMap of plugin to sharing private parameters;.
      */
 
     privatePool.set(_assertThisInitialized(_this), {
@@ -140,7 +148,7 @@ function (_BasePlugin) {
      * Event Manager object.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
@@ -148,7 +156,7 @@ function (_BasePlugin) {
      * Backlight UI object.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.backlight = new _backlight.default(hotInstance);
@@ -156,7 +164,7 @@ function (_BasePlugin) {
      * Guideline UI object.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.guideline = new _guideline.default(hotInstance);
@@ -166,7 +174,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link ManualColumnMove#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -237,12 +245,12 @@ function (_BasePlugin) {
     /**
      * Moves a single column.
      *
-     * @param {Number} column Visual column index to be moved.
-     * @param {Number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
+     * @param {number} column Visual column index to be moved.
+     * @param {number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
      * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualColumnMove).
      * @fires Hooks#beforeColumnMove
      * @fires Hooks#afterColumnMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -254,11 +262,11 @@ function (_BasePlugin) {
      * Moves a multiple columns.
      *
      * @param {Array} columns Array of visual column indexes to be moved.
-     * @param {Number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
+     * @param {number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
      * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualColumnMove).
      * @fires Hooks#beforeColumnMove
      * @fires Hooks#afterColumnMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -285,12 +293,12 @@ function (_BasePlugin) {
     /**
      * Drag a single column to drop index position.
      *
-     * @param {Number} column Visual column index to be dragged.
-     * @param {Number} dropIndex Visual column index, being a drop index for the moved columns. Points to where we are going to drop the moved elements.
+     * @param {number} column Visual column index to be dragged.
+     * @param {number} dropIndex Visual column index, being a drop index for the moved columns. Points to where we are going to drop the moved elements.
      * To check visualization of drop index please take a look at [documentation](/demo-moving.html#manualColumnMove).
      * @fires Hooks#beforeColumnMove
      * @fires Hooks#afterColumnMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -302,11 +310,11 @@ function (_BasePlugin) {
      * Drag multiple columns to drop index position.
      *
      * @param {Array} columns Array of visual column indexes to be dragged.
-     * @param {Number} dropIndex Visual column index, being a drop index for the moved columns. Points to where we are going to drop the moved elements.
+     * @param {number} dropIndex Visual column index, being a drop index for the moved columns. Points to where we are going to drop the moved elements.
      * To check visualization of drop index please take a look at [documentation](/demo-moving.html#manualColumnMove).
      * @fires Hooks#beforeColumnMove
      * @fires Hooks#afterColumnMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -318,18 +326,18 @@ function (_BasePlugin) {
       return this.moveColumns(columns, finalIndex);
     }
     /**
-     * Indicates if it's possible to move columns to the desired position. Some of the actions aren't possible, i.e. you can’t move more than one element to the last position.
+     * Indicates if it's possible to move columns to the desired position. Some of the actions aren't possible, i.e. You can’t move more than one element to the last position.
      *
      * @param {Array} movedColumns Array of visual column indexes to be moved.
-     * @param {Number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
+     * @param {number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
      * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualColumnMove).
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
     key: "isMovePossible",
     value: function isMovePossible(movedColumns, finalIndex) {
-      var length = this.hot.columnIndexMapper.getNotSkippedIndexesLength(); // An attempt to transfer more columns to start destination than is possible (only when moving from the top to the bottom).
+      var length = this.hot.columnIndexMapper.getNotTrimmedIndexesLength(); // An attempt to transfer more columns to start destination than is possible (only when moving from the top to the bottom).
 
       var tooHighDestinationIndex = movedColumns.length + finalIndex > length;
       var tooLowDestinationIndex = finalIndex < 0;
@@ -351,9 +359,9 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} movedColumns Array of visual column indexes to be moved.
-     * @param {Number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
+     * @param {number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action.
      * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualColumnMove).
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -368,8 +376,8 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} movedColumns Array of visual column indexes to be moved.
-     * @param {Number} dropIndex Visual column index, being a drop index for the moved columns.
-     * @returns {Number} Visual column index, being a start index for the moved columns.
+     * @param {number} dropIndex Visual column index, being a drop index for the moved columns.
+     * @returns {number} Visual column index, being a start index for the moved columns.
      */
 
   }, {
@@ -385,46 +393,33 @@ function (_BasePlugin) {
       return dropIndex - numberOfColumnsLowerThanDropIndex;
     }
     /**
-     * Correct the cell selection after the move action. Fired only when action was made with a mouse.
-     * That means that changing the column order using the API won't correct the selection.
+     * Gets the sum of the widths of columns in the provided range.
      *
      * @private
-     * @param {Number} startColumn Visual column index for the start of the selection.
-     * @param {Number} endColumn Visual column index for the end of the selection.
-     */
-
-  }, {
-    key: "changeSelection",
-    value: function changeSelection(startColumn, endColumn) {
-      this.hot.selectColumns(startColumn, endColumn);
-    }
-    /**
-     * Gets the sum of the heights of columns in the provided range.
-     *
-     * @private
-     * @param {Number} from Visual column index.
-     * @param {Number} to Visual column index.
-     * @returns {Number}
+     * @param {number} fromColumn Visual column index.
+     * @param {number} toColumn Visual column index.
+     * @returns {number}
      */
 
   }, {
     key: "getColumnsWidth",
-    value: function getColumnsWidth(from, to) {
-      var width = 0;
+    value: function getColumnsWidth(fromColumn, toColumn) {
+      var columnMapper = this.hot.columnIndexMapper;
+      var columnsWidth = 0;
 
-      for (var i = from; i < to; i++) {
-        var columnWidth = 0;
+      for (var visualColumnIndex = fromColumn; visualColumnIndex <= toColumn; visualColumnIndex += 1) {
+        // We can't use just `getColWidth` (even without indexes translation) as it doesn't return proper values
+        // when column is stretched.
+        var renderableIndex = columnMapper.getRenderableFromVisualIndex(visualColumnIndex);
 
-        if (i < 0) {
-          columnWidth = this.hot.view.wt.wtViewport.getRowHeaderWidth() || 0;
-        } else {
-          columnWidth = this.hot.view.wt.wtTable.getStretchedColumnWidth(i) || 0;
+        if (visualColumnIndex < 0) {
+          columnsWidth += this.hot.view.wt.wtViewport.getRowHeaderWidth() || 0;
+        } else if (renderableIndex !== null) {
+          columnsWidth += this.hot.view.wt.wtTable.getStretchedColumnWidth(renderableIndex) || 0;
         }
-
-        width += columnWidth;
       }
 
-      return width;
+      return columnsWidth;
     }
     /**
      * Loads initial settings when persistent state is saved or when plugin was initialized as an array.
@@ -451,8 +446,8 @@ function (_BasePlugin) {
      * Checks if the provided column is in the fixedColumnsTop section.
      *
      * @private
-     * @param {Number} column Visual column index to check.
-     * @returns {Boolean}
+     * @param {number} column Visual column index to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -491,6 +486,8 @@ function (_BasePlugin) {
      * Prepares an array of indexes based on actual selection.
      *
      * @private
+     * @param {number} start The start index.
+     * @param {number} end The end index.
      * @returns {Array}
      */
 
@@ -518,8 +515,9 @@ function (_BasePlugin) {
       var wtTable = this.hot.view.wt.wtTable;
       var scrollableElement = this.hot.view.wt.wtOverlays.scrollableElement;
       var scrollLeft = typeof scrollableElement.scrollX === 'number' ? scrollableElement.scrollX : scrollableElement.scrollLeft;
-      var tdOffsetLeft = this.hot.view.THEAD.offsetLeft + this.getColumnsWidth(0, priv.coords);
-      var mouseOffsetLeft = priv.target.eventPageX - (priv.rootElementOffset - (scrollableElement.scrollX === void 0 ? scrollLeft : 0));
+      var tdOffsetLeft = this.hot.view.THEAD.offsetLeft + this.getColumnsWidth(0, priv.coords - 1);
+      var mouseOffsetLeft = priv.target.eventPageX - (priv.rootElementOffset - (scrollableElement.scrollX === void 0 ? scrollLeft : 0)); // eslint-disable-line max-len
+
       var hiderWidth = wtTable.hider.offsetWidth;
       var tbodyOffsetLeft = wtTable.TBODY.offsetLeft;
       var backlightElemMarginLeft = this.backlight.getOffset().left;
@@ -633,7 +631,7 @@ function (_BasePlugin) {
      * @param {MouseEvent} event `mousedown` event properties.
      * @param {CellCoords} coords Visual cell coordinates where was fired event.
      * @param {HTMLElement} TD Cell represented as HTMLElement.
-     * @param {Object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
+     * @param {object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
      */
 
   }, {
@@ -644,7 +642,7 @@ function (_BasePlugin) {
       var selection = this.hot.getSelectedRangeLast();
       var priv = privatePool.get(this); // This block action shouldn't be handled below.
 
-      var isSortingElement = (0, _element.hasClass)(event.realTarget, 'sortAction');
+      var isSortingElement = (0, _element.hasClass)(event.target, 'sortAction');
 
       if (!selection || !isHeaderSelection || priv.pressed || event.button !== 0 || isSortingElement) {
         priv.pressed = false;
@@ -683,10 +681,10 @@ function (_BasePlugin) {
         var fixedColumns = coords.col < priv.fixedColumns;
         var scrollableElement = this.hot.view.wt.wtOverlays.scrollableElement;
         var wrapperIsWindow = scrollableElement.scrollX ? scrollableElement.scrollX - priv.rootElementOffset : 0;
-        var mouseOffset = event.layerX - (fixedColumns ? wrapperIsWindow : 0);
-        var leftOffset = Math.abs(this.getColumnsWidth(start, coords.col) + mouseOffset);
-        this.backlight.setPosition(topPos, this.getColumnsWidth(countColumnsFrom, start) + leftOffset);
-        this.backlight.setSize(this.getColumnsWidth(start, end + 1), wtTable.hider.offsetHeight - topPos);
+        var mouseOffset = event.offsetX - (fixedColumns ? wrapperIsWindow : 0);
+        var leftOffset = Math.abs(this.getColumnsWidth(start, coords.col - 1) + mouseOffset);
+        this.backlight.setPosition(topPos, this.getColumnsWidth(countColumnsFrom, start - 1) + leftOffset);
+        this.backlight.setSize(this.getColumnsWidth(start, end), wtTable.hider.offsetHeight - topPos);
         this.backlight.setOffset(null, leftOffset * -1);
         (0, _element.addClass)(this.hot.rootElement, CSS_ON_MOVING);
       } else {
@@ -712,7 +710,7 @@ function (_BasePlugin) {
       } // callback for browser which doesn't supports CSS pointer-event: none
 
 
-      if (event.realTarget === this.backlight.element) {
+      if (event.target === this.backlight.element) {
         var width = this.backlight.getSize().width;
         this.backlight.setSize(0);
         setTimeout(function () {
@@ -730,7 +728,7 @@ function (_BasePlugin) {
      * @param {MouseEvent} event `mouseover` event properties.
      * @param {CellCoords} coords Visual cell coordinates where was fired event.
      * @param {HTMLElement} TD Cell represented as HTMLElement.
-     * @param {Object} blockCalculations Object which contains information about blockCalculation for column, column or cells.
+     * @param {object} blockCalculations Object which contains information about blockCalculation for column, column or cells.
      */
 
   }, {

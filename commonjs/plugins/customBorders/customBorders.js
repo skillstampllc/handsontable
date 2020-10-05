@@ -6,11 +6,17 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
 
+require("core-js/modules/es.array.slice");
+
 require("core-js/modules/es.array.splice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.assign");
 
@@ -25,6 +31,8 @@ require("core-js/modules/es.object.set-prototype-of");
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.object.values");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.reflect.get");
 
@@ -65,11 +73,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -79,19 +91,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 /**
  * @class CustomBorders
@@ -145,17 +161,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * ],
  * ```
  */
-var CustomBorders =
-/*#__PURE__*/
-function (_BasePlugin) {
+var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
   _inherits(CustomBorders, _BasePlugin);
+
+  var _super = _createSuper(CustomBorders);
 
   function CustomBorders(hotInstance) {
     var _this;
 
     _classCallCheck(this, CustomBorders);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CustomBorders).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Saved borders.
      *
@@ -167,10 +183,10 @@ function (_BasePlugin) {
     return _this;
   }
   /**
-  * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
-  * hook and if it returns `true` than the {@link CustomBorders#enablePlugin} method is called.
+   * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
+   * hook and if it returns `true` than the {@link CustomBorders#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -226,21 +242,25 @@ function (_BasePlugin) {
       _get(_getPrototypeOf(CustomBorders.prototype), "updatePlugin", this).call(this);
     }
     /**
-      * Set custom borders.
-      *
-      * @example
-      * ```js
-      * const customBordersPlugin = hot.getPlugin('customBorders');
-      *
-      * // Using an array of arrays (produced by `.getSelected()` method).
-      * customBordersPlugin.setBorders([[1, 1, 2, 2], [6, 2, 0, 2]], {left: {width: 2, color: 'blue'}});
-      * // Using an array of CellRange objects (produced by `.getSelectedRange()` method).
-      * customBordersPlugin.setBorders(hot.getSelectedRange(), {left: {hide: false, width: 2, color: 'blue'}});
-      * ```
-      *
-      * @param {Array[]|CellRange[]} selectionRanges Array of selection ranges.
-      * @param {Object} borderObject Object with `top`, `right`, `bottom` and `left` properties.
-      */
+     * Set custom borders.
+     *
+     * @example
+     * ```js
+     * const customBordersPlugin = hot.getPlugin('customBorders');
+     *
+     * // Using an array of arrays (produced by `.getSelected()` method).
+     * customBordersPlugin.setBorders([[1, 1, 2, 2], [6, 2, 0, 2]], {left: {width: 2, color: 'blue'}});
+     *
+     * // Using an array of CellRange objects (produced by `.getSelectedRange()` method).
+     * //  Selecting a cell range.
+     * hot.selectCell(0, 0, 2, 2);
+     * // Returning selected cells' range with the getSelectedRange method.
+     * customBordersPlugin.setBorders(hot.getSelectedRange(), {left: {hide: false, width: 2, color: 'blue'}});
+     * ```
+     *
+     * @param {Array[]|CellRange[]} selectionRanges Array of selection ranges.
+     * @param {object} borderObject Object with `top`, `right`, `bottom` and `left` properties.
+     */
 
   }, {
     key: "setBorders",
@@ -287,23 +307,23 @@ function (_BasePlugin) {
       this.hot.view.render();
     }
     /**
-      * Get custom borders.
-      *
-      * @example
-      * ```js
-      * const customBordersPlugin = hot.getPlugin('customBorders');
-      *
-      * // Using an array of arrays (produced by `.getSelected()` method).
-      * customBordersPlugin.getBorders([[1, 1, 2, 2], [6, 2, 0, 2]]);
-      * // Using an array of CellRange objects (produced by `.getSelectedRange()` method).
-      * customBordersPlugin.getBorders(hot.getSelectedRange());
-      * // Using without param - return all customBorders.
-      * customBordersPlugin.getBorders();
-      * ```
-      *
-      * @param {Array[]|CellRange[]} selectionRanges Array of selection ranges.
-      * @return {Object[]} Returns array of border objects.
-      */
+     * Get custom borders.
+     *
+     * @example
+     * ```js
+     * const customBordersPlugin = hot.getPlugin('customBorders');
+     *
+     * // Using an array of arrays (produced by `.getSelected()` method).
+     * customBordersPlugin.getBorders([[1, 1, 2, 2], [6, 2, 0, 2]]);
+     * // Using an array of CellRange objects (produced by `.getSelectedRange()` method).
+     * customBordersPlugin.getBorders(hot.getSelectedRange());
+     * // Using without param - return all customBorders.
+     * customBordersPlugin.getBorders();
+     * ```
+     *
+     * @param {Array[]|CellRange[]} selectionRanges Array of selection ranges.
+     * @returns {object[]} Returns array of border objects.
+     */
 
   }, {
     key: "getBorders",
@@ -346,22 +366,22 @@ function (_BasePlugin) {
       return selectedBorders;
     }
     /**
-      * Clear custom borders.
-      *
-      * @example
-      * ```js
-      * const customBordersPlugin = hot.getPlugin('customBorders');
-      *
-      * // Using an array of arrays (produced by `.getSelected()` method).
-      * customBordersPlugin.clearBorders([[1, 1, 2, 2], [6, 2, 0, 2]]);
-      * // Using an array of CellRange objects (produced by `.getSelectedRange()` method).
-      * customBordersPlugin.clearBorders(hot.getSelectedRange());
-      * // Using without param - clear all customBorders.
-      * customBordersPlugin.clearBorders();
-      * ```
-      *
-      * @param {Array[]|CellRange[]} selectionRanges Array of selection ranges.
-      */
+     * Clear custom borders.
+     *
+     * @example
+     * ```js
+     * const customBordersPlugin = hot.getPlugin('customBorders');
+     *
+     * // Using an array of arrays (produced by `.getSelected()` method).
+     * customBordersPlugin.clearBorders([[1, 1, 2, 2], [6, 2, 0, 2]]);
+     * // Using an array of CellRange objects (produced by `.getSelectedRange()` method).
+     * customBordersPlugin.clearBorders(hot.getSelectedRange());
+     * // Using without param - clear all customBorders.
+     * customBordersPlugin.clearBorders();
+     * ```
+     *
+     * @param {Array[]|CellRange[]} selectionRanges Array of selection ranges.
+     */
 
   }, {
     key: "clearBorders",
@@ -385,8 +405,8 @@ function (_BasePlugin) {
      * Insert WalkontableSelection instance into Walkontable settings.
      *
      * @private
-     * @param {Object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
-     * @param {String} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right`.
+     * @param {object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
+     * @param {string} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right`.
      */
 
   }, {
@@ -398,17 +418,13 @@ function (_BasePlugin) {
         this.savedBorders.push(border);
       }
 
-      var coordinates = {
-        row: border.row,
-        col: border.col
-      };
-      var cellRange = new _src.CellRange(coordinates, coordinates, coordinates);
-      var hasCustomSelections = this.checkCustomSelections(border, cellRange, place);
+      var visualCellRange = new _src.CellRange(new _src.CellCoords(border.row, border.col));
+      var hasCustomSelections = this.checkCustomSelections(border, visualCellRange, place);
 
       if (!hasCustomSelections) {
         this.hot.selection.highlight.addCustomSelection({
           border: border,
-          cellRange: cellRange
+          visualCellRange: visualCellRange
         });
       }
     }
@@ -416,15 +432,22 @@ function (_BasePlugin) {
      * Prepare borders from setting (single cell).
      *
      * @private
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @param {Object} borderDescriptor Object with `row` and `col`, `left`, `right`, `top` and `bottom` properties.
-     * @param {String} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right`.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @param {object} borderDescriptor Object with `row` and `col`, `left`, `right`, `top` and `bottom` properties.
+     * @param {string} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right`.
      */
 
   }, {
     key: "prepareBorderFromCustomAdded",
     value: function prepareBorderFromCustomAdded(row, column, borderDescriptor, place) {
+      var nrOfRows = this.hot.countRows();
+      var nrOfColumns = this.hot.countCols();
+
+      if (row >= nrOfRows || column >= nrOfColumns) {
+        return;
+      }
+
       var border = (0, _utils.createEmptyBorders)(row, column);
 
       if (borderDescriptor) {
@@ -432,7 +455,11 @@ function (_BasePlugin) {
         (0, _array.arrayEach)(this.hot.selection.highlight.customSelections, function (customSelection) {
           if (border.id === customSelection.settings.id) {
             Object.assign(customSelection.settings, borderDescriptor);
-            border = customSelection.settings;
+            border.id = customSelection.settings.id;
+            border.left = customSelection.settings.left;
+            border.right = customSelection.settings.right;
+            border.top = customSelection.settings.top;
+            border.bottom = customSelection.settings.bottom;
             return false; // breaks forAll
           }
         });
@@ -445,7 +472,7 @@ function (_BasePlugin) {
      * Prepare borders from setting (object).
      *
      * @private
-     * @param {Object} rowDecriptor Object with `range`, `left`, `right`, `top` and `bottom` properties.
+     * @param {object} rowDecriptor Object with `range`, `left`, `right`, `top` and `bottom` properties.
      */
 
   }, {
@@ -454,8 +481,10 @@ function (_BasePlugin) {
       var _this6 = this;
 
       var range = rowDecriptor.range;
-      (0, _number.rangeEach)(range.from.row, range.to.row, function (rowIndex) {
-        (0, _number.rangeEach)(range.from.col, range.to.col, function (colIndex) {
+      var lastRowIndex = Math.min(range.to.row, this.hot.countRows() - 1);
+      var lastColumnIndex = Math.min(range.to.col, this.hot.countCols() - 1);
+      (0, _number.rangeEach)(range.from.row, lastRowIndex, function (rowIndex) {
+        (0, _number.rangeEach)(range.from.col, lastColumnIndex, function (colIndex) {
           var border = (0, _utils.createEmptyBorders)(rowIndex, colIndex);
           var add = 0;
 
@@ -464,7 +493,8 @@ function (_BasePlugin) {
               add += 1;
               border.top = rowDecriptor.top;
             }
-          }
+          } // Please keep in mind that `range.to.row` may be beyond the table boundaries. The border won't be rendered.
+
 
           if (rowIndex === range.to.row) {
             if ((0, _object.hasOwnProperty)(rowDecriptor, 'bottom')) {
@@ -478,7 +508,8 @@ function (_BasePlugin) {
               add += 1;
               border.left = rowDecriptor.left;
             }
-          }
+          } // Please keep in mind that `range.to.col` may be beyond the table boundaries. The border won't be rendered.
+
 
           if (colIndex === range.to.col) {
             if ((0, _object.hasOwnProperty)(rowDecriptor, 'right')) {
@@ -500,8 +531,8 @@ function (_BasePlugin) {
      * Remove border (triggered from context menu).
      *
      * @private
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
      */
 
   }, {
@@ -514,13 +545,13 @@ function (_BasePlugin) {
       this.hot.removeCellMeta(row, column, 'borders');
     }
     /**
-     * Set borders for each cell re. to border position.
+     * Set borders for each cell re. To border position.
      *
      * @private
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @param {String} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right` and `noBorders`.
-     * @param {Boolean} remove True when remove borders, and false when add borders.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @param {string} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right` and `noBorders`.
+     * @param {boolean} remove True when remove borders, and false when add borders.
      */
 
   }, {
@@ -563,9 +594,9 @@ function (_BasePlugin) {
      * Prepare borders based on cell and border position.
      *
      * @private
-     * @param {Object} selected
-     * @param {String} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right` and `noBorders`.
-     * @param {Boolean} remove True when remove borders, and false when add borders.
+     * @param {CellRange[]} selected An array of CellRange objects.
+     * @param {string} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right` and `noBorders`.
+     * @param {boolean} remove True when remove borders, and false when add borders.
      */
 
   }, {
@@ -644,11 +675,12 @@ function (_BasePlugin) {
       });
     }
     /**
-    * Count hide property in border object.
-    *
-    * @private
-    * @param {Object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
-    */
+     * Count hide property in border object.
+     *
+     * @private
+     * @param {object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
+     * @returns {Array}
+     */
 
   }, {
     key: "countHide",
@@ -665,11 +697,11 @@ function (_BasePlugin) {
       }, 0);
     }
     /**
-    * Clear borders settings from custom selections.
-    *
-    * @private
-    * @param {String} borderId Border id name as string.
-    */
+     * Clear borders settings from custom selections.
+     *
+     * @private
+     * @param {string} borderId Border id name as string.
+     */
 
   }, {
     key: "clearBordersFromSelectionSettings",
@@ -683,10 +715,10 @@ function (_BasePlugin) {
       }
     }
     /**
-    * Clear cellRange with null value.
-    *
-    * @private
-    */
+     * Clear cellRange with null value.
+     *
+     * @private
+     */
 
   }, {
     key: "clearNullCellRange",
@@ -704,10 +736,10 @@ function (_BasePlugin) {
       });
     }
     /**
-      * Hide custom borders.
-      *
-      * @private
-      */
+     * Hide custom borders.
+     *
+     * @private
+     */
 
   }, {
     key: "hideBorders",
@@ -721,11 +753,11 @@ function (_BasePlugin) {
       });
     }
     /**
-    * Splice border from savedBorders.
-    *
-    * @private
-    * @param {String} borderId Border id name as string.
-    */
+     * Splice border from savedBorders.
+     *
+     * @private
+     * @param {string} borderId Border id name as string.
+     */
 
   }, {
     key: "spliceBorder",
@@ -739,13 +771,13 @@ function (_BasePlugin) {
       }
     }
     /**
-    * Check if an border already exists in the savedBorders array, and if true update border in savedBorders.
-    *
-    * @private
-    * @param {Object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
-    *
-    * @return {Boolean}
-    */
+     * Check if an border already exists in the savedBorders array, and if true update border in savedBorders.
+     *
+     * @private
+     * @param {object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
+     *
+     * @returns {boolean}
+     */
 
   }, {
     key: "checkSavedBorders",
@@ -771,15 +803,15 @@ function (_BasePlugin) {
       return check;
     }
     /**
-    * Check if an border already exists in the customSelections, and if true call toggleHiddenClass method.
-    *
-    * @private
-    * @param {Object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
-    * @param {String} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right` and `noBorders`.
-    * @param {Boolean} remove True when remove borders, and false when add borders.
-    *
-    * @return {Boolean}
-    */
+     * Check if an border already exists in the customSelections, and if true call toggleHiddenClass method.
+     *
+     * @private
+     * @param {object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
+     * @param {string} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right` and `noBorders`.
+     * @param {boolean} remove True when remove borders, and false when add borders.
+     *
+     * @returns {boolean}
+     */
 
   }, {
     key: "checkCustomSelectionsFromContextMenu",
@@ -797,15 +829,14 @@ function (_BasePlugin) {
       return check;
     }
     /**
-    * Check if an border already exists in the customSelections, and if true reset cellRange.
-    *
-    * @private
-    * @param {Object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
-    * @param {CellRange} cellRange
-    * @param {String} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right`.
-    *
-    * @return {Boolean}
-    */
+     * Check if an border already exists in the customSelections, and if true reset cellRange.
+     *
+     * @private
+     * @param {object} border Object with `row` and `col`, `left`, `right`, `top` and `bottom`, `id` and `border` ({Object} with `color`, `width` and `cornerVisible` property) properties.
+     * @param {CellRange} cellRange The selection range to check.
+     * @param {string} place Coordinate where add/remove border - `top`, `bottom`, `left`, `right`.
+     * @returns {boolean}
+     */
 
   }, {
     key: "checkCustomSelections",
@@ -819,7 +850,8 @@ function (_BasePlugin) {
       } else {
         (0, _array.arrayEach)(this.hot.selection.highlight.customSelections, function (customSelection) {
           if (border.id === customSelection.settings.id) {
-            customSelection.cellRange = cellRange;
+            customSelection.visualCellRange = cellRange;
+            customSelection.commit();
 
             if (place) {
               (0, _object.objectEach)(customSelection.instanceBorders, function (borderObject) {
@@ -857,11 +889,11 @@ function (_BasePlugin) {
       }
     }
     /**
-    * Add border options to context menu.
-    *
-    * @private
-    * @param {Object} defaultOptions Context menu items.
-    */
+     * Add border options to context menu.
+     *
+     * @private
+     * @param {object} defaultOptions Context menu items.
+     */
 
   }, {
     key: "onAfterContextMenuDefaultOptions",

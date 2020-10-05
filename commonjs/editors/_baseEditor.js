@@ -6,13 +6,23 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.get-prototype-of");
 
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -35,15 +45,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66,9 +92,7 @@ var EditorState = {
 
 exports.EditorState = EditorState;
 
-var BaseEditor =
-/*#__PURE__*/
-function () {
+var BaseEditor = /*#__PURE__*/function () {
   function BaseEditor(instance) {
     _classCallCheck(this, BaseEditor);
 
@@ -80,6 +104,7 @@ function () {
     this.hot = instance;
     /**
      * A reference to the source instance of the Handsontable.
+     *
      * @deprecated
      *
      * @type {Handsontable}
@@ -89,23 +114,25 @@ function () {
     /**
      * Editor's state.
      *
-     * @type {String}
+     * @type {string}
      */
 
     this.state = EditorState.VIRGIN;
     /**
      * Flag to store information about editor's opening status.
+     *
      * @private
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this._opened = false;
     /**
      * Defines the editor's editing mode. When false, then an editor works in fast editing mode.
+     *
      * @private
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this._fullEditMode = false;
@@ -126,21 +153,21 @@ function () {
     /**
      * Visual row index.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.row = null;
     /**
      * Visual column index.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.col = null;
     /**
      * Column property name or a column index, if datasource is an array of arrays.
      *
-     * @type {Number|String}
+     * @type {number|string}
      */
 
     this.prop = null;
@@ -154,7 +181,7 @@ function () {
     /**
      * Object containing the cell's properties.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.cellProperties = null;
@@ -164,7 +191,7 @@ function () {
    * Fires callback after closing editor.
    *
    * @private
-   * @param {Boolean} result
+   * @param {boolean} result The editor value.
    */
 
 
@@ -223,85 +250,94 @@ function () {
     /**
      * Prepares editor's meta data.
      *
-     * @param {Number} row
-     * @param {Number} col
-     * @param {Number|String} prop
-     * @param {HTMLTableCellElement} td
-     * @param {*} originalValue
-     * @param {Object} cellProperties
+     * @param {number} row The visual row index.
+     * @param {number} col The visual column index.
+     * @param {number|string} prop The column property (passed when datasource is an array of objects).
+     * @param {HTMLTableCellElement} td The rendered cell element.
+     * @param {*} value The rendered value.
+     * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
      */
 
   }, {
     key: "prepare",
-    value: function prepare(row, col, prop, td, originalValue, cellProperties) {
+    value: function prepare(row, col, prop, td, value, cellProperties) {
       this.TD = td;
       this.row = row;
       this.col = col;
       this.prop = prop;
-      this.originalValue = originalValue;
+      this.originalValue = value;
       this.cellProperties = cellProperties;
       this.state = EditorState.VIRGIN;
     }
     /**
      * Fallback method to provide extendable editors in ES5.
+     *
+     * @returns {Function}
      */
 
   }, {
     key: "extend",
     value: function extend() {
-      return (
-        /*#__PURE__*/
-        function (_this$constructor) {
-          _inherits(Editor, _this$constructor);
+      return /*#__PURE__*/function (_this$constructor) {
+        _inherits(Editor, _this$constructor);
 
-          function Editor() {
-            _classCallCheck(this, Editor);
+        var _super = _createSuper(Editor);
 
-            return _possibleConstructorReturn(this, _getPrototypeOf(Editor).apply(this, arguments));
-          }
+        function Editor() {
+          _classCallCheck(this, Editor);
 
-          return Editor;
-        }(this.constructor)
-      );
+          return _super.apply(this, arguments);
+        }
+
+        return Editor;
+      }(this.constructor);
     }
     /**
      * Saves value from editor into data storage.
      *
-     * @param {*} value
-     * @param {Boolean} ctrlDown If true, applies value to each cell in the last selected range.
+     * @param {*} value The editor value.
+     * @param {boolean} ctrlDown If `true`, applies value to each cell in the last selected range.
      */
 
   }, {
     key: "saveValue",
     value: function saveValue(value, ctrlDown) {
-      var selection;
-      var tmp; // if ctrl+enter and multiple cells selected, behave like Excel (finish editing and apply to all cells)
+      var visualRowFrom;
+      var visualColumnFrom;
+      var visualRowTo;
+      var visualColumnTo; // if ctrl+enter and multiple cells selected, behave like Excel (finish editing and apply to all cells)
 
       if (ctrlDown) {
-        selection = this.hot.getSelectedLast();
-
-        if (selection[0] > selection[2]) {
-          tmp = selection[0];
-          selection[0] = selection[2];
-          selection[2] = tmp;
-        }
-
-        if (selection[1] > selection[3]) {
-          tmp = selection[1];
-          selection[1] = selection[3];
-          selection[3] = tmp;
-        }
+        var selectedLast = this.hot.getSelectedLast();
+        visualRowFrom = Math.min(selectedLast[0], selectedLast[2]);
+        visualColumnFrom = Math.min(selectedLast[1], selectedLast[3]);
+        visualRowTo = Math.max(selectedLast[0], selectedLast[2]);
+        visualColumnTo = Math.max(selectedLast[1], selectedLast[3]);
       } else {
-        selection = [this.row, this.col, null, null];
+        var _ref = [this.row, this.col, null, null];
+        visualRowFrom = _ref[0];
+        visualColumnFrom = _ref[1];
+        visualRowTo = _ref[2];
+        visualColumnTo = _ref[3];
       }
 
-      this.hot.populateFromArray(selection[0], selection[1], value, selection[2], selection[3], 'edit');
+      var modifiedCellCoords = this.hot.runHooks('modifyGetCellCoords', visualRowFrom, visualColumnFrom);
+
+      if (Array.isArray(modifiedCellCoords)) {
+        var _modifiedCellCoords = _slicedToArray(modifiedCellCoords, 2);
+
+        visualRowFrom = _modifiedCellCoords[0];
+        visualColumnFrom = _modifiedCellCoords[1];
+      } // Saving values using the modified coordinates.
+
+
+      this.hot.populateFromArray(visualRowFrom, visualColumnFrom, value, visualRowTo, visualColumnTo, 'edit');
     }
     /**
      * Begins editing on a highlighted cell and hides fillHandle corner if was present.
      *
-     * @param {*} newInitialValue
-     * @param {*} event
+     * @param {*} newInitialValue The initial editor value.
+     * @param {Event} event The keyboard event object.
      */
 
   }, {
@@ -330,9 +366,9 @@ function () {
     /**
      * Finishes editing and start saving or restoring process for editing cell or last selected range.
      *
-     * @param {Boolean} restoreOriginalValue If true, then closes editor without saving value from the editor into a cell.
-     * @param {Boolean} ctrlDown If true, then saveValue will save editor's value to each cell in the last selected range.
-     * @param {Function} callback
+     * @param {boolean} restoreOriginalValue If true, then closes editor without saving value from the editor into a cell.
+     * @param {boolean} ctrlDown If true, then saveValue will save editor's value to each cell in the last selected range.
+     * @param {Function} callback The callback function, fired after editor closing.
      */
 
   }, {
@@ -412,7 +448,8 @@ function () {
     /**
      * Verifies result of validation or closes editor if user's cancelled changes.
      *
-     * @param {Boolean|undefined} result
+     * @param {boolean|undefined} result If `false` and the cell using allowInvalid option,
+     *                                   then an editor won't be closed until validation is passed.
      */
 
   }, {
@@ -451,7 +488,7 @@ function () {
     /**
      * Checks if editor is in full edit mode.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -461,6 +498,8 @@ function () {
     }
     /**
      * Returns information whether the editor is open.
+     *
+     * @returns {boolean}
      */
 
   }, {
@@ -470,6 +509,8 @@ function () {
     }
     /**
      * Returns information whether the editor is waiting, eg.: for async validation.
+     *
+     * @returns {boolean}
      */
 
   }, {
@@ -532,6 +573,7 @@ function () {
      * Returns name of the overlay, where editor is placed.
      *
      * @private
+     * @returns {string}
      */
 
   }, {

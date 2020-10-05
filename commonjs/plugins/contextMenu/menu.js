@@ -61,9 +61,7 @@ var MIN_WIDTH = 215;
  * @plugin ContextMenu
  */
 
-var Menu =
-/*#__PURE__*/
-function () {
+var Menu = /*#__PURE__*/function () {
   function Menu(hotInstance, options) {
     _classCallCheck(this, Menu);
 
@@ -112,6 +110,9 @@ function () {
         this.eventManager.addEventListener(frame.document, 'mousedown', function (event) {
           return _this.onDocumentMouseDown(event);
         });
+        this.eventManager.addEventListener(frame.document, 'contextmenu', function (event) {
+          return _this.onDocumentContextMenu(event);
+        });
         frame = (0, _element.getParentWindow)(frame);
       }
     }
@@ -129,7 +130,7 @@ function () {
     /**
      * Returns currently selected menu item. Returns `null` if no item was selected.
      *
-     * @returns {Object|null}
+     * @returns {object|null}
      */
 
   }, {
@@ -140,7 +141,7 @@ function () {
     /**
      * Checks if the menu has selected (highlighted) any item from the menu list.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -151,8 +152,8 @@ function () {
     /**
      * Set offset menu position for specified area (`above`, `below`, `left` or `right`).
      *
-     * @param {String} area Specified area name (`above`, `below`, `left` or `right`).
-     * @param {Number} offset Offset value.
+     * @param {string} area Specified area name (`above`, `below`, `left` or `right`).
+     * @param {number} offset Offset value.
      */
 
   }, {
@@ -164,7 +165,7 @@ function () {
     /**
      * Check if menu is using as sub-menu.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -224,6 +225,7 @@ function () {
         readOnly: true,
         editor: false,
         copyPaste: false,
+        maxCols: 1,
         columns: [{
           data: 'name',
           renderer: function renderer(hot, TD, row, col, prop, value) {
@@ -274,7 +276,7 @@ function () {
           // Restore menu focus, fix for `this.instance.unlisten();` call in the tableView.js@260 file.
           // This prevents losing table responsiveness for keyboard events when filter select menu is closed (#6497).
           if (!_this2.hasSelectedItem() && _this2.isOpened()) {
-            _this2.hotMenu.listen(false);
+            _this2.hotMenu.listen();
           }
         }
       };
@@ -295,7 +297,7 @@ function () {
     /**
      * Close menu.
      *
-     * @param {Boolean} [closeParent=false] if `true` try to close parent menu if exists.
+     * @param {boolean} [closeParent=false] If `true` try to close parent menu if exists.
      */
 
   }, {
@@ -326,8 +328,8 @@ function () {
     /**
      * Open sub menu at the provided row index.
      *
-     * @param {Number} row Row index.
-     * @returns {Menu|Boolean} Returns created menu or `false` if no one menu was created.
+     * @param {number} row Row index.
+     * @returns {Menu|boolean} Returns created menu or `false` if no one menu was created.
      */
 
   }, {
@@ -361,7 +363,7 @@ function () {
     /**
      * Close sub menu at row index.
      *
-     * @param {Number} row Row index.
+     * @param {number} row Row index.
      */
 
   }, {
@@ -391,7 +393,7 @@ function () {
     /**
      * Checks if all created and opened sub menus are closed.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -419,7 +421,7 @@ function () {
     /**
      * Checks if menu was opened.
      *
-     * @returns {Boolean} Returns `true` if menu was opened.
+     * @returns {boolean} Returns `true` if menu was opened.
      */
 
   }, {
@@ -430,7 +432,7 @@ function () {
     /**
      * Execute menu command.
      *
-     * @param {Event} [event]
+     * @param {Event} [event] The mouse event object.
      */
 
   }, {
@@ -461,8 +463,8 @@ function () {
      * is a separator, or the item is recognized as submenu. For passive items the menu is not
      * closed automatically after the user trigger the command through the UI.
      *
-     * @param {Object} commandDescriptor Selected menu item from the menu data source.
-     * @returns {Boolean}
+     * @param {object} commandDescriptor Selected menu item from the menu data source.
+     * @returns {boolean}
      */
 
   }, {
@@ -478,7 +480,7 @@ function () {
     /**
      * Set menu position based on dom event or based on literal object.
      *
-     * @param {Event|Object} coords Event or literal Object with coordinates.
+     * @param {Event|object} coords Event or literal Object with coordinates.
      */
 
   }, {
@@ -567,7 +569,8 @@ function () {
   }, {
     key: "setPositionOnLeftOfCursor",
     value: function setPositionOnLeftOfCursor(cursor) {
-      var left = this.offset.left + cursor.left - this.container.offsetWidth + (0, _element.getScrollbarWidth)(this.hot.rootDocument) + 4;
+      var scrollbarWidth = (0, _element.getScrollbarWidth)(this.hot.rootDocument);
+      var left = this.offset.left + cursor.left - this.container.offsetWidth + scrollbarWidth + 4;
       this.container.style.left = "".concat(left, "px");
     }
     /**
@@ -604,8 +607,8 @@ function () {
     /**
      * Select next cell in opened menu.
      *
-     * @param {Number} row Row index.
-     * @param {Number} col Column index.
+     * @param {number} row Row index.
+     * @param {number} col Column index.
      */
 
   }, {
@@ -627,8 +630,8 @@ function () {
     /**
      * Select previous cell in opened menu.
      *
-     * @param {Number} row Row index.
-     * @param {Number} col Column index.
+     * @param {number} row Row index.
+     * @param {number} col Column index.
      */
 
   }, {
@@ -651,6 +654,12 @@ function () {
      * Menu item renderer.
      *
      * @private
+     * @param {Core} hot The Handsontable instance.
+     * @param {HTMLCellElement} TD The rendered cell element.
+     * @param {number} row The visual index.
+     * @param {number} col The visual index.
+     * @param {string} prop The column property if used.
+     * @param {string} value The cell value.
      */
 
   }, {
@@ -736,7 +745,7 @@ function () {
      * Create container/wrapper for handsontable.
      *
      * @private
-     * @param {String} [name] Class name.
+     * @param {string} [name] Class name.
      * @returns {HTMLElement}
      */
 
@@ -806,7 +815,7 @@ function () {
      * On before key down listener.
      *
      * @private
-     * @param {Event} event
+     * @param {Event} event The keyaboard event object.
      */
 
   }, {
@@ -913,20 +922,20 @@ function () {
       var currentHiderWidth = parseInt(hiderStyle.width, 10);
       var realHeight = (0, _array.arrayReduce)(data, function (accumulator, value) {
         return accumulator + (value.name === _predefinedItems.SEPARATOR ? 1 : 26);
-      }, 0);
-      holderStyle.width = "".concat(currentHiderWidth + 22, "px");
-      holderStyle.height = "".concat(realHeight + 4, "px");
+      }, 0); // Additional 3px to menu's size because of additional border around its `table.htCore`.
+
+      holderStyle.width = "".concat(currentHiderWidth + 3, "px");
+      holderStyle.height = "".concat(realHeight + 3, "px");
       hiderStyle.height = holderStyle.height;
     }
     /**
      * On after selection listener.
      *
-     * @param {Number} r Selection start row index.
-     * @param {Number} c Selection start column index.
-     * @param {Number} r2 Selection end row index.
-     * @param {Number} c2 Selection end column index.
-     * @param {Object} preventScrolling Object with `value` property where its value change will be observed.
-     * @param {Number} selectionLayerLevel The number which indicates what selection layer is currently modified.
+     * @param {number} r Selection start row index.
+     * @param {number} c Selection start column index.
+     * @param {number} r2 Selection end row index.
+     * @param {number} c2 Selection end column index.
+     * @param {object} preventScrolling Object with `value` property where its value change will be observed.
      */
 
   }, {
@@ -940,7 +949,7 @@ function () {
      * Document mouse down listener.
      *
      * @private
-     * @param {Event} event
+     * @param {Event} event The mouse event object.
      */
 
   }, {
@@ -955,6 +964,24 @@ function () {
         this.close(true); // Automatically close menu when clicked element is not belongs to menu or submenu (not necessarily to itself)
       } else if ((this.isAllSubMenusClosed() || this.isSubMenu()) && !(0, _element.isChildOf)(event.target, '.htMenu') && ((0, _element.isChildOf)(event.target, this.container.ownerDocument) || (0, _element.isChildOf)(event.target, this.hot.rootDocument))) {
         this.close(true);
+      }
+    }
+    /**
+     * Document's contextmenu listener.
+     *
+     * @private
+     * @param {MouseEvent} event The mouse event object.
+     */
+
+  }, {
+    key: "onDocumentContextMenu",
+    value: function onDocumentContextMenu(event) {
+      if (!this.isOpened()) {
+        return;
+      }
+
+      if ((0, _element.hasClass)(event.target, 'htCore') && (0, _element.isChildOf)(event.target, this.hotMenu.rootElement)) {
+        event.preventDefault();
       }
     }
   }]);

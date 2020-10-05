@@ -44,7 +44,7 @@ var _textEditor = _interopRequireDefault(require("./textEditor"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Utility to register editors and common namespace for keeping reference to all editor classes
+ * Utility to register editors and common namespace for keeping reference to all editor classes.
  */
 var registeredEditorClasses = new WeakMap();
 
@@ -78,6 +78,10 @@ _register('password', _passwordEditor.default);
 _register('select', _selectEditor.default);
 
 _register('text', _textEditor.default);
+/**
+ * @param {BaseEditor} editorClass The editor constructor.
+ */
+
 
 function RegisteredEditor(editorClass) {
   var instances = {};
@@ -102,8 +106,8 @@ function RegisteredEditor(editorClass) {
 /**
  * Returns instance (singleton) of editor class.
  *
- * @param {String} name Name of an editor under which it has been stored.
- * @param {Object} hotInstance Instance of Handsontable.
+ * @param {string} name Name of an editor under which it has been stored.
+ * @param {object} hotInstance Instance of Handsontable.
  * @returns {Function} Returns instance of editor.
  */
 
@@ -132,7 +136,7 @@ function _getEditorInstance(name, hotInstance) {
 /**
  * Retrieve editor class.
  *
- * @param {String} name Editor identification.
+ * @param {string} name Editor identification.
  * @returns {Function} Returns editor class.
  */
 
@@ -147,7 +151,7 @@ function _getItem(name) {
 /**
  * Register editor class under specified name.
  *
- * @param {String} name Editor identification.
+ * @param {string} name Editor identification.
  * @param {Function} editorClass Editor class.
  */
 

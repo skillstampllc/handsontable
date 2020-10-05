@@ -10,7 +10,9 @@ import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
+import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
 
@@ -22,51 +24,53 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-import { addClass, getCaretPosition, getComputedStyle, getCssTransform, getScrollbarWidth, innerWidth, offset, resetCssTransform, setCaretPosition, hasVerticalScrollbar, hasHorizontalScrollbar, selectElementIfAllowed, hasClass, removeClass } from './../helpers/dom/element';
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import { addClass, getCaretPosition, getComputedStyle, getCssTransform, getScrollbarWidth, innerWidth, offset, resetCssTransform, setCaretPosition, hasVerticalScrollbar, hasHorizontalScrollbar, hasClass, removeClass } from './../helpers/dom/element';
 import { rangeEach } from './../helpers/number';
 import autoResize from './../../lib/autoResize/autoResize';
 import { isMobileBrowser, isIE, isEdge } from './../helpers/browser';
 import BaseEditor, { EditorState } from './_baseEditor';
 import EventManager from './../eventManager';
 import { KEY_CODES } from './../helpers/unicode';
-import { stopPropagation, stopImmediatePropagation, isImmediatePropagationStopped } from './../helpers/dom/event';
+import { stopImmediatePropagation, isImmediatePropagationStopped } from './../helpers/dom/event';
 var EDITOR_VISIBLE_CLASS_NAME = 'ht_editor_visible';
 var EDITOR_HIDDEN_CLASS_NAME = 'ht_editor_hidden';
 /**
  * @private
- * @editor TextEditor
  * @class TextEditor
- * @dependencies autoResize
  */
 
-var TextEditor =
-/*#__PURE__*/
-function (_BaseEditor) {
+var TextEditor = /*#__PURE__*/function (_BaseEditor) {
   _inherits(TextEditor, _BaseEditor);
 
+  var _super = _createSuper(TextEditor);
+
   /**
-   * @param {Handsontable} instance
+   * @param {Core} instance The Handsontable instance.
    */
   function TextEditor(instance) {
     var _this;
 
     _classCallCheck(this, TextEditor);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextEditor).call(this, instance));
+    _this = _super.call(this, instance);
     /**
      * Instance of {@link EventManager}.
      *
@@ -116,7 +120,7 @@ function (_BaseEditor) {
 
     _this.textareaParentStyle = void 0;
     /**
-     * z-index class style for the editor.
+     * Z-index class style for the editor.
      *
      * @private
      * @type {string}
@@ -137,7 +141,7 @@ function (_BaseEditor) {
   /**
    * Gets current value from editable element.
    *
-   * @returns {Number}
+   * @returns {number}
    */
 
 
@@ -149,7 +153,7 @@ function (_BaseEditor) {
     /**
      * Sets new value into editable element.
      *
-     * @param {*} newValue
+     * @param {*} newValue The editor value.
      */
 
   }, {
@@ -192,22 +196,20 @@ function (_BaseEditor) {
     /**
      * Prepares editor's meta data.
      *
-     * @param {Number} row
-     * @param {Number} col
-     * @param {Number|String} prop
-     * @param {HTMLTableCellElement} td
-     * @param {*} originalValue
-     * @param {Object} cellProperties
+     * @param {number} row The visual row index.
+     * @param {number} col The visual column index.
+     * @param {number|string} prop The column property (passed when datasource is an array of objects).
+     * @param {HTMLTableCellElement} td The rendered cell element.
+     * @param {*} value The rendered value.
+     * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
      */
 
   }, {
     key: "prepare",
-    value: function prepare(row, col, prop, td, originalValue, cellProperties) {
-      var _this3 = this;
-
+    value: function prepare(row, col, prop, td, value, cellProperties) {
       var previousState = this.state;
 
-      _get(_getPrototypeOf(TextEditor.prototype), "prepare", this).call(this, row, col, prop, td, originalValue, cellProperties);
+      _get(_getPrototypeOf(TextEditor.prototype), "prepare", this).call(this, row, col, prop, td, value, cellProperties);
 
       if (!cellProperties.readOnly) {
         this.refreshDimensions(true);
@@ -215,29 +217,29 @@ function (_BaseEditor) {
             fragmentSelection = cellProperties.fragmentSelection;
 
         if (allowInvalid) {
-          this.TEXTAREA.value = ''; // Remove an empty space from texarea (added by copyPaste plugin to make copy/paste functionality work with IME)
+          // Remove an empty space from texarea (added by copyPaste plugin to make copy/paste
+          // functionality work with IME)
+          this.TEXTAREA.value = '';
         }
 
         if (previousState !== EditorState.FINISHED) {
           this.hideEditableElement();
-        } // @TODO: The fragmentSelection functionality is conflicted with IME. For this feature refocus has to
-        // be disabled (to make IME working).
+        } // @TODO: The fragmentSelection functionality is conflicted with IME. For this feature
+        // refocus has to be disabled (to make IME working).
 
 
         var restoreFocus = !fragmentSelection;
 
         if (restoreFocus && !isMobileBrowser()) {
-          this.hot._registerImmediate(function () {
-            return _this3.focus(true);
-          });
+          this.focus();
         }
       }
     }
     /**
      * Begins editing on a highlighted cell and hides fillHandle corner if was present.
      *
-     * @param {*} newInitialValue
-     * @param {*} event
+     * @param {*} newInitialValue The editor initial value.
+     * @param {Event} event The keyboard event object.
      */
 
   }, {
@@ -253,24 +255,16 @@ function (_BaseEditor) {
     }
     /**
      * Sets focus state on the select element.
-     *
-     * @param {Boolean} [safeFocus=false] If `true` select element only when is handsontableInput. Otherwise sets focus on this element.
-     * If focus is calling without param textarea need be select and set caret position.
      */
 
   }, {
     key: "focus",
     value: function focus() {
-      var safeFocus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-      // For IME editor textarea element must be focused using ".select" method. Using ".focus" browser automatically scroll into
-      // the focused element which is undesire effect.
-      if (safeFocus) {
-        selectElementIfAllowed(this.TEXTAREA);
-      } else {
-        this.TEXTAREA.select();
-        setCaretPosition(this.TEXTAREA, this.TEXTAREA.value.length);
-      }
+      // For IME editor textarea element must be focused using ".select" method.
+      // Using ".focus" browser automatically scroll into the focused element which
+      // is undesire effect.
+      this.TEXTAREA.select();
+      setCaretPosition(this.TEXTAREA, this.TEXTAREA.value.length);
     }
     /**
      * Creates an editor's elements and adds necessary CSS classnames.
@@ -281,6 +275,8 @@ function (_BaseEditor) {
     value: function createElements() {
       var rootDocument = this.hot.rootDocument;
       this.TEXTAREA = rootDocument.createElement('TEXTAREA');
+      this.TEXTAREA.setAttribute('data-hot-input', ''); // Makes the element recognizable by Hot as its own component's element.
+
       this.TEXTAREA.tabIndex = -1;
       addClass(this.TEXTAREA, 'handsontableInput');
       this.textareaStyle = this.TEXTAREA.style;
@@ -380,7 +376,7 @@ function (_BaseEditor) {
      * Refreshes editor's size and position.
      *
      * @private
-     * @param {Boolean} force
+     * @param {boolean} force Indicates if the refreshing editor dimensions should be triggered.
      */
 
   }, {
@@ -409,7 +405,6 @@ function (_BaseEditor) {
       var containerOffset = offset(this.hot.rootElement);
       var scrollableContainerTop = wtOverlays.topOverlay.holder;
       var scrollableContainerLeft = wtOverlays.leftOverlay.holder;
-      var totalRowsCount = this.hot.countRows();
       var containerScrollTop = scrollableContainerTop !== this.hot.rootWindow ? scrollableContainerTop.scrollTop : 0;
       var containerScrollLeft = scrollableContainerLeft !== this.hot.rootWindow ? scrollableContainerLeft.scrollLeft : 0;
       var editorSection = this.checkEditorSection();
@@ -417,8 +412,6 @@ function (_BaseEditor) {
       var scrollLeft = ['', 'top', 'bottom'].includes(editorSection) ? containerScrollLeft : 0; // If colHeaders is disabled, cells in the first row have border-top
 
       var editTopModifier = currentOffset.top === containerOffset.top ? 0 : 1;
-      var settings = this.hot.getSettings();
-      var colHeadersCount = this.hot.hasColHeaders();
       var backgroundColor = this.TD.style.backgroundColor;
       var editTop = currentOffset.top - containerOffset.top - editTopModifier - scrollTop;
       var editLeft = currentOffset.left - containerOffset.left - 1 - scrollLeft;
@@ -449,11 +442,17 @@ function (_BaseEditor) {
           break;
       }
 
-      if (colHeadersCount && this.hot.getSelectedLast()[0] === 0 || settings.fixedRowsBottom && this.hot.getSelectedLast()[0] === totalRowsCount - settings.fixedRowsBottom) {
+      var hasColumnHeaders = this.hot.hasColHeaders();
+      var renderableRow = this.hot.rowIndexMapper.getRenderableFromVisualIndex(this.row);
+      var renderableColumn = this.hot.columnIndexMapper.getRenderableFromVisualIndex(this.col);
+      var nrOfRenderableRowIndexes = this.hot.rowIndexMapper.getRenderableIndexesLength();
+      var firstRowIndexOfTheBottomOverlay = nrOfRenderableRowIndexes - this.hot.view.wt.getSetting('fixedRowsBottom');
+
+      if (hasColumnHeaders && renderableRow <= 0 || renderableRow === firstRowIndexOfTheBottomOverlay) {
         editTop += 1;
       }
 
-      if (this.hot.getSelectedLast()[1] === 0) {
+      if (renderableColumn <= 0) {
         editLeft += 1;
       }
 
@@ -478,7 +477,8 @@ function (_BaseEditor) {
       var actualHorizontalScrollbarWidth = hasHorizontalScrollbar(scrollableContainerLeft) ? scrollbarWidth : 0;
       var maxWidth = this.hot.view.maximumVisibleElementWidth(cellLeftOffset) - 9 - actualVerticalScrollbarWidth;
       var height = this.TD.scrollHeight + 1;
-      var maxHeight = Math.max(this.hot.view.maximumVisibleElementHeight(cellTopOffset) - actualHorizontalScrollbarWidth, 23);
+      var maxHeight = Math.max(this.hot.view.maximumVisibleElementHeight(cellTopOffset) - actualHorizontalScrollbarWidth, 23); // eslint-disable-line max-len
+
       var cellComputedStyle = getComputedStyle(this.TD, this.hot.rootWindow);
       this.TEXTAREA.style.fontSize = cellComputedStyle.fontSize;
       this.TEXTAREA.style.fontFamily = cellComputedStyle.fontFamily;
@@ -501,29 +501,29 @@ function (_BaseEditor) {
   }, {
     key: "bindEvents",
     value: function bindEvents() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.eventManager.addEventListener(this.TEXTAREA, 'cut', function (event) {
-        return stopPropagation(event);
+        return event.stopPropagation();
       });
       this.eventManager.addEventListener(this.TEXTAREA, 'paste', function (event) {
-        return stopPropagation(event);
+        return event.stopPropagation();
       });
       this.addHook('afterScrollHorizontally', function () {
-        return _this4.refreshDimensions();
+        return _this3.refreshDimensions();
       });
       this.addHook('afterScrollVertically', function () {
-        return _this4.refreshDimensions();
+        return _this3.refreshDimensions();
       });
       this.addHook('afterColumnResize', function () {
-        _this4.refreshDimensions();
+        _this3.refreshDimensions();
 
-        _this4.focus();
+        _this3.focus();
       });
       this.addHook('afterRowResize', function () {
-        _this4.refreshDimensions();
+        _this3.refreshDimensions();
 
-        _this4.focus();
+        _this3.focus();
       });
     }
     /**
@@ -548,9 +548,9 @@ function (_BaseEditor) {
       this.clearHooks();
     }
     /**
-     * onBeforeKeyDown callback.
+     * OnBeforeKeyDown callback.
      *
-     * @param {Event} event
+     * @param {Event} event The keyboard event object.
      */
 
   }, {
@@ -628,7 +628,9 @@ function (_BaseEditor) {
           break;
       }
 
-      if ([KEY_CODES.ARROW_UP, KEY_CODES.ARROW_RIGHT, KEY_CODES.ARROW_DOWN, KEY_CODES.ARROW_LEFT].indexOf(event.keyCode) === -1) {
+      var arrowKeyCodes = [KEY_CODES.ARROW_UP, KEY_CODES.ARROW_RIGHT, KEY_CODES.ARROW_DOWN, KEY_CODES.ARROW_LEFT];
+
+      if (arrowKeyCodes.indexOf(event.keyCode) === -1) {
         this.autoResize.resize(String.fromCharCode(event.keyCode));
       }
     }

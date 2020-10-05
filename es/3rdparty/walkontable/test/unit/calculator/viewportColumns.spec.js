@@ -30,13 +30,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(0);
@@ -62,13 +62,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(3);
@@ -101,13 +101,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(1);
@@ -140,13 +140,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(0);
@@ -172,13 +172,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.count).toBe(6);
@@ -197,13 +197,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(0);
@@ -228,13 +228,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(0);
@@ -259,13 +259,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(0);
@@ -290,13 +290,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(null);
@@ -329,13 +329,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(null);
@@ -361,13 +361,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(10);
@@ -503,13 +503,13 @@ describe('ViewportColumnsCalculator', function () {
       stretchMode: void 0,
       stretchingItemWidthFn: void 0
     };
-    var renderedCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: RENDER_TYPE
     }));
-    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new ViewportColumnsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startColumn).toBe(0);

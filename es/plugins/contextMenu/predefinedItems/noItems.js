@@ -1,5 +1,9 @@
 import { CONTEXTMENU_ITEMS_NO_ITEMS } from './../../../i18n/constants';
 export var KEY = 'no_items';
+/**
+ * @returns {object}
+ */
+
 export default function noItemsItem() {
   return {
     key: KEY,

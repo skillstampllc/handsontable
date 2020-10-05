@@ -4,8 +4,18 @@ import "core-js/modules/es.array.splice";
 import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.freeze";
 
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["Unexpected operation named `", "`. Possible ones are \n          `disjunction` and `conjunction`."], ["Unexpected operation named \\`", "\\`. Possible ones are\\x20\n          \\`disjunction\\` and \\`conjunction\\`."]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["The column of index ", " has been already applied with a `", "`\n        filter operation. Use `removeConditions` to clear the current conditions and then add new ones.\n        Mind that you cannot mix different types of operations (for instance, if you use `conjunction`,\n        use it consequently for a particular column)."], ["The column of index ", " has been already applied with a \\`", "\\`\n        filter operation. Use \\`removeConditions\\` to clear the current conditions and then add new ones.\n        Mind that you cannot mix different types of operations (for instance, if you use \\`conjunction\\`,\n        use it consequently for a particular column)."]);
+  var data = _taggedTemplateLiteral(["The column of index ", " has been already applied with a `", "` \n        filter operation. Use `removeConditions` to clear the current conditions and then add new ones. \n        Mind that you cannot mix different types of operations (for instance, if you use `conjunction`, \n        use it consequently for a particular column)."], ["The column of index ", " has been already applied with a \\`", "\\`\\x20\n        filter operation. Use \\`removeConditions\\` to clear the current conditions and then add new ones.\\x20\n        Mind that you cannot mix different types of operations (for instance, if you use \\`conjunction\\`,\\x20\n        use it consequently for a particular column)."]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -34,22 +44,20 @@ import { operations, getOperationFunc } from './logicalOperationRegisterer';
  * @plugin Filters
  */
 
-var ConditionCollection =
-/*#__PURE__*/
-function () {
+var ConditionCollection = /*#__PURE__*/function () {
   function ConditionCollection() {
     _classCallCheck(this, ConditionCollection);
 
     /**
      * Conditions collection grouped by operation type and then column index.
      *
-     * @type {Object}
+     * @type {object}
      */
     this.conditions = this.initConditionsCollection();
     /**
      * Types of operations grouped by column index.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.columnTypes = {};
@@ -64,7 +72,7 @@ function () {
   /**
    * Check if condition collection is empty (so no needed to filter data).
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -76,9 +84,9 @@ function () {
     /**
      * Check if value is matched to the criteria of conditions chain.
      *
-     * @param {Object} value Object with `value` and `meta` keys.
-     * @param {Number} [column] Column index.
-     * @returns {Boolean}
+     * @param {object} value Object with `value` and `meta` keys.
+     * @param {number} [column] Column index.
+     * @returns {boolean}
      */
 
   }, {
@@ -104,9 +112,9 @@ function () {
      * Check if the value is matches the conditions.
      *
      * @param {Array} conditions List of conditions.
-     * @param {Object} value Object with `value` and `meta` keys.
-     * @param {String} [operationType='conjunction'] Type of conditions operation
-     * @returns {Boolean}
+     * @param {object} value Object with `value` and `meta` keys.
+     * @param {string} [operationType='conjunction'] Type of conditions operation.
+     * @returns {boolean}
      */
 
   }, {
@@ -126,11 +134,11 @@ function () {
     /**
      * Add condition to the collection.
      *
-     * @param {Number} column Column index.
-     * @param {Object} conditionDefinition Object with keys:
+     * @param {number} column Column index.
+     * @param {object} conditionDefinition Object with keys:
      *  * `command` Object, Command object with condition name as `key` property.
      *  * `args` Array, Condition arguments.
-     * @param {String} [operation='conjunction'] Type of conditions operation
+     * @param {string} [operation='conjunction'] Type of conditions operation.
      * @fires ConditionCollection#beforeAdd
      * @fires ConditionCollection#afterAdd
      */
@@ -157,7 +165,7 @@ function () {
         }
       } else {
         if (!this.conditions[operation]) {
-          throw new Error("Unexpected operation named `".concat(operation, "`. Possible ones are `disjunction` and `conjunction`."));
+          throw new Error(toSingleLine(_templateObject2(), operation));
         }
 
         this.columnTypes[column] = operation;
@@ -174,7 +182,7 @@ function () {
     /**
      * Get all added conditions from the collection at specified column index.
      *
-     * @param {Number} column Column index.
+     * @param {number} column Column index.
      * @returns {Array} Returns conditions collection as an array.
      */
 
@@ -225,6 +233,8 @@ function () {
     }
     /**
      * Import conditions to the collection.
+     *
+     * @param {Array} conditions The collection of the conditions.
      */
 
   }, {
@@ -244,7 +254,7 @@ function () {
     /**
      * Remove conditions at given column index.
      *
-     * @param {Number} column Column index.
+     * @param {number} column Column index.
      * @fires ConditionCollection#beforeRemove
      * @fires ConditionCollection#afterRemove
      */
@@ -264,7 +274,7 @@ function () {
     /**
      * Clear conditions at specified column index but without clearing stack order.
      *
-     * @param {Number }column Column index.
+     * @param {number}column Column index.
      * @fires ConditionCollection#beforeClear
      * @fires ConditionCollection#afterClear
      */
@@ -281,9 +291,9 @@ function () {
      * Check if at least one condition was added at specified column index. And if second parameter is passed then additionally
      * check if condition exists under its name.
      *
-     * @param {Number} column Column index.
-     * @param {String} [name] Condition name.
-     * @returns {Boolean}
+     * @param {number} column Column index.
+     * @param {string} [name] Condition name.
+     * @returns {boolean}
      */
 
   }, {
@@ -337,9 +347,10 @@ function () {
       this.columnTypes = null;
     }
     /**
-     * Init conditions collection
+     * Init conditions collection.
      *
      * @private
+     * @returns {object} Returns an initial bucket for conditions.
      */
 
   }, {

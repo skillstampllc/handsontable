@@ -40,9 +40,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * @class Renderer
  */
-var Renderer =
-/*#__PURE__*/
-function () {
+var Renderer = /*#__PURE__*/function () {
   function Renderer() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         TABLE = _ref.TABLE,
@@ -76,8 +74,8 @@ function () {
    * Sets filter calculators for newly calculated row and column position. The filters are used to transform visual
    * indexes (0 to N) to source indexes provided by Handsontable.
    *
-   * @param {RowFilter} rowFilter
-   * @param {ColumnFilter} columnFilter
+   * @param {RowFilter} rowFilter The row filter instance.
+   * @param {ColumnFilter} columnFilter The column filter instance.
    * @returns {Renderer}
    */
 
@@ -91,9 +89,9 @@ function () {
     /**
      * Sets the viewport size of the rendered table.
      *
-     * @param {Number} rowsCount An amount of rows to render.
-     * @param {Number} columnsCount An amount of columns to render.
-     * @return {Renderer}
+     * @param {number} rowsCount An amount of rows to render.
+     * @param {number} columnsCount An amount of columns to render.
+     * @returns {Renderer}
      */
 
   }, {

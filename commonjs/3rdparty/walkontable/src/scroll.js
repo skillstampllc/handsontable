@@ -14,11 +14,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @class Scroll
  */
-var Scroll =
-/*#__PURE__*/
-function () {
+var Scroll = /*#__PURE__*/function () {
   /**
-   * @param {Walkontable} wotInstance
+   * @param {Walkontable} wotInstance The Walkontable instance.
    */
   function Scroll(wotInstance) {
     _classCallCheck(this, Scroll);
@@ -28,12 +26,12 @@ function () {
   /**
    * Scrolls viewport to a cell.
    *
-   * @param {CellCoords} coords
-   * @param {Boolean} [snapToTop]
-   * @param {Boolean} [snapToRight]
-   * @param {Boolean} [snapToBottom]
-   * @param {Boolean} [snapToLeft]
-   * @returns {Boolean}
+   * @param {CellCoords} coords The cell coordinates.
+   * @param {boolean} [snapToTop] If `true`, viewport is scrolled to show the cell on the top of the table.
+   * @param {boolean} [snapToRight] If `true`, viewport is scrolled to show the cell on the right of the table.
+   * @param {boolean} [snapToBottom] If `true`, viewport is scrolled to show the cell on the bottom of the table.
+   * @param {boolean} [snapToLeft] If `true`, viewport is scrolled to show the cell on the left of the table.
+   * @returns {boolean}
    */
 
 
@@ -51,10 +49,10 @@ function () {
     /**
      * Scrolls viewport to a column.
      *
-     * @param {Number} column Visual column index.
-     * @param {Boolean} [snapToRight]
-     * @param {Boolean} [snapToLeft]
-     * @returns {Boolean}
+     * @param {number} column Visual column index.
+     * @param {boolean} [snapToRight] If `true`, viewport is scrolled to show the cell on the right of the table.
+     * @param {boolean} [snapToLeft] If `true`, viewport is scrolled to show the cell on the left of the table.
+     * @returns {boolean}
      */
 
   }, {
@@ -87,10 +85,10 @@ function () {
     /**
      * Scrolls viewport to a row.
      *
-     * @param {Number} row Visual row index.
-     * @param {Boolean} [snapToTop]
-     * @param {Boolean} [snapToBottom]
-     * @returns {Boolean}
+     * @param {number} row Visual row index.
+     * @param {boolean} [snapToTop] If `true`, viewport is scrolled to show the cell on the top of the table.
+     * @param {boolean} [snapToBottom] If `true`, viewport is scrolled to show the cell on the bottom of the table.
+     * @returns {boolean}
      */
 
   }, {
@@ -124,7 +122,7 @@ function () {
     /**
      * Get first visible row based on virtual dom and how table is visible in browser window viewport.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -167,7 +165,7 @@ function () {
     /**
      * Get last visible row based on virtual dom and how table is visible in browser window viewport.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -207,7 +205,7 @@ function () {
     /**
      * Get first visible column based on virtual dom and how table is visible in browser window viewport.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -248,7 +246,7 @@ function () {
     /**
      * Get last visible column based on virtual dom and how table is visible in browser window viewport.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -288,7 +286,7 @@ function () {
     /**
      * Returns collection of variables used to rows and columns visibility calculations.
      *
-     * @returns {Object}
+     * @returns {object}
      * @private
      */
 

@@ -28,11 +28,15 @@ require("core-js/modules/es.array.sort");
 
 require("core-js/modules/es.array.splice");
 
+require("core-js/modules/es.function.name");
+
 require("core-js/modules/es.object.get-prototype-of");
 
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.regexp.to-string");
 
@@ -65,29 +69,37 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -96,13 +108,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  * Handsontable UndoRedo plugin allows to undo and redo certain actions done in the table.
  *
  * __Note__, that not all actions are currently undo-able. The UndoRedo plugin is enabled by default.
- *
  * @example
  * ```js
  * undo: true
  * ```
  * @class UndoRedo
  * @plugin UndoRedo
+ * @param {Core} instance The Handsontable instance.
  */
 function UndoRedo(instance) {
   var plugin = this;
@@ -156,7 +168,7 @@ function UndoRedo(instance) {
     var rowIndex = (originalData.length + index) % originalData.length;
     var physicalRowIndex = instance.toPhysicalRow(rowIndex);
     var removedData = (0, _object.deepClone)(originalData.slice(physicalRowIndex, physicalRowIndex + amount));
-    plugin.done(new UndoRedo.RemoveRowAction(rowIndex, removedData));
+    plugin.done(new UndoRedo.RemoveRowAction(rowIndex, removedData, instance.getSettings().fixedRowsBottom, instance.getSettings().fixedRowsTop));
   });
   instance.addHook('afterCreateCol', function (index, amount, source) {
     if (source === 'UndoRedo.undo' || source === 'UndoRedo.redo' || source === 'auto') {
@@ -194,7 +206,8 @@ function UndoRedo(instance) {
     }
 
     var columnsMap = instance.columnIndexMapper.getIndexesSequence();
-    var action = new UndoRedo.RemoveColumnAction(columnIndex, indexes, removedData, headers, columnsMap);
+    var rowsMap = instance.rowIndexMapper.getIndexesSequence();
+    var action = new UndoRedo.RemoveColumnAction(columnIndex, indexes, removedData, headers, columnsMap, rowsMap, instance.getSettings().fixedColumnsLeft);
     plugin.done(action);
   });
   instance.addHook('beforeCellAlignment', function (stateBefore, range, type, alignment) {
@@ -226,6 +239,10 @@ function UndoRedo(instance) {
     plugin.done(new UndoRedo.UnmergeCellsAction(instance, cellRange));
   });
 }
+/**
+ * @param {object} action The action desciptor.
+ */
+
 
 UndoRedo.prototype.done = function (action) {
   if (!this.ignoreNewActions) {
@@ -298,7 +315,7 @@ UndoRedo.prototype.redo = function () {
  *
  * @function isUndoAvailable
  * @memberof UndoRedo#
- * @return {Boolean} Return `true` if undo can be performed, `false` otherwise.
+ * @returns {boolean} Return `true` if undo can be performed, `false` otherwise.
  */
 
 
@@ -310,7 +327,7 @@ UndoRedo.prototype.isUndoAvailable = function () {
  *
  * @function isRedoAvailable
  * @memberof UndoRedo#
- * @return {Boolean} Return `true` if redo can be performed, `false` otherwise.
+ * @returns {boolean} Return `true` if redo can be performed, `false` otherwise.
  */
 
 
@@ -339,6 +356,8 @@ UndoRedo.Action.prototype.redo = function () {};
  * Change action.
  *
  * @private
+ * @param {Array} changes 2D array containing information about each of the edited cells.
+ * @param {number[]} selected The cell selection.
  */
 
 
@@ -399,6 +418,8 @@ UndoRedo.ChangeAction.prototype.redo = function (instance, onFinishCallback) {
  * Create row action.
  *
  * @private
+ * @param {number} index The visual row index.
+ * @param {number} amount The number of created rows.
  */
 
 
@@ -430,18 +451,28 @@ UndoRedo.CreateRowAction.prototype.redo = function (instance, redoneCallback) {
  * Remove row action.
  *
  * @private
+ * @param {number} index The visual row index.
+ * @param {Array} data The removed data.
+ * @param {number} fixedRowsBottom Number of fixed rows on the bottom. Remove row action change it sometimes.
+ * @param {number} fixedRowsTop Number of fixed rows on the top. Remove row action change it sometimes.
  */
 
 
-UndoRedo.RemoveRowAction = function (index, data) {
+UndoRedo.RemoveRowAction = function (index, data, fixedRowsBottom, fixedRowsTop) {
   this.index = index;
   this.data = data;
   this.actionType = 'remove_row';
+  this.fixedRowsBottom = fixedRowsBottom;
+  this.fixedRowsTop = fixedRowsTop;
 };
 
 (0, _object.inherit)(UndoRedo.RemoveRowAction, UndoRedo.Action);
 
 UndoRedo.RemoveRowAction.prototype.undo = function (instance, undoneCallback) {
+  var settings = instance.getSettings(); // Changing by the reference as `updateSettings` doesn't work the best.
+
+  settings.fixedRowsBottom = this.fixedRowsBottom;
+  settings.fixedRowsTop = this.fixedRowsTop;
   instance.alter('insert_row', this.index, this.data.length, 'UndoRedo.undo');
   instance.addHookOnce('afterRender', undoneCallback);
   instance.populateFromArray(this.index, 0, this.data, void 0, void 0, 'UndoRedo.undo');
@@ -455,6 +486,8 @@ UndoRedo.RemoveRowAction.prototype.redo = function (instance, redoneCallback) {
  * Create column action.
  *
  * @private
+ * @param {number} index The visual column index.
+ * @param {number} amount The number of created columns.
  */
 
 
@@ -479,65 +512,92 @@ UndoRedo.CreateColumnAction.prototype.redo = function (instance, redoneCallback)
  * Remove column action.
  *
  * @private
+ * @param {number} index The visual column index.
+ * @param {number[]} indexes The visual column indexes.
+ * @param {Array} data The removed data.
+ * @param {Array} headers The header values.
+ * @param {number[]} columnPositions The column position.
+ * @param {number[]} rowPositions The row position.
+ * @param {number} fixedColumnsLeft Number of fixed columns on the left. Remove column action change it sometimes.
  */
 
 
-UndoRedo.RemoveColumnAction = function (index, indexes, data, headers, columnPositions) {
+UndoRedo.RemoveColumnAction = function (index, indexes, data, headers, columnPositions, rowPositions, fixedColumnsLeft) {
   this.index = index;
   this.indexes = indexes;
   this.data = data;
   this.amount = this.data[0].length;
   this.headers = headers;
   this.columnPositions = columnPositions.slice(0);
+  this.rowPositions = rowPositions.slice(0);
   this.actionType = 'remove_col';
+  this.fixedColumnsLeft = fixedColumnsLeft;
 };
 
 (0, _object.inherit)(UndoRedo.RemoveColumnAction, UndoRedo.Action);
 
 UndoRedo.RemoveColumnAction.prototype.undo = function (instance, undoneCallback) {
-  var _this = this;
+  var _this = this,
+      _instance$getPlugin$e,
+      _instance$getPlugin;
 
-  var row;
+  var settings = instance.getSettings(); // Changing by the reference as `updateSettings` doesn't work the best.
+
+  settings.fixedColumnsLeft = this.fixedColumnsLeft;
   var ascendingIndexes = this.indexes.slice(0).sort();
 
   var sortByIndexes = function sortByIndexes(elem, j, arr) {
     return arr[_this.indexes.indexOf(ascendingIndexes[j])];
   };
 
+  var removedDataLength = this.data.length;
   var sortedData = [];
-  (0, _number.rangeEach)(this.data.length - 1, function (i) {
-    sortedData[i] = (0, _array.arrayMap)(_this.data[i], sortByIndexes);
-  });
-  var sortedHeaders = [];
-  sortedHeaders = (0, _array.arrayMap)(this.headers, sortByIndexes);
-  var changes = []; // TODO: Temporary hook for undo/redo mess
 
-  instance.runHooks('beforeCreateCol', this.indexes[0], this.indexes.length, 'UndoRedo.undo');
-  (0, _number.rangeEach)(this.data.length - 1, function (i) {
-    row = instance.getSourceDataAtRow(i);
-    (0, _number.rangeEach)(ascendingIndexes.length - 1, function (j) {
-      row.splice(ascendingIndexes[j], 0, sortedData[i][j]);
-      changes.push([i, ascendingIndexes[j], null, sortedData[i][j]]);
+  for (var rowIndex = 0; rowIndex < removedDataLength; rowIndex++) {
+    sortedData.push((0, _array.arrayMap)(this.data[rowIndex], sortByIndexes));
+  }
+
+  var sortedHeaders = (0, _array.arrayMap)(this.headers, sortByIndexes);
+  var isFormulaPluginEnabled = (_instance$getPlugin$e = (_instance$getPlugin = instance.getPlugin('formulas')) === null || _instance$getPlugin === void 0 ? void 0 : _instance$getPlugin.enabled) !== null && _instance$getPlugin$e !== void 0 ? _instance$getPlugin$e : false;
+  var changes = [];
+  instance.alter('insert_col', this.indexes[0], this.indexes.length, 'UndoRedo.undo');
+  (0, _array.arrayEach)(instance.getSourceDataArray(), function (rowData, rowIndex) {
+    (0, _array.arrayEach)(ascendingIndexes, function (changedIndex, contiquesIndex) {
+      rowData[changedIndex] = sortedData[rowIndex][contiquesIndex];
+      changes.push([rowIndex, changedIndex, rowData[changedIndex]]);
     });
   });
-  instance.columnIndexMapper.insertIndexes(ascendingIndexes[0], ascendingIndexes.length); // TODO: Temporary hook for undo/redo mess
+  instance.setSourceDataAtCell(changes);
+  instance.columnIndexMapper.insertIndexes(ascendingIndexes[0], ascendingIndexes.length); // TODO Temporary hook for undo/redo mess
 
-  if (instance.getPlugin('formulas')) {
-    instance.getPlugin('formulas').onAfterSetDataAtCell(changes);
+  if (isFormulaPluginEnabled) {
+    var setDataAtCellChanges = [];
+    (0, _array.arrayEach)(instance.getSourceDataArray(), function (rowData, rowIndex) {
+      (0, _array.arrayEach)(ascendingIndexes, function (changedIndex, contiquesIndex) {
+        rowData[changedIndex] = sortedData[rowIndex][contiquesIndex];
+        setDataAtCellChanges.push([rowIndex, changedIndex, null, rowData[changedIndex]]);
+      });
+    });
+    instance.getPlugin('formulas').onAfterSetDataAtCell(setDataAtCellChanges);
   }
 
   if (typeof this.headers !== 'undefined') {
-    (0, _number.rangeEach)(sortedHeaders.length - 1, function (j) {
-      instance.getSettings().colHeaders.splice(ascendingIndexes[j], 0, sortedHeaders[j]);
+    (0, _array.arrayEach)(sortedHeaders, function (headerData, columnIndex) {
+      instance.getSettings().colHeaders[ascendingIndexes[columnIndex]] = headerData;
     });
   }
 
-  instance.columnIndexMapper.setIndexesSequence(this.columnPositions);
-  instance.addHookOnce('afterRender', undoneCallback); // TODO: Temporary hook for undo/redo mess
+  instance.batch(function () {
+    // Restore row sequence in a case when all columns are removed. the original
+    // row sequence is lost in that case.
+    instance.rowIndexMapper.setIndexesSequence(_this.rowPositions);
+    instance.columnIndexMapper.setIndexesSequence(_this.columnPositions);
+  });
+  instance.addHookOnce('afterRender', undoneCallback); // TODO Temporary hook for undo/redo mess
 
   instance.runHooks('afterCreateCol', this.indexes[0], this.indexes.length, 'UndoRedo.undo');
 
-  if (instance.getPlugin('formulas')) {
+  if (isFormulaPluginEnabled) {
     instance.getPlugin('formulas').recalculateFull();
   }
 
@@ -552,6 +612,10 @@ UndoRedo.RemoveColumnAction.prototype.redo = function (instance, redoneCallback)
  * Cell alignment action.
  *
  * @private
+ * @param {Array} stateBefore The previous state.
+ * @param {object} range The cell range.
+ * @param {string} type The type of the alignment ("top", "left", "bottom" or "right").
+ * @param {string} alignment The alignment CSS class.
  */
 
 
@@ -565,15 +629,13 @@ UndoRedo.CellAlignmentAction = function (stateBefore, range, type, alignment) {
 UndoRedo.CellAlignmentAction.prototype.undo = function (instance, undoneCallback) {
   var _this2 = this;
 
-  (0, _array.arrayEach)(this.range, function (_ref) {
-    var from = _ref.from,
-        to = _ref.to;
-
-    for (var row = from.row; row <= to.row; row += 1) {
-      for (var col = from.col; col <= to.col; col += 1) {
+  (0, _array.arrayEach)(this.range, function (range) {
+    range.forAll(function (row, col) {
+      // Alignment classes should only collected within cell ranges. We skip header coordinates.
+      if (row >= 0 && col >= 0) {
         instance.setCellMeta(row, col, 'className', _this2.stateBefore[row][col] || ' htLeft');
       }
-    }
+    });
   });
   instance.addHookOnce('afterRender', undoneCallback);
   instance.render();
@@ -592,6 +654,7 @@ UndoRedo.CellAlignmentAction.prototype.redo = function (instance, undoneCallback
  * Filters action.
  *
  * @private
+ * @param {Array} conditionsStack An array of the filter condition.
  */
 
 
@@ -617,23 +680,29 @@ UndoRedo.FiltersAction.prototype.redo = function (instance, redoneCallback) {
 };
 /**
  * Merge Cells action.
+ *
  * @util
  */
 
 
-var MergeCellsAction =
-/*#__PURE__*/
-function (_UndoRedo$Action) {
+var MergeCellsAction = /*#__PURE__*/function (_UndoRedo$Action) {
   _inherits(MergeCellsAction, _UndoRedo$Action);
+
+  var _super = _createSuper(MergeCellsAction);
 
   function MergeCellsAction(instance, cellRange) {
     var _this3;
 
     _classCallCheck(this, MergeCellsAction);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(MergeCellsAction).call(this));
+    _this3 = _super.call(this);
     _this3.cellRange = cellRange;
-    _this3.rangeData = instance.getData(cellRange.from.row, cellRange.from.col, cellRange.to.row, cellRange.to.col);
+
+    var topLeftCorner = _this3.cellRange.getTopLeftCorner();
+
+    var bottomRightCorner = _this3.cellRange.getBottomRightCorner();
+
+    _this3.rangeData = instance.getData(topLeftCorner.row, topLeftCorner.col, bottomRightCorner.row, bottomRightCorner.col);
     return _this3;
   }
 
@@ -643,7 +712,8 @@ function (_UndoRedo$Action) {
       var mergeCellsPlugin = instance.getPlugin('mergeCells');
       instance.addHookOnce('afterRender', undoneCallback);
       mergeCellsPlugin.unmergeRange(this.cellRange, true);
-      instance.populateFromArray(this.cellRange.from.row, this.cellRange.from.col, this.rangeData, void 0, void 0, 'MergeCells');
+      var topLeftCorner = this.cellRange.getTopLeftCorner();
+      instance.populateFromArray(topLeftCorner.row, topLeftCorner.col, this.rangeData, void 0, void 0, 'MergeCells');
     }
   }, {
     key: "redo",
@@ -660,20 +730,21 @@ function (_UndoRedo$Action) {
 UndoRedo.MergeCellsAction = MergeCellsAction;
 /**
  * Unmerge Cells action.
+ *
  * @util
  */
 
-var UnmergeCellsAction =
-/*#__PURE__*/
-function (_UndoRedo$Action2) {
+var UnmergeCellsAction = /*#__PURE__*/function (_UndoRedo$Action2) {
   _inherits(UnmergeCellsAction, _UndoRedo$Action2);
+
+  var _super2 = _createSuper(UnmergeCellsAction);
 
   function UnmergeCellsAction(instance, cellRange) {
     var _this4;
 
     _classCallCheck(this, UnmergeCellsAction);
 
-    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(UnmergeCellsAction).call(this));
+    _this4 = _super2.call(this);
     _this4.cellRange = cellRange;
     return _this4;
   }
@@ -702,8 +773,10 @@ UndoRedo.UnmergeCellsAction = UnmergeCellsAction;
 /**
  * ManualRowMove action.
  *
+ * @TODO removeRow undo should works on logical index
  * @private
- * @TODO: removeRow undo should works on logical index
+ * @param {number[]} rows An array with moved rows.
+ * @param {number} finalIndex The destination index.
  */
 
 UndoRedo.RowMoveAction = function (rows, finalIndex) {
@@ -750,6 +823,10 @@ UndoRedo.RowMoveAction.prototype.redo = function (instance, redoneCallback) {
   instance.deselectCell();
   instance.selectRows(this.finalIndex, this.finalIndex + this.rows.length - 1);
 };
+/**
+ *
+ */
+
 
 function init() {
   var instance = this;
@@ -758,7 +835,7 @@ function init() {
   if (pluginEnabled) {
     if (!instance.undoRedo) {
       /**
-       * Instance of Handsontable.UndoRedo Plugin {@link Handsontable.UndoRedo}
+       * Instance of Handsontable.UndoRedo Plugin {@link Handsontable.UndoRedo}.
        *
        * @alias undoRedo
        * @memberof! Handsontable.Core#
@@ -776,6 +853,10 @@ function init() {
     instance.removeHook('afterChange', onAfterChange);
   }
 }
+/**
+ * @param {Event} event The keyboard event object.
+ */
+
 
 function onBeforeKeyDown(event) {
   if ((0, _event.isImmediatePropagationStopped)(event)) {
@@ -812,6 +893,12 @@ function onBeforeKeyDown(event) {
     (0, _event.stopImmediatePropagation)(event);
   }
 }
+/**
+ * @param {Array} changes 2D array containing information about each of the edited cells.
+ * @param {string} source String that identifies source of hook call.
+ * @returns {boolean}
+ */
+
 
 function onAfterChange(changes, source) {
   var instance = this;
@@ -820,20 +907,28 @@ function onAfterChange(changes, source) {
     return instance.undoRedo.clear();
   }
 }
+/**
+ * @param {Core} instance The Handsontable instance.
+ */
+
 
 function exposeUndoRedoMethods(instance) {
   /**
-   * {@link UndoRedo#undo}
+   * {@link UndoRedo#undo}.
+   *
    * @alias undo
    * @memberof! Handsontable.Core#
+   * @returns {boolean}
    */
   instance.undo = function () {
     return instance.undoRedo.undo();
   };
   /**
-   * {@link UndoRedo#redo}
+   * {@link UndoRedo#redo}.
+   *
    * @alias redo
    * @memberof! Handsontable.Core#
+   * @returns {boolean}
    */
 
 
@@ -841,9 +936,11 @@ function exposeUndoRedoMethods(instance) {
     return instance.undoRedo.redo();
   };
   /**
-   * {@link UndoRedo#isUndoAvailable}
+   * {@link UndoRedo#isUndoAvailable}.
+   *
    * @alias isUndoAvailable
    * @memberof! Handsontable.Core#
+   * @returns {boolean}
    */
 
 
@@ -851,9 +948,11 @@ function exposeUndoRedoMethods(instance) {
     return instance.undoRedo.isUndoAvailable();
   };
   /**
-   * {@link UndoRedo#isRedoAvailable}
+   * {@link UndoRedo#isRedoAvailable}.
+   *
    * @alias isRedoAvailable
    * @memberof! Handsontable.Core#
+   * @returns {boolean}
    */
 
 
@@ -861,9 +960,11 @@ function exposeUndoRedoMethods(instance) {
     return instance.undoRedo.isRedoAvailable();
   };
   /**
-   * {@link UndoRedo#clear}
+   * {@link UndoRedo#clear}.
+   *
    * @alias clearUndo
    * @memberof! Handsontable.Core#
+   * @returns {boolean}
    */
 
 
@@ -871,6 +972,10 @@ function exposeUndoRedoMethods(instance) {
     return instance.undoRedo.clear();
   };
 }
+/**
+ * @param {Core} instance The Handsontable instance.
+ */
+
 
 function removeExposedUndoRedoMethods(instance) {
   delete instance.undo;

@@ -1,20 +1,45 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
+import "core-js/modules/es.number.constructor";
+import "core-js/modules/es.number.is-integer";
+import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/es.weak-map";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,8 +49,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 import { addClass, clearTextSelection, empty, fastInnerHTML, fastInnerText, getScrollbarWidth, hasClass, isChildOf, isInput, isOutsideInput } from './helpers/dom/element';
 import EventManager from './eventManager';
-import { stopPropagation, isImmediatePropagationStopped, isRightClick, isLeftClick } from './helpers/dom/event';
-import Walkontable from './3rdparty/walkontable/src';
+import { isImmediatePropagationStopped, isRightClick, isLeftClick } from './helpers/dom/event';
+import Walkontable, { CellCoords } from './3rdparty/walkontable/src';
 import { handleMouseEvent } from './selection/mouseEventHandler';
 var privatePool = new WeakMap();
 /**
@@ -33,24 +58,22 @@ var privatePool = new WeakMap();
  * @private
  */
 
-var TableView =
-/*#__PURE__*/
-function () {
+var TableView = /*#__PURE__*/function () {
   /**
-   * @param {Hanstontable} instance Instance of {@link Handsontable}
+   * @param {Hanstontable} instance Instance of {@link Handsontable}.
    */
   function TableView(instance) {
     _classCallCheck(this, TableView);
 
     /**
-     * Instance of {@link Handsontable}
+     * Instance of {@link Handsontable}.
      *
      * @private
      * @type {Handsontable}
      */
     this.instance = instance;
     /**
-     * Instance of {@link EventManager}
+     * Instance of {@link EventManager}.
      *
      * @private
      * @type {EventManager}
@@ -99,13 +122,13 @@ function () {
        * Defines if the text should be selected during mousemove.
        *
        * @private
-       * @type {Boolean}
+       * @type {boolean}
        */
       selectionMouseDown: false,
 
       /**
        * @private
-       * @type {Boolean}
+       * @type {boolean}
        */
       mouseDown: void 0,
 
@@ -120,14 +143,14 @@ function () {
       /**
        * Cached width of the rootElement.
        *
-       * @type {Number}
+       * @type {number}
        */
       lastWidth: 0,
 
       /**
        * Cached height of the rootElement.
        *
-       * @type {Number}
+       * @type {number}
        */
       lastHeight: 0
     });
@@ -148,10 +171,10 @@ function () {
       this.instance.renderCall = false;
     }
     /**
-     * Returns td object given coordinates
+     * Returns td object given coordinates.
      *
-     * @param {CellCoords} coords
-     * @param {Boolean} topmost
+     * @param {CellCoords} coords Renderable cell coordinates.
+     * @param {boolean} topmost Indicates whether the cell should be calculated from the topmost.
      * @returns {HTMLTableCellElement|null}
      */
 
@@ -170,12 +193,12 @@ function () {
     /**
      * Scroll viewport to a cell.
      *
-     * @param {CellCoords} coords
-     * @param {Boolean} [snapToTop]
-     * @param {Boolean} [snapToRight]
-     * @param {Boolean} [snapToBottom]
-     * @param {Boolean} [snapToLeft]
-     * @returns {Boolean}
+     * @param {CellCoords} coords Renderable cell coordinates.
+     * @param {boolean} [snapToTop] If `true`, viewport is scrolled to show the cell on the top of the table.
+     * @param {boolean} [snapToRight] If `true`, viewport is scrolled to show the cell on the right side of the table.
+     * @param {boolean} [snapToBottom] If `true`, viewport is scrolled to show the cell on the bottom side of the table.
+     * @param {boolean} [snapToLeft] If `true`, viewport is scrolled to show the cell on the left side of the table.
+     * @returns {boolean}
      */
 
   }, {
@@ -186,10 +209,10 @@ function () {
     /**
      * Scroll viewport to a column.
      *
-     * @param {Number} column Visual column index.
-     * @param {Boolean} [snapToLeft]
-     * @param {Boolean} [snapToRight]
-     * @returns {Boolean}
+     * @param {number} column Renderable column index.
+     * @param {boolean} [snapToRight] If `true`, viewport is scrolled to show the cell on the right side of the table.
+     * @param {boolean} [snapToLeft] If `true`, viewport is scrolled to show the cell on the left side of the table.
+     * @returns {boolean}
      */
 
   }, {
@@ -200,10 +223,10 @@ function () {
     /**
      * Scroll viewport to a row.
      *
-     * @param {Number} row Visual row index.
-     * @param {Boolean} [snapToTop]
-     * @param {Boolean} [snapToBottom]
-     * @returns {Boolean}
+     * @param {number} row Renderable row index.
+     * @param {boolean} [snapToTop] If `true`, viewport is scrolled to show the cell on the top of the table.
+     * @param {boolean} [snapToBottom] If `true`, viewport is scrolled to show the cell on the bottom side of the table.
+     * @returns {boolean}
      */
 
   }, {
@@ -259,7 +282,8 @@ function () {
       var priv = privatePool.get(this);
       var _this$instance2 = this.instance,
           rootElement = _this$instance2.rootElement,
-          rootDocument = _this$instance2.rootDocument;
+          rootDocument = _this$instance2.rootDocument,
+          selection = _this$instance2.selection;
       var documentElement = rootDocument.documentElement;
       this.eventManager.addEventListener(rootElement, 'mousedown', function (event) {
         priv.selectionMouseDown = true;
@@ -285,32 +309,31 @@ function () {
         }
       });
       this.eventManager.addEventListener(documentElement, 'keyup', function (event) {
-        if (_this.instance.selection.isInProgress() && !event.shiftKey) {
-          _this.instance.selection.finish();
+        if (selection.isInProgress() && !event.shiftKey) {
+          selection.finish();
         }
       });
       this.eventManager.addEventListener(documentElement, 'mouseup', function (event) {
-        if (_this.instance.selection.isInProgress() && isLeftClick(event)) {
+        if (selection.isInProgress() && isLeftClick(event)) {
           // is left mouse button
-          _this.instance.selection.finish();
+          selection.finish();
         }
 
         priv.mouseDown = false;
 
-        if (isOutsideInput(rootDocument.activeElement) || !_this.instance.selection.isSelected() && !isRightClick(event)) {
+        if (isOutsideInput(rootDocument.activeElement) || !selection.isSelected() && !selection.isSelectedByAnyHeader() && !rootElement.contains(event.target) && !isRightClick(event)) {
           _this.instance.unlisten();
         }
       });
       this.eventManager.addEventListener(documentElement, 'contextmenu', function (event) {
-        if (_this.instance.selection.isInProgress() && isRightClick(event)) {
-          _this.instance.selection.finish();
-
+        if (selection.isInProgress() && isRightClick(event)) {
+          selection.finish();
           priv.mouseDown = false;
         }
       });
       this.eventManager.addEventListener(documentElement, 'touchend', function () {
-        if (_this.instance.selection.isInProgress()) {
-          _this.instance.selection.finish();
+        if (selection.isInProgress()) {
+          selection.finish();
         }
 
         priv.mouseDown = false;
@@ -374,6 +397,133 @@ function () {
       });
     }
     /**
+     * Translate renderable cell coordinates to visual coordinates.
+     *
+     * @param {CellCoords} coords The cell coordinates.
+     * @returns {CellCoords}
+     */
+
+  }, {
+    key: "translateFromRenderableToVisualCoords",
+    value: function translateFromRenderableToVisualCoords(_ref) {
+      var row = _ref.row,
+          col = _ref.col;
+      // TODO: To consider an idea to reusing the CellCoords instance instead creating new one.
+      return _construct(CellCoords, _toConsumableArray(this.translateFromRenderableToVisualIndex(row, col)));
+    }
+    /**
+     * Translate renderable row and column indexes to visual row and column indexes.
+     *
+     * @param {number} renderableRow Renderable row index.
+     * @param {number} renderableColumn Renderable columnIndex.
+     * @returns {number[]}
+     */
+
+  }, {
+    key: "translateFromRenderableToVisualIndex",
+    value: function translateFromRenderableToVisualIndex(renderableRow, renderableColumn) {
+      // TODO: Some helper may be needed.
+      // We perform translation for indexes (without headers).
+      var visualRow = renderableRow >= 0 ? this.instance.rowIndexMapper.getVisualFromRenderableIndex(renderableRow) : renderableRow;
+      var visualColumn = renderableColumn >= 0 ? this.instance.columnIndexMapper.getVisualFromRenderableIndex(renderableColumn) : renderableColumn;
+
+      if (visualRow === null) {
+        visualRow = renderableRow;
+      }
+
+      if (visualColumn === null) {
+        visualColumn = renderableColumn;
+      }
+
+      return [visualRow, visualColumn];
+    }
+    /**
+     * Returns the number of renderable columns.
+     *
+     * @returns {number}
+     */
+
+  }, {
+    key: "countRenderableColumns",
+    value: function countRenderableColumns() {
+      return Math.min(this.instance.columnIndexMapper.getRenderableIndexesLength(), this.settings.maxCols);
+    }
+    /**
+     * Returns the number of renderable rows.
+     *
+     * @returns {number}
+     */
+
+  }, {
+    key: "countRenderableRows",
+    value: function countRenderableRows() {
+      return Math.min(this.instance.rowIndexMapper.getRenderableIndexesLength(), this.settings.maxRows);
+    }
+    /**
+     * Returns number of not hidden row indexes counting from the passed starting index.
+     * The counting direction can be controlled by `incrementBy` argument.
+     *
+     * @param {number} visualIndex The visual index from which the counting begins.
+     * @param {number} incrementBy If `-1` then counting is backwards or forward when `1`.
+     * @returns {number}
+     */
+
+  }, {
+    key: "countNotHiddenRowIndexes",
+    value: function countNotHiddenRowIndexes(visualIndex, incrementBy) {
+      return this.countNotHiddenIndexes(visualIndex, incrementBy, this.instance.rowIndexMapper, this.countRenderableRows());
+    }
+    /**
+     * Returns number of not hidden column indexes counting from the passed starting index.
+     * The counting direction can be controlled by `incrementBy` argument.
+     *
+     * @param {number} visualIndex The visual index from which the counting begins.
+     * @param {number} incrementBy If `-1` then counting is backwards or forward when `1`.
+     * @returns {number}
+     */
+
+  }, {
+    key: "countNotHiddenColumnIndexes",
+    value: function countNotHiddenColumnIndexes(visualIndex, incrementBy) {
+      return this.countNotHiddenIndexes(visualIndex, incrementBy, this.instance.columnIndexMapper, this.countRenderableColumns());
+    }
+    /**
+     * Returns number of not hidden indexes counting from the passed starting index.
+     * The counting direction can be controlled by `incrementBy` argument.
+     *
+     * @param {number} visualIndex The visual index from which the counting begins.
+     * @param {number} incrementBy If `-1` then counting is backwards or forward when `1`.
+     * @param {IndexMapper} indexMapper The IndexMapper instance for specific axis.
+     * @param {number} renderableIndexesCount Total count of renderable indexes for specific axis.
+     * @returns {number}
+     */
+
+  }, {
+    key: "countNotHiddenIndexes",
+    value: function countNotHiddenIndexes(visualIndex, incrementBy, indexMapper, renderableIndexesCount) {
+      if (isNaN(visualIndex) || visualIndex < 0) {
+        return 0;
+      }
+
+      var firstVisibleIndex = indexMapper.getFirstNotHiddenIndex(visualIndex, incrementBy);
+      var renderableIndex = indexMapper.getRenderableFromVisualIndex(firstVisibleIndex);
+
+      if (!Number.isInteger(renderableIndex)) {
+        return 0;
+      }
+
+      var notHiddenIndexes = 0;
+
+      if (incrementBy < 0) {
+        // Zero-based numbering for renderable indexes corresponds to a number of not hidden indexes.
+        notHiddenIndexes = renderableIndex + 1;
+      } else if (incrementBy > 0) {
+        notHiddenIndexes = renderableIndexesCount - renderableIndex;
+      }
+
+      return notHiddenIndexes;
+    }
+    /**
      * Defines default configuration and initializes WalkOnTable intance.
      *
      * @private
@@ -386,9 +536,6 @@ function () {
 
       var priv = privatePool.get(this);
       var walkontableConfig = {
-        debug: function debug() {
-          return _this2.settings.debug;
-        },
         externalRowCalculator: this.instance.getPlugin('autoRowSize') && this.instance.getPlugin('autoRowSize').isEnabled(),
         table: priv.table,
         preventOverflow: function preventOverflow() {
@@ -400,21 +547,49 @@ function () {
         stretchH: function stretchH() {
           return _this2.settings.stretchH;
         },
-        data: this.instance.getDataAtCell,
+        data: function data(renderableRow, renderableColumn) {
+          var _this2$instance;
+
+          return (_this2$instance = _this2.instance).getDataAtCell.apply(_this2$instance, _toConsumableArray(_this2.translateFromRenderableToVisualIndex(renderableRow, renderableColumn)));
+        },
         totalRows: function totalRows() {
-          return _this2.instance.countRows();
+          return _this2.countRenderableRows();
         },
         totalColumns: function totalColumns() {
-          return _this2.instance.countCols();
+          return _this2.countRenderableColumns();
         },
+        // Number of renderable columns for the left overlay.
         fixedColumnsLeft: function fixedColumnsLeft() {
-          return _this2.settings.fixedColumnsLeft;
+          var countCols = _this2.instance.countCols();
+
+          var visualFixedColumnsLeft = Math.min(parseInt(_this2.settings.fixedColumnsLeft, 10), countCols) - 1;
+          return _this2.countNotHiddenColumnIndexes(visualFixedColumnsLeft, -1);
         },
+        // Number of renderable rows for the top overlay.
         fixedRowsTop: function fixedRowsTop() {
-          return _this2.settings.fixedRowsTop;
+          var countRows = _this2.instance.countRows();
+
+          var visualFixedRowsTop = Math.min(parseInt(_this2.settings.fixedRowsTop, 10), countRows) - 1;
+          return _this2.countNotHiddenRowIndexes(visualFixedRowsTop, -1);
         },
+        // Number of renderable rows for the bottom overlay.
         fixedRowsBottom: function fixedRowsBottom() {
-          return _this2.settings.fixedRowsBottom;
+          var countRows = _this2.instance.countRows();
+
+          var visualFixedRowsBottom = Math.max(countRows - parseInt(_this2.settings.fixedRowsBottom, 10), 0);
+          return _this2.countNotHiddenRowIndexes(visualFixedRowsBottom, 1);
+        },
+        // Enable the left overlay when conditions are met.
+        shouldRenderLeftOverlay: function shouldRenderLeftOverlay() {
+          return _this2.settings.fixedColumnsLeft > 0 || walkontableConfig.rowHeaders().length > 0;
+        },
+        // Enable the top overlay when conditions are met.
+        shouldRenderTopOverlay: function shouldRenderTopOverlay() {
+          return _this2.settings.fixedRowsTop > 0 || walkontableConfig.columnHeaders().length > 0;
+        },
+        // Enable the bottom overlay when conditions are met.
+        shouldRenderBottomOverlay: function shouldRenderBottomOverlay() {
+          return _this2.settings.fixedRowsBottom > 0;
         },
         minSpareRows: function minSpareRows() {
           return _this2.settings.minSpareRows;
@@ -424,8 +599,12 @@ function () {
           var headerRenderers = [];
 
           if (_this2.instance.hasRowHeaders()) {
-            headerRenderers.push(function (row, TH) {
-              return _this2.appendRowHeader(row, TH);
+            headerRenderers.push(function (renderableRowIndex, TH) {
+              // TODO: Some helper may be needed.
+              // We perform translation for row indexes (without row headers).
+              var visualRowIndex = renderableRowIndex >= 0 ? _this2.instance.rowIndexMapper.getVisualFromRenderableIndex(renderableRowIndex) : renderableRowIndex;
+
+              _this2.appendRowHeader(visualRowIndex, TH);
             });
           }
 
@@ -437,8 +616,12 @@ function () {
           var headerRenderers = [];
 
           if (_this2.instance.hasColHeaders()) {
-            headerRenderers.push(function (column, TH) {
-              _this2.appendColHeader(column, TH);
+            headerRenderers.push(function (renderedColumnIndex, TH) {
+              // TODO: Some helper may be needed.
+              // We perform translation for columns indexes (without column headers).
+              var visualColumnsIndex = renderedColumnIndex >= 0 ? _this2.instance.columnIndexMapper.getVisualFromRenderableIndex(renderedColumnIndex) : renderedColumnIndex;
+
+              _this2.appendColHeader(visualColumnsIndex, TH);
             });
           }
 
@@ -446,24 +629,53 @@ function () {
 
           return headerRenderers;
         },
-        columnWidth: this.instance.getColWidth,
-        rowHeight: this.instance.getRowHeight,
-        cellRenderer: function cellRenderer(row, col, TD) {
-          var cellProperties = _this2.instance.getCellMeta(row, col);
+        columnWidth: function columnWidth(renderedColumnIndex) {
+          var visualIndex = _this2.instance.columnIndexMapper.getVisualFromRenderableIndex(renderedColumnIndex); // It's not a bug that we can't find visual index for some handled by method indexes. The function is called also
+          // for not displayed indexes (beyond the table boundaries), i.e. when `fixedColumnsLeft` > `startCols` (wrong config?) or
+          // scrolling and dataset is empty (scroll should handle that?).
 
-          var prop = _this2.instance.colToProp(col);
 
-          var value = _this2.instance.getDataAtRowProp(row, prop);
+          return _this2.instance.getColWidth(visualIndex === null ? renderedColumnIndex : visualIndex);
+        },
+        rowHeight: function rowHeight(renderedRowIndex) {
+          var visualIndex = _this2.instance.rowIndexMapper.getVisualFromRenderableIndex(renderedRowIndex);
+
+          return _this2.instance.getRowHeight(visualIndex === null ? renderedRowIndex : visualIndex);
+        },
+        cellRenderer: function cellRenderer(renderedRowIndex, renderedColumnIndex, TD) {
+          var _this2$translateFromR = _this2.translateFromRenderableToVisualIndex(renderedRowIndex, renderedColumnIndex),
+              _this2$translateFromR2 = _slicedToArray(_this2$translateFromR, 2),
+              visualRowIndex = _this2$translateFromR2[0],
+              visualColumnIndex = _this2$translateFromR2[1]; // Coords may be modified. For example, by the `MergeCells` plugin. It should affect cell value and cell meta.
+
+
+          var modifiedCellCoords = _this2.instance.runHooks('modifyGetCellCoords', visualRowIndex, visualColumnIndex);
+
+          var visualRowToCheck = visualRowIndex;
+          var visualColumnToCheck = visualColumnIndex;
+
+          if (Array.isArray(modifiedCellCoords)) {
+            var _modifiedCellCoords = _slicedToArray(modifiedCellCoords, 2);
+
+            visualRowToCheck = _modifiedCellCoords[0];
+            visualColumnToCheck = _modifiedCellCoords[1];
+          }
+
+          var cellProperties = _this2.instance.getCellMeta(visualRowToCheck, visualColumnToCheck);
+
+          var prop = _this2.instance.colToProp(visualColumnToCheck);
+
+          var value = _this2.instance.getDataAtRowProp(visualRowToCheck, prop);
 
           if (_this2.instance.hasHook('beforeValueRender')) {
             value = _this2.instance.runHooks('beforeValueRender', value, cellProperties);
           }
 
-          _this2.instance.runHooks('beforeRenderer', TD, row, col, prop, value, cellProperties);
+          _this2.instance.runHooks('beforeRenderer', TD, visualRowIndex, visualColumnIndex, prop, value, cellProperties);
 
-          _this2.instance.getCellRenderer(cellProperties)(_this2.instance, TD, row, col, prop, value, cellProperties);
+          _this2.instance.getCellRenderer(cellProperties)(_this2.instance, TD, visualRowIndex, visualColumnIndex, prop, value, cellProperties);
 
-          _this2.instance.runHooks('afterRenderer', TD, row, col, prop, value, cellProperties);
+          _this2.instance.runHooks('afterRenderer', TD, visualRowIndex, visualColumnIndex, prop, value, cellProperties);
         },
         selections: this.instance.selection.highlight,
         hideBorderOnMouseDownOver: function hideBorderOnMouseDownOver() {
@@ -477,6 +689,8 @@ function () {
           _this2.instance.refreshDimensions();
         },
         onCellMouseDown: function onCellMouseDown(event, coords, TD, wt) {
+          var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
+
           var blockCalculations = {
             row: false,
             column: false,
@@ -488,23 +702,25 @@ function () {
           _this2.activeWt = wt;
           priv.mouseDown = true;
 
-          _this2.instance.runHooks('beforeOnCellMouseDown', event, coords, TD, blockCalculations);
+          _this2.instance.runHooks('beforeOnCellMouseDown', event, visualCoords, TD, blockCalculations);
 
           if (isImmediatePropagationStopped(event)) {
             return;
           }
 
           handleMouseEvent(event, {
-            coords: coords,
+            coords: visualCoords,
             selection: _this2.instance.selection,
             controller: blockCalculations
           });
 
-          _this2.instance.runHooks('afterOnCellMouseDown', event, coords, TD);
+          _this2.instance.runHooks('afterOnCellMouseDown', event, visualCoords, TD);
 
           _this2.activeWt = _this2.wt;
         },
         onCellContextMenu: function onCellContextMenu(event, coords, TD, wt) {
+          var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
+
           _this2.activeWt = wt;
           priv.mouseDown = false;
 
@@ -512,30 +728,34 @@ function () {
             _this2.instance.selection.finish();
           }
 
-          _this2.instance.runHooks('beforeOnCellContextMenu', event, coords, TD);
+          _this2.instance.runHooks('beforeOnCellContextMenu', event, visualCoords, TD);
 
           if (isImmediatePropagationStopped(event)) {
             return;
           }
 
-          _this2.instance.runHooks('afterOnCellContextMenu', event, coords, TD);
+          _this2.instance.runHooks('afterOnCellContextMenu', event, visualCoords, TD);
 
           _this2.activeWt = _this2.wt;
         },
         onCellMouseOut: function onCellMouseOut(event, coords, TD, wt) {
+          var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
+
           _this2.activeWt = wt;
 
-          _this2.instance.runHooks('beforeOnCellMouseOut', event, coords, TD);
+          _this2.instance.runHooks('beforeOnCellMouseOut', event, visualCoords, TD);
 
           if (isImmediatePropagationStopped(event)) {
             return;
           }
 
-          _this2.instance.runHooks('afterOnCellMouseOut', event, coords, TD);
+          _this2.instance.runHooks('afterOnCellMouseOut', event, visualCoords, TD);
 
           _this2.activeWt = _this2.wt;
         },
         onCellMouseOver: function onCellMouseOver(event, coords, TD, wt) {
+          var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
+
           var blockCalculations = {
             row: false,
             column: false,
@@ -543,7 +763,7 @@ function () {
           };
           _this2.activeWt = wt;
 
-          _this2.instance.runHooks('beforeOnCellMouseOver', event, coords, TD, blockCalculations);
+          _this2.instance.runHooks('beforeOnCellMouseOver', event, visualCoords, TD, blockCalculations);
 
           if (isImmediatePropagationStopped(event)) {
             return;
@@ -551,26 +771,28 @@ function () {
 
           if (priv.mouseDown) {
             handleMouseEvent(event, {
-              coords: coords,
+              coords: visualCoords,
               selection: _this2.instance.selection,
               controller: blockCalculations
             });
           }
 
-          _this2.instance.runHooks('afterOnCellMouseOver', event, coords, TD);
+          _this2.instance.runHooks('afterOnCellMouseOver', event, visualCoords, TD);
 
           _this2.activeWt = _this2.wt;
         },
         onCellMouseUp: function onCellMouseUp(event, coords, TD, wt) {
+          var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
+
           _this2.activeWt = wt;
 
-          _this2.instance.runHooks('beforeOnCellMouseUp', event, coords, TD);
+          _this2.instance.runHooks('beforeOnCellMouseUp', event, visualCoords, TD);
 
           if (isImmediatePropagationStopped(event)) {
             return;
           }
 
-          _this2.instance.runHooks('afterOnCellMouseUp', event, coords, TD);
+          _this2.instance.runHooks('afterOnCellMouseUp', event, visualCoords, TD);
 
           _this2.activeWt = _this2.wt;
         },
@@ -599,11 +821,37 @@ function () {
         onBeforeRemoveCellClassNames: function onBeforeRemoveCellClassNames() {
           return _this2.instance.runHooks('beforeRemoveCellClassNames');
         },
-        onAfterDrawSelection: function onAfterDrawSelection(currentRow, currentColumn, cornersOfSelection, layerLevel) {
-          return _this2.instance.runHooks('afterDrawSelection', currentRow, currentColumn, cornersOfSelection, layerLevel);
+        onAfterDrawSelection: function onAfterDrawSelection(currentRow, currentColumn, layerLevel) {
+          var cornersOfSelection;
+
+          var _this2$translateFromR3 = _this2.translateFromRenderableToVisualIndex(currentRow, currentColumn),
+              _this2$translateFromR4 = _slicedToArray(_this2$translateFromR3, 2),
+              visualRowIndex = _this2$translateFromR4[0],
+              visualColumnIndex = _this2$translateFromR4[1];
+
+          var selectedRange = _this2.instance.selection.getSelectedRange();
+
+          var selectionRangeSize = selectedRange.size();
+
+          if (selectionRangeSize > 0) {
+            // Selection layers are stored from the "oldest" to the "newest". We should calculate the offset.
+            // Please look at the `SelectedRange` class and it's method for getting selection's layer for more information.
+            var selectionOffset = (layerLevel !== null && layerLevel !== void 0 ? layerLevel : 0) + 1 - selectionRangeSize;
+            var selectionForLayer = selectedRange.peekByIndex(selectionOffset);
+            cornersOfSelection = [selectionForLayer.from.row, selectionForLayer.from.col, selectionForLayer.to.row, selectionForLayer.to.col];
+          }
+
+          return _this2.instance.runHooks('afterDrawSelection', visualRowIndex, visualColumnIndex, cornersOfSelection, layerLevel);
         },
         onBeforeDrawBorders: function onBeforeDrawBorders(corners, borderClassName) {
-          return _this2.instance.runHooks('beforeDrawBorders', corners, borderClassName);
+          var _corners = _slicedToArray(corners, 4),
+              startRenderableRow = _corners[0],
+              startRenderableColumn = _corners[1],
+              endRenderableRow = _corners[2],
+              endRenderableColumn = _corners[3];
+
+          var visualCorners = [_this2.instance.rowIndexMapper.getVisualFromRenderableIndex(startRenderableRow), _this2.instance.columnIndexMapper.getVisualFromRenderableIndex(startRenderableColumn), _this2.instance.rowIndexMapper.getVisualFromRenderableIndex(endRenderableRow), _this2.instance.columnIndexMapper.getVisualFromRenderableIndex(endRenderableColumn)];
+          return _this2.instance.runHooks('beforeDrawBorders', visualCorners, borderClassName);
         },
         onBeforeTouchScroll: function onBeforeTouchScroll() {
           return _this2.instance.runHooks('beforeTouchScroll');
@@ -611,14 +859,33 @@ function () {
         onAfterMomentumScroll: function onAfterMomentumScroll() {
           return _this2.instance.runHooks('afterMomentumScroll');
         },
-        onBeforeStretchingColumnWidth: function onBeforeStretchingColumnWidth(stretchedWidth, column) {
-          return _this2.instance.runHooks('beforeStretchingColumnWidth', stretchedWidth, column);
+        onBeforeStretchingColumnWidth: function onBeforeStretchingColumnWidth(stretchedWidth, renderedColumnIndex) {
+          var visualColumnIndex = _this2.instance.columnIndexMapper.getVisualFromRenderableIndex(renderedColumnIndex);
+
+          return _this2.instance.runHooks('beforeStretchingColumnWidth', stretchedWidth, visualColumnIndex);
         },
         onModifyRowHeaderWidth: function onModifyRowHeaderWidth(rowHeaderWidth) {
           return _this2.instance.runHooks('modifyRowHeaderWidth', rowHeaderWidth);
         },
-        onModifyGetCellCoords: function onModifyGetCellCoords(row, column, topmost) {
-          return _this2.instance.runHooks('modifyGetCellCoords', row, column, topmost);
+        onModifyGetCellCoords: function onModifyGetCellCoords(renderableRowIndex, renderableColumnIndex, topmost) {
+          var rowMapper = _this2.instance.rowIndexMapper;
+          var columnMapper = _this2.instance.columnIndexMapper; // Callback handle also headers. We shouldn't translate them.
+
+          var visualColumnIndex = renderableColumnIndex >= 0 ? columnMapper.getVisualFromRenderableIndex(renderableColumnIndex) : renderableColumnIndex;
+          var visualRowIndex = renderableRowIndex >= 0 ? rowMapper.getVisualFromRenderableIndex(renderableRowIndex) : renderableRowIndex;
+
+          var visualIndexes = _this2.instance.runHooks('modifyGetCellCoords', visualRowIndex, visualColumnIndex, topmost);
+
+          if (Array.isArray(visualIndexes)) {
+            var _visualIndexes = _slicedToArray(visualIndexes, 4),
+                visualRowFrom = _visualIndexes[0],
+                visualColumnFrom = _visualIndexes[1],
+                visualRowTo = _visualIndexes[2],
+                visualColumnTo = _visualIndexes[3]; // Result of the hook is handled by the Walkontable (renderable indexes).
+
+
+            return [visualRowFrom >= 0 ? rowMapper.getRenderableFromVisualIndex(rowMapper.getFirstNotHiddenIndex(visualRowFrom, 1)) : visualRowFrom, visualColumnFrom >= 0 ? columnMapper.getRenderableFromVisualIndex(columnMapper.getFirstNotHiddenIndex(visualColumnFrom, 1)) : visualColumnFrom, visualRowTo >= 0 ? rowMapper.getRenderableFromVisualIndex(rowMapper.getFirstNotHiddenIndex(visualRowTo, -1)) : visualRowTo, visualColumnTo >= 0 ? columnMapper.getRenderableFromVisualIndex(columnMapper.getFirstNotHiddenIndex(visualColumnTo, -1)) : visualColumnTo];
+          }
         },
         viewportRowCalculatorOverride: function viewportRowCalculatorOverride(calc) {
           var viewportOffset = _this2.settings.viewportRowRenderingOffset;
@@ -628,7 +895,7 @@ function () {
           }
 
           if (viewportOffset > 0 || viewportOffset === 'auto') {
-            var rows = _this2.instance.countRows();
+            var rows = _this2.countRenderableRows();
 
             if (typeof viewportOffset === 'number') {
               calc.startRow = Math.max(calc.startRow - viewportOffset, 0);
@@ -651,7 +918,7 @@ function () {
           }
 
           if (viewportOffset > 0 || viewportOffset === 'auto') {
-            var cols = _this2.instance.countCols();
+            var cols = _this2.countRenderableColumns();
 
             if (typeof viewportOffset === 'number') {
               calc.startColumn = Math.max(calc.startColumn - viewportOffset, 0);
@@ -690,13 +957,13 @@ function () {
       this.eventManager.addEventListener(spreader, 'mousedown', function (event) {
         // right mouse button exactly on spreader means right click on the right hand side of vertical scrollbar
         if (event.target === spreader && event.which === 3) {
-          stopPropagation(event);
+          event.stopPropagation();
         }
       });
       this.eventManager.addEventListener(spreader, 'contextmenu', function (event) {
         // right mouse button exactly on spreader means right click on the right hand side of vertical scrollbar
         if (event.target === spreader && event.which === 3) {
-          stopPropagation(event);
+          event.stopPropagation();
         }
       });
       this.eventManager.addEventListener(this.instance.rootDocument.documentElement, 'click', function () {
@@ -713,8 +980,8 @@ function () {
      * Checks if it's possible to create text selection in element.
      *
      * @private
-     * @param {HTMLElement} el
-     * @returns {Boolean}
+     * @param {HTMLElement} el The element to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -744,7 +1011,7 @@ function () {
      * Checks if user's been called mousedown.
      *
      * @private
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -756,26 +1023,21 @@ function () {
      * Check if selected only one cell.
      *
      * @private
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
     key: "isSelectedOnlyCell",
     value: function isSelectedOnlyCell() {
-      var _ref = this.instance.getSelectedLast() || [],
-          _ref2 = _slicedToArray(_ref, 4),
-          row = _ref2[0],
-          col = _ref2[1],
-          rowEnd = _ref2[2],
-          colEnd = _ref2[3];
+      var _this$instance$getSel, _this$instance$getSel2;
 
-      return row !== void 0 && row === rowEnd && col === colEnd;
+      return (_this$instance$getSel = (_this$instance$getSel2 = this.instance.getSelectedRangeLast()) === null || _this$instance$getSel2 === void 0 ? void 0 : _this$instance$getSel2.isSingle()) !== null && _this$instance$getSel !== void 0 ? _this$instance$getSel : false;
     }
     /**
      * Checks if active cell is editing.
      *
      * @private
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -788,8 +1050,9 @@ function () {
      * `beforeDraw` callback.
      *
      * @private
-     * @param {Boolean} force
-     * @param {Boolean} skipRender
+     * @param {boolean} force If `true` rendering was triggered by a change of settings or data or `false` if
+     *                        rendering was triggered by scrolling or moving selection.
+     * @param {boolean} skipRender Indicates whether the rendering is skipped.
      */
 
   }, {
@@ -804,7 +1067,8 @@ function () {
      * `onDraw` callback.
      *
      * @private
-     * @param {Boolean} force
+     * @param {boolean} force If `true` rendering was triggered by a change of settings or data or `false` if
+     *                        rendering was triggered by scrolling or moving selection.
      */
 
   }, {
@@ -816,26 +1080,26 @@ function () {
       }
     }
     /**
-     * Append row header to a TH element
+     * Append row header to a TH element.
      *
      * @private
-     * @param row
-     * @param TH
+     * @param {number} visualRowIndex The visual row index.
+     * @param {HTMLTableHeaderCellElement} TH The table header element.
      */
 
   }, {
     key: "appendRowHeader",
-    value: function appendRowHeader(row, TH) {
+    value: function appendRowHeader(visualRowIndex, TH) {
       if (TH.firstChild) {
         var container = TH.firstChild;
 
         if (!hasClass(container, 'relative')) {
           empty(TH);
-          this.appendRowHeader(row, TH);
+          this.appendRowHeader(visualRowIndex, TH);
           return;
         }
 
-        this.updateCellHeader(container.querySelector('.rowHeader'), row, this.instance.getRowHeader);
+        this.updateCellHeader(container.querySelector('.rowHeader'), visualRowIndex, this.instance.getRowHeader);
       } else {
         var _this$instance3 = this.instance,
             rootDocument = _this$instance3.rootDocument,
@@ -844,32 +1108,32 @@ function () {
         var span = rootDocument.createElement('span');
         div.className = 'relative';
         span.className = 'rowHeader';
-        this.updateCellHeader(span, row, getRowHeader);
+        this.updateCellHeader(span, visualRowIndex, getRowHeader);
         div.appendChild(span);
         TH.appendChild(div);
       }
 
-      this.instance.runHooks('afterGetRowHeader', row, TH);
+      this.instance.runHooks('afterGetRowHeader', visualRowIndex, TH);
     }
     /**
-     * Append column header to a TH element
+     * Append column header to a TH element.
      *
      * @private
-     * @param col
-     * @param TH
+     * @param {number} visualColumnIndex Visual column index.
+     * @param {HTMLTableHeaderCellElement} TH The table header element.
      */
 
   }, {
     key: "appendColHeader",
-    value: function appendColHeader(col, TH) {
+    value: function appendColHeader(visualColumnIndex, TH) {
       if (TH.firstChild) {
         var container = TH.firstChild;
 
         if (hasClass(container, 'relative')) {
-          this.updateCellHeader(container.querySelector('.colHeader'), col, this.instance.getColHeader);
+          this.updateCellHeader(container.querySelector('.colHeader'), visualColumnIndex, this.instance.getColHeader);
         } else {
           empty(TH);
-          this.appendColHeader(col, TH);
+          this.appendColHeader(visualColumnIndex, TH);
         }
       } else {
         var rootDocument = this.instance.rootDocument;
@@ -877,20 +1141,20 @@ function () {
         var span = rootDocument.createElement('span');
         div.className = 'relative';
         span.className = 'colHeader';
-        this.updateCellHeader(span, col, this.instance.getColHeader);
+        this.updateCellHeader(span, visualColumnIndex, this.instance.getColHeader);
         div.appendChild(span);
         TH.appendChild(div);
       }
 
-      this.instance.runHooks('afterGetColHeader', col, TH);
+      this.instance.runHooks('afterGetColHeader', visualColumnIndex, TH);
     }
     /**
      * Updates header cell content.
      *
      * @since 0.15.0-beta4
-     * @param {HTMLElement} element Element to update
-     * @param {Number} index Row index or column index
-     * @param {Function} content Function which should be returns content for this cell
+     * @param {HTMLElement} element Element to update.
+     * @param {number} index Row index or column index.
+     * @param {Function} content Function which should be returns content for this cell.
      */
 
   }, {
@@ -917,11 +1181,11 @@ function () {
     }
     /**
      * Given a element's left position relative to the viewport, returns maximum element width until the right
-     * edge of the viewport (before scrollbar)
+     * edge of the viewport (before scrollbar).
      *
      * @private
-     * @param {Number} leftOffset
-     * @return {Number}
+     * @param {number} leftOffset The left offset.
+     * @returns {number}
      */
 
   }, {
@@ -933,11 +1197,11 @@ function () {
     }
     /**
      * Given a element's top position relative to the viewport, returns maximum element height until the bottom
-     * edge of the viewport (before scrollbar)
+     * edge of the viewport (before scrollbar).
      *
      * @private
-     * @param {Number} topOffset
-     * @return {Number}
+     * @param {number} topOffset The top offset.
+     * @returns {number}
      */
 
   }, {
@@ -949,18 +1213,23 @@ function () {
     }
     /**
      * Sets new dimensions of the container.
+     *
+     * @param {number} width The table width.
+     * @param {number} height The table height.
      */
 
   }, {
     key: "setLastSize",
     value: function setLastSize(width, height) {
       var priv = privatePool.get(this);
-      var _ref3 = [width, height];
-      priv.lastWidth = _ref3[0];
-      priv.lastHeight = _ref3[1];
+      var _ref2 = [width, height];
+      priv.lastWidth = _ref2[0];
+      priv.lastHeight = _ref2[1];
     }
     /**
      * Returns cached dimensions.
+     *
+     * @returns {object}
      */
 
   }, {
@@ -976,7 +1245,7 @@ function () {
      * Checks if master overlay is active.
      *
      * @private
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

@@ -23,7 +23,7 @@ var setState = function setState(object, stateId, value) {
 /**
  * Mixin object to extend functionality for save/restore object state.
  *
- * @type {Object}
+ * @type {object}
  */
 
 

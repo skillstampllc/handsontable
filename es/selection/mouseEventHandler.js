@@ -8,13 +8,13 @@ import { CellCoords } from './../3rdparty/walkontable/src';
 /**
  * MouseDown handler.
  *
- * @param {Object} options
- * @param {Boolean} options.isShiftKey The flag which indicates if the shift key is pressed.
- * @param {Boolean} options.isLeftClick The flag which indicates if the left mouse button is pressed.
- * @param {Boolean} options.isRightClick The flag which indicates if the right mouse button is pressed.
+ * @param {object} options The handler options.
+ * @param {boolean} options.isShiftKey The flag which indicates if the shift key is pressed.
+ * @param {boolean} options.isLeftClick The flag which indicates if the left mouse button is pressed.
+ * @param {boolean} options.isRightClick The flag which indicates if the right mouse button is pressed.
  * @param {CellRange} options.coords The CellCoords object with defined visual coordinates.
  * @param {Selection} options.selection The Selection class instance.
- * @param {Object} options.controller An object with keys `row`, `column`, `cell` which indicate what
+ * @param {object} options.controller An object with keys `row`, `column`, `cell` which indicate what
  *                                    operation will be performed in later selection stages.
  */
 
@@ -39,22 +39,12 @@ export function mouseDown(_ref) {
     } else if (selectedRow && coords.col < 0 && !controller.row) {
       selection.setRangeEnd(new CellCoords(coords.row, currentSelection.to.col));
     } else if ((!selectedCorner && !selectedRow && coords.col < 0 || selectedCorner && coords.col < 0) && !controller.row) {
-      selection.selectRows(currentSelection.from.row, coords.row);
+      selection.selectRows(Math.max(currentSelection.from.row, 0), coords.row);
     } else if ((!selectedCorner && !selectedRow && coords.row < 0 || selectedRow && coords.row < 0) && !controller.column) {
-      selection.selectColumns(currentSelection.from.col, coords.col);
+      selection.selectColumns(Math.max(currentSelection.from.col, 0), coords.col);
     }
   } else {
-    var newCoord = new CellCoords(coords.row, coords.col);
-
-    if (newCoord.row < 0) {
-      newCoord.row = 0;
-    }
-
-    if (newCoord.col < 0) {
-      newCoord.col = 0;
-    }
-
-    var allowRightClickSelection = !selection.inInSelection(newCoord);
+    var allowRightClickSelection = !selection.inInSelection(coords);
     var performSelection = isLeftClick || isRightClick && allowRightClickSelection; // clicked row header and when some column was selected
 
     if (coords.row < 0 && coords.col >= 0 && !controller.column) {
@@ -71,18 +61,18 @@ export function mouseDown(_ref) {
         selection.setRangeStart(coords);
       }
     } else if (coords.col < 0 && coords.row < 0) {
-      selection.setRangeStart(coords);
+      selection.selectAll(true, true);
     }
   }
 }
 /**
  * MouseOver handler.
  *
- * @param {Object} options
- * @param {Boolean} options.isLeftClick
+ * @param {object} options The handler options.
+ * @param {boolean} options.isLeftClick Indicates that event was fired using the left mouse button.
  * @param {CellRange} options.coords The CellCoords object with defined visual coordinates.
  * @param {Selection} options.selection The Selection class instance.
- * @param {Object} options.controller An object with keys `row`, `column`, `cell` which indicate what
+ * @param {object} options.controller An object with keys `row`, `column`, `cell` which indicate what
  *                                    operation will be performed in later selection stages.
  */
 
@@ -114,10 +104,10 @@ var handlers = new Map([['mousedown', mouseDown], ['mouseover', mouseOver], ['to
  * Mouse handler for selection functionality.
  *
  * @param {Event} event An native event to handle.
- * @param {Object} options
+ * @param {object} options The handler options.
  * @param {CellRange} options.coords The CellCoords object with defined visual coordinates.
  * @param {Selection} options.selection The Selection class instance.
- * @param {Object} options.controller An object with keys `row`, `column`, `cell` which indicate what
+ * @param {object} options.controller An object with keys `row`, `column`, `cell` which indicate what
  *                                    operation will be performed in later selection stages.
  */
 

@@ -5,8 +5,6 @@ exports.default = void 0;
 
 var _element = require("./../../helpers/dom/element");
 
-var _event = require("./../../helpers/dom/event");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -19,9 +17,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class Cursor
  * @plugin ContextMenu
  */
-var Cursor =
-/*#__PURE__*/
-function () {
+var Cursor = /*#__PURE__*/function () {
   function Cursor(object, rootWindow) {
     _classCallCheck(this, Cursor);
 
@@ -46,8 +42,8 @@ function () {
       top += windowScrollTop;
       left += windowScrollLeft;
     } else if (this.type === 'event') {
-      top = parseInt((0, _event.pageY)(object), 10);
-      left = parseInt((0, _event.pageX)(object), 10);
+      top = parseInt(object.pageY, 10);
+      left = parseInt(object.pageX, 10);
       cellHeight = object.target.clientHeight;
       cellWidth = object.target.clientWidth;
       topRelative = top - windowScrollTop;
@@ -67,7 +63,7 @@ function () {
    * Get source type name.
    *
    * @param {*} object Event or Object with coordinates.
-   * @returns {String} Returns one of this values: `'literal'`, `'event'`.
+   * @returns {string} Returns one of this values: `'literal'`, `'event'`.
    */
 
 
@@ -86,7 +82,7 @@ function () {
      * Checks if element can be placed above the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit above the cursor.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -98,8 +94,8 @@ function () {
      * Checks if element can be placed below the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit below the cursor.
-     * @param {Number} [viewportHeight] The viewport height.
-     * @returns {Boolean}
+     * @param {number} [viewportHeight] The viewport height.
+     * @returns {boolean}
      */
 
   }, {
@@ -112,8 +108,8 @@ function () {
      * Checks if element can be placed on the right of the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit on the right of the cursor.
-     * @param {Number} [viewportWidth] The viewport width.
-     * @returns {Boolean}
+     * @param {number} [viewportWidth] The viewport width.
+     * @returns {boolean}
      */
 
   }, {
@@ -126,7 +122,7 @@ function () {
      * Checks if element can be placed on the left on the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit on the left of the cursor.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

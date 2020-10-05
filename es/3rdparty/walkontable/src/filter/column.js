@@ -7,13 +7,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @class ColumnFilter
  */
-var ColumnFilter =
-/*#__PURE__*/
-function () {
+var ColumnFilter = /*#__PURE__*/function () {
   /**
-   * @param {Number} offset
-   * @param {Number} total
-   * @param {Number} countTH
+   * @param {number} offset The scroll horizontal offset.
+   * @param {number} total The total width of the table.
+   * @param {number} countTH The number of rendered row headers.
    */
   function ColumnFilter(offset, total, countTH) {
     _classCallCheck(this, ColumnFilter);
@@ -23,8 +21,8 @@ function () {
     this.countTH = countTH;
   }
   /**
-   * @param index
-   * @returns {Number}
+   * @param {number} index The visual column index.
+   * @returns {number}
    */
 
 
@@ -34,8 +32,8 @@ function () {
       return index + this.offset;
     }
     /**
-     * @param index
-     * @returns {Number}
+     * @param {number} index The visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -44,8 +42,8 @@ function () {
       return index - this.offset;
     }
     /**
-     * @param index
-     * @returns {Number}
+     * @param {number} index The visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -54,8 +52,8 @@ function () {
       return this.offsetted(index);
     }
     /**
-     * @param index
-     * @returns {Number}
+     * @param {number} index The visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -64,8 +62,8 @@ function () {
       return this.unOffsetted(index);
     }
     /**
-     * @param index
-     * @returns {Number}
+     * @param {number} index The visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -74,8 +72,8 @@ function () {
       return index - this.countTH;
     }
     /**
-     * @param index
-     * @returns {Number}
+     * @param {number} index The visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -84,8 +82,8 @@ function () {
       return index + this.countTH;
     }
     /**
-     * @param index
-     * @returns {Number}
+     * @param {number} index The visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -94,8 +92,8 @@ function () {
       return this.renderedToSource(this.offsettedTH(index));
     }
     /**
-     * @param index
-     * @returns {Number}
+     * @param {number} index The visual column index.
+     * @returns {number}
      */
 
   }, {

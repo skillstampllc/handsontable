@@ -4,19 +4,19 @@ import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
 import { getDecreasedIndexes, getIncreasedIndexes } from './actionsOnIndexes';
-import { getListWithInsertedItems as visualStrategyInsert, getListWithRemovedItems as visualStrategyRemove } from './visuallyIndexed';
+import { getListWithInsertedItems as sequenceStrategyInsert, getListWithRemovedItems as sequenceStrategyRemove } from './indexesSequence';
 import { getListWithInsertedItems as physicalStrategyInsert, getListWithRemovedItems as physicalStrategyRemove } from './physicallyIndexed';
-var alterStrategies = new Map([['visually', {
-  getListWithInsertedItems: visualStrategyInsert,
-  getListWithRemovedItems: visualStrategyRemove
-}], ['physically', {
+var alterStrategies = new Map([['indexesSequence', {
+  getListWithInsertedItems: sequenceStrategyInsert,
+  getListWithRemovedItems: sequenceStrategyRemove
+}], ['physicallyIndexed', {
   getListWithInsertedItems: physicalStrategyInsert,
   getListWithRemovedItems: physicalStrategyRemove
 }]]);
 
 var alterUtilsFactory = function alterUtilsFactory(indexationStrategy) {
   if (alterStrategies.has(indexationStrategy) === false) {
-    throw new Error("Alter strategy for '".concat(indexationStrategy, "' indexed map does not exist."));
+    throw new Error("Alter strategy with ID '".concat(indexationStrategy, "' does not exist."));
   }
 
   return alterStrategies.get(indexationStrategy);

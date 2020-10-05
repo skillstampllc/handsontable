@@ -4,6 +4,10 @@
   if (typeof jasmineStarted === 'undefined') {
     return;
   }
+  /**
+   * @class
+   */
+
 
   function JasmineBridgeReporter() {
     this.started = false;

@@ -15,6 +15,10 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var KEY = 'row_above';
+/**
+ * @returns {object}
+ */
+
 exports.KEY = KEY;
 
 function rowAboveItem() {
@@ -24,14 +28,31 @@ function rowAboveItem() {
       return this.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_ROW_ABOVE);
     },
     callback: function callback(key, normalizedSelection) {
-      var latestSelection = normalizedSelection[Math.max(normalizedSelection.length - 1, 0)];
-      this.alter('insert_row', latestSelection.start.row, 1, 'ContextMenu.rowAbove');
+      var isSelectedByCorner = this.selection.isSelectedByCorner();
+      var rowAbove = 0;
+
+      if (!isSelectedByCorner) {
+        var latestSelection = normalizedSelection[Math.max(normalizedSelection.length - 1, 0)];
+        rowAbove = latestSelection.start.row;
+      }
+
+      this.alter('insert_row', rowAbove, 1, 'ContextMenu.rowAbove');
+
+      if (isSelectedByCorner) {
+        this.selectAll();
+      }
     },
     disabled: function disabled() {
       var selected = (0, _utils.getValidSelection)(this);
 
       if (!selected) {
         return true;
+      }
+
+      if (this.selection.isSelectedByCorner()) {
+        var totalRows = this.countRows(); // Enable "Insert row above" only when there is at least one row.
+
+        return totalRows === 0;
       }
 
       return this.selection.isSelectedByColumnHeader() || this.countRows() >= this.getSettings().maxRows;

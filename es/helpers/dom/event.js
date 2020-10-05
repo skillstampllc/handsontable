@@ -1,10 +1,8 @@
-import { getWindowScrollTop, getWindowScrollLeft, getParentWindow } from './element';
 /**
  * Prevent other listeners of the same event from being called.
  *
- * @param {Event} event
+ * @param {Event} event The mouse event object.
  */
-
 export function stopImmediatePropagation(event) {
   event.isImmediatePropagationEnabled = false;
   event.cancelBubble = true;
@@ -12,8 +10,8 @@ export function stopImmediatePropagation(event) {
 /**
  * Check if event was stopped by `stopImmediatePropagation`.
  *
- * @param event {Event}
- * @returns {Boolean}
+ * @param {Event} event The mouse event object.
+ * @returns {boolean}
  */
 
 export function isImmediatePropagationStopped(event) {
@@ -75,8 +73,8 @@ export function pageY(event) {
 /**
  * Check if provided event was triggered by clicking the right mouse button.
  *
- * @param {Event} event DOM Event.
- * @returns {Boolean}
+ * @param {Event} event The mouse event object.
+ * @returns {boolean}
  */
 
 export function isRightClick(event) {
@@ -85,8 +83,8 @@ export function isRightClick(event) {
 /**
  * Check if provided event was triggered by clicking the left mouse button.
  *
- * @param {Event} event DOM Event.
- * @returns {Boolean}
+ * @param {Event} event The mouse event object.
+ * @returns {boolean}
  */
 
 export function isLeftClick(event) {

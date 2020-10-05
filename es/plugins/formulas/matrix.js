@@ -8,19 +8,25 @@ import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.reverse";
+import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.for-each";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45,9 +51,7 @@ import CellValue from './cell/value';
  * @util
  */
 
-var Matrix =
-/*#__PURE__*/
-function () {
+var Matrix = /*#__PURE__*/function () {
   function Matrix(hot) {
     _classCallCheck(this, Matrix);
 
@@ -75,8 +79,8 @@ function () {
   /**
    * Get cell value at given row and column index.
    *
-   * @param {Number} row Physical row index.
-   * @param {Number} column Physical column index.
+   * @param {number} row Physical row index.
+   * @param {number} column Physical column index.
    * @returns {CellValue|null} Returns CellValue instance or `null` if cell not found.
    */
 
@@ -109,7 +113,7 @@ function () {
     /**
      * Add cell value to the collection.
      *
-     * @param {CellValue|Object} cellValue Cell value object.
+     * @param {CellValue|object} cellValue Cell value object.
      */
 
   }, {
@@ -124,7 +128,7 @@ function () {
     /**
      * Remove cell value from the collection.
      *
-     * @param {CellValue|Object|Array} cellValue Cell value object.
+     * @param {CellValue|object|Array} cellValue Cell value object.
      */
 
   }, {
@@ -156,7 +160,8 @@ function () {
     /**
      * Get cell dependencies using visual coordinates.
      *
-     * @param {Object} cellCoord Visual cell coordinates object.
+     * @param {object} cellCoord Visual cell coordinates object.
+     * @returns {Array}
      */
 
   }, {
@@ -280,7 +285,7 @@ function () {
     /**
      * Register cell reference to the collection.
      *
-     * @param {CellReference|Object} cellReference Cell reference object.
+     * @param {CellReference|object} cellReference Cell reference object.
      */
 
   }, {
@@ -295,8 +300,8 @@ function () {
     /**
      * Remove cell references from the collection.
      *
-     * @param {Object} start Start visual coordinate.
-     * @param {Object} end End visual coordinate.
+     * @param {object} start Start visual coordinate.
+     * @param {object} end End visual coordinate.
      * @returns {Array} Returns removed cell references.
      */
 

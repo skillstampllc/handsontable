@@ -91,11 +91,7 @@ describe('Walkontable.Selection', function () {
     wt.draw();
     expect($td1.hasClass('current')).toEqual(true);
   });
-  it('should add/remove border to selection when cell is clicked',
-  /*#__PURE__*/
-  _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee() {
+  it('should add/remove border to selection when cell is clicked', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     var wt, $td1, $td2, $top, pos1, pos2;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -145,7 +141,7 @@ describe('Walkontable.Selection', function () {
       selections: createSelectionController()
     });
     wt.draw();
-    wt.selections.getCell().add([20, 0]);
+    wt.selections.getCell().add(new Walkontable.CellCoords(20, 0));
     expect(wt.wtTable.getCoords(spec().$table.find('tbody tr:first td:first')[0])).toEqual(new Walkontable.CellCoords(0, 0));
   });
   it('should not scroll the viewport after selection is cleared', function () {
@@ -264,7 +260,8 @@ describe('Walkontable.Selection', function () {
       selections: createSelectionController({
         current: new Walkontable.Selection({
           highlightRowClassName: 'highlightRow',
-          highlightColumnClassName: 'highlightColumn'
+          highlightColumnClassName: 'highlightColumn',
+          border: {}
         })
       })
     });

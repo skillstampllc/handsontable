@@ -6,7 +6,7 @@ import "core-js/modules/es.string.replace";
  * Check if provided expression is valid formula expression.
  *
  * @param {*} expression Expression to check.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 export function isFormulaExpression(expression) {
   return typeof expression === 'string' && expression.length >= 2 && expression.charAt(0) === '=';
@@ -15,7 +15,7 @@ export function isFormulaExpression(expression) {
  * Check if provided formula expression is escaped.
  *
  * @param {*} expression Expression to check.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 export function isFormulaExpressionEscaped(expression) {
@@ -24,8 +24,8 @@ export function isFormulaExpressionEscaped(expression) {
 /**
  * Replace escaped formula expression into valid string.
  *
- * @param {String} expression Expression to process.
- * @returns {String}
+ * @param {string} expression Expression to process.
+ * @returns {string}
  */
 
 export function unescapeFormulaExpression(expression) {
@@ -34,8 +34,8 @@ export function unescapeFormulaExpression(expression) {
 /**
  * Upper case formula expression.
  *
- * @param {String} expression Formula expression.
- * @returns {String}
+ * @param {string} expression Formula expression.
+ * @returns {string}
  */
 
 export function toUpperCaseFormula(expression) {
@@ -50,8 +50,8 @@ export function toUpperCaseFormula(expression) {
 /**
  * Cell coordinates function factory.
  *
- * @param {String} axis An axis name (`row` or `column`) which default index will be applied to.
- * @param {Number} defaultIndex Default index.
+ * @param {string} axis An axis name (`row` or `column`) which default index will be applied to.
+ * @param {number} defaultIndex Default index.
  * @returns {Function}
  */
 

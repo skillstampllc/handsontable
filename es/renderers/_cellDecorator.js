@@ -1,20 +1,23 @@
-import "core-js/modules/es.array.concat";
-
 /**
- * Adds appropriate CSS class to table cell, based on cellProperties
+ * Adds appropriate CSS class to table cell, based on cellProperties.
  */
 import { addClass, removeClass } from './../helpers/dom/element';
+/**
+ * @param {Core} instance The Handsontable instance.
+ * @param {HTMLTableCellElement} TD The rendered cell element.
+ * @param {number} row The visual row index.
+ * @param {number} col The visual column index.
+ * @param {number|string} prop The column property (passed when datasource is an array of objects).
+ * @param {*} value The rendered value.
+ * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
+ */
 
 function cellDecorator(instance, TD, row, col, prop, value, cellProperties) {
   var classesToAdd = [];
   var classesToRemove = [];
 
   if (cellProperties.className) {
-    if (TD.className) {
-      TD.className = "".concat(TD.className, " ").concat(cellProperties.className);
-    } else {
-      TD.className = cellProperties.className;
-    }
+    addClass(TD, cellProperties.className);
   }
 
   if (cellProperties.readOnly) {

@@ -6,11 +6,17 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.array.join");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.to-string");
 
@@ -39,11 +45,15 @@ var _coords = _interopRequireDefault(require("./cell/coords"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -56,12 +66,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  *
  */
-var Border =
-/*#__PURE__*/
-function () {
+var Border = /*#__PURE__*/function () {
   /**
-   * @param {Walkontable} wotInstance
-   * @param {Object} settings
+   * @param {Walkontable} wotInstance The Walkontable instance.
+   * @param {object} settings The border settings.
    */
   function Border(wotInstance, settings) {
     _classCallCheck(this, Border);
@@ -90,14 +98,16 @@ function () {
       borderWidth: '1px',
       borderStyle: 'solid',
       borderColor: '#FFF'
-    };
+    }; // Offset to moving the corner to be centered relative to the grid.
+
+    this.cornerCenterPointOffset = -(parseInt(this.cornerDefaultStyle.width, 10) / 2);
     this.corner = null;
     this.cornerStyle = null;
     this.createBorders(settings);
     this.registerListeners();
   }
   /**
-   * Register all necessary events
+   * Register all necessary events.
    */
 
 
@@ -115,7 +125,9 @@ function () {
       });
 
       var _loop = function _loop(c, len) {
-        _this2.eventManager.addEventListener(_this2.main.childNodes[c], 'mouseenter', function (event) {
+        var element = _this2.main.childNodes[c];
+
+        _this2.eventManager.addEventListener(element, 'mouseenter', function (event) {
           return _this2.onMouseEnter(event, _this2.main.childNodes[c]);
         });
       };
@@ -125,7 +137,7 @@ function () {
       }
     }
     /**
-     * Mouse down listener
+     * Mouse down listener.
      *
      * @private
      */
@@ -136,7 +148,7 @@ function () {
       this.mouseDown = true;
     }
     /**
-     * Mouse up listener
+     * Mouse up listener.
      *
      * @private
      */
@@ -150,7 +162,7 @@ function () {
      * Mouse enter listener for fragment selection functionality.
      *
      * @private
-     * @param {Event} event Dom event
+     * @param {Event} event Dom event.
      * @param {HTMLElement} parentElement Part of border element.
      */
 
@@ -170,6 +182,10 @@ function () {
       var bounds = parentElement.getBoundingClientRect(); // Hide border to prevents selection jumping when fragmentSelection is enabled.
 
       parentElement.style.display = 'none';
+      /**
+       * @param {Event} mouseEvent The mouse event object.
+       * @returns {boolean}
+       */
 
       function isOutside(mouseEvent) {
         if (mouseEvent.clientY < Math.floor(bounds.top)) {
@@ -188,6 +204,10 @@ function () {
           return true;
         }
       }
+      /**
+       * @param {Event} handlerEvent The mouse event object.
+       */
+
 
       function handler(handlerEvent) {
         if (isOutside(handlerEvent)) {
@@ -200,9 +220,9 @@ function () {
       this.eventManager.addEventListener(documentBody, 'mousemove', handler);
     }
     /**
-     * Create border elements
+     * Create border elements.
      *
-     * @param {Object} settings
+     * @param {object} settings The border settings.
      */
 
   }, {
@@ -265,7 +285,7 @@ function () {
       bordersHolder.appendChild(this.main);
     }
     /**
-     * Create multiple selector handler for mobile devices
+     * Create multiple selector handler for mobile devices.
      */
 
   }, {
@@ -319,6 +339,12 @@ function () {
       this.main.appendChild(this.selectionHandles.topLeftHitArea);
       this.main.appendChild(this.selectionHandles.bottomRightHitArea);
     }
+    /**
+     * @param {number} row The visual row index.
+     * @param {number} col The visual column index.
+     * @returns {boolean}
+     */
+
   }, {
     key: "isPartRange",
     value: function isPartRange(row, col) {
@@ -332,6 +358,15 @@ function () {
 
       return false;
     }
+    /**
+     * @param {number} row The visual row index.
+     * @param {number} col The visual column index.
+     * @param {number} top The top position of the handler.
+     * @param {number} left The left position of the handler.
+     * @param {number} width The width of the handler.
+     * @param {number} height The height of the handler.
+     */
+
   }, {
     key: "updateMultipleSelectionHandlesPosition",
     value: function updateMultipleSelectionHandlesPosition(row, col, top, left, width, height) {
@@ -373,9 +408,9 @@ function () {
       }
     }
     /**
-     * Show border around one or many cells
+     * Show border around one or many cells.
      *
-     * @param {Array} corners
+     * @param {Array} corners The corner coordinates.
      */
 
   }, {
@@ -532,8 +567,8 @@ function () {
       if ((0, _browser.isMobileBrowser)() || !cornerVisibleSetting || this.isPartRange(checkRow, checkCol)) {
         this.cornerStyle.display = 'none';
       } else {
-        this.cornerStyle.top = "".concat(top + height - 4, "px");
-        this.cornerStyle.left = "".concat(left + width - 4, "px");
+        this.cornerStyle.top = "".concat(top + height + this.cornerCenterPointOffset - 1, "px");
+        this.cornerStyle.left = "".concat(left + width + this.cornerCenterPointOffset - 1, "px");
         this.cornerStyle.borderRightWidth = this.cornerDefaultStyle.borderWidth;
         this.cornerStyle.width = this.cornerDefaultStyle.width; // Hide the fill handle, so the possible further adjustments won't force unneeded scrollbars.
 
@@ -551,7 +586,8 @@ function () {
           var cornerOverlappingContainer = cornerRightEdge >= (0, _element.innerWidth)(trimmingContainer);
 
           if (cornerOverlappingContainer) {
-            this.cornerStyle.left = "".concat(Math.floor(left + width - 3 - parseInt(this.cornerDefaultStyle.width, 10) / 2), "px");
+            this.cornerStyle.left = "".concat(Math.floor(left + width + this.cornerCenterPointOffset - parseInt(this.cornerDefaultStyle.width, 10) / 2), "px"); // eslint-disable-line max-len
+
             this.cornerStyle.borderRightWidth = 0;
           }
         }
@@ -563,7 +599,8 @@ function () {
           var _cornerOverlappingContainer = cornerBottomEdge >= (0, _element.innerHeight)(trimmingContainer);
 
           if (_cornerOverlappingContainer) {
-            this.cornerStyle.top = "".concat(Math.floor(top + height - 3 - parseInt(this.cornerDefaultStyle.height, 10) / 2), "px");
+            this.cornerStyle.top = "".concat(Math.floor(top + height + this.cornerCenterPointOffset - parseInt(this.cornerDefaultStyle.height, 10) / 2), "px"); // eslint-disable-line max-len
+
             this.cornerStyle.borderBottomWidth = 0;
           }
         }
@@ -579,8 +616,9 @@ function () {
      * Check whether an entire column of cells is selected.
      *
      * @private
-     * @param {Number} startRowIndex Start row index.
-     * @param {Number} endRowIndex End row index.
+     * @param {number} startRowIndex Start row index.
+     * @param {number} endRowIndex End row index.
+     * @returns {boolean}
      */
 
   }, {
@@ -592,8 +630,9 @@ function () {
      * Check whether an entire row of cells is selected.
      *
      * @private
-     * @param {Number} startColumnIndex Start column index.
-     * @param {Number} endColumnIndex End column index.
+     * @param {number} startColumnIndex Start column index.
+     * @param {number} endColumnIndex End column index.
+     * @returns {boolean}
      */
 
   }, {
@@ -605,11 +644,11 @@ function () {
      * Get left/top index and width/height depending on the `direction` provided.
      *
      * @private
-     * @param {String} direction `rows` or `columns`, defines if an entire column or row is selected.
-     * @param {Number} fromIndex Start index of the selection.
-     * @param {Number} toIndex End index of the selection.
-     * @param {Number} containerOffset offset of the container.
-     * @return {Array|Boolean} Returns an array of [headerElement, left, width] or [headerElement, top, height], depending on `direction` (`false` in case of an error getting the headers).
+     * @param {string} direction `rows` or `columns`, defines if an entire column or row is selected.
+     * @param {number} fromIndex Start index of the selection.
+     * @param {number} toIndex End index of the selection.
+     * @param {number} containerOffset Offset of the container.
+     * @returns {Array|boolean} Returns an array of [headerElement, left, width] or [headerElement, top, height], depending on `direction` (`false` in case of an error getting the headers).
      */
 
   }, {
@@ -682,7 +721,8 @@ function () {
      * Change border style.
      *
      * @private
-     * @param {String} borderElement Coordinate where add/remove border: top, right, bottom, left.
+     * @param {string} borderElement Coordinate where add/remove border: top, right, bottom, left.
+     * @param {object} border The border object descriptor.
      */
 
   }, {
@@ -713,7 +753,7 @@ function () {
      * Change border style to default.
      *
      * @private
-     * @param {HTMLElement} position
+     * @param {string} position The position type ("top", "bottom", "left", "right") to change.
      */
 
   }, {
@@ -732,8 +772,8 @@ function () {
      * Toggle class 'hidden' to element.
      *
      * @private
-     * @param {String} borderElement Coordinate where add/remove border: top, right, bottom, left.
-     * @return {Boolean}
+     * @param {string} borderElement Coordinate where add/remove border: top, right, bottom, left.
+     * @param {boolean} [remove] Defines type of the action to perform.
      */
 
   }, {
@@ -748,7 +788,7 @@ function () {
       }
     }
     /**
-     * Hide border
+     * Hide border.
      */
 
   }, {

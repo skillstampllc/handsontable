@@ -17,9 +17,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class CommentEditor
  * @plugin Comments
  */
-var CommentEditor =
-/*#__PURE__*/
-function () {
+var CommentEditor = /*#__PURE__*/function () {
   _createClass(CommentEditor, null, [{
     key: "CLASS_EDITOR_CONTAINER",
     get: function get() {
@@ -55,8 +53,8 @@ function () {
   /**
    * Set position of the comments editor according to the  provided x and y coordinates.
    *
-   * @param {Number} x X position (in pixels).
-   * @param {Number} y Y position (in pixels).
+   * @param {number} x X position (in pixels).
+   * @param {number} y Y position (in pixels).
    */
 
 
@@ -69,8 +67,8 @@ function () {
     /**
      * Set the editor size according to the provided arguments.
      *
-     * @param {Number} width Width in pixels.
-     * @param {Number} height Height in pixels.
+     * @param {number} width Width in pixels.
+     * @param {number} height Height in pixels.
      */
 
   }, {
@@ -96,7 +94,7 @@ function () {
     /**
      * Set the read-only state for the comments editor.
      *
-     * @param {Boolean} state The new read only state.
+     * @param {boolean} state The new read only state.
      */
 
   }, {
@@ -128,7 +126,7 @@ function () {
     /**
      * Checks if the editor is visible.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -139,7 +137,7 @@ function () {
     /**
      * Set the comment value.
      *
-     * @param {String} [value] The value to use.
+     * @param {string} [value] The value to use.
      */
 
   }, {
@@ -152,7 +150,7 @@ function () {
     /**
      * Get the comment value.
      *
-     * @returns {String}
+     * @returns {string}
      */
 
   }, {
@@ -163,7 +161,7 @@ function () {
     /**
      * Checks if the comment input element is focused.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

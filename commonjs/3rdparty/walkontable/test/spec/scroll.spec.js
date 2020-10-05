@@ -360,11 +360,7 @@ describe('WalkontableScroll', function () {
       wt.draw();
       expect(spec().$table.find('tbody tr:first td').length).toBeGreaterThan(3);
     });
-    it('should scroll the desired cell to the bottom edge even if it\'s located in a fixed column',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee() {
+    it('should scroll the desired cell to the bottom edge even if it\'s located in a fixed column', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var wt;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -394,11 +390,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee);
     })));
-    it('should update the scroll position of overlays only once, when scrolling the master table',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2() {
+    it('should update the scroll position of overlays only once, when scrolling the master table', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
       var topOverlayCallback, leftOverlayCallback, wt, masterHolder, leftOverlayHolder, topOverlayHolder;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
@@ -441,11 +433,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee2);
     })));
-    it('should call onScrollVertically hook, if scrollTop was changed',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee3() {
+    it('should call onScrollVertically hook, if scrollTop was changed', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var scrollHorizontally, scrollVertically, wt;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
@@ -481,11 +469,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee3);
     })));
-    it('should call onScrollHorizontally hook, if scrollLeft was changed',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee4() {
+    it('should call onScrollHorizontally hook, if scrollLeft was changed', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
       var scrollHorizontally, scrollVertically, wt;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
@@ -521,11 +505,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee4);
     })));
-    it('should scroll the table when the `wheel` event is triggered on the top-left corner overlay',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5() {
+    it('should scroll the table when the `wheel` event is triggered on the top-left corner overlay', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topLeftCornerOverlayHolder, topHolder, bottomHolder, leftHolder, masterHolder;
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
@@ -588,11 +568,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee5);
     })));
-    it('should scroll the table when the `wheel` event is triggered on the bottom-left corner overlay',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6() {
+    it('should scroll the table when the `wheel` event is triggered on the bottom-left corner overlay', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, bottomLeftCornerOverlayHolder, topHolder, bottomHolder, leftHolder, masterHolder;
       return regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
@@ -655,11 +631,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee6);
     })));
-    it('should scroll the table when the `wheel` event is triggered on the left overlay',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7() {
+    it('should scroll the table when the `wheel` event is triggered on the left overlay', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topHolder, bottomHolder, leftHolder, masterHolder;
       return regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) {
@@ -721,11 +693,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee7);
     })));
-    it('should scroll the table when the `wheel` event is triggered on the top overlay',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee8() {
+    it('should scroll the table when the `wheel` event is triggered on the top overlay', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topHolder, bottomHolder, leftHolder, masterHolder;
       return regeneratorRuntime.wrap(function _callee8$(_context8) {
         while (1) {
@@ -787,11 +755,7 @@ describe('WalkontableScroll', function () {
         }
       }, _callee8);
     })));
-    it('should scroll the table when the `wheel` event is triggered on the bottom overlay',
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee9() {
+    it('should scroll the table when the `wheel` event is triggered on the bottom overlay', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
       var masterCallback, topCallback, bottomCallback, leftCallback, wt, topHolder, bottomHolder, leftHolder, masterHolder;
       return regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) {

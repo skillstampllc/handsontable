@@ -8,7 +8,9 @@ import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
+import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/es.weak-map";
 import "core-js/modules/web.dom-collections.iterator";
@@ -22,19 +24,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import BasePlugin from './../_base';
 import Hooks from './../../pluginHooks';
@@ -65,7 +71,7 @@ var CSS_AFTER_SELECTION = 'after-selection--rows';
  * - `dragRow` - drag single row to the new position.
  * - `dragRows` - drag many rows (as an array of indexes) to the new position.
  *
- * [Documentation](/demo-moving.html#manualRowMove) explain differences between drag and move actions. Please keep in mind that if you want apply visual changes,
+ * [Documentation](/docs/demo-moving.html) explain differences between drag and move actions. Please keep in mind that if you want apply visual changes,
  * you have to call manually the `render` method on the instance of Handsontable.
  *
  * The plugin creates additional components to make moving possibly using user interface:
@@ -76,19 +82,19 @@ var CSS_AFTER_SELECTION = 'after-selection--rows';
  * @plugin ManualRowMove
  */
 
-var ManualRowMove =
-/*#__PURE__*/
-function (_BasePlugin) {
+var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualRowMove, _BasePlugin);
+
+  var _super = _createSuper(ManualRowMove);
 
   function ManualRowMove(hotInstance) {
     var _this;
 
     _classCallCheck(this, ManualRowMove);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ManualRowMove).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
-     * Set up WeakMap of plugin to sharing private parameters;
+     * Set up WeakMap of plugin to sharing private parameters;.
      */
 
     privatePool.set(_assertThisInitialized(_this), {
@@ -106,7 +112,7 @@ function (_BasePlugin) {
      * Event Manager object.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.eventManager = new EventManager(_assertThisInitialized(_this));
@@ -114,7 +120,7 @@ function (_BasePlugin) {
      * Backlight UI object.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.backlight = new BacklightUI(hotInstance);
@@ -122,7 +128,7 @@ function (_BasePlugin) {
      * Guideline UI object.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.guideline = new GuidelineUI(hotInstance);
@@ -132,7 +138,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link ManualRowMove#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -203,12 +209,12 @@ function (_BasePlugin) {
     /**
      * Moves a single row.
      *
-     * @param {Number} row Visual row index to be moved.
-     * @param {Number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualRowMove).
+     * @param {number} row Visual row index to be moved.
+     * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
+     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -220,11 +226,11 @@ function (_BasePlugin) {
      * Moves a multiple rows.
      *
      * @param {Array} rows Array of visual row indexes to be moved.
-     * @param {Number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualRowMove).
+     * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
+     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -251,12 +257,12 @@ function (_BasePlugin) {
     /**
      * Drag a single row to drop index position.
      *
-     * @param {Number} row Visual row index to be dragged.
-     * @param {Number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
-     * To check visualization of drop index please take a look at [documentation](/demo-moving.html#manualRowMove).
+     * @param {number} row Visual row index to be dragged.
+     * @param {number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
+     * To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -268,11 +274,11 @@ function (_BasePlugin) {
      * Drag multiple rows to drop index position.
      *
      * @param {Array} rows Array of visual row indexes to be dragged.
-     * @param {Number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
-     * To check visualization of drop index please take a look at [documentation](/demo-moving.html#manualRowMove).
+     * @param {number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
+     * To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -284,18 +290,18 @@ function (_BasePlugin) {
       return this.moveRows(rows, finalIndex);
     }
     /**
-     * Indicates if it's possible to move rows to the desired position. Some of the actions aren't possible, i.e. you can’t move more than one element to the last position.
+     * Indicates if it's possible to move rows to the desired position. Some of the actions aren't possible, i.e. You can’t move more than one element to the last position.
      *
      * @param {Array} movedRows Array of visual row indexes to be moved.
-     * @param {Number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualRowMove).
-     * @returns {Boolean}
+     * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
+     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
+     * @returns {boolean}
      */
 
   }, {
     key: "isMovePossible",
     value: function isMovePossible(movedRows, finalIndex) {
-      var length = this.hot.rowIndexMapper.getNotSkippedIndexesLength(); // An attempt to transfer more rows to start destination than is possible (only when moving from the top to the bottom).
+      var length = this.hot.rowIndexMapper.getNotTrimmedIndexesLength(); // An attempt to transfer more rows to start destination than is possible (only when moving from the top to the bottom).
 
       var tooHighDestinationIndex = movedRows.length + finalIndex > length;
       var tooLowDestinationIndex = finalIndex < 0;
@@ -317,9 +323,9 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} movedRows Array of visual row indexes to be moved.
-     * @param {Number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualRowMove).
-     * @returns {Boolean}
+     * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
+     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
+     * @returns {boolean}
      */
 
   }, {
@@ -334,8 +340,8 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} movedRows Array of visual row indexes to be moved.
-     * @param {Number} dropIndex Visual row index, being a drop index for the moved rows.
-     * @returns {Number} Visual row index, being a start index for the moved rows.
+     * @param {number} dropIndex Visual row index, being a drop index for the moved rows.
+     * @returns {number} Visual row index, being a start index for the moved rows.
      */
 
   }, {
@@ -354,22 +360,26 @@ function (_BasePlugin) {
      * Gets the sum of the heights of rows in the provided range.
      *
      * @private
-     * @param {Number} from Visual row index.
-     * @param {Number} to Visual row index.
-     * @returns {Number}
+     * @param {number} fromRow Visual row index.
+     * @param {number} toRow Visual row index.
+     * @returns {number}
      */
 
   }, {
     key: "getRowsHeight",
-    value: function getRowsHeight(from, to) {
-      var height = 0;
+    value: function getRowsHeight(fromRow, toRow) {
+      var rowMapper = this.hot.rowIndexMapper;
+      var rowsHeight = 0;
 
-      for (var i = from; i < to; i++) {
-        var rowHeight = this.hot.view.wt.wtTable.getRowHeight(i) || 23;
-        height += rowHeight;
+      for (var visualRowIndex = fromRow; visualRowIndex <= toRow; visualRowIndex++) {
+        var renderableIndex = rowMapper.getRenderableFromVisualIndex(visualRowIndex);
+
+        if (renderableIndex !== null) {
+          rowsHeight += this.hot.view.wt.wtTable.getRowHeight(renderableIndex) || 23;
+        }
       }
 
-      return height;
+      return rowsHeight;
     }
     /**
      * Loads initial settings when persistent state is saved or when plugin was initialized as an array.
@@ -396,8 +406,8 @@ function (_BasePlugin) {
      * Checks if the provided row is in the fixedRowsTop section.
      *
      * @private
-     * @param {Number} row Visual row index to check.
-     * @returns {Boolean}
+     * @param {number} row Visual row index to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -409,8 +419,8 @@ function (_BasePlugin) {
      * Checks if the provided row is in the fixedRowsBottom section.
      *
      * @private
-     * @param {Number} row Visual row index to check.
-     * @returns {Boolean}
+     * @param {number} row Visual row index to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -428,7 +438,8 @@ function (_BasePlugin) {
   }, {
     key: "persistentStateSave",
     value: function persistentStateSave() {
-      this.hot.runHooks('persistentStateSave', 'manualRowMove', this.hot.rowIndexMapper.getIndexesSequence()); // The `PersistentState` plugin should be refactored.
+      // The `PersistentState` plugin should be refactored.
+      this.hot.runHooks('persistentStateSave', 'manualRowMove', this.hot.rowIndexMapper.getIndexesSequence());
     }
     /**
      * Loads the manual row positions from the persistent state (the {@link Options#persistentState} option has to be enabled).
@@ -498,7 +509,7 @@ function (_BasePlugin) {
       var wtTable = this.hot.view.wt.wtTable;
       var TD = priv.target.TD;
       var rootElementOffset = offset(this.hot.rootElement);
-      var tdOffsetTop = this.hot.view.THEAD.offsetHeight + this.getRowsHeight(0, coords.row);
+      var tdOffsetTop = this.hot.view.THEAD.offsetHeight + this.getRowsHeight(0, coords.row - 1);
       var mouseOffsetTop = priv.target.eventPageY - rootElementOffset.top + wtTable.holder.scrollTop;
       var hiderHeight = wtTable.hider.offsetHeight;
       var tbodyOffsetTop = wtTable.TBODY.offsetTop;
@@ -592,7 +603,7 @@ function (_BasePlugin) {
      * @param {MouseEvent} event `mousedown` event properties.
      * @param {CellCoords} coords Visual cell coordinates where was fired event.
      * @param {HTMLElement} TD Cell represented as HTMLElement.
-     * @param {Object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
+     * @param {object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
      */
 
   }, {
@@ -634,8 +645,8 @@ function (_BasePlugin) {
         priv.rowsToMove = this.prepareRowsToMoving();
         var leftPos = wtTable.holder.scrollLeft + wtViewport.getRowHeaderWidth();
         this.backlight.setPosition(null, leftPos);
-        this.backlight.setSize(wtTable.hider.offsetWidth - leftPos, this.getRowsHeight(start, end + 1));
-        this.backlight.setOffset((this.getRowsHeight(start, coords.row) + event.layerY) * -1, null);
+        this.backlight.setSize(wtTable.hider.offsetWidth - leftPos, this.getRowsHeight(start, end));
+        this.backlight.setOffset((this.getRowsHeight(start, coords.row - 1) + event.offsetY) * -1, null);
         addClass(this.hot.rootElement, CSS_ON_MOVING);
         this.refreshPositions();
       } else {
@@ -661,7 +672,7 @@ function (_BasePlugin) {
       } // callback for browser which doesn't supports CSS pointer-event: none
 
 
-      if (event.realTarget === this.backlight.element) {
+      if (event.target === this.backlight.element) {
         var height = this.backlight.getSize().height;
         this.backlight.setSize(null, 0);
         setTimeout(function () {
@@ -679,7 +690,7 @@ function (_BasePlugin) {
      * @param {MouseEvent} event `mouseover` event properties.
      * @param {CellCoords} coords Visual cell coordinates where was fired event.
      * @param {HTMLElement} TD Cell represented as HTMLElement.
-     * @param {Object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
+     * @param {object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
      */
 
   }, {

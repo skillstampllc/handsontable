@@ -29,10 +29,11 @@ var HEADER_ACTION_CLASS = 'sortAction';
 var orderToCssClass = new Map([[_utils.ASC_SORT_STATE, HEADER_CLASS_ASC_SORT], [_utils.DESC_SORT_STATE, HEADER_CLASS_DESC_SORT]]);
 /**
  * Get CSS classes which should be added to particular column header.
- * @param {Object} columnStatesManager Instance of column state manager.
- * @param {Number} column Physical column index.
- * @param {Boolean} showSortIndicator Indicates if indicator should be shown for the particular column.
- * @param {Boolean} headerAction Indicates if header click to sort should be possible.
+ *
+ * @param {object} columnStatesManager Instance of column state manager.
+ * @param {number} column Physical column index.
+ * @param {boolean} showSortIndicator Indicates if indicator should be shown for the particular column.
+ * @param {boolean} headerAction Indicates if header click to sort should be possible.
  * @returns {Array} Array of CSS classes.
  */
 

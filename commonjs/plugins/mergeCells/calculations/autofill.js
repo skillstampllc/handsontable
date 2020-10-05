@@ -6,11 +6,15 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.to-string");
 
@@ -29,11 +33,15 @@ var _src = require("./../../../3rdparty/walkontable/src");
 
 var _array = require("./../../../helpers/array");
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -50,9 +58,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @plugin MergeCells
  * @util
  */
-var AutofillCalculations =
-/*#__PURE__*/
-function () {
+var AutofillCalculations = /*#__PURE__*/function () {
   function AutofillCalculations(plugin) {
     _classCallCheck(this, AutofillCalculations);
 
@@ -73,7 +79,7 @@ function () {
      * Cache of the currently processed autofill data.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     this.currentFillData = null;
@@ -81,7 +87,7 @@ function () {
   /**
    * Correct the provided selection area, so it's not selecting only a part of a merged cell.
    *
-   * @param {Array} selectionArea
+   * @param {Array} selectionArea The selection to correct.
    */
 
 
@@ -102,7 +108,7 @@ function () {
      *
      * @param {Array} selectionArea The selection area.
      * @param {Array} finalArea The final area (base + drag).
-     * @return {String} `up`, `down`, `left` or `right`.
+     * @returns {string} `up`, `down`, `left` or `right`.
      */
 
   }, {
@@ -127,9 +133,9 @@ function () {
      *
      * @param {Array} baseArea The base selected area.
      * @param {Array} dragArea The drag area.
-     * @param {String} dragDirection The autofill drag direction.
+     * @param {string} dragDirection The autofill drag direction.
      * @param {Array} foundMergedCells MergeCellCoords found in the base selection area.
-     * @return {Array} The new drag area
+     * @returns {Array} The new drag area.
      */
 
   }, {
@@ -207,7 +213,7 @@ function () {
      * Update the current fill cache with the provided object.
      *
      * @private
-     * @param {Object} updateObject
+     * @param {object} updateObject The current filled object cache.
      */
 
   }, {
@@ -225,8 +231,8 @@ function () {
      * @private
      * @param {Array} baseArea The base selection area.
      * @param {Array} dragArea The drag area (containing the base area).
-     * @param {String} direction The drag direction.
-     * @return {Number|null} The "length" (height or width, depending on the direction) of the drag.
+     * @param {string} direction The drag direction.
+     * @returns {number|null} The "length" (height or width, depending on the direction) of the drag.
      */
 
   }, {
@@ -267,8 +273,8 @@ function () {
      * @private
      * @param {Array} baseArea The base selection area.
      * @param {Array} dragArea The base selection area extended by the drag area.
-     * @param {String} direction Drag direction.
-     * @return {Array|null} Array representing the drag area coordinates.
+     * @param {string} direction Drag direction.
+     * @returns {Array|null} Array representing the drag area coordinates.
      */
 
   }, {
@@ -309,9 +315,9 @@ function () {
      * @private
      * @param {Array} baseArea The base selection area.
      * @param {Array} dragArea The drag area (containing the base area).
-     * @param {String} direction The drag direction.
+     * @param {string} direction The drag direction.
      * @param {Array} mergedCellArray Array of the merged cells found in the base area.
-     * @return {MergedCellCoords|null}
+     * @returns {MergedCellCoords|null}
      */
 
   }, {
@@ -466,7 +472,7 @@ function () {
      *
      * @private
      * @param {Array} changes The changes made.
-     * @returns {Object} Object with `from` and `to` properties, both containing `row` and `column` keys.
+     * @returns {object} Object with `from` and `to` properties, both containing `row` and `column` keys.
      */
 
   }, {
@@ -519,8 +525,8 @@ function () {
      *
      * @param {Array} baseArea The base selection area.
      * @param {Array} fullArea The base area extended by the drag area.
-     * @param {String} direction Drag direction.
-     * @returns {Boolean}
+     * @param {string} direction Drag direction.
+     * @returns {boolean}
      */
 
   }, {

@@ -2,6 +2,11 @@ import moment from 'moment';
 import * as C from '../../../../i18n/constants';
 import { registerCondition } from '../../conditionRegisterer';
 export var CONDITION_NAME = 'date_yesterday';
+/**
+ * @param {object} dataRow The object which holds and describes the single cell value.
+ * @returns {boolean}
+ */
+
 export function condition(dataRow) {
   var date = moment(dataRow.value, dataRow.meta.dateFormat);
 

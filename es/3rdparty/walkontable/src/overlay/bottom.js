@@ -12,9 +12,7 @@ import "core-js/modules/web.dom-collections.iterator";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _construct(Parent, args, Class) { if (isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22,37 +20,53 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-import { addClass, getScrollbarWidth, getScrollTop, getWindowScrollLeft, hasClass, outerHeight, removeClass, resetCssTransform } from './../../../../helpers/dom/element';
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+import { addClass, getScrollbarWidth, getScrollTop, getWindowScrollLeft, hasClass, outerHeight, removeClass } from './../../../../helpers/dom/element';
 import BottomOverlayTable from './../table/bottom';
 import Overlay from './_base';
 /**
  * @class BottomOverlay
  */
 
-var BottomOverlay =
-/*#__PURE__*/
-function (_Overlay) {
+var BottomOverlay = /*#__PURE__*/function (_Overlay) {
   _inherits(BottomOverlay, _Overlay);
 
+  var _super = _createSuper(BottomOverlay);
+
   /**
-   * @param {Walkontable} wotInstance
+   * Cached value which holds the previous value of the `fixedRowsBottom` option.
+   * It is used as a comparison value that can be used to detect changes in that value.
+   *
+   * @type {number}
+   */
+
+  /**
+   * @param {Walkontable} wotInstance The Walkontable instance.
    */
   function BottomOverlay(wotInstance) {
     var _this;
 
     _classCallCheck(this, BottomOverlay);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(BottomOverlay).call(this, wotInstance));
+    _this = _super.call(this, wotInstance);
+
+    _defineProperty(_assertThisInitialized(_this), "cachedFixedRowsBottom", -1);
+
     _this.clone = _this.makeClone(Overlay.CLONE_BOTTOM);
     return _this;
   }
@@ -60,7 +74,7 @@ function (_Overlay) {
    * Factory method to create a subclass of `Table` that is relevant to this overlay.
    *
    * @see Table#constructor
-   * @param {...*} args Parameters that will be forwarded to the `Table` constructor
+   * @param {...*} args Parameters that will be forwarded to the `Table` constructor.
    * @returns {Table}
    */
 
@@ -75,39 +89,20 @@ function (_Overlay) {
       return _construct(BottomOverlayTable, args);
     }
     /**
+     * Checks if overlay should be fully rendered.
      *
-     */
-
-  }, {
-    key: "repositionOverlay",
-    value: function repositionOverlay() {
-      var _this$wot = this.wot,
-          wtTable = _this$wot.wtTable,
-          rootDocument = _this$wot.rootDocument;
-      var cloneRoot = this.clone.wtTable.holder.parentNode;
-      var scrollbarWidth = getScrollbarWidth(rootDocument);
-
-      if (wtTable.holder.clientHeight === wtTable.holder.offsetHeight) {
-        scrollbarWidth = 0;
-      }
-
-      cloneRoot.style.top = '';
-      cloneRoot.style.bottom = "".concat(scrollbarWidth, "px");
-    }
-    /**
-     * Checks if overlay should be fully rendered
-     *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
     key: "shouldBeRendered",
     value: function shouldBeRendered() {
-      /* eslint-disable no-unneeded-ternary */
-      return this.wot.getSetting('fixedRowsBottom') ? true : false;
+      return this.wot.getSetting('shouldRenderBottomOverlay');
     }
     /**
-     * Updates the top overlay position
+     * Updates the top overlay position.
+     *
+     * @returns {boolean}
      */
 
   }, {
@@ -119,19 +114,19 @@ function (_Overlay) {
       }
 
       var overlayRoot = this.clone.wtTable.holder.parentNode;
-      var headerPosition = 0;
       overlayRoot.style.top = '';
+      var headerPosition = 0;
       var preventOverflow = this.wot.getSetting('preventOverflow');
 
       if (this.trimmingContainer === this.wot.rootWindow && (!preventOverflow || preventOverflow !== 'vertical')) {
-        var _this$wot2 = this.wot,
-            rootDocument = _this$wot2.rootDocument,
-            wtTable = _this$wot2.wtTable;
-        var box = wtTable.hider.getBoundingClientRect();
-        var bottom = Math.ceil(box.bottom);
+        var _this$wot = this.wot,
+            rootDocument = _this$wot.rootDocument,
+            wtTable = _this$wot.wtTable;
+        var hiderRect = wtTable.hider.getBoundingClientRect();
+        var bottom = Math.ceil(hiderRect.bottom);
+        var bodyHeight = rootDocument.documentElement.clientHeight;
         var finalLeft;
         var finalBottom;
-        var bodyHeight = rootDocument.body.offsetHeight;
         finalLeft = wtTable.hider.style.left;
         finalLeft = finalLeft === '' ? 0 : finalLeft;
 
@@ -143,22 +138,41 @@ function (_Overlay) {
 
         headerPosition = finalBottom;
         finalBottom += 'px';
-        overlayRoot.style.top = '';
         overlayRoot.style.left = finalLeft;
         overlayRoot.style.bottom = finalBottom;
       } else {
         headerPosition = this.getScrollPosition();
-        resetCssTransform(overlayRoot);
         this.repositionOverlay();
       }
 
-      this.adjustHeaderBordersPosition(headerPosition);
+      var positionChanged = this.adjustHeaderBordersPosition(headerPosition);
       this.adjustElementsSize();
+      return positionChanged;
     }
     /**
-     * Sets the main overlay's vertical scroll position
+     * Updates the bottom overlay position.
+     */
+
+  }, {
+    key: "repositionOverlay",
+    value: function repositionOverlay() {
+      var _this$wot2 = this.wot,
+          wtTable = _this$wot2.wtTable,
+          rootDocument = _this$wot2.rootDocument;
+      var cloneRoot = this.clone.wtTable.holder.parentNode;
+      var scrollbarWidth = getScrollbarWidth(rootDocument);
+
+      if (wtTable.holder.clientHeight === wtTable.holder.offsetHeight) {
+        scrollbarWidth = 0;
+      }
+
+      cloneRoot.style.bottom = "".concat(scrollbarWidth, "px");
+    }
+    /**
+     * Sets the main overlay's vertical scroll position.
      *
-     * @param {Number} pos
+     * @param {number} pos The scroll position.
+     * @returns {boolean}
      */
 
   }, {
@@ -178,7 +192,7 @@ function (_Overlay) {
       return result;
     }
     /**
-     * Triggers onScroll hook callback
+     * Triggers onScroll hook callback.
      */
 
   }, {
@@ -187,11 +201,11 @@ function (_Overlay) {
       this.wot.getSetting('onScrollHorizontally');
     }
     /**
-     * Calculates total sum cells height
+     * Calculates total sum cells height.
      *
-     * @param {Number} from Row index which calculates started from
-     * @param {Number} to Row index where calculation is finished
-     * @returns {Number} Height sum
+     * @param {number} from Row index which calculates started from.
+     * @param {number} to Row index where calculation is finished.
+     * @returns {number} Height sum.
      */
 
   }, {
@@ -215,7 +229,7 @@ function (_Overlay) {
     /**
      * Adjust overlay root element, childs and master table element sizes (width, height).
      *
-     * @param {Boolean} [force=false]
+     * @param {boolean} [force=false] When `true`, it adjusts the DOM nodes sizes for that overlay.
      */
 
   }, {
@@ -269,27 +283,22 @@ function (_Overlay) {
         tableHeight = 0;
       }
 
-      overlayRootStyle.height = "".concat(tableHeight === 0 ? tableHeight : tableHeight, "px");
+      overlayRootStyle.height = "".concat(tableHeight, "px");
     }
     /**
-     * Adjust overlay root childs size
+     * Adjust overlay root childs size.
      */
 
   }, {
     key: "adjustRootChildrenSize",
     value: function adjustRootChildrenSize() {
-      var scrollbarWidth = getScrollbarWidth(this.wot.rootDocument);
+      var holder = this.clone.wtTable.holder;
       this.clone.wtTable.hider.style.width = this.hider.style.width;
-      this.clone.wtTable.holder.style.width = this.clone.wtTable.holder.parentNode.style.width;
-
-      if (scrollbarWidth === 0) {
-        scrollbarWidth = 30;
-      }
-
-      this.clone.wtTable.holder.style.height = "".concat(parseInt(this.clone.wtTable.holder.parentNode.style.height, 10) + scrollbarWidth, "px");
+      holder.style.width = holder.parentNode.style.width;
+      holder.style.height = holder.parentNode.style.height;
     }
     /**
-     * Adjust the overlay dimensions and position
+     * Adjust the overlay dimensions and position.
      */
 
   }, {
@@ -317,7 +326,7 @@ function (_Overlay) {
       }
     }
     /**
-     * Synchronize calculated left position to an element
+     * Synchronize calculated left position to an element.
      */
 
   }, {
@@ -330,10 +339,10 @@ function (_Overlay) {
       }
     }
     /**
-     * Scrolls vertically to a row
+     * Scrolls vertically to a row.
      *
-     * @param sourceRow {Number} Row index which you want to scroll to
-     * @param [bottomEdge=false] {Boolean} if `true`, scrolls according to the bottom edge (top edge is by default)
+     * @param {number} sourceRow Row index which you want to scroll to.
+     * @param {boolean} [bottomEdge=false] If `true`, scrolls according to the bottom edge (top edge is by default).
      */
 
   }, {
@@ -361,9 +370,9 @@ function (_Overlay) {
       this.setScrollPosition(newY);
     }
     /**
-     * Gets table parent top position
+     * Gets table parent top position.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -376,9 +385,9 @@ function (_Overlay) {
       return 0;
     }
     /**
-     * Gets the main overlay's vertical scroll position
+     * Gets the main overlay's vertical scroll position.
      *
-     * @returns {Number} Main table's vertical scroll position
+     * @returns {number} Main table's vertical scroll position.
      */
 
   }, {
@@ -387,37 +396,35 @@ function (_Overlay) {
       return getScrollTop(this.mainTableScrollableElement, this.wot.rootWindow);
     }
     /**
-     * Adds css classes to hide the header border's header (cell-selection border hiding issue)
+     * Adds css classes to hide the header border's header (cell-selection border hiding issue).
      *
-     * @param {Number} position Header Y position if trimming container is window or scroll top if not
+     * @param {number} position Header Y position if trimming container is window or scroll top if not.
+     * @returns {boolean}
      */
 
   }, {
     key: "adjustHeaderBordersPosition",
     value: function adjustHeaderBordersPosition(position) {
-      if (this.wot.getSetting('fixedRowsBottom') === 0 && this.wot.getSetting('columnHeaders').length > 0) {
+      var fixedRowsBottom = this.wot.getSetting('fixedRowsBottom');
+      var areFixedRowsBottomChanged = this.cachedFixedRowsBottom !== fixedRowsBottom;
+      var columnHeaders = this.wot.getSetting('columnHeaders');
+      var positionChanged = false;
+
+      if ((areFixedRowsBottomChanged || fixedRowsBottom === 0) && columnHeaders.length > 0) {
         var masterParent = this.wot.wtTable.holder.parentNode;
-        var previousState = hasClass(masterParent, 'innerBorderTop');
+        var previousState = hasClass(masterParent, 'innerBorderBottom');
+        this.cachedFixedRowsBottom = this.wot.getSetting('fixedRowsBottom');
 
-        if (position) {
-          addClass(masterParent, 'innerBorderTop');
+        if (position || this.wot.getSetting('totalRows') === 0) {
+          addClass(masterParent, 'innerBorderBottom');
+          positionChanged = !previousState;
         } else {
-          removeClass(masterParent, 'innerBorderTop');
-        }
-
-        if (!previousState && position || previousState && !position) {
-          this.wot.wtOverlays.adjustElementsSize();
-        }
-      } // nasty workaround for double border in the header, TODO: find a pure-css solution
-
-
-      if (this.wot.getSetting('rowHeaders').length === 0) {
-        var secondHeaderCell = this.clone.wtTable.THEAD.querySelector('th:nth-of-type(2)');
-
-        if (secondHeaderCell) {
-          secondHeaderCell.style['border-left-width'] = 0;
+          removeClass(masterParent, 'innerBorderBottom');
+          positionChanged = previousState;
         }
       }
+
+      return positionChanged;
     }
   }]);
 

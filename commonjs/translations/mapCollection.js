@@ -40,9 +40,7 @@ var registeredMaps = 0;
  * Collection of index maps having unique names. It allow us to perform bulk operations such as init, remove, insert on all index maps that have been registered in the collection.
  */
 
-var MapCollection =
-/*#__PURE__*/
-function () {
+var MapCollection = /*#__PURE__*/function () {
   function MapCollection() {
     _classCallCheck(this, MapCollection);
 
@@ -56,9 +54,8 @@ function () {
   /**
    * Register custom index map.
    *
-   * @param {String} uniqueName Unique name of the index map.
-   * @param {IndexMap} indexMap Index map containing miscellaneous (i.e. meta data, indexes sequence), updated after remove and insert data actions.
-   * @returns {IndexMap|undefined}
+   * @param {string} uniqueName Unique name of the index map.
+   * @param {IndexMap} indexMap Index map containing miscellaneous (i.e. Meta data, indexes sequence), updated after remove and insert data actions.
    */
 
 
@@ -78,7 +75,7 @@ function () {
     /**
      * Unregister custom index map.
      *
-     * @param {String} name Name of the index map.
+     * @param {string} name Name of the index map.
      */
 
   }, {
@@ -96,7 +93,7 @@ function () {
     /**
      * Get index map for the provided name.
      *
-     * @param {String} [name] Name of the index map.
+     * @param {string} [name] Name of the index map.
      * @returns {Array|IndexMap}
      */
 
@@ -112,7 +109,7 @@ function () {
     /**
      * Get collection size.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -138,7 +135,7 @@ function () {
      * Insert new indexes and corresponding mapping and update values of the others all collection's index maps.
      *
      * @private
-     * @param {Number} insertionIndex Position inside the actual list.
+     * @param {number} insertionIndex Position inside the actual list.
      * @param {Array} insertedIndexes List of inserted indexes.
      */
 
@@ -152,7 +149,7 @@ function () {
     /**
      * Set default values to index maps within collection.
      *
-     * @param {Number} length Destination length for all stored maps.
+     * @param {number} length Destination length for all stored maps.
      */
 
   }, {
@@ -169,6 +166,10 @@ function () {
 
 (0, _object.mixin)(MapCollection, _localHooks.default);
 var _default = MapCollection;
+/**
+ * @returns {number}
+ */
+
 exports.default = _default;
 
 function getRegisteredMapsCounter() {

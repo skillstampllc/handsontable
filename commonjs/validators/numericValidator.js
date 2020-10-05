@@ -6,12 +6,11 @@ exports.default = numericValidator;
 var _number = require("./../helpers/number");
 
 /**
- * Numeric cell validator
+ * The Numeric cell validator.
  *
  * @private
- * @validator NumericValidator
- * @param {*} value - Value of edited cell
- * @param {*} callback - Callback called with validation result
+ * @param {*} value Value of edited cell.
+ * @param {Function} callback Callback called with validation result.
  */
 function numericValidator(value, callback) {
   var valueToValidate = value;

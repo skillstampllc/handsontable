@@ -17,12 +17,11 @@ var _editors = require("../editors");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Date cell validator
+ * The Date cell validator.
  *
  * @private
- * @validator DateValidator
- * @param {*} value - Value of edited cell
- * @param {Function} callback - Callback called with validation result
+ * @param {*} value Value of edited cell.
+ * @param {Function} callback Callback called with validation result.
  */
 function dateValidator(value, callback) {
   var dateEditor = (0, _editors.getEditorInstance)('date', this.instance);
@@ -65,11 +64,11 @@ function dateValidator(value, callback) {
   callback(valid);
 }
 /**
- * Format the given string using moment.js' format feature
+ * Format the given string using moment.js' format feature.
  *
- * @param {String} value
- * @param {String} dateFormat
- * @returns {String}
+ * @param {string} value The value to format.
+ * @param {string} dateFormat The date pattern to format to.
+ * @returns {string}
  */
 
 

@@ -1,6 +1,7 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.filter";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
@@ -8,6 +9,8 @@ import "core-js/modules/es.array.slice";
 import "core-js/modules/es.array.sort";
 import "core-js/modules/es.array.splice";
 import "core-js/modules/es.map";
+import "core-js/modules/es.number.constructor";
+import "core-js/modules/es.number.is-integer";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.iterator";
@@ -22,38 +25,36 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import SheetClip from "./../lib/SheetClip/SheetClip";
-import { cellMethodLookupFactory } from "./helpers/data";
-import { columnFactory } from "./helpers/setting";
+import SheetClip from './../lib/SheetClip/SheetClip';
+import { cellMethodLookupFactory, countFirstRowKeys as _countFirstRowKeys } from './helpers/data';
 import { createObjectPropListener, deepClone, deepExtend, deepObjectSize, duckSchema, hasOwnProperty, isObject, objectEach } from "./helpers/object";
 import { extendArray, to2dArray } from "./helpers/array";
 import { rangeEach } from "./helpers/number";
 import { isDefined } from "./helpers/mixed";
 var copyableLookup = cellMethodLookupFactory("copyable", false);
 /**
- * Utility class that gets and saves data from/to the data source using mapping of columns numbers to object property names
- * @todo refactor arguments of methods getRange, getText to be numbers (not objects)
- * @todo remove priv, GridSettings from object constructor
+ * Utility class that gets and saves data from/to the data source using mapping of columns numbers to object property names.
+ *
+ * @todo Refactor arguments of methods getRange, getText to be numbers (not objects).
+ * @todo Remove priv, GridSettings from object constructor.
  *
  * @util
  * @class DataMap
  * @private
  */
 
-var DataMap =
-/*#__PURE__*/
-function () {
+var DataMap = /*#__PURE__*/function () {
   _createClass(DataMap, null, [{
     key: "DESTINATION_RENDERER",
 
     /**
-     * @type {Number}
+     * @type {number}
      */
     get: function get() {
       return 1;
     }
     /**
-     * @type {Number}
+     * @type {number}
      */
 
   }, {
@@ -62,40 +63,31 @@ function () {
       return 2;
     }
     /**
-     * @param {Object} instance Instance of Handsontable
+     * @param {object} instance Instance of Handsontable.
      * @param {Array} data Array of arrays or array of objects containing data.
-     * @param {*} priv
-     * @param {GridSettings} GridSettings Grid settings
+     * @param {TableMeta} tableMeta The table meta instance.
      */
 
   }]);
 
-  function DataMap(instance, data, priv, GridSettings) {
+  function DataMap(instance, data, tableMeta) {
     _classCallCheck(this, DataMap);
 
     /**
-     * Instance of {@link Handsontable}
+     * Instance of {@link Handsontable}.
      *
      * @private
      * @type {Handsontable}
      */
     this.instance = instance;
     /**
-     * Private settings object.
+     * Instance of {@link TableMeta}.
      *
      * @private
-     * @type {Object}
+     * @type {TableMeta}
      */
 
-    this.priv = priv;
-    /**
-     * Instance of {@link GridSettings}
-     *
-     * @private
-     * @type {GridSettings}
-     */
-
-    this.GridSettings = GridSettings;
+    this.tableMeta = tableMeta;
     /**
      * Reference to the original dataset.
      *
@@ -104,16 +96,9 @@ function () {
 
     this.dataSource = data;
     /**
-     * Cached sourceData rows number.
-     *
-     * @type {Number}
-     */
-
-    this.latestSourceRowsCount = 0;
-    /**
      * Generated schema based on the first row from the source data.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.duckSchema = this.dataSource && this.dataSource[0] ? duckSchema(this.dataSource[0]) : {};
@@ -142,26 +127,28 @@ function () {
     key: "createMap",
     value: function createMap() {
       var schema = this.getSchema();
-      var i;
 
       if (typeof schema === "undefined") {
         throw new Error("trying to create `columns` definition but you didn't provide `schema` nor `data`");
       }
 
+      var columns = this.tableMeta.columns;
+      var i;
       this.colToPropCache = [];
       this.propToColCache = new Map();
-      var columns = this.instance.getSettings().columns;
 
       if (columns) {
-        var maxCols = this.instance.getSettings().maxCols;
-        var columnsLen = Math.min(maxCols, columns.length);
+        var columnsLen = 0;
         var filteredIndex = 0;
         var columnsAsFunc = false;
-        var schemaLen = deepObjectSize(schema);
 
-        if (typeof columns === "function") {
-          columnsLen = schemaLen > 0 ? schemaLen : this.instance.countSourceCols();
+        if (typeof columns === 'function') {
+          var schemaLen = deepObjectSize(schema);
+          columnsLen = schemaLen > 0 ? schemaLen : this.countFirstRowKeys();
           columnsAsFunc = true;
+        } else {
+          var maxCols = this.tableMeta.maxCols;
+          columnsLen = Math.min(maxCols, columns.length);
         }
 
         for (i = 0; i < columnsLen; i++) {
@@ -182,12 +169,23 @@ function () {
       }
     }
     /**
+     * Get the amount of physical columns in the first data row.
+     *
+     * @returns {number} Amount of physical columns in the first data row.
+     */
+
+  }, {
+    key: "countFirstRowKeys",
+    value: function countFirstRowKeys() {
+      return _countFirstRowKeys(this.dataSource);
+    }
+    /**
      * Generates columns' translation cache.
      *
-     * @param {Object} schema
-     * @param {Number} lastCol
-     * @param {Number} parent
-     * @returns {Number}
+     * @param {object} schema An object to generate schema from.
+     * @param {number} lastCol The column index.
+     * @param {number} parent The property cache for recursive calls.
+     * @returns {number}
      */
 
   }, {
@@ -225,13 +223,19 @@ function () {
     /**
      * Returns property name that corresponds with the given column index.
      *
-     * @param {Number} column Visual column index.
-     * @returns {String|Number} Column property, physical column index or passed argument.
+     * @param {string|number} column Visual column index or another passed argument.
+     * @returns {string|number} Column property, physical column index or passed argument.
      */
 
   }, {
     key: "colToProp",
     value: function colToProp(column) {
+      // TODO: Should it work? Please, look at the test:
+      // "it should return the provided property name, when the user passes a property name as a column number".
+      if (Number.isInteger(column) === false) {
+        return column;
+      }
+
       var physicalColumn = this.instance.toPhysicalColumn(column); // Out of range, not visible column index.
 
       if (physicalColumn === null) {
@@ -248,8 +252,8 @@ function () {
     /**
      * Translates property into visual column index.
      *
-     * @param {String|Number} prop Column property which may be also a physical column index.
-     * @returns {String|Number} Visual column index or passed argument.
+     * @param {string|number} prop Column property which may be also a physical column index.
+     * @returns {string|number} Visual column index or passed argument.
      */
 
   }, {
@@ -273,13 +277,13 @@ function () {
     /**
      * Returns data's schema.
      *
-     * @returns {Object}
+     * @returns {object}
      */
 
   }, {
     key: "getSchema",
     value: function getSchema() {
-      var schema = this.instance.getSettings().dataSchema;
+      var schema = this.tableMeta.dataSchema;
 
       if (schema) {
         if (typeof schema === "function") {
@@ -294,11 +298,11 @@ function () {
     /**
      * Creates row at the bottom of the data array.
      *
-     * @param {Number} [index] Physical index of the row before which the new row will be inserted.
-     * @param {Number} [amount=1] An amount of rows to add.
-     * @param {String} [source] Source of method call.
+     * @param {number} [index] Physical index of the row before which the new row will be inserted.
+     * @param {number} [amount=1] An amount of rows to add.
+     * @param {string} [source] Source of method call.
      * @fires Hooks#afterCreateRow
-     * @returns {Number} Returns number of created rows.
+     * @returns {number} Returns number of created rows.
      */
 
   }, {
@@ -308,33 +312,34 @@ function () {
 
       var amount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       var source = arguments.length > 2 ? arguments[2] : undefined;
+      var sourceRowsCount = this.instance.countSourceRows();
+      var physicalRowIndex = sourceRowsCount;
       var numberOfCreatedRows = 0;
       var rowIndex = index;
 
-      if (typeof rowIndex !== "number" || rowIndex >= this.instance.countSourceRows()) {
-        rowIndex = this.instance.countSourceRows();
+      if (typeof rowIndex !== 'number' || rowIndex >= sourceRowsCount) {
+        rowIndex = sourceRowsCount;
       }
-
-      var continueProcess = this.instance.runHooks("beforeCreateRow", rowIndex, amount, source);
-
-      if (continueProcess === false) {
-        return 0;
-      }
-
-      var physicalRowIndex = this.instance.countSourceRows();
 
       if (rowIndex < this.instance.countRows()) {
         physicalRowIndex = this.instance.toPhysicalRow(rowIndex);
       }
 
-      var maxRows = this.instance.getSettings().maxRows;
+      var continueProcess = this.instance.runHooks('beforeCreateRow', rowIndex, amount, source);
+
+      if (continueProcess === false || physicalRowIndex === null) {
+        return 0;
+      }
+
+      var maxRows = this.tableMeta.maxRows;
       var columnCount = this.instance.countCols();
+      var rowsToAdd = [];
 
       var _loop = function _loop() {
         var row = null;
 
-        if (_this2.instance.dataType === "array") {
-          if (_this2.instance.getSettings().dataSchema) {
+        if (_this2.instance.dataType === 'array') {
+          if (_this2.tableMeta.dataSchema) {
             // Clone template array
             row = deepClone(_this2.getSchema());
           } else {
@@ -345,28 +350,24 @@ function () {
               return row.push(null);
             });
           }
-        } else if (_this2.instance.dataType === "function") {
-          row = _this2.instance.getSettings().dataSchema(rowIndex);
+        } else if (_this2.instance.dataType === 'function') {
+          row = _this2.tableMeta.dataSchema(rowIndex);
         } else {
           row = {};
           deepExtend(row, _this2.getSchema());
         }
 
-        if (rowIndex === _this2.instance.countSourceRows()) {
-          _this2.dataSource.push(row);
-        } else {
-          _this2.spliceData(physicalRowIndex, 0, row);
-        }
-
+        rowsToAdd.push(row);
         numberOfCreatedRows += 1;
       };
 
-      while (numberOfCreatedRows < amount && this.instance.countSourceRows() < maxRows) {
+      while (numberOfCreatedRows < amount && sourceRowsCount + numberOfCreatedRows < maxRows) {
         _loop();
       }
 
       this.instance.rowIndexMapper.insertIndexes(rowIndex, numberOfCreatedRows);
-      this.instance.runHooks("afterCreateRow", rowIndex, numberOfCreatedRows, source);
+      this.spliceData.apply(this, [physicalRowIndex, 0].concat(rowsToAdd));
+      this.instance.runHooks('afterCreateRow', rowIndex, numberOfCreatedRows, source);
       this.instance.forceFullRender = true; // used when data was changed
 
       return numberOfCreatedRows;
@@ -374,11 +375,11 @@ function () {
     /**
      * Creates column at the right of the data array.
      *
-     * @param {Number} [index] Visual index of the column before which the new column will be inserted
-     * @param {Number} [amount=1] An amount of columns to add.
-     * @param {String} [source] Source of method call.
+     * @param {number} [index] Visual index of the column before which the new column will be inserted.
+     * @param {number} [amount=1] An amount of columns to add.
+     * @param {string} [source] Source of method call.
      * @fires Hooks#afterCreateCol
-     * @returns {Number} Returns number of created columns
+     * @returns {number} Returns number of created columns.
      */
 
   }, {
@@ -392,7 +393,7 @@ function () {
       }
 
       var dataSource = this.dataSource;
-      var maxCols = this.instance.getSettings().maxCols;
+      var maxCols = this.tableMeta.maxCols;
       var columnIndex = index;
 
       if (typeof columnIndex !== "number" || columnIndex >= this.instance.countSourceCols()) {
@@ -417,9 +418,7 @@ function () {
       var currentIndex = physicalColumnIndex;
 
       while (numberOfCreatedCols < amount && nrOfColumns < maxCols) {
-        var _constructor = columnFactory(this.GridSettings, this.priv.columnsSettingConflicts);
-
-        if (typeof columnIndex !== "number" || columnIndex >= nrOfColumns) {
+        if (typeof columnIndex !== 'number' || columnIndex >= nrOfColumns) {
           if (numberOfSourceRows > 0) {
             for (var row = 0; row < numberOfSourceRows; row += 1) {
               if (typeof dataSource[row] === "undefined") {
@@ -430,17 +429,11 @@ function () {
             }
           } else {
             dataSource.push([null]);
-          } // Add new column constructor
-
-
-          this.priv.columnSettings.push(_constructor);
+          }
         } else {
           for (var _row = 0; _row < numberOfSourceRows; _row++) {
             dataSource[_row].splice(currentIndex, 0, null);
-          } // Add new column constructor at given index
-
-
-          this.priv.columnSettings.splice(currentIndex, 0, _constructor);
+          }
         }
 
         numberOfCreatedCols += 1;
@@ -457,11 +450,12 @@ function () {
     /**
      * Removes row from the data array.
      *
-     * @param {Number} [index] Visual index of the row to be removed. If not provided, the last row will be removed
-     * @param {Number} [amount=1] Amount of the rows to be removed. If not provided, one row will be removed
-     * @param {String} [source] Source of method call.
      * @fires Hooks#beforeRemoveRow
      * @fires Hooks#afterRemoveRow
+     * @param {number} [index] Visual index of the row to be removed. If not provided, the last row will be removed.
+     * @param {number} [amount=1] Amount of the rows to be removed. If not provided, one row will be removed.
+     * @param {string} [source] Source of method call.
+     * @returns {boolean} Returns `false` when action was cancelled, otherwise `true`.
      */
 
   }, {
@@ -469,19 +463,22 @@ function () {
     value: function removeRow(index) {
       var amount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       var source = arguments.length > 2 ? arguments[2] : undefined;
-      var rowIndex = typeof index !== "number" ? -amount : index;
-      var rowsAmount = this.instance.runHooks("modifyRemovedAmount", amount, rowIndex);
+      var rowIndex = Number.isInteger(index) ? index : -amount; // -amount = taking indexes from the end.
+
+      var removedPhysicalIndexes = this.visualRowsToPhysical(rowIndex, amount);
       var sourceRowsLength = this.instance.countSourceRows();
-      rowIndex = (sourceRowsLength + rowIndex) % sourceRowsLength;
-      var logicRows = this.visualRowsToPhysical(rowIndex, rowsAmount);
-      var actionWasNotCancelled = this.instance.runHooks("beforeRemoveRow", rowIndex, rowsAmount, logicRows, source);
+      rowIndex = (sourceRowsLength + rowIndex) % sourceRowsLength; // It handle also callback from the `NestedRows` plugin. Removing parent node has effect in removing children nodes.
+
+      var actionWasNotCancelled = this.instance.runHooks('beforeRemoveRow', rowIndex, removedPhysicalIndexes.length, removedPhysicalIndexes, source);
 
       if (actionWasNotCancelled === false) {
-        return;
+        return false;
       }
 
-      var data = this.dataSource;
-      var newData = this.filterData(rowIndex, rowsAmount);
+      var data = this.dataSource; // List of removed indexes might be changed in the `beforeRemoveRow` hook. There may be new values.
+
+      var numberOfRemovedIndexes = removedPhysicalIndexes.length;
+      var newData = this.filterData(rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes);
 
       if (newData) {
         data.length = 0;
@@ -490,25 +487,28 @@ function () {
 
 
       if (rowIndex < this.instance.countRows()) {
-        this.instance.rowIndexMapper.removeIndexes(logicRows);
-        var customDefinedColumns = isDefined(this.instance.getSettings().columns) || isDefined(this.instance.getSettings().dataSchema); // All rows have been removed. There shouldn't be any columns.
+        this.instance.rowIndexMapper.removeIndexes(removedPhysicalIndexes);
+        var customDefinedColumns = isDefined(this.tableMeta.columns) || isDefined(this.tableMeta.dataSchema); // All rows have been removed. There shouldn't be any columns.
 
-        if (this.instance.rowIndexMapper.getNotSkippedIndexesLength() === 0 && customDefinedColumns === false) {
+        if (this.instance.rowIndexMapper.getNotTrimmedIndexesLength() === 0 && customDefinedColumns === false) {
           this.instance.columnIndexMapper.setIndexesSequence([]);
         }
       }
 
-      this.instance.runHooks("afterRemoveRow", rowIndex, rowsAmount, logicRows, source);
+      this.instance.runHooks('afterRemoveRow', rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes, source);
       this.instance.forceFullRender = true; // used when data was changed
+
+      return true;
     }
     /**
      * Removes column from the data array.
      *
-     * @param {Number} [index] Visual index of the column to be removed. If not provided, the last column will be removed
-     * @param {Number} [amount=1] Amount of the columns to be removed. If not provided, one column will be removed
-     * @param {String} [source] Source of method call.
      * @fires Hooks#beforeRemoveCol
      * @fires Hooks#afterRemoveCol
+     * @param {number} [index] Visual index of the column to be removed. If not provided, the last column will be removed.
+     * @param {number} [amount=1] Amount of the columns to be removed. If not provided, one column will be removed.
+     * @param {string} [source] Source of method call.
+     * @returns {boolean} Returns `false` when action was cancelled, otherwise `true`.
      */
 
   }, {
@@ -517,8 +517,8 @@ function () {
       var amount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       var source = arguments.length > 2 ? arguments[2] : undefined;
 
-      if (this.instance.dataType === "object" || this.instance.getSettings().columns) {
-        throw new Error("cannot remove column with object data source or columns option specified");
+      if (this.instance.dataType === 'object' || this.tableMeta.columns) {
+        throw new Error('cannot remove column with object data source or columns option specified');
       }
 
       var columnIndex = typeof index !== "number" ? -amount : index;
@@ -530,7 +530,7 @@ function () {
       var actionWasNotCancelled = this.instance.runHooks("beforeRemoveCol", columnIndex, amount, logicColumns, source);
 
       if (actionWasNotCancelled === false) {
-        return;
+        return false;
       }
 
       var isTableUniform = true;
@@ -553,32 +553,30 @@ function () {
             data[_r].splice(descendingLogicColumns[_c], 1);
           }
         }
-
-        for (var _c2 = 0; _c2 < removedColumnsCount; _c2++) {
-          this.priv.columnSettings.splice(logicColumns[_c2], 1);
-        }
       } // TODO: Function `removeCol` should validate fully, probably above.
 
 
       if (columnIndex < this.instance.countCols()) {
         this.instance.columnIndexMapper.removeIndexes(logicColumns); // All columns have been removed. There shouldn't be any rows.
 
-        if (this.instance.columnIndexMapper.getNotSkippedIndexesLength() === 0) {
+        if (this.instance.columnIndexMapper.getNotTrimmedIndexesLength() === 0) {
           this.instance.rowIndexMapper.setIndexesSequence([]);
         }
       }
 
       this.instance.runHooks("afterRemoveCol", columnIndex, amount, logicColumns, source);
       this.instance.forceFullRender = true; // used when data was changed
+
+      return true;
     }
     /**
      * Add/Removes data from the column.
      *
-     * @param {Number} col Physical index of column in which do you want to do splice
-     * @param {Number} index Index at which to start changing the array. If negative, will begin that many elements from the end
-     * @param {Number} amount An integer indicating the number of old array elements to remove. If amount is 0, no elements are removed
-     * @param {Array} [elements]
-     * @returns {Array} Returns removed portion of columns
+     * @param {number} col Physical index of column in which do you want to do splice.
+     * @param {number} index Index at which to start changing the array. If negative, will begin that many elements from the end.
+     * @param {number} amount An integer indicating the number of old array elements to remove. If amount is 0, no elements are removed.
+     * @param {Array} [elements] The new columns to add.
+     * @returns {Array} Returns removed portion of columns.
      */
 
   }, {
@@ -608,11 +606,11 @@ function () {
     /**
      * Add/Removes data from the row.
      *
-     * @param {Number} row Physical index of row in which do you want to do splice
-     * @param {Number} index Index at which to start changing the array. If negative, will begin that many elements from the end.
-     * @param {Number} amount An integer indicating the number of old array elements to remove. If amount is 0, no elements are removed.
-     * @param {Array} [elements]
-     * @returns {Array} Returns removed portion of rows
+     * @param {number} row Physical index of row in which do you want to do splice.
+     * @param {number} index Index at which to start changing the array. If negative, will begin that many elements from the end.
+     * @param {number} amount An integer indicating the number of old array elements to remove. If amount is 0, no elements are removed.
+     * @param {Array} [elements] The new rows to add.
+     * @returns {Array} Returns removed portion of rows.
      */
 
   }, {
@@ -641,33 +639,39 @@ function () {
     /**
      * Add/remove row(s) to/from the data source.
      *
-     * @param {Number} index Physical index of the element to remove.
-     * @param {Number} amount Number of rows to add/remove.
-     * @param {Object} element Row to add.
+     * @param {number} index Physical index of the element to add/remove.
+     * @param {number} amount Number of rows to add/remove.
+     * @param {...object} elements Row elements to be added.
      */
 
   }, {
     key: "spliceData",
-    value: function spliceData(index, amount, element) {
-      var continueSplicing = this.instance.runHooks("beforeDataSplice", index, amount, element);
+    value: function spliceData(index, amount) {
+      for (var _len3 = arguments.length, elements = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+        elements[_key3 - 2] = arguments[_key3];
+      }
+
+      var continueSplicing = this.instance.runHooks('beforeDataSplice', index, amount, elements);
 
       if (continueSplicing !== false) {
-        this.dataSource.splice(index, amount, element);
+        var _this$dataSource;
+
+        (_this$dataSource = this.dataSource).splice.apply(_this$dataSource, [index, amount].concat(elements));
       }
     }
     /**
      * Filter unwanted data elements from the data source.
      *
-     * @param {Number} index Visual index of the element to remove.
-     * @param {Number} amount Number of rows to add/remove.
+     * @param {number} index Visual index of the element to remove.
+     * @param {number} amount Number of rows to add/remove.
+     * @param {number} physicalRows Physical row indexes.
      * @returns {Array}
      */
 
   }, {
     key: "filterData",
-    value: function filterData(index, amount) {
-      var physicalRows = this.visualRowsToPhysical(index, amount);
-      var continueSplicing = this.instance.runHooks("beforeDataFilter", index, amount, physicalRows);
+    value: function filterData(index, amount, physicalRows) {
+      var continueSplicing = this.instance.runHooks('beforeDataFilter', index, amount, physicalRows);
 
       if (continueSplicing !== false) {
         var newData = this.dataSource.filter(function (row, rowIndex) {
@@ -679,8 +683,8 @@ function () {
     /**
      * Returns single value from the data array.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} prop
+     * @param {number} row Visual row index.
+     * @param {number} prop The column property.
      * @returns {*}
      */
 
@@ -716,7 +720,7 @@ function () {
         value = out;
       } else if (typeof prop === "function") {
         /**
-         *  allows for interacting with complex structures, for example
+         *  Allows for interacting with complex structures, for example
          *  d3/jQuery getter/setter properties:
          *
          *    {columns: [{
@@ -726,7 +730,7 @@ function () {
          *        }
          *        row.property(value);
          *      }
-         *    }]}
+         *    }]}.
          */
         value = prop(this.dataSource.slice(physicalRow, physicalRow + 1)[0]);
       }
@@ -745,9 +749,9 @@ function () {
     /**
      * Returns single value from the data array (intended for clipboard copy to an external application).
      *
-     * @param {Number} row Physical row index.
-     * @param {Number} prop
-     * @returns {String}
+     * @param {number} row Physical row index.
+     * @param {number} prop The column property.
+     * @returns {string}
      */
 
   }, {
@@ -762,9 +766,9 @@ function () {
     /**
      * Saves single value to the data array.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} prop
-     * @param {String} value
+     * @param {number} row Visual row index.
+     * @param {number} prop The column property.
+     * @param {string} value The value to set.
      */
 
   }, {
@@ -814,11 +818,11 @@ function () {
     /**
      * This ridiculous piece of code maps rows Id that are present in table data to those displayed for user.
      * The trick is, the physical row id (stored in settings.data) is not necessary the same
-     * as the visual (displayed) row id (e.g. when sorting is applied).
+     * as the visual (displayed) row id (e.g. When sorting is applied).
      *
-     * @param {Number} index Visual row index.
-     * @param {Number} amount
-     * @returns {Number}
+     * @param {number} index Visual row index.
+     * @param {number} amount An amount of rows to translate.
+     * @returns {number}
      */
 
   }, {
@@ -841,8 +845,8 @@ function () {
     }
     /**
      *
-     * @param index Visual column index.
-     * @param amount
+     * @param {number} index Visual column index.
+     * @param {number} amount An amount of rows to translate.
      * @returns {Array}
      */
 
@@ -879,13 +883,13 @@ function () {
     /**
      * Get data length.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
     key: "getLength",
     value: function getLength() {
-      var maxRowsFromSettings = this.instance.getSettings().maxRows;
+      var maxRowsFromSettings = this.tableMeta.maxRows;
       var maxRows;
 
       if (maxRowsFromSettings < 0 || maxRowsFromSettings === 0) {
@@ -894,7 +898,7 @@ function () {
         maxRows = maxRowsFromSettings || Infinity;
       }
 
-      var length = this.instance.rowIndexMapper.getNotSkippedIndexesLength();
+      var length = this.instance.rowIndexMapper.getNotTrimmedIndexesLength();
       return Math.min(length, maxRows);
     }
     /**
@@ -922,11 +926,22 @@ function () {
       return this.getRange(start, end, DataMap.DESTINATION_RENDERER);
     }
     /**
+     * Count the number of columns cached in the `colToProp` cache.
+     *
+     * @returns {number} Amount of cached columns.
+     */
+
+  }, {
+    key: "countCachedColumns",
+    value: function countCachedColumns() {
+      return this.colToPropCache.length;
+    }
+    /**
      * Returns data range as array.
      *
-     * @param {Object} [start] Start selection position. Visual indexes.
-     * @param {Object} [end] End selection position. Visual indexes.
-     * @param {Number} destination Destination of datamap.get
+     * @param {object} [start] Start selection position. Visual indexes.
+     * @param {object} [end] End selection position. Visual indexes.
+     * @param {number} destination Destination of datamap.get.
      * @returns {Array}
      */
 
@@ -937,8 +952,8 @@ function () {
       var r;
       var c;
       var row;
-      var maxRows = this.instance.countPhysicalRows();
-      var maxCols = this.instance.countPhysicalCols();
+      var maxRows = this.tableMeta.maxRows;
+      var maxCols = this.tableMeta.maxCols;
 
       if (maxRows === 0 || maxCols === 0) {
         return [];
@@ -949,8 +964,9 @@ function () {
       var clen = Math.min(Math.max(maxCols - 1, 0), Math.max(start.col, end.col));
 
       for (r = Math.min(start.row, end.row); r <= rlen; r++) {
-        row = [];
-        var physicalRow = this.instance.toPhysicalRow(r);
+        row = []; // We just store indexes for rows without headers.
+
+        var physicalRow = r >= 0 ? this.instance.toPhysicalRow(r) : r;
 
         for (c = Math.min(start.col, end.col); c <= clen; c++) {
           if (physicalRow === null) {
@@ -970,9 +986,9 @@ function () {
     /**
      * Return data as text (tab separated columns).
      *
-     * @param {Object} [start] Start selection position. Visual indexes.
-     * @param {Object} [end] End selection position. Visual indexes.
-     * @returns {String}
+     * @param {object} [start] Start selection position. Visual indexes.
+     * @param {object} [end] End selection position. Visual indexes.
+     * @returns {string}
      */
 
   }, {
@@ -983,9 +999,9 @@ function () {
     /**
      * Return data as copyable text (tab separated columns intended for clipboard copy to an external application).
      *
-     * @param {Object} [start] Start selection position. Visual indexes.
-     * @param {Object} [end] End selection position. Visual indexes.
-     * @returns {String}
+     * @param {object} [start] Start selection position. Visual indexes.
+     * @param {object} [end] End selection position. Visual indexes.
+     * @returns {string}
      */
 
   }, {
@@ -1001,10 +1017,8 @@ function () {
     key: "destroy",
     value: function destroy() {
       this.instance = null;
-      this.priv = null;
-      this.GridSettings = null;
+      this.tableMeta = null;
       this.dataSource = null;
-      this.cachedLength = null;
       this.duckSchema = null;
       this.colToPropCache.length = 0;
       this.propToColCache.clear();

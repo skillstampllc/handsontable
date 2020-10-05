@@ -6,9 +6,15 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.to-string");
 
@@ -28,18 +34,22 @@ exports.parsePath = parsePath;
 
 var _array = require("../../helpers/array");
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /**
  * Clean and extend patches from jsonpatch observer.
  *
- * @param {Array} patches
+ * @param {Array} patches The list of patches from jsonpatch lib to process.
  * @returns {Array}
  */
 function cleanPatches(patches) {
@@ -61,7 +71,7 @@ function cleanPatches(patches) {
     return true;
   });
   /**
-   * Extend patches with changed cells coords
+   * Extend patches with changed cells coords.
    */
 
   cleanedPatches = (0, _array.arrayMap)(cleanedPatches, function (patch) {
@@ -92,8 +102,8 @@ function cleanPatches(patches) {
 /**
  * Extract coordinates from path where data was changed.
  *
- * @param {String} path Path describing where data was changed.
- * @returns {Object|null} Returns an object with `row` and `col` properties or `null` if path doesn't have necessary information.
+ * @param {string} path Path describing where data was changed.
+ * @returns {object|null} Returns an object with `row` and `col` properties or `null` if path doesn't have necessary information.
  */
 
 

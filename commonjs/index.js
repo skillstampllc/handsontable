@@ -47,8 +47,6 @@ var numberHelpers = _interopRequireWildcard(require("./helpers/number"));
 
 var objectHelpers = _interopRequireWildcard(require("./helpers/object"));
 
-var settingHelpers = _interopRequireWildcard(require("./helpers/setting"));
-
 var stringHelpers = _interopRequireWildcard(require("./helpers/string"));
 
 var unicodeHelpers = _interopRequireWildcard(require("./helpers/unicode"));
@@ -61,7 +59,7 @@ var plugins = _interopRequireWildcard(require("./plugins/index"));
 
 var _plugins = require("./plugins");
 
-var _defaultSettings = _interopRequireDefault(require("./defaultSettings"));
+var _index2 = require("./dataMap/index");
 
 var _rootInstance = require("./utils/rootInstance");
 
@@ -77,6 +75,11 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * @param {HTMLElement} rootElement The element to which the Handsontable instance is injected.
+ * @param {object} userSettings The user defined options.
+ * @returns {Core}
+ */
 function Handsontable(rootElement, userSettings) {
   var instance = new _core.default(rootElement, userSettings || {}, _rootInstance.rootInstanceSymbol);
   instance.init();
@@ -90,22 +93,22 @@ Handsontable.Core = function (rootElement) {
   return new _core.default(rootElement, userSettings, _rootInstance.rootInstanceSymbol);
 };
 
-Handsontable.DefaultSettings = _defaultSettings.default;
+Handsontable.DefaultSettings = (0, _index2.metaSchemaFactory)();
 Handsontable.EventManager = _eventManager.default;
 Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For MemoryLeak tests
 
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "09/09/2020 12:35:50";
-Handsontable.version = "7.4.2"; // Export Hooks singleton
+Handsontable.buildDate = "05/10/2020 15:36:21";
+Handsontable.version = "8.1.0"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
 
 Handsontable.__GhostTable = _ghostTable.default; //
 // Export all helpers to the Handsontable object
 
-var HELPERS = [arrayHelpers, browserHelpers, dataHelpers, dateHelpers, featureHelpers, functionHelpers, mixedHelpers, numberHelpers, objectHelpers, settingHelpers, stringHelpers, unicodeHelpers, parseTableHelpers];
+var HELPERS = [arrayHelpers, browserHelpers, dataHelpers, dateHelpers, featureHelpers, functionHelpers, mixedHelpers, numberHelpers, objectHelpers, stringHelpers, unicodeHelpers, parseTableHelpers];
 var DOM = [domHelpers, domEventHelpers];
 Handsontable.helper = {};
 Handsontable.dom = {}; // Fill general helpers.

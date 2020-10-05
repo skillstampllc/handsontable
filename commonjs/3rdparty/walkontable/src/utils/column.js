@@ -34,9 +34,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * @class {ColumnUtils}
  */
-var ColumnUtils =
-/*#__PURE__*/
-function () {
+var ColumnUtils = /*#__PURE__*/function () {
   function ColumnUtils(wot) {
     _classCallCheck(this, ColumnUtils);
 
@@ -46,8 +44,8 @@ function () {
   /**
    * Returns column width based on passed source index.
    *
-   * @param {Number} sourceIndex Column source index.
-   * @returns {Number}
+   * @param {number} sourceIndex Column source index.
+   * @returns {number}
    */
 
 
@@ -67,8 +65,8 @@ function () {
     /**
      * Returns stretched column width based on passed source index.
      *
-     * @param {Number} sourceIndex Column source index.
-     * @returns {Number}
+     * @param {number} sourceIndex Column source index.
+     * @returns {number}
      */
 
   }, {
@@ -76,7 +74,7 @@ function () {
     value: function getStretchedColumnWidth(sourceIndex) {
       var columnWidth = this.getWidth(sourceIndex);
       var calculator = this.wot.wtViewport.columnsRenderCalculator;
-      var width = columnWidth === null || columnWidth === void 0 ? this.wot.wtSettings.settings.defaultColumnWidth : columnWidth;
+      var width = columnWidth !== null && columnWidth !== void 0 ? columnWidth : this.wot.wtSettings.settings.defaultColumnWidth;
 
       if (calculator) {
         var stretchedWidth = calculator.getStretchedColumnWidth(sourceIndex, width);
@@ -91,8 +89,8 @@ function () {
     /**
      * Returns column header height based on passed header level.
      *
-     * @param {Number} level Column header level.
-     * @returns {Number}
+     * @param {number} level Column header level.
+     * @returns {number}
      */
 
   }, {
@@ -110,8 +108,8 @@ function () {
     /**
      * Returns column header width based on passed source index.
      *
-     * @param {Number} sourceIndex Column source index.
-     * @returns {Number}
+     * @param {number} sourceIndex Column source index.
+     * @returns {number}
      */
 
   }, {

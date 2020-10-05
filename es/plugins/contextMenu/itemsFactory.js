@@ -17,9 +17,7 @@ import { SEPARATOR, ITEMS, predefinedItems } from './predefinedItems';
  * @plugin ContextMenu
  */
 
-var ItemsFactory =
-/*#__PURE__*/
-function () {
+var ItemsFactory = /*#__PURE__*/function () {
   function ItemsFactory(hotInstance) {
     var orderPattern = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
@@ -65,7 +63,7 @@ function () {
     /**
      * Get all menu items based on pattern.
      *
-     * @param {Array|Object|Boolean} pattern Pattern which you can define by displaying menu items order. If `true` default
+     * @param {Array|object|boolean} pattern Pattern which you can define by displaying menu items order. If `true` default
      *                                       pattern will be used.
      * @returns {Array}
      */
@@ -80,6 +78,13 @@ function () {
 
   return ItemsFactory;
 }();
+/**
+ * @param {object[]} itemsPattern The user defined menu items collection.
+ * @param {object[]} defaultPattern The menu default items collection.
+ * @param {object} items Additional options.
+ * @returns {object[]} Returns parsed and merged menu items collection ready to render.
+ */
+
 
 function _getItems() {
   var itemsPattern = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;

@@ -3,17 +3,27 @@ import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.find-index";
 import "core-js/modules/es.array.for-each";
+import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.slice";
 import "core-js/modules/es.array.splice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.keys";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.promise";
+import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.for-each";
 import "core-js/modules/web.dom-collections.iterator";
 import "core-js/modules/web.timers";
 import "regenerator-runtime/runtime";
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -45,9 +55,7 @@ var STATE_NEED_FULL_REBUILD = 3;
  * @util
  */
 
-var Sheet =
-/*#__PURE__*/
-function () {
+var Sheet = /*#__PURE__*/function () {
   function Sheet(hot, dataProvider) {
     var _this = this;
 
@@ -112,7 +120,7 @@ function () {
     /**
      * State of the sheet.
      *
-     * @type {Number}
+     * @type {number}
      * @private
      */
 
@@ -159,41 +167,32 @@ function () {
         PromisesList[_key] = arguments[_key];
       }
 
-      return new Promise(
-      /*#__PURE__*/
-      function () {
-        var _ref = _asyncToGenerator(
-        /*#__PURE__*/
-        regeneratorRuntime.mark(function _callee2(resolve) {
-          var output, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, promise;
+      return new Promise( /*#__PURE__*/function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(resolve) {
+          var output, _iterator, _step, promise;
 
           return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
                   output = [];
-                  _iteratorNormalCompletion = true;
-                  _didIteratorError = false;
-                  _iteratorError = undefined;
-                  _context2.prev = 4;
-                  _iterator = PromisesList[Symbol.iterator]();
+                  _iterator = _createForOfIteratorHelper(PromisesList);
+                  _context2.prev = 2;
 
-                case 6:
-                  if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                    _context2.next = 23;
+                  _iterator.s();
+
+                case 4:
+                  if ((_step = _iterator.n()).done) {
+                    _context2.next = 20;
                     break;
                   }
 
                   promise = _step.value;
-                  _context2.prev = 8;
+                  _context2.prev = 6;
                   _context2.t0 = output;
-                  _context2.next = 12;
-                  return promise.then(
-                  /*#__PURE__*/
-                  function () {
-                    var _ref2 = _asyncToGenerator(
-                    /*#__PURE__*/
-                    regeneratorRuntime.mark(function _callee(resolvedData) {
+                  _context2.next = 10;
+                  return promise.then( /*#__PURE__*/function () {
+                    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(resolvedData) {
                       return regeneratorRuntime.wrap(function _callee$(_context) {
                         while (1) {
                           switch (_context.prev = _context.next) {
@@ -217,67 +216,49 @@ function () {
                     };
                   }());
 
-                case 12:
+                case 10:
                   _context2.t1 = _context2.sent;
 
                   _context2.t0.push.call(_context2.t0, _context2.t1);
 
-                  _context2.next = 19;
+                  _context2.next = 17;
                   break;
 
-                case 16:
-                  _context2.prev = 16;
-                  _context2.t2 = _context2["catch"](8);
+                case 14:
+                  _context2.prev = 14;
+                  _context2.t2 = _context2["catch"](6);
                   return _context2.abrupt("return", output);
 
-                case 19:
+                case 17:
                   if (output.length === PromisesList.length) resolve(output);
 
-                case 20:
-                  _iteratorNormalCompletion = true;
-                  _context2.next = 6;
+                case 18:
+                  _context2.next = 4;
                   break;
 
-                case 23:
-                  _context2.next = 29;
+                case 20:
+                  _context2.next = 25;
                   break;
+
+                case 22:
+                  _context2.prev = 22;
+                  _context2.t3 = _context2["catch"](2);
+
+                  _iterator.e(_context2.t3);
 
                 case 25:
                   _context2.prev = 25;
-                  _context2.t3 = _context2["catch"](4);
-                  _didIteratorError = true;
-                  _iteratorError = _context2.t3;
 
-                case 29:
-                  _context2.prev = 29;
-                  _context2.prev = 30;
+                  _iterator.f();
 
-                  if (!_iteratorNormalCompletion && _iterator.return != null) {
-                    _iterator.return();
-                  }
+                  return _context2.finish(25);
 
-                case 32:
-                  _context2.prev = 32;
-
-                  if (!_didIteratorError) {
-                    _context2.next = 35;
-                    break;
-                  }
-
-                  throw _iteratorError;
-
-                case 35:
-                  return _context2.finish(32);
-
-                case 36:
-                  return _context2.finish(29);
-
-                case 37:
+                case 28:
                 case "end":
                   return _context2.stop();
               }
             }
-          }, _callee2, null, [[4, 25, 29, 37], [8, 16], [30,, 32, 36]]);
+          }, _callee2, null, [[2, 22, 25, 28], [6, 14]]);
         }));
 
         return function (_x) {
@@ -316,76 +297,55 @@ function () {
   }, {
     key: "runPromiseAsync",
     value: function () {
-      var _runPromiseAsync = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(promisses) {
-        var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, pr;
+      var _runPromiseAsync = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(promisses) {
+        var _iterator2, _step2, pr;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _iteratorNormalCompletion2 = true;
-                _didIteratorError2 = false;
-                _iteratorError2 = undefined;
-                _context3.prev = 3;
-                _iterator2 = promisses[Symbol.iterator]();
+                _iterator2 = _createForOfIteratorHelper(promisses);
+                _context3.prev = 1;
 
-              case 5:
-                if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-                  _context3.next = 12;
+                _iterator2.s();
+
+              case 3:
+                if ((_step2 = _iterator2.n()).done) {
+                  _context3.next = 9;
                   break;
                 }
 
                 pr = _step2.value;
-                _context3.next = 9;
+                _context3.next = 7;
                 return pr();
 
-              case 9:
-                _iteratorNormalCompletion2 = true;
-                _context3.next = 5;
+              case 7:
+                _context3.next = 3;
                 break;
 
-              case 12:
-                _context3.next = 18;
+              case 9:
+                _context3.next = 14;
                 break;
+
+              case 11:
+                _context3.prev = 11;
+                _context3.t0 = _context3["catch"](1);
+
+                _iterator2.e(_context3.t0);
 
               case 14:
                 _context3.prev = 14;
-                _context3.t0 = _context3["catch"](3);
-                _didIteratorError2 = true;
-                _iteratorError2 = _context3.t0;
 
-              case 18:
-                _context3.prev = 18;
-                _context3.prev = 19;
+                _iterator2.f();
 
-                if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                  _iterator2.return();
-                }
+                return _context3.finish(14);
 
-              case 21:
-                _context3.prev = 21;
-
-                if (!_didIteratorError2) {
-                  _context3.next = 24;
-                  break;
-                }
-
-                throw _iteratorError2;
-
-              case 24:
-                return _context3.finish(21);
-
-              case 25:
-                return _context3.finish(18);
-
-              case 26:
+              case 17:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[3, 14, 18, 26], [19,, 21, 25]]);
+        }, _callee3, null, [[1, 11, 14, 17]]);
       }));
 
       function runPromiseAsync(_x3) {
@@ -419,11 +379,7 @@ function () {
           if (!_this2.useCustomGetCellDependencies) {
             _this2.parseExpression(cellValue, value.substr(1));
           } else {
-            promisses.push(
-            /*#__PURE__*/
-            _asyncToGenerator(
-            /*#__PURE__*/
-            regeneratorRuntime.mark(function _callee4() {
+            promisses.push( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
               return regeneratorRuntime.wrap(function _callee4$(_context4) {
                 while (1) {
                   switch (_context4.prev = _context4.next) {
@@ -452,11 +408,7 @@ function () {
       });
 
       if (this.useCustomGetCellDependencies) {
-        promisses.push(
-        /*#__PURE__*/
-        _asyncToGenerator(
-        /*#__PURE__*/
-        regeneratorRuntime.mark(function _callee5() {
+        promisses.push( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
           return regeneratorRuntime.wrap(function _callee5$(_context5) {
             while (1) {
               switch (_context5.prev = _context5.next) {
@@ -523,7 +475,7 @@ function () {
     /**
      * Set predefined variable name which can be visible while parsing formula expression.
      *
-     * @param {String} name Variable name.
+     * @param {string} name Variable name.
      * @param {*} value Variable value.
      */
 
@@ -535,7 +487,7 @@ function () {
     /**
      * Get variable name.
      *
-     * @param {String} name Variable name.
+     * @param {string} name Variable name.
      * @returns {*}
      */
 
@@ -547,8 +499,8 @@ function () {
     /**
      * Apply changes to the sheet.
      *
-     * @param {Number} row Physical row index.
-     * @param {Number} column Physical column index.
+     * @param {number} row Physical row index.
+     * @param {number} column Physical column index.
      * @param {*} newValue Current cell value.
      */
 
@@ -582,8 +534,8 @@ function () {
     /**
      * Parse and evaluate formula for provided cell.
      *
-     * @param {CellValue|Object} cellValue Cell value object.
-     * @param {String} formula Value to evaluate.
+     * @param {CellValue|object} cellValue Cell value object.
+     * @param {string} formula Value to evaluate.
      */
 
   }, {
@@ -616,8 +568,8 @@ function () {
     /**
      * Get cell value object at specified physical coordinates.
      *
-     * @param {Number} row Physical row index.
-     * @param {Number} column Physical column index.
+     * @param {number} row Physical row index.
+     * @param {number} column Physical column index.
      * @returns {CellValue|undefined}
      */
 
@@ -629,8 +581,8 @@ function () {
     /**
      * Get cell dependencies at specified physical coordinates.
      *
-     * @param {Number} row Physical row index.
-     * @param {Number} column Physical column index.
+     * @param {number} row Physical row index.
+     * @param {number} column Physical column index.
      * @returns {Array}
      */
 
@@ -649,7 +601,7 @@ function () {
      * Listener for parser cell value.
      *
      * @private
-     * @param {Object} cellCoords Cell coordinates.
+     * @param {object} cellCoords Cell coordinates.
      * @param {Function} done Function to call with valid cell value.
      */
 
@@ -702,8 +654,8 @@ function () {
      * Listener for parser cells (range) value.
      *
      * @private
-     * @param {Object} startCell Cell coordinates (top-left corner coordinate).
-     * @param {Object} endCell Cell coordinates (bottom-right corner coordinate).
+     * @param {object} startCell Cell coordinates (top-left corner coordinate).
+     * @param {object} endCell Cell coordinates (bottom-right corner coordinate).
      * @param {Function} done Function to call with valid cells values.
      */
 

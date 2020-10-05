@@ -20,9 +20,7 @@ var EVENTS_TO_REGISTER = ['click', 'input', 'keydown', 'keypress', 'keyup', 'foc
  * @private
  */
 
-var BaseUI =
-/*#__PURE__*/
-function () {
+var BaseUI = /*#__PURE__*/function () {
   _createClass(BaseUI, null, [{
     key: "DEFAULTS",
     get: function get() {
@@ -55,7 +53,7 @@ function () {
     /**
      * List of element options.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.options = extend(BaseUI.DEFAULTS, options);
@@ -70,7 +68,7 @@ function () {
     /**
      * Flag which determines build state of element.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.buildState = false;
@@ -78,7 +76,7 @@ function () {
   /**
    * Set the element value.
    *
-   * @returns {*}
+   * @param {*} value Set the component value.
    */
 
 
@@ -111,7 +109,7 @@ function () {
     /**
      * Check if element was built (built whole DOM structure).
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     value: function isBuilt() {
       return this.buildState === STATE_BUILT;

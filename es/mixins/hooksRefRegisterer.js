@@ -4,7 +4,7 @@ var MIXIN_NAME = 'hooksRefRegisterer';
 /**
  * Mixin object to extend objects functionality for auto registering hooks in an Handsontable instance.
  *
- * @type {Object}
+ * @type {object}
  */
 
 var hooksRefRegisterer = {
@@ -16,9 +16,9 @@ var hooksRefRegisterer = {
   /**
    * Add hook to the collection.
    *
-   * @param {String} key Hook name.
-   * @param {Function} callback Hook callback
-   * @returns {Object}
+   * @param {string} key The hook name.
+   * @param {Function} callback The hook callback.
+   * @returns {object}
    */
   addHook: function addHook(key, callback) {
     if (!this._hooksStorage[key]) {
@@ -35,7 +35,7 @@ var hooksRefRegisterer = {
   /**
    * Remove all hooks listeners by hook name.
    *
-   * @param {String} key
+   * @param {string} key The hook name.
    */
   removeHooksByKey: function removeHooksByKey(key) {
     var _this = this;

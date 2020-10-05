@@ -1,20 +1,18 @@
-import "core-js/modules/es.array.concat";
 import { addClass, hasClass } from './../helpers/dom/element';
 import EventManager from './../eventManager';
 import { CellCoords } from './../3rdparty/walkontable/src';
 import { getRenderer } from './index';
 /**
- * Autocomplete renderer
+ * Autocomplete renderer.
  *
  * @private
- * @renderer AutocompleteRenderer
- * @param {Object} instance Handsontable instance
- * @param {Element} TD Table cell where to render
- * @param {Number} row
- * @param {Number} col
- * @param {String|Number} prop Row object property name
- * @param value Value to render (remember to escape unsafe HTML before inserting to DOM!)
- * @param {Object} cellProperties Cell properites (shared by cell renderer and editor)
+ * @param {Core} instance The Handsontable instance.
+ * @param {HTMLTableCellElement} TD The rendered cell element.
+ * @param {number} row The visual row index.
+ * @param {number} col The visual column index.
+ * @param {number|string} prop The column property (passed when datasource is an array of objects).
+ * @param {*} value The rendered value.
+ * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
 function autocompleteRenderer(instance, TD, row, col, prop, value, cellProperties) {
@@ -23,12 +21,7 @@ function autocompleteRenderer(instance, TD, row, col, prop, value, cellPropertie
   var ARROW = rootDocument.createElement('DIV');
   ARROW.className = 'htAutocompleteArrow';
   ARROW.appendChild(rootDocument.createTextNode(String.fromCharCode(9660)));
-
-  for (var _len = arguments.length, args = new Array(_len > 7 ? _len - 7 : 0), _key = 7; _key < _len; _key++) {
-    args[_key - 7] = arguments[_key];
-  }
-
-  getRenderer(rendererType).apply(this, [instance, TD, row, col, prop, value, cellProperties].concat(args));
+  getRenderer(rendererType).apply(this, [instance, TD, row, col, prop, value, cellProperties]);
 
   if (!TD.firstChild) {
     // http://jsperf.com/empty-node-if-needed

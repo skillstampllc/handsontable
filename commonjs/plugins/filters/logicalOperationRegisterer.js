@@ -11,7 +11,7 @@ var operations = {};
 /**
  * Get operation closure with pre-bound arguments.
  *
- * @param {String} id Operator `id`.
+ * @param {string} id Operator `id`.
  * @returns {Function}
  */
 
@@ -30,7 +30,8 @@ function getOperationFunc(id) {
 /**
  * Return name of operation which is displayed inside UI component, basing on it's `id`.
  *
- * @param {String} id `Id` of operation.
+ * @param {string} id `Id` of operation.
+ * @returns {string}
  */
 
 
@@ -40,8 +41,8 @@ function getOperationName(id) {
 /**
  * Operator registerer.
  *
- * @param {String} id Operation `id`.
- * @param {String} name Operation name which is displayed inside UI component.
+ * @param {string} id Operation `id`.
+ * @param {string} name Operation name which is displayed inside UI component.
  * @param {Function} func Operation function.
  */
 

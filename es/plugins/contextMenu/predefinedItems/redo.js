@@ -1,5 +1,9 @@
 import * as C from './../../../i18n/constants';
 export var KEY = 'redo';
+/**
+ * @returns {object}
+ */
+
 export default function redoItem() {
   return {
     key: KEY,

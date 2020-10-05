@@ -18,6 +18,8 @@ require("core-js/modules/es.array.map");
 
 require("core-js/modules/es.array.slice");
 
+require("core-js/modules/es.function.name");
+
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.regexp.to-string");
@@ -36,23 +38,27 @@ var _function = require("../../../helpers/function");
 
 var _array = require("../../../helpers/array");
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 /**
  * Insert new items to the list.
  *
  * @private
  * @param {Array} indexedValues List of values for particular indexes.
- * @param {Number} insertionIndex Position inside the actual list.
+ * @param {number} insertionIndex Position inside the actual list.
  * @param {Array} insertedIndexes List of inserted indexes.
  * @param {*} insertedValuesMapping Mapping which may provide value or function returning value for the specific parameters.
- * @returns List with new mappings.
+ * @returns {Array} List with new mappings.
  */
 function getListWithInsertedItems(indexedValues, insertionIndex, insertedIndexes, insertedValuesMapping) {
   var firstInsertedIndex = insertedIndexes[0];
@@ -70,7 +76,7 @@ function getListWithInsertedItems(indexedValues, insertionIndex, insertedIndexes
  * @private
  * @param {Array} indexedValues List of values for particular indexes.
  * @param {Array} removedIndexes List of removed indexes.
- * @returns Reduced list of mappings.
+ * @returns {Array} Reduced list of mappings.
  */
 
 

@@ -17,9 +17,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Date sorting compare function factory. Method get as parameters `sortOrder` and `columnMeta` and return compare function.
  *
- * @param {String} sortOrder Sort order (`asc` for ascending, `desc` for descending).
- * @param {Object} columnMeta Column meta object.
- * @param {Object} columnPluginSettings Plugin settings for the column.
+ * @param {string} sortOrder Sort order (`asc` for ascending, `desc` for descending).
+ * @param {object} columnMeta Column meta object.
+ * @param {object} columnPluginSettings Plugin settings for the column.
  * @returns {Function} The compare function.
  */
 function compareFunctionFactory(sortOrder, columnMeta, columnPluginSettings) {

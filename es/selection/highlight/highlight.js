@@ -8,6 +8,8 @@ import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.map";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-own-property-descriptors";
@@ -19,13 +21,17 @@ import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.for-each";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -63,16 +69,14 @@ export var CUSTOM_SELECTION = 'custom-selection';
  * @util
  */
 
-var Highlight =
-/*#__PURE__*/
-function () {
+var Highlight = /*#__PURE__*/function () {
   function Highlight(options) {
     _classCallCheck(this, Highlight);
 
     /**
      * Options consumed by Highlight class and Walkontable Selection classes.
      *
-     * @type {Object}
+     * @type {object}
      */
     this.options = options;
     /**
@@ -82,7 +86,7 @@ function () {
      *
      * An order of the layers is the same as the order of added new non-consecutive selections.
      *
-     * @type {Number}
+     * @type {number}
      * @default 0
      */
 
@@ -137,10 +141,10 @@ function () {
     this.customSelections = [];
   }
   /**
-   * Check if highlight cell rendering is disabled for specyfied highlight type.
+   * Check if highlight cell rendering is disabled for specified highlight type.
    *
-   * @param {String} highlightType Highlight type. Possible values are: `cell`, `area`, `fill` or `header`.
-   * @return {Boolean}
+   * @param {string} highlightType Highlight type. Possible values are: `cell`, `area`, `fill` or `header`.
+   * @returns {boolean}
    */
 
 
@@ -160,7 +164,7 @@ function () {
     /**
      * Set a new layer level to make access to the desire `area` and `header` highlights.
      *
-     * @param {Number} [level=0] Layer level to use.
+     * @param {number} [level=0] Layer level to use.
      * @returns {Highlight}
      */
 
@@ -174,7 +178,7 @@ function () {
     /**
      * Get Walkontable Selection instance created for controlling highlight of the currently selected/edited cell.
      *
-     * @return {Selection}
+     * @returns {Selection}
      */
 
   }, {
@@ -185,7 +189,7 @@ function () {
     /**
      * Get Walkontable Selection instance created for controlling highlight of the autofill functionality.
      *
-     * @return {Selection}
+     * @returns {Selection}
      */
 
   }, {
@@ -197,7 +201,7 @@ function () {
      * Get or create (if not exist in the cache) Walkontable Selection instance created for controlling highlight
      * of the multiple selected cells.
      *
-     * @return {Selection}
+     * @returns {Selection}
      */
 
   }, {
@@ -220,7 +224,7 @@ function () {
     /**
      * Get all Walkontable Selection instances which describes the state of the visual highlight of the cells.
      *
-     * @return {Selection[]}
+     * @returns {Selection[]}
      */
 
   }, {
@@ -232,7 +236,7 @@ function () {
      * Get or create (if not exist in the cache) Walkontable Selection instance created for controlling highlight
      * of the multiple selected header cells.
      *
-     * @return {Selection}
+     * @returns {Selection}
      */
 
   }, {
@@ -253,7 +257,7 @@ function () {
     /**
      * Get all Walkontable Selection instances which describes the state of the visual highlight of the headers.
      *
-     * @return {Selection[]}
+     * @returns {Selection[]}
      */
 
   }, {
@@ -265,7 +269,7 @@ function () {
      * Get or create (if not exist in the cache) Walkontable Selection instance created for controlling highlight
      * of the multiple selected active header cells.
      *
-     * @return {Selection}
+     * @returns {Selection}
      */
 
   }, {
@@ -286,7 +290,7 @@ function () {
     /**
      * Get all Walkontable Selection instances which describes the state of the visual highlight of the active headers.
      *
-     * @return {Selection[]}
+     * @returns {Selection[]}
      */
 
   }, {
@@ -297,7 +301,7 @@ function () {
     /**
      * Get Walkontable Selection instance created for controlling highlight of the custom selection functionality.
      *
-     * @return {Selection}
+     * @returns {Selection}
      */
 
   }, {
@@ -308,13 +312,13 @@ function () {
     /**
      * Add selection to the custom selection instance. The new selection are added to the end of the selection collection.
      *
-     * @param {Object} options
+     * @param {object} selectionInstance The selection instance.
      */
 
   }, {
     key: "addCustomSelection",
-    value: function addCustomSelection(options) {
-      this.customSelections.push(createHighlight(CUSTOM_SELECTION, _objectSpread({}, options)));
+    value: function addCustomSelection(selectionInstance) {
+      this.customSelections.push(createHighlight(CUSTOM_SELECTION, _objectSpread(_objectSpread({}, this.options), selectionInstance)));
     }
     /**
      * Perform cleaning visual highlights for the whole table.
@@ -337,6 +341,8 @@ function () {
     }
     /**
      * This object can be iterate over using `for of` syntax or using internal `arrayEach` helper.
+     *
+     * @returns {Selection[]}
      */
 
   }, {

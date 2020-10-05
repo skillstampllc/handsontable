@@ -12,6 +12,8 @@ require("core-js/modules/es.array.filter");
 
 require("core-js/modules/es.array.for-each");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.index-of");
@@ -35,6 +37,8 @@ require("core-js/modules/es.object.get-prototype-of");
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.reflect.get");
 
@@ -111,11 +115,15 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -125,23 +133,26 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 /**
  * @plugin Filters
- * @dependencies DropdownMenu HiddenRows
  *
  * @description
  * The plugin allows filtering the table data either by the built-in component or with the API.
@@ -160,17 +171,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * });
  * ```
  */
-var Filters =
-/*#__PURE__*/
-function (_BasePlugin) {
+var Filters = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Filters, _BasePlugin);
+
+  var _super = _createSuper(Filters);
 
   function Filters(hotInstance) {
     var _this;
 
     _classCallCheck(this, Filters);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Filters).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Instance of {@link EventManager}.
      *
@@ -215,13 +226,13 @@ function (_BasePlugin) {
      * Object containing information about last selected column physical and visual index for added filter conditions.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      * @default null
      */
 
     _this.lastSelectedColumn = null;
     /**
-     * Hidden menu rows indexed by physical column index
+     * Hidden menu rows indexed by physical column index.
      *
      * @private
      * @type {Map}
@@ -232,7 +243,7 @@ function (_BasePlugin) {
      * Map of skipped rows by plugin.
      *
      * @private
-     * @type {null|SkipMap}
+     * @type {null|TrimmingMap}
      */
 
     _this.filtersRowsMap = null; // One listener for the enable/disable functionality
@@ -247,7 +258,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link Filters#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -270,7 +281,7 @@ function (_BasePlugin) {
         return;
       }
 
-      this.trimRowsPlugin = this.hot.getPlugin('trimRows');
+      this.filtersRowsMap = this.hot.rowIndexMapper.registerMap(this.pluginName, new _translations.TrimmingMap());
       this.dropdownMenuPlugin = this.hot.getPlugin('dropdownMenu');
       var dropdownSettings = this.hot.getSettings().dropdownMenu;
       var menuContainer = dropdownSettings && dropdownSettings.uiContainer || this.hot.rootDocument.body;
@@ -416,12 +427,16 @@ function (_BasePlugin) {
           component.hide();
         });
         this.conditionCollection.clean();
-        this.hot.rowIndexMapper.unregisterMap('filters');
+        this.hot.rowIndexMapper.unregisterMap(this.pluginName);
       }
 
       _get(_getPrototypeOf(Filters.prototype), "disablePlugin", this).call(this);
     }
+    /* eslint-disable jsdoc/require-description-complete-sentence */
+
     /**
+     * @memberof Filters#
+     * @function addCondition
      * @description
      * Adds condition to the conditions collection at specified column index.
      *
@@ -441,7 +456,7 @@ function (_BasePlugin) {
      *  * `not_between` - Not between
      *  * `not_contains` - Not contains
      *  * `not_empty` - Not empty
-     *  * `neq` - Not equal
+     *  * `neq` - Not equal.
      *
      * Possible operations on collection of conditions:
      *  * `conjunction` - [**Conjunction**](https://en.wikipedia.org/wiki/Logical_conjunction) on conditions collection (by default), i.e. for such operation: c1 AND c2 AND c3 AND c4 ... AND cn === TRUE, where c1 ... cn are conditions.
@@ -456,7 +471,7 @@ function (_BasePlugin) {
      * ```js
      * const container = document.getElementById('example');
      * const hot = new Handsontable(container, {
-     *   date: getData(),
+     *   data: getData(),
      *   filters: true
      * });
      *
@@ -482,11 +497,13 @@ function (_BasePlugin) {
      * filtersPlugin.addCondition(1, 'not_contains', ['ing'], 'disjunction');
      * filtersPlugin.filter();
      * ```
-     * @param {Number} column Visual column index.
-     * @param {String} name Condition short name.
+     * @param {number} column Visual column index.
+     * @param {string} name Condition short name.
      * @param {Array} args Condition arguments.
-     * @param {String} operationId `id` of operation which is performed on the column
+     * @param {string} operationId `id` of operation which is performed on the column.
      */
+
+    /* eslint-enable jsdoc/require-description-complete-sentence */
 
   }, {
     key: "addCondition",
@@ -503,7 +520,7 @@ function (_BasePlugin) {
     /**
      * Removes conditions at specified column index.
      *
-     * @param {Number} column Visual column index.
+     * @param {number} column Visual column index.
      */
 
   }, {
@@ -516,7 +533,7 @@ function (_BasePlugin) {
      * Clears all conditions previously added to the collection for the specified column index or, if the column index
      * was not passed, clear the conditions for all columns.
      *
-     * @param {Number} [column] Visual column index.
+     * @param {number} [column] Visual column index.
      */
 
   }, {
@@ -551,7 +568,7 @@ function (_BasePlugin) {
       if (allowFiltering !== false) {
         if (needToFilter) {
           var trimmedRows = [];
-          this.hot.executeBatchOperations(function () {
+          this.hot.batch(function () {
             _this4.filtersRowsMap.clear();
 
             visibleVisualRows = (0, _array.arrayMap)(dataFilter.filter(), function (rowData) {
@@ -584,8 +601,8 @@ function (_BasePlugin) {
     /**
      * Gets last selected column index.
      *
-     * @returns {Object|null} Return `null` when column isn't selected otherwise
-     * object containing information about selected column with keys `visualIndex` and `physicalIndex`
+     * @returns {object|null} Return `null` when column isn't selected otherwise
+     * object containing information about selected column with keys `visualIndex` and `physicalIndex`.
      */
 
   }, {
@@ -602,19 +619,18 @@ function (_BasePlugin) {
   }, {
     key: "clearColumnSelection",
     value: function clearColumnSelection() {
-      var _ref = this.hot.getSelectedLast() || [],
-          _ref2 = _slicedToArray(_ref, 2),
-          row = _ref2[0],
-          col = _ref2[1];
+      var _this$hot$getSelected;
 
-      if (row !== void 0 && col !== void 0) {
-        this.hot.selectCell(row, col);
+      var coords = (_this$hot$getSelected = this.hot.getSelectedRangeLast()) === null || _this$hot$getSelected === void 0 ? void 0 : _this$hot$getSelected.getTopLeftCorner();
+
+      if (coords !== void 0) {
+        this.hot.selectCell(coords.row, coords.col);
       }
     }
     /**
      * Returns handsontable source data with cell meta based on current selection.
      *
-     * @param {Number} [column] Column index. By default column index accept the value of the selected column.
+     * @param {number} [column] Column index. By default column index accept the value of the selected column.
      * @returns {Array} Returns array of objects where keys as row index.
      */
 
@@ -676,10 +692,10 @@ function (_BasePlugin) {
       }
     }
     /**
-     * Update condition of ValueComponent basing on handled changes
+     * Update condition of ValueComponent basing on handled changes.
      *
      * @private
-     * @param {Number} columnIndex Column index of handled ValueComponent condition
+     * @param {number} columnIndex Column index of handled ValueComponent condition.
      */
 
   }, {
@@ -752,7 +768,7 @@ function (_BasePlugin) {
      * After dropdown menu default options listener.
      *
      * @private
-     * @param {Object} defaultOptions ContextMenu default item options.
+     * @param {object} defaultOptions ContextMenu default item options.
      */
 
   }, {
@@ -766,14 +782,14 @@ function (_BasePlugin) {
       });
     }
     /**
-     * Get operation basing on number and type of arguments (where arguments are states of components)
+     * Get operation basing on number and type of arguments (where arguments are states of components).
      *
-     * @param {String} suggestedOperation operation which was chosen by user from UI
-     * @param {Object} byConditionState1 state of first condition component
-     * @param {Object} byConditionState2 state of second condition component
-     * @param {Object} byValueState state of value component
+     * @param {string} suggestedOperation Operation which was chosen by user from UI.
+     * @param {object} byConditionState1 State of first condition component.
+     * @param {object} byConditionState2 State of second condition component.
+     * @param {object} byValueState State of value component.
      * @private
-     * @returns {String}
+     * @returns {string}
      */
 
   }, {
@@ -795,7 +811,7 @@ function (_BasePlugin) {
      * On action bar submit listener.
      *
      * @private
-     * @param {String} submitType
+     * @param {string} submitType The submit type.
      */
 
   }, {
@@ -841,18 +857,20 @@ function (_BasePlugin) {
      * On component change listener.
      *
      * @private
-     * @param {BaseComponent} component Component inheriting BaseComponent
-     * @param {Object} command Menu item object (command).
+     * @param {BaseComponent} component Component inheriting BaseComponent.
+     * @param {object} command Menu item object (command).
      */
 
   }, {
     key: "onComponentChange",
     value: function onComponentChange(component, command) {
       if (component === this.components.get('filter_by_condition')) {
+        var componentsToShow = [this.components.get('filter_by_condition2'), this.components.get('filter_operators')];
+
         if (command.showOperators) {
-          this.showComponents(this.components.get('filter_by_condition2'), this.components.get('filter_operators'));
+          this.showComponents.apply(this, componentsToShow);
         } else {
-          this.hideComponents(this.components.get('filter_by_condition2'), this.components.get('filter_operators'));
+          this.hideComponents.apply(this, componentsToShow);
         }
       }
 
@@ -873,7 +891,7 @@ function (_BasePlugin) {
     }
     /**
      * Listen to the keyboard input on document body and forward events to instance of Handsontable
-     * created by DropdownMenu plugin
+     * created by DropdownMenu plugin.
      *
      * @private
      */
@@ -887,8 +905,8 @@ function (_BasePlugin) {
      * On after get column header listener.
      *
      * @private
-     * @param {Number} col
-     * @param {HTMLTableCellElement} TH
+     * @param {number} col Visual column index.
+     * @param {HTMLTableCellElement} TH Header's TH element.
      */
 
   }, {
@@ -945,7 +963,7 @@ function (_BasePlugin) {
      * Updates components basing on conditions state.
      *
      * @private
-     * @param {Object} conditionsState
+     * @param {object} conditionsState An object with the state generated by UI components.
      */
 
   }, {
@@ -983,7 +1001,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {BaseComponent} component `BaseComponent` element or it derivatives.
-     * @param {Number} column Physical column index.
+     * @param {number} column Physical column index.
      */
 
   }, {
@@ -1000,8 +1018,8 @@ function (_BasePlugin) {
      * Removes specific rows from `hiddenRows` cache for particular column.
      *
      * @private
-     * @param {Number} column Physical column index.
-     * @param {Array} indexes Physical indexes of rows which will be removed from `hiddenRows` cache
+     * @param {number} column Physical column index.
+     * @param {Array} indexes Physical indexes of rows which will be removed from `hiddenRows` cache.
      */
 
   }, {
@@ -1045,7 +1063,7 @@ function (_BasePlugin) {
      * Changes visibility of component.
      *
      * @private
-     * @param {Boolean} visible Determine if components should be visible.
+     * @param {boolean} visible Determine if components should be visible.
      * @param {...BaseComponent} components List of components.
      */
 
@@ -1097,16 +1115,16 @@ function (_BasePlugin) {
       });
     }
     /**
-     * Saves `hiddenRows` cache for particular row.
+     * Saves `hiddenRows` cache for particular column.
      *
      * @private
-     * @param rowIndex Physical row index
+     * @param {number} columnIndex Physical column index.
      */
 
   }, {
     key: "saveHiddenRowsCache",
-    value: function saveHiddenRowsCache(rowIndex) {
-      this.hiddenRowsCache.set(rowIndex, this.dropdownMenuPlugin.menu.hotMenu.getPlugin('hiddenRows').hiddenRows);
+    value: function saveHiddenRowsCache(columnIndex) {
+      this.hiddenRowsCache.set(columnIndex, this.dropdownMenuPlugin.menu.hotMenu.getPlugin('hiddenRows').getHiddenRows());
     }
     /**
      * Hides components of filters `dropdownMenu`.
@@ -1151,7 +1169,7 @@ function (_BasePlugin) {
         this.components.forEach(function (component) {
           component.destroy();
         });
-        this.hot.rowIndexMapper.unregisterMap('filters');
+        this.hot.rowIndexMapper.unregisterMap(this.pluginName);
         this.conditionCollection.destroy();
         this.conditionUpdateObserver.destroy();
         this.hiddenRowsCache.clear();

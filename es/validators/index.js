@@ -18,7 +18,7 @@ register('time', timeValidator);
 /**
  * Retrieve validator function.
  *
- * @param {String} name Validator identification.
+ * @param {string} name Validator identification.
  * @returns {Function} Returns validator function.
  */
 

@@ -11,9 +11,7 @@ import NodesPool from './../utils/nodesPool';
  * @class BaseRenderer
  */
 
-var BaseRenderer =
-/*#__PURE__*/
-function () {
+var BaseRenderer = /*#__PURE__*/function () {
   function BaseRenderer(nodeType, rootNode) {
     _classCallCheck(this, BaseRenderer);
 
@@ -29,7 +27,7 @@ function () {
     /**
      * Node type which the renderer will manage while building the table (eg. 'TD', 'TR', 'TH').
      *
-     * @type {String}
+     * @type {string}
      */
 
     this.nodeType = nodeType;
@@ -50,7 +48,7 @@ function () {
     /**
      * Counter of nodes already added.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.renderedNodes = 0;

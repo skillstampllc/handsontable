@@ -9,22 +9,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * @util
  */
-var CellCoords =
-/*#__PURE__*/
-function () {
+var CellCoords = /*#__PURE__*/function () {
   function CellCoords(row, column) {
     _classCallCheck(this, CellCoords);
 
     /**
      * Row index.
      *
-     * @type {Number}
+     * @type {number}
      */
     this.row = null;
     /**
      * Column index.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.col = null;
@@ -38,7 +36,7 @@ function () {
    * Checks if given set of coordinates is valid in context of a given Walkontable instance.
    *
    * @param {Walkontable} wot A Walkontable instance.
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -61,7 +59,7 @@ function () {
      * Checks if this cell coordinates are the same as cell coordinates given as an argument.
      *
      * @param {CellCoords} cellCoords Cell coordinates to equal.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -76,8 +74,8 @@ function () {
     /**
      * Checks if tested coordinates are positioned in south-east from this cell coordinates.
      *
-     * @param {Object} testedCoords Cell coordinates to check.
-     * @returns {Boolean}
+     * @param {object} testedCoords Cell coordinates to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -88,8 +86,8 @@ function () {
     /**
      * Checks if tested coordinates are positioned in north-east from this cell coordinates.
      *
-     * @param {Object} testedCoords Cell coordinates to check.
-     * @returns {Boolean}
+     * @param {object} testedCoords Cell coordinates to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -100,8 +98,8 @@ function () {
     /**
      * Checks if tested coordinates are positioned in south-west from this cell coordinates.
      *
-     * @param {Object} testedCoords Cell coordinates to check.
-     * @returns {Boolean}
+     * @param {object} testedCoords Cell coordinates to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -112,8 +110,8 @@ function () {
     /**
      * Checks if tested coordinates are positioned in north-east from this cell coordinates.
      *
-     * @param {Object} testedCoords Cell coordinates to check.
-     * @returns {Boolean}
+     * @param {object} testedCoords Cell coordinates to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -122,9 +120,34 @@ function () {
       return this.row <= testedCoords.row && this.col >= testedCoords.col;
     }
     /**
+     * Normalizes the coordinates to the nearest valid position. The coordinates that point
+     * to the headers (negative values) are normalized to 0.
+     *
+     * @returns {CellCoords}
+     */
+
+  }, {
+    key: "normalize",
+    value: function normalize() {
+      this.row = this.row === null ? this.row : Math.max(this.row, 0);
+      this.col = this.col === null ? this.col : Math.max(this.col, 0);
+      return this;
+    }
+    /**
+     * Clones the coordinates.
+     *
+     * @returns {CellCoords}
+     */
+
+  }, {
+    key: "clone",
+    value: function clone() {
+      return new CellCoords(this.row, this.col);
+    }
+    /**
      * Converts CellCoords to literal object with `row` and `col` properties.
      *
-     * @return {Object} Returns a literal object with `row` and `col` properties.
+     * @returns {object} Returns a literal object with `row` and `col` properties.
      */
 
   }, {

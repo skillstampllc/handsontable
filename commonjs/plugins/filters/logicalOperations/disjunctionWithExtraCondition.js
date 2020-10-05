@@ -22,6 +22,12 @@ var OPERATION_ID = 'disjunctionWithExtraCondition';
 exports.OPERATION_ID = OPERATION_ID;
 var SHORT_NAME_FOR_COMPONENT = C.FILTERS_LABELS_DISJUNCTION; // ((p OR q OR w OR x OR...) AND z) === TRUE?
 
+/**
+ * @param {Array} conditions An array with values to check.
+ * @param {*} value The comparable value.
+ * @returns {boolean}
+ */
+
 exports.SHORT_NAME_FOR_COMPONENT = SHORT_NAME_FOR_COMPONENT;
 
 function operationResult(conditions, value) {

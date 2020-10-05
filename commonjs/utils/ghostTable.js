@@ -23,9 +23,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class GhostTable
  * @util
  */
-var GhostTable =
-/*#__PURE__*/
-function () {
+var GhostTable = /*#__PURE__*/function () {
   function GhostTable(hotInstance) {
     _classCallCheck(this, GhostTable);
 
@@ -45,7 +43,7 @@ function () {
     /**
      * Flag which determine is table was injected to DOM.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.injected = false;
@@ -74,7 +72,7 @@ function () {
     /**
      * Ghost table settings.
      *
-     * @type {Object}
+     * @type {object}
      * @default {Object}
      */
 
@@ -85,7 +83,7 @@ function () {
   /**
    * Add row.
    *
-   * @param {Number} row Row index.
+   * @param {number} row Row index.
    * @param {Map} samples Samples Map object.
    */
 
@@ -114,6 +112,8 @@ function () {
     }
     /**
      * Add a row consisting of the column headers.
+     *
+     * @param {Map} samples A map with sampled table values.
      */
 
   }, {
@@ -138,8 +138,8 @@ function () {
     /**
      * Add column.
      *
-     * @param {Number} column Column index.
-     * @param {Map} samples Samples Map object.
+     * @param {number} column Column index.
+     * @param {Map} samples A map with sampled table values.
      */
 
   }, {
@@ -161,6 +161,8 @@ function () {
       this.table = this.createTable(this.hot.table.className);
 
       if (this.getSetting('useHeaders') && this.hot.getColHeader(column) !== null) {
+        // Please keep in mind that the renderable column index equal to the visual columns index for the GhostTable.
+        // We render all columns.
         this.hot.view.appendColHeader(column, this.table.th);
       }
 
@@ -206,7 +208,7 @@ function () {
     /**
      * Set the Ghost Table settings to the provided object.
      *
-     * @param {Object} settings New Ghost Table Settings
+     * @param {object} settings New Ghost Table Settings.
      */
 
   }, {
@@ -217,7 +219,7 @@ function () {
     /**
      * Set a single setting of the Ghost Table.
      *
-     * @param {String} name Setting name.
+     * @param {string} name Setting name.
      * @param {*} value Setting value.
      */
 
@@ -233,7 +235,7 @@ function () {
     /**
      * Get the Ghost Table settings.
      *
-     * @returns {Object|null}
+     * @returns {object|null}
      */
 
   }, {
@@ -244,8 +246,8 @@ function () {
     /**
      * Get a single Ghost Table setting.
      *
-     * @param {String} name
-     * @returns {Boolean|null}
+     * @param {string} name The setting name to get.
+     * @returns {boolean|null}
      */
 
   }, {
@@ -284,7 +286,7 @@ function () {
     /**
      * Create table row element.
      *
-     * @param {Number} row Row index.
+     * @param {number} row Row index.
      * @returns {DocumentFragment} Returns created table row elements.
      */
 
@@ -340,7 +342,8 @@ function () {
       this.samples.forEach(function (sample) {
         (0, _array.arrayEach)(sample.strings, function (string) {
           var column = string.col;
-          var th = rootDocument.createElement('th');
+          var th = rootDocument.createElement('th'); // Please keep in mind that the renderable column index equal to the visual columns index for the GhostTable.
+          // We render all columns.
 
           _this3.hot.view.appendColHeader(column, th);
 
@@ -352,7 +355,7 @@ function () {
     /**
      * Create table column elements.
      *
-     * @param {Number} column Column index.
+     * @param {number} column Column index.
      * @returns {DocumentFragment} Returns created column table column elements.
      */
 
@@ -407,7 +410,7 @@ function () {
     /**
      * Inject generated table into document.
      *
-     * @param {HTMLElement} [parent=null]
+     * @param {HTMLElement} [parent=null] The element to which the ghost table is injected.
      */
 
   }, {
@@ -436,7 +439,7 @@ function () {
     /**
      * Create col element.
      *
-     * @param {Number} column Column index.
+     * @param {number} column Column index.
      * @returns {HTMLElement}
      */
 
@@ -450,8 +453,8 @@ function () {
     /**
      * Create table element.
      *
-     * @param {String} className
-     * @returns {Object}
+     * @param {string} className The CSS classes to add.
+     * @returns {object}
      */
 
   }, {
@@ -500,8 +503,8 @@ function () {
     /**
      * Create container for tables.
      *
-     * @param {String} className
-     * @returns {Object}
+     * @param {string} className The CSS classes to add.
+     * @returns {object}
      */
 
   }, {
@@ -522,7 +525,7 @@ function () {
     /**
      * Checks if table is raised vertically (checking rows).
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -533,7 +536,7 @@ function () {
     /**
      * Checks if table is raised horizontally (checking columns).
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

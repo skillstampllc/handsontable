@@ -20,7 +20,11 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -57,19 +61,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 var APPEND_COLUMN_CONFIG_STRATEGY = 'append';
 var PLUGIN_KEY = 'multiColumnSorting';
@@ -77,7 +85,6 @@ var CONFLICTED_PLUGIN_KEY = 'columnSorting';
 (0, _sortService.registerRootComparator)(PLUGIN_KEY, _rootComparator.rootComparator);
 /**
  * @plugin MultiColumnSorting
- * @dependencies ColumnSorting
  *
  * @description
  * This plugin sorts the view by columns (but does not sort the data source!). To enable the plugin, set the
@@ -125,26 +132,24 @@ var CONFLICTED_PLUGIN_KEY = 'columnSorting';
  *     }
  *   }
  * }]```
- *
- * @dependencies ObserveChanges
  */
 
-var MultiColumnSorting =
-/*#__PURE__*/
-function (_ColumnSorting) {
+var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
   _inherits(MultiColumnSorting, _ColumnSorting);
+
+  var _super = _createSuper(MultiColumnSorting);
 
   function MultiColumnSorting(hotInstance) {
     var _this;
 
     _classCallCheck(this, MultiColumnSorting);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MultiColumnSorting).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Main settings key designed for the plugin.
      *
      * @private
-     * @type {String}
+     * @type {string}
      */
 
     _this.pluginKey = PLUGIN_KEY;
@@ -154,7 +159,7 @@ function (_ColumnSorting) {
    * Checks if the plugin is enabled in the Handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link MultiColumnSorting#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -174,7 +179,7 @@ function (_ColumnSorting) {
         (0, _utils2.warnAboutPluginsConflict)();
       }
 
-      return _get(_getPrototypeOf(MultiColumnSorting.prototype), "enablePlugin", this).call(this);
+      _get(_getPrototypeOf(MultiColumnSorting.prototype), "enablePlugin", this).call(this);
     }
     /**
      * Disables the plugin functionality for this Handsontable instance.
@@ -183,12 +188,12 @@ function (_ColumnSorting) {
   }, {
     key: "disablePlugin",
     value: function disablePlugin() {
-      return _get(_getPrototypeOf(MultiColumnSorting.prototype), "disablePlugin", this).call(this);
+      _get(_getPrototypeOf(MultiColumnSorting.prototype), "disablePlugin", this).call(this);
     }
     /**
      * Sorts the table by chosen columns and orders.
      *
-     * @param {undefined|Object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
+     * @param {undefined|object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
      * The configuration object contains `column` and `sortOrder` properties. First of them contains visual column index, the second one contains
      * sort order (`asc` for ascending, `desc` for descending).
      *
@@ -214,7 +219,7 @@ function (_ColumnSorting) {
   }, {
     key: "sort",
     value: function sort(sortConfig) {
-      return _get(_getPrototypeOf(MultiColumnSorting.prototype), "sort", this).call(this, sortConfig);
+      _get(_getPrototypeOf(MultiColumnSorting.prototype), "sort", this).call(this, sortConfig);
     }
     /**
      * Clear the sort performed on the table.
@@ -223,12 +228,12 @@ function (_ColumnSorting) {
   }, {
     key: "clearSort",
     value: function clearSort() {
-      return _get(_getPrototypeOf(MultiColumnSorting.prototype), "clearSort", this).call(this);
+      _get(_getPrototypeOf(MultiColumnSorting.prototype), "clearSort", this).call(this);
     }
     /**
      * Checks if the table is sorted (any column have to be sorted).
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -241,8 +246,8 @@ function (_ColumnSorting) {
      *
      * **Note**: Please keep in mind that returned objects expose **visual** column index under the `column` key. They are handled by the `sort` function.
      *
-     * @param {Number} [column] Visual column index.
-     * @returns {undefined|Object|Array}
+     * @param {number} [column] Visual column index.
+     * @returns {undefined|object|Array}
      */
 
   }, {
@@ -269,7 +274,7 @@ function (_ColumnSorting) {
      *   return false; // The blockade for the default sort action.
      * }```
      *
-     * @param {undefined|Object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
+     * @param {undefined|object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
      * The configuration object contains `column` and `sortOrder` properties. First of them contains visual column index, the second one contains
      * sort order (`asc` for ascending, `desc` for descending).
      */
@@ -277,13 +282,13 @@ function (_ColumnSorting) {
   }, {
     key: "setSortConfig",
     value: function setSortConfig(sortConfig) {
-      return _get(_getPrototypeOf(MultiColumnSorting.prototype), "setSortConfig", this).call(this, sortConfig);
+      _get(_getPrototypeOf(MultiColumnSorting.prototype), "setSortConfig", this).call(this, sortConfig);
     }
     /**
      * Get normalized sort configs.
      *
      * @private
-     * @param {Object|Array} [sortConfig=[]] Single column sort configuration or full sort configuration (for all sorted columns).
+     * @param {object|Array} [sortConfig=[]] Single column sort configuration or full sort configuration (for all sorted columns).
      * The configuration object contains `column` and `sortOrder` properties. First of them contains visual column index, the second one contains
      * sort order (`asc` for ascending, `desc` for descending).
      * @returns {Array}
@@ -330,7 +335,7 @@ function (_ColumnSorting) {
      * for `updateSettings` in specific situations.
      *
      * @private
-     * @param {Object} newSettings New settings object.
+     * @param {object} newSettings New settings object.
      */
 
   }, {
@@ -340,7 +345,7 @@ function (_ColumnSorting) {
         (0, _utils2.warnAboutPluginsConflict)();
       }
 
-      return _get(_getPrototypeOf(MultiColumnSorting.prototype), "onUpdateSettings", this).call(this, newSettings);
+      _get(_getPrototypeOf(MultiColumnSorting.prototype), "onUpdateSettings", this).call(this, newSettings);
     }
     /**
      * Callback for the `onAfterOnCellMouseDown` hook.

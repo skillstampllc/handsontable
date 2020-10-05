@@ -6,10 +6,6 @@ exports.__esModule = true;
 exports.getListenersCounter = getListenersCounter;
 exports.default = void 0;
 
-var _element = require("./helpers/dom/element");
-
-var _object = require("./helpers/object");
-
 var _feature = require("./helpers/feature");
 
 var _event = require("./helpers/dom/event");
@@ -23,7 +19,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Counter which tracks unregistered listeners (useful for detecting memory leaks).
  *
- * @type {Number}
+ * @type {number}
  */
 var listenersCounter = 0;
 /**
@@ -33,11 +29,9 @@ var listenersCounter = 0;
  * @util
  */
 
-var EventManager =
-/*#__PURE__*/
-function () {
+var EventManager = /*#__PURE__*/function () {
   /**
-   * @param {Object} [context=null]
+   * @param {object} [context=null] An object to which event listeners will be stored.
    * @private
    */
   function EventManager() {
@@ -55,10 +49,10 @@ function () {
    * Register specified listener (`eventName`) to the element.
    *
    * @param {Element} element Target element.
-   * @param {String} eventName Event name.
+   * @param {string} eventName Event name.
    * @param {Function} callback Function which will be called after event occur.
-   * @param {AddEventListenerOptions|Boolean} [options] Listener options if object or useCapture if boolean.
-   * @returns {Function} Returns function which you can easily call to remove that event
+   * @param {AddEventListenerOptions|boolean} [options] Listener options if object or useCapture if boolean.
+   * @returns {Function} Returns function which you can easily call to remove that event.
    */
 
 
@@ -68,10 +62,12 @@ function () {
       var _this = this;
 
       var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var context = this.context;
 
+      /**
+       * @param {Event} event The event object.
+       */
       function callbackProxy(event) {
-        callback.call(this, extendEvent(context, event));
+        callback.call(this, extendEvent(event));
       }
 
       if (typeof options !== 'boolean' && !(0, _feature.isPassiveEventSupported)()) {
@@ -96,9 +92,9 @@ function () {
      * Remove the event listener previously registered.
      *
      * @param {Element} element Target element.
-     * @param {String} eventName Event name.
+     * @param {string} eventName Event name.
      * @param {Function} callback Function to remove from the event target. It must be the same as during registration listener.
-     * @param {Boolean} [onlyOwnEvents] Whether whould remove only events registered using this instance of EventManager
+     * @param {boolean} [onlyOwnEvents] Whether whould remove only events registered using this instance of EventManager.
      */
 
   }, {
@@ -133,7 +129,7 @@ function () {
      *
      * @private
      * @since 0.15.0-beta3
-     * @param {Boolean} [onlyOwnEvents] Whether whould remove only events registered using this instance of EventManager
+     * @param {boolean} [onlyOwnEvents] Whether whould remove only events registered using this instance of EventManager.
      */
 
   }, {
@@ -166,7 +162,7 @@ function () {
       this.clearEvents();
     }
     /**
-     * Destroy instance of EventManager, clearing all events of the context
+     * Destroy instance of EventManager, clearing all events of the context.
      */
 
   }, {
@@ -176,7 +172,7 @@ function () {
       this.context = null;
     }
     /**
-     * Destroy instance of EventManager, clearing only the own events
+     * Destroy instance of EventManager, clearing only the own events.
      */
 
   }, {
@@ -189,7 +185,7 @@ function () {
      * Trigger event at the specified target element.
      *
      * @param {Element} element Target element.
-     * @param {String} eventName Event name.
+     * @param {string} eventName Event name.
      */
 
   }, {
@@ -239,22 +235,13 @@ function () {
   return EventManager;
 }();
 /**
- * @param {Object} context
- * @param {Event} event
  * @private
- * @returns {*}
+ * @param {Event} event The event object.
+ * @returns {Event}
  */
 
 
-function extendEvent(context, event) {
-  var componentName = 'HOT-TABLE';
-  var isHotTableSpotted;
-  var fromElement;
-  var realTarget;
-  var target;
-  var len;
-  event.isTargetWebComponent = false;
-  event.realTarget = event.target;
+function extendEvent(event) {
   var nativeStopImmediatePropagation = event.stopImmediatePropagation;
 
   event.stopImmediatePropagation = function () {
@@ -262,70 +249,14 @@ function extendEvent(context, event) {
     (0, _event.stopImmediatePropagation)(this);
   };
 
-  if (!EventManager.isHotTableEnv) {
-    return event;
-  } // eslint-disable-next-line no-param-reassign
-
-
-  event = (0, _element.polymerWrap)(event);
-  len = event.path ? event.path.length : 0;
-
-  while (len) {
-    len -= 1;
-
-    if (event.path[len].nodeName === componentName) {
-      isHotTableSpotted = true;
-    } else if (isHotTableSpotted && event.path[len].shadowRoot) {
-      target = event.path[len];
-      break;
-    }
-
-    if (len === 0 && !target) {
-      target = event.path[len];
-    }
-  }
-
-  if (!target) {
-    target = event.target;
-  }
-
-  event.isTargetWebComponent = true;
-
-  if ((0, _feature.isWebComponentSupportedNatively)()) {
-    event.realTarget = event.srcElement || event.toElement;
-  } else if ((0, _object.hasOwnProperty)(context, 'hot') || context.isHotTableEnv || context.wtTable) {
-    // Polymer doesn't support `event.target` property properly we must emulate it ourselves
-    if ((0, _object.hasOwnProperty)(context, 'hot')) {
-      // Custom element
-      fromElement = context.hot ? context.hot.view.wt.wtTable.TABLE : null;
-    } else if (context.isHotTableEnv) {
-      // Handsontable.Core
-      fromElement = context.view.activeWt.wtTable.TABLE.parentNode.parentNode;
-    } else if (context.wtTable) {
-      // Walkontable
-      fromElement = context.wtTable.TABLE.parentNode.parentNode;
-    }
-
-    realTarget = (0, _element.closest)(event.target, [componentName], fromElement);
-
-    if (realTarget) {
-      event.realTarget = fromElement.querySelector(componentName) || event.target;
-    } else {
-      event.realTarget = event.target;
-    }
-  }
-
-  Object.defineProperty(event, 'target', {
-    get: function get() {
-      return (0, _element.polymerWrap)(target);
-    },
-    enumerable: true,
-    configurable: true
-  });
   return event;
 }
 
 var _default = EventManager;
+/**
+ * @returns {number}
+ */
+
 exports.default = _default;
 
 function getListenersCounter() {

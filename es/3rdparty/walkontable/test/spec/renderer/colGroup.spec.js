@@ -5,9 +5,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 describe('Walkontable.Renderer.ColGroupRenderer', function () {
-  var TableRendererMock =
-  /*#__PURE__*/
-  function () {
+  var TableRendererMock = /*#__PURE__*/function () {
     function TableRendererMock() {
       _classCallCheck(this, TableRendererMock);
 
@@ -24,9 +22,7 @@ describe('Walkontable.Renderer.ColGroupRenderer', function () {
     return TableRendererMock;
   }();
 
-  var ColumnUtilsMock =
-  /*#__PURE__*/
-  function () {
+  var ColumnUtilsMock = /*#__PURE__*/function () {
     function ColumnUtilsMock() {
       _classCallCheck(this, ColumnUtilsMock);
     }

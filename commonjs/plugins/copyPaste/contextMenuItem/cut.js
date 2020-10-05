@@ -11,6 +11,10 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+/**
+ * @param {CopyPaste} copyPastePlugin The plugin instance.
+ * @returns {object}
+ */
 function cutItem(copyPastePlugin) {
   return {
     key: 'cut',
@@ -21,7 +25,11 @@ function cutItem(copyPastePlugin) {
       copyPastePlugin.cut();
     },
     disabled: function disabled() {
-      var selected = this.getSelected();
+      if (this.countRows() === 0 || this.countCols() === 0) {
+        return true;
+      }
+
+      var selected = this.getSelected(); // Disable for no selection or for non-contiquous selection.
 
       if (!selected || selected.length > 1) {
         return true;

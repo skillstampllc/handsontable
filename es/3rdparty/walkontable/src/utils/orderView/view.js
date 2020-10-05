@@ -15,9 +15,7 @@ import ViewSizeSet from './viewSizeSet';
  * @class {OrderView}
  */
 
-var OrderView =
-/*#__PURE__*/
-function () {
+var OrderView = /*#__PURE__*/function () {
   function OrderView(rootNode, nodesPool, childNodeType) {
     _classCallCheck(this, OrderView);
 
@@ -44,14 +42,14 @@ function () {
     /**
      * Node type which the order view will manage while rendering the DOM elements.
      *
-     * @type {String}
+     * @type {string}
      */
 
     this.childNodeType = childNodeType.toUpperCase();
     /**
      * The visual index of currently processed row.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.visualIndex = 0;
@@ -65,9 +63,9 @@ function () {
   }
   /**
    * Sets the size for rendered elements. It can be a size for rows, cells or size for row
-   * headers etc. it depends for what table renderer this instance was created.
+   * headers etc. It depends for what table renderer this instance was created.
    *
-   * @param {Number} size
+   * @param {number} size The size.
    * @returns {OrderView}
    */
 
@@ -79,10 +77,10 @@ function () {
       return this;
     }
     /**
-    * Sets the offset for rendered elements. The offset describes the shift between 0 and
-    * the first rendered element according to the scroll position.
+     * Sets the offset for rendered elements. The offset describes the shift between 0 and
+     * the first rendered element according to the scroll position.
      *
-     * @param {Number} offset
+     * @param {number} offset The offset.
      * @returns {OrderView}
      */
 
@@ -97,7 +95,7 @@ function () {
      * a row (TR) as a root node is managed by two OrderView instances. If this happens another DOM injection
      * algorithm is performed to achieve consistent order.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -108,7 +106,7 @@ function () {
     /**
      * Returns rendered DOM element based on visual index.
      *
-     * @param {Number} visualIndex
+     * @param {number} visualIndex The visual index.
      * @returns {HTMLElement}
      */
 
@@ -132,7 +130,7 @@ function () {
     /**
      * Returns rendered child count for this instance.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {

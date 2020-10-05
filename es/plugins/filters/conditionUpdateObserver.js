@@ -26,9 +26,7 @@ import { createArrayAssertion } from './utils';
  * @plugin Filters
  */
 
-var ConditionUpdateObserver =
-/*#__PURE__*/
-function () {
+var ConditionUpdateObserver = /*#__PURE__*/function () {
   function ConditionUpdateObserver(conditionCollection) {
     var _this = this;
 
@@ -62,14 +60,14 @@ function () {
     /**
      * Flag which determines if grouping events is enabled.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.grouping = false;
     /**
      * The latest known position of edited conditions at specified column index.
      *
-     * @type {Number}
+     * @type {number}
      * @default -1
      */
 
@@ -125,9 +123,9 @@ function () {
       this.changes.length = 0;
     }
     /**
-     * On before modify condition (add or remove from collection),
+     * On before modify condition (add or remove from collection),.
      *
-     * @param {Number} column Column index.
+     * @param {number} column Column index.
      * @private
      */
 
@@ -139,8 +137,8 @@ function () {
     /**
      * Update all related states which should be changed after invoking changes applied to current column.
      *
-     * @param column
-     * @param {Object} conditionArgsChange Object describing condition changes which can be handled by filters on `update` hook.
+     * @param {number} column The column index.
+     * @param {object} conditionArgsChange Object describing condition changes which can be handled by filters on `update` hook.
      * It contains keys `conditionKey` and `conditionValue` which refers to change specified key of condition to specified value
      * based on referred keys.
      */
@@ -177,7 +175,8 @@ function () {
       var visibleDataFactory = curry(function (curriedConditionsBefore, curriedColumn) {
         var conditionsStack = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
         var splitConditionCollection = new ConditionCollection();
-        var curriedConditionsBeforeArray = [].concat(curriedConditionsBefore, conditionsStack); // Create new condition collection to determine what rows should be visible in "filter by value" box in the next conditions in the chain
+        var curriedConditionsBeforeArray = [].concat(curriedConditionsBefore, conditionsStack); // Create new condition collection to determine what rows should be visible in "filter by value" box
+        // in the next conditions in the chain
 
         splitConditionCollection.importAllConditions(curriedConditionsBeforeArray);
 

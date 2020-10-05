@@ -18,9 +18,7 @@ var DEFAULT_HIDE_DELAY = 250;
  * @plugin Comments
  */
 
-var DisplaySwitch =
-/*#__PURE__*/
-function () {
+var DisplaySwitch = /*#__PURE__*/function () {
   function DisplaySwitch(displayDelay) {
     _classCallCheck(this, DisplaySwitch);
 
@@ -28,7 +26,7 @@ function () {
      * Flag to determine if comment can be showed or hidden. State `true` mean that last performed action
      * was an attempt to show comment element. State `false` mean that it was attempt to hide comment element.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.wasLastActionShow = true;
     /**
@@ -39,9 +37,9 @@ function () {
 
     this.showDebounced = null;
     /**
-     * Reference to timer, run by `setTimeout`, which is hiding comment
+     * Reference to timer, run by `setTimeout`, which is hiding comment.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.hidingTimer = null;
@@ -67,7 +65,7 @@ function () {
     /**
      * Responsible for showing comment after proper delay.
      *
-     * @param {Object} range Coordinates of selected cell.
+     * @param {object} range Coordinates of selected cell.
      */
 
   }, {
@@ -90,7 +88,7 @@ function () {
     /**
      * Update the switch settings.
      *
-     * @param {Number} displayDelay Delay of showing the comments (in milliseconds).
+     * @param {number} displayDelay Delay of showing the comments (in milliseconds).
      */
 
   }, {

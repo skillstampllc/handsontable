@@ -23,9 +23,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class DataObserver
  * @plugin ObserveChanges
  */
-var DataObserver =
-/*#__PURE__*/
-function () {
+var DataObserver = /*#__PURE__*/function () {
   function DataObserver(observedData) {
     _classCallCheck(this, DataObserver);
 
@@ -38,14 +36,14 @@ function () {
     /**
      * JsonPatch observer.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.observer = null;
     /**
      * Flag which determines if observer is paused or not. Paused observer doesn't emit `change` hooks.
      *
-     * @type {Boolean}
+     * @type {boolean}
      * @default false
      */
 
@@ -55,7 +53,7 @@ function () {
   /**
    * Set data to observe.
    *
-   * @param {*} observedData
+   * @param {*} observedData Set an object to observe.
    */
 
 
@@ -76,7 +74,7 @@ function () {
     /**
      * Check if observer was paused.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

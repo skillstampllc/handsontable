@@ -24,7 +24,7 @@ register('text', textRenderer);
 /**
  * Retrieve renderer function.
  *
- * @param {String} name Renderer identification.
+ * @param {string} name Renderer identification.
  * @returns {Function} Returns renderer function.
  */
 

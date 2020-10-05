@@ -22,9 +22,7 @@ import { selectElementIfAllowed } from './../../helpers/dom/element';
  * @plugin CopyPaste
  */
 
-var FocusableWrapper =
-/*#__PURE__*/
-function () {
+var FocusableWrapper = /*#__PURE__*/function () {
   function FocusableWrapper(container) {
     _classCallCheck(this, FocusableWrapper);
 
@@ -78,7 +76,7 @@ function () {
     /**
      * Switch to the main focusable element.
      *
-     * @param {HTMLElement} element
+     * @param {HTMLElement} element The DOM element.
      */
 
   }, {
@@ -126,7 +124,7 @@ var refCounter = new WeakMap();
 /**
  * Create and return the FocusableWrapper instance.
  *
- * @param {HTMLElement} container
+ * @param {HTMLElement} container The container element, holder for focusable elements.
  * @returns {FocusableWrapper}
  */
 
@@ -140,7 +138,7 @@ function createElement(container) {
 /**
  * Deactivate the FocusableWrapper instance.
  *
- * @param {FocusableWrapper} wrapper
+ * @param {FocusableWrapper} wrapper The instance of the FocusableWrapper class.
  */
 
 
@@ -156,8 +154,9 @@ var runLocalHooks = function runLocalHooks(eventName, subject) {
 /**
  * Register copy/cut/paste events and forward their actions to the subject local hooks system.
  *
- * @param {HTMLElement} element
- * @param {FocusableWrapper} subject
+ * @param {EventManager} eventManager The instance of the EventManager class.
+ * @param {HTMLElement} element The element on which the listeners are mounted.
+ * @param {FocusableWrapper} subject The subject object for local hooks.
  */
 
 
@@ -171,7 +170,7 @@ var secondaryElements = new WeakMap();
 /**
  * Create and attach newly created focusable element to the DOM.
  *
- * @param {HTMLElement} container
+ * @param {HTMLElement} container The container element, holder for focusable elements.
  * @returns {HTMLElement}
  */
 
@@ -189,6 +188,8 @@ function createOrGetSecondaryElement(container) {
   var doc = container.defaultView ? container : container.ownerDocument;
   var element = doc.createElement('textarea');
   secondaryElements.set(container, element);
+  element.setAttribute('data-hot-input', ''); // Makes the element recognizable by Hot as its own component's element.
+
   element.className = 'HandsontableCopyPaste';
   element.tabIndex = -1;
   element.autocomplete = 'off';
@@ -200,7 +201,7 @@ function createOrGetSecondaryElement(container) {
 /**
  * Destroy the FocusableWrapper instance.
  *
- * @param {FocusableWrapper} wrapper
+ * @param {FocusableWrapper} wrapper The instance of the FocusableWrapper class.
  */
 
 

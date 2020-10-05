@@ -6,9 +6,15 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.to-string");
 
@@ -43,11 +49,15 @@ var _utils = require("./utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -61,7 +71,8 @@ var BARE_CELL_STRICT_REGEX = /^\$?[A-Z]+\$?\d+$/;
 var BARE_CELL_REGEX = /\$?[A-Z]+\$?\d+/;
 var CELL_REGEX = /(?:[^0-9A-Z$: ]|^)\s*(\$?[A-Z]+\$?\d+)\s*(?![0-9A-Z_: ])/g;
 var RANGE_REGEX = /\$?[A-Z]+\$?\d+\s*:\s*\$?[A-Z]+\$?\d+/g;
-var CELL_AND_RANGE_REGEX = /((?:[^0-9A-Z$: ]|^)\s*(\$?[A-Z]+\$?\d+)\s*(?![0-9A-Z_: ]))|(\$?[A-Z]+\$?\d+\s*:\s*\$?[A-Z]+\$?\d+)/g;
+var CELL_AND_RANGE_REGEX = /((?:[^0-9A-Z$: ]|^)\s*(\$?[A-Z]+\$?\d+)\s*(?![0-9A-Z_: ]))|(\$?[A-Z]+\$?\d+\s*:\s*\$?[A-Z]+\$?\d+)/g; // eslint-disable-line max-len
+
 /**
  * Component adds an ability to parse and modify formula expressions. It is designed for translating cell
  * coordinates and cell ranges in any direction. By default, component translates only relative coordinates but this
@@ -71,16 +82,14 @@ var CELL_AND_RANGE_REGEX = /((?:[^0-9A-Z$: ]|^)\s*(\$?[A-Z]+\$?\d+)\s*(?![0-9A-Z
  * @util
  */
 
-var ExpressionModifier =
-/*#__PURE__*/
-function () {
+var ExpressionModifier = /*#__PURE__*/function () {
   function ExpressionModifier(expression) {
     _classCallCheck(this, ExpressionModifier);
 
     /**
      * Formula expression to modify.
      *
-     * @type {String}
+     * @type {string}
      */
     this.expression = '';
     /**
@@ -105,7 +114,7 @@ function () {
   /**
    * Set formula expression to modify.
    *
-   * @param {String} expression Formula expression to process.
+   * @param {string} expression Formula expression to process.
    * @returns {ExpressionModifier}
    */
 
@@ -131,12 +140,12 @@ function () {
      *  - delta, Number as distance to translate. Can be positive or negative.
      *  - startFromIndex, Base index which translation will be applied from.
      *
-     * the function must return an array with 3 items, where:
+     * The function must return an array with 3 items, where:
      *  [
      *    deltaStart, Number as a delta to translate first part of coordinates.
-     *    deltaEnd,   Number as a delta to translate second part of coordinates (if cell range is modified).
-     *    refError,   Defines an error which refers to the situation when translated cell overcrossed the data boundary.
-     *  ]
+     *    DeltaEnd,   Number as a delta to translate second part of coordinates (if cell range is modified).
+     *    RefError,   Defines an error which refers to the situation when translated cell overcrossed the data boundary.
+     *  ].
      *
      *
      * @param {Function} customModifier Function with custom logic.
@@ -150,8 +159,8 @@ function () {
     /**
      * Translate formula expression cells.
      *
-     * @param {Object} delta Distance to move in proper direction.
-     * @param {Object} [startFrom] Coordinates which translation will be applied from.
+     * @param {object} delta Distance to move in proper direction.
+     * @param {object} [startFrom] Coordinates which translation will be applied from.
      * @returns {ExpressionModifier}
      */
 
@@ -177,7 +186,7 @@ function () {
     /**
      * Translate object into string representation.
      *
-     * @returns {String}
+     * @returns {string}
      */
 
   }, {
@@ -219,10 +228,10 @@ function () {
     /**
      * Translate single cell.
      *
-     * @param {Object} cell Cell object.
-     * @param {String} axis Axis to modify.
-     * @param {Number} delta Distance to move.
-     * @param {Number} [startFromIndex] Base index which translation will be applied from.
+     * @param {object} cell Cell object.
+     * @param {string} axis Axis to modify.
+     * @param {number} delta Distance to move.
+     * @param {number} [startFromIndex] Base index which translation will be applied from.
      * @private
      */
 
@@ -362,8 +371,8 @@ function () {
     /**
      * Search cell by its label.
      *
-     * @param {String} label Cell label eq. `B4` or `$B$6`.
-     * @returns {Object|null}
+     * @param {string} label Cell label eq. `B4` or `$B$6`.
+     * @returns {object|null}
      * @private
      */
 
@@ -381,10 +390,10 @@ function () {
     /**
      * Create object cell.
      *
-     * @param {Object} start Start coordinates (top-left).
-     * @param {Object} end End coordinates (bottom-right).
-     * @param {String} label Original label name.
-     * @returns {Object}
+     * @param {object} start Start coordinates (top-left).
+     * @param {object} end End coordinates (bottom-right).
+     * @param {string} label Original label name.
+     * @returns {object}
      * @private
      */
 

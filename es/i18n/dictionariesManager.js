@@ -12,8 +12,9 @@ var _staticRegister = staticRegister('languagesDictionaries'),
 /**
  * Register language dictionary for specific language code.
  *
- * @param {String|Object} languageCodeOrDictionary Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE' or object representing dictionary.
- * @param {Object} dictionary Dictionary for specific language (optional if first parameter has already dictionary).
+ * @param {string|object} languageCodeOrDictionary Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE' or object representing dictionary.
+ * @param {object} dictionary Dictionary for specific language (optional if first parameter has already dictionary).
+ * @returns {object}
  */
 
 
@@ -34,8 +35,8 @@ function registerLanguage(languageCodeOrDictionary, dictionary) {
 /**
  * Get language dictionary for specific language code.
  *
- * @param {String} languageCode Language code.
- * @returns {Object} Object with constants representing identifiers for translation (as keys) and corresponding translation phrases (as values).
+ * @param {string} languageCode Language code.
+ * @returns {object} Object with constants representing identifiers for translation (as keys) and corresponding translation phrases (as values).
  */
 
 
@@ -50,8 +51,8 @@ function getLanguage(languageCode) {
  *
  * Get if language with specified language code was registered.
  *
- * @param {String} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
- * @returns {Boolean}
+ * @param {string} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
+ * @returns {boolean}
  */
 
 
@@ -61,7 +62,7 @@ function hasLanguage(languageCode) {
 /**
  * Get default language dictionary.
  *
- * @returns {Object} Object with constants representing identifiers for translation (as keys) and corresponding translation phrases (as values).
+ * @returns {object} Object with constants representing identifiers for translation (as keys) and corresponding translation phrases (as values).
  */
 
 
@@ -72,8 +73,8 @@ function getDefaultLanguage() {
  * Extend handled dictionary by default language dictionary. As result, if any dictionary key isn't defined for specific language, it will be filled with default language value ("dictionary gaps" are supplemented).
  *
  * @private
- * @param {String} languageCode Language code.
- * @param {Object} dictionary Dictionary which is extended.
+ * @param {string} languageCode Language code.
+ * @param {object} dictionary Dictionary which is extended.
  */
 
 

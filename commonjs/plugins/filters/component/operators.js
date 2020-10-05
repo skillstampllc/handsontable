@@ -22,6 +22,10 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
+require("core-js/modules/es.regexp.to-string");
+
 require("core-js/modules/es.string.iterator");
 
 require("core-js/modules/web.dom-collections.iterator");
@@ -69,15 +73,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var SELECTED_AT_START_ELEMENT_INDEX = 0;
 /**
@@ -85,17 +93,17 @@ var SELECTED_AT_START_ELEMENT_INDEX = 0;
  * @plugin Filters
  */
 
-var OperatorsComponent =
-/*#__PURE__*/
-function (_BaseComponent) {
+var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
   _inherits(OperatorsComponent, _BaseComponent);
+
+  var _super = _createSuper(OperatorsComponent);
 
   function OperatorsComponent(hotInstance, options) {
     var _this;
 
     _classCallCheck(this, OperatorsComponent);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(OperatorsComponent).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     _this.id = options.id;
     _this.name = options.name;
 
@@ -106,7 +114,7 @@ function (_BaseComponent) {
   /**
    * Get menu object descriptor.
    *
-   * @returns {Object}
+   * @returns {object}
    */
 
 
@@ -137,7 +145,7 @@ function (_BaseComponent) {
       };
     }
     /**
-     * Add RadioInputUI elements to component
+     * Add RadioInputUI elements to component.
      *
      * @private
      */
@@ -169,7 +177,7 @@ function (_BaseComponent) {
     /**
      * Set state of operators component to check radio input at specific `index`.
      *
-     * @param searchedIndex Index of radio input to check.
+     * @param {number} searchedIndex Index of radio input to check.
      */
 
   }, {
@@ -184,9 +192,9 @@ function (_BaseComponent) {
       });
     }
     /**
-     * Get `id` of active operator
+     * Get `id` of active operator.
      *
-     * @returns {String}
+     * @returns {string}
      */
 
   }, {
@@ -205,7 +213,7 @@ function (_BaseComponent) {
     /**
      * Export state of the component (get selected operator).
      *
-     * @returns {String} Returns `id` of selected operator.
+     * @returns {string} Returns `id` of selected operator.
      */
 
   }, {
@@ -216,7 +224,7 @@ function (_BaseComponent) {
     /**
      * Set state of the component.
      *
-     * @param {Object} value State to restore.
+     * @param {object} value State to restore.
      */
 
   }, {
@@ -232,8 +240,9 @@ function (_BaseComponent) {
     }
     /**
      * Update state of component.
-     * @param [operationId='conjunction'] Id of selected operation.
-     * @param column Physical column index.
+     *
+     * @param {string} [operationId='conjunction'] Id of selected operation.
+     * @param {number} column Physical column index.
      */
 
   }, {
@@ -262,13 +271,13 @@ function (_BaseComponent) {
      * OnChange listener.
      *
      * @private
-     * @param {Event} event DOM event
+     * @param {Event} event The DOM event object.
      */
 
   }, {
     key: "onRadioInputChange",
     value: function onRadioInputChange(event) {
-      this.setState(event.realTarget.value);
+      this.setState(event.target.value);
     }
   }]);
 

@@ -1,45 +1,39 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.array.from";
-import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
-import "core-js/modules/es.array.reverse";
+import "core-js/modules/es.array.reduce";
 import "core-js/modules/es.array.slice";
-import "core-js/modules/es.array.some";
-import "core-js/modules/es.object.freeze";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
 import "core-js/modules/es.regexp.to-string";
+import "core-js/modules/es.set";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/es.weak-map";
+import "core-js/modules/web.dom-collections.for-each";
 import "core-js/modules/web.dom-collections.iterator";
 import "core-js/modules/web.timers";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["Since version 8.0.0 of the Handsontable the 'moveRows' method isn't used for moving rows when the NestedRows plugin is enabled. \n      Please use the 'dragRows' method instead."]);
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47,76 +41,56 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 import BasePlugin from '../_base';
 import { registerPlugin } from '../../plugins';
-import { rangeEach } from '../../helpers/number';
-import { arrayEach } from '../../helpers/array';
-import { isUndefined } from '../../helpers/mixed';
-import { warn } from '../../helpers/console';
-import { toSingleLine } from '../../helpers/templateLiteralTag';
-import { CellCoords } from '../../3rdparty/walkontable/src';
 import DataManager from './data/dataManager';
 import CollapsingUI from './ui/collapsing';
 import HeadersUI from './ui/headers';
 import ContextMenuUI from './ui/contextMenu';
-import { SkipMap } from '../../translations';
+import { TrimmingMap } from '../../translations';
+import RowMoveController from './utils/rowMoveController';
 var privatePool = new WeakMap();
 /**
  * @plugin NestedRows
- * @experimental
  *
  * @description
  * Plugin responsible for displaying and operating on data sources with nested structures.
- *
- * @dependencies BindRowsWithHeaders
  */
 
-var NestedRows =
-/*#__PURE__*/
-function (_BasePlugin) {
+var NestedRows = /*#__PURE__*/function (_BasePlugin) {
   _inherits(NestedRows, _BasePlugin);
+
+  var _super = _createSuper(NestedRows);
 
   function NestedRows(hotInstance) {
     var _this;
 
     _classCallCheck(this, NestedRows);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(NestedRows).call(this, hotInstance));
-    /**
-     * Source data object.
-     *
-     * @private
-     * @type {Object}
-     */
-
-    _this.sourceData = null;
-    /**
-     * Reference to the BindRowsWithHeaders plugin.
-     *
-     * @private
-     * @type {Object}
-     */
-
-    _this.bindRowsWithHeadersPlugin = null;
+    _this = _super.call(this, hotInstance);
     /**
      * Reference to the DataManager instance.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.dataManager = null;
@@ -124,7 +98,7 @@ function (_BasePlugin) {
      * Reference to the HeadersUI instance.
      *
      * @private
-     * @type {Object}
+     * @type {object}
      */
 
     _this.headersUI = null;
@@ -132,15 +106,14 @@ function (_BasePlugin) {
      * Map of skipped rows by plugin.
      *
      * @private
-     * @type {null|SkipMap}
+     * @type {null|TrimmingMap}
      */
 
     _this.collapsedRowsMap = null;
     privatePool.set(_assertThisInitialized(_this), {
-      changeSelection: false,
-      movedToFirstChild: false,
       movedToCollapsed: false,
-      skipRender: null
+      skipRender: null,
+      skipCoreAPIModifiers: false
     });
     return _this;
   }
@@ -148,7 +121,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link NestedRows#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -166,14 +139,17 @@ function (_BasePlugin) {
     value: function enablePlugin() {
       var _this2 = this;
 
-      this.sourceData = this.hot.getSourceData();
+      if (this.enabled) {
+        return;
+      }
+
       this.bindRowsWithHeadersPlugin = this.hot.getPlugin('bindRowsWithHeaders');
-      this.collapsedRowsMap = this.hot.rowIndexMapper.registerMap('nestedRows', new SkipMap());
-      this.dataManager = new DataManager(this, this.hot, this.sourceData);
+      this.collapsedRowsMap = this.hot.rowIndexMapper.registerMap('nestedRows', new TrimmingMap());
+      this.dataManager = new DataManager(this, this.hot);
       this.collapsingUI = new CollapsingUI(this, this.hot);
       this.headersUI = new HeadersUI(this, this.hot);
       this.contextMenuUI = new ContextMenuUI(this, this.hot);
-      this.dataManager.rewriteCache();
+      this.rowMoveController = new RowMoveController(this);
       this.addHook('afterInit', function () {
         return _this2.onAfterInit.apply(_this2, arguments);
       });
@@ -201,11 +177,11 @@ function (_BasePlugin) {
       this.addHook('beforeOnCellMouseDown', function () {
         return _this2.onBeforeOnCellMouseDown.apply(_this2, arguments);
       });
+      this.addHook('beforeRemoveRow', function () {
+        return _this2.onBeforeRemoveRow.apply(_this2, arguments);
+      });
       this.addHook('afterRemoveRow', function () {
         return _this2.onAfterRemoveRow.apply(_this2, arguments);
-      });
-      this.addHook('modifyRemovedAmount', function () {
-        return _this2.onModifyRemovedAmount.apply(_this2, arguments);
       });
       this.addHook('beforeAddChild', function () {
         return _this2.onBeforeAddChild.apply(_this2, arguments);
@@ -253,7 +229,9 @@ function (_BasePlugin) {
     key: "updatePlugin",
     value: function updatePlugin() {
       this.disablePlugin();
+      var vanillaSourceData = this.hot.getSourceData();
       this.enablePlugin();
+      this.dataManager.updateWithData(vanillaSourceData);
 
       _get(_getPrototypeOf(NestedRows.prototype), "updatePlugin", this).call(this);
     }
@@ -262,200 +240,50 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} rows Array of visual row indexes to be moved.
-     * @param {Number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualRowMove).
-     * @param {undefined|Number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
-     * To check visualization of drop index please take a look at [documentation](/demo-moving.html#manualRowMove).
-     * @param {Boolean} movePossible Indicates if it's possible to move rows to the desired position.
+     * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements
+     *   will be placed after the moving action. To check the visualization of the final index, please take a look at
+     *   [documentation](/docs/demo-moving.html).
+     * @param {undefined|number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we
+     *   are going to drop the moved elements. To check visualization of drop index please take a look at
+     *   [documentation](/docs/demo-moving.html).
+     * @param {boolean} movePossible Indicates if it's possible to move rows to the desired position.
      * @fires Hooks#afterRowMove
+     * @returns {boolean}
      */
 
   }, {
     key: "onBeforeRowMove",
     value: function onBeforeRowMove(rows, finalIndex, dropIndex, movePossible) {
-      if (isUndefined(dropIndex)) {
-        warn(toSingleLine(_templateObject())); // TODO: Trying to mock real work of the `ManualRowMove` plugin. It was blocked by returning `false` below.
-
-        this.hot.runHooks('afterRowMove', rows, finalIndex, dropIndex, movePossible, false);
-        return false;
-      }
-
-      var priv = privatePool.get(this);
-      var rowsLen = rows.length;
-      var translatedStartIndexes = [];
-      var translatedDropIndex = this.dataManager.translateTrimmedRow(dropIndex);
-      var allowMove = true;
-      var i;
-      var fromParent = null;
-      var toParent = null;
-      var sameParent = null; // We can't move rows when any of them is a parent
-
-      for (i = 0; i < rowsLen; i++) {
-        translatedStartIndexes.push(this.dataManager.translateTrimmedRow(rows[i]));
-
-        if (this.dataManager.isParent(translatedStartIndexes[i])) {
-          allowMove = false;
-        }
-      } // We can't move rows when any of them is tried to be moved to the position of moved row
-      // TODO: Another work than the `ManualRowMove` plugin.
-
-
-      if (translatedStartIndexes.indexOf(translatedDropIndex) > -1 || !allowMove) {
-        return false;
-      }
-
-      fromParent = this.dataManager.getRowParent(translatedStartIndexes[0]);
-      toParent = this.dataManager.getRowParent(translatedDropIndex); // We move row to the first parent of destination row whether there was a try of moving it on the row being a parent
-
-      if (toParent === null || toParent === void 0) {
-        toParent = this.dataManager.getRowParent(translatedDropIndex - 1);
-      } // We add row to element as child whether there is no parent of final destination row
-
-
-      if (toParent === null || toParent === void 0) {
-        toParent = this.dataManager.getDataObject(translatedDropIndex - 1);
-        priv.movedToFirstChild = true;
-      } // Can't move row whether there was a try of moving it on the row being a parent and it has no rows above.
-
-
-      if (!toParent) {
-        return false;
-      }
-
-      sameParent = fromParent === toParent;
-      priv.movedToCollapsed = this.collapsingUI.areChildrenCollapsed(toParent);
-      this.collapsingUI.collapsedRowsStash.stash();
-
-      if (!sameParent) {
-        if (Math.max.apply(Math, translatedStartIndexes) <= translatedDropIndex) {
-          this.collapsingUI.collapsedRowsStash.shiftStash(translatedStartIndexes[0], -1 * rows.length);
-        } else {
-          this.collapsingUI.collapsedRowsStash.shiftStash(translatedDropIndex, rows.length);
-        }
-      }
-
-      priv.changeSelection = true;
-
-      if (translatedStartIndexes[rowsLen - 1] <= translatedDropIndex && sameParent || priv.movedToFirstChild === true) {
-        rows.reverse();
-        translatedStartIndexes.reverse();
-
-        if (priv.movedToFirstChild !== true) {
-          translatedDropIndex -= 1;
-        }
-      }
-
-      for (i = 0; i < rowsLen; i++) {
-        this.dataManager.moveRow(translatedStartIndexes[i], translatedDropIndex);
-      }
-
-      var movingDown = translatedStartIndexes[translatedStartIndexes.length - 1] < translatedDropIndex;
-
-      if (movingDown) {
-        for (i = rowsLen - 1; i >= 0; i--) {
-          this.dataManager.moveCellMeta(translatedStartIndexes[i], translatedDropIndex);
-        }
-      } else {
-        for (i = 0; i < rowsLen; i++) {
-          this.dataManager.moveCellMeta(translatedStartIndexes[i], translatedDropIndex);
-        }
-      }
-
-      if (translatedStartIndexes[rowsLen - 1] <= translatedDropIndex && sameParent || this.dataManager.isParent(translatedDropIndex)) {
-        rows.reverse();
-      }
-
-      this.dataManager.rewriteCache(); // TODO: Trying to mock real work of the `ManualRowMove` plugin. It was blocked by returning `false` below.
-
-      this.hot.runHooks('afterRowMove', rows, finalIndex, dropIndex, movePossible, movePossible && this.isRowOrderChanged(rows, finalIndex));
-      this.selectCells(rows, dropIndex);
-      return false;
-    } // TODO: Reimplementation of function which is inside the `ManualRowMove` plugin.
-
-    /**
-     * Indicates if order of rows was changed.
-     *
-     * @private
-     * @param {Array} movedRows Array of visual row indexes to be moved.
-     * @param {Number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualRowMove).
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "isRowOrderChanged",
-    value: function isRowOrderChanged(movedRows, finalIndex) {
-      return movedRows.some(function (row, nrOfMovedElement) {
-        return row - nrOfMovedElement !== finalIndex;
-      });
+      return this.rowMoveController.onBeforeRowMove(rows, finalIndex, dropIndex, movePossible);
     }
     /**
-     * Select cells after the move.
-     *
-     * @private
-     * @param {Array} rows Array of visual row indexes to be moved.
-     * @param {undefined|Number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
-     * To check visualization of drop index please take a look at [documentation](/demo-moving.html#manualRowMove).
+     * Enable the modify hook skipping flag - allows retrieving the data from Handsontable without this plugin's
+     * modifications.
      */
 
   }, {
-    key: "selectCells",
-    value: function selectCells(rows, dropIndex) {
+    key: "disableCoreAPIModifiers",
+    value: function disableCoreAPIModifiers() {
       var priv = privatePool.get(this);
+      priv.skipCoreAPIModifiers = true;
+    }
+    /**
+     * Disable the modify hook skipping flag.
+     */
 
-      if (!priv.changeSelection) {
-        return;
-      }
-
-      var rowsLen = rows.length;
-      var startRow = 0;
-      var endRow = 0;
-      var translatedDropIndex = null;
-      var selection = null;
-      var lastColIndex = null;
-      this.collapsingUI.collapsedRowsStash.applyStash();
-      translatedDropIndex = this.dataManager.translateTrimmedRow(dropIndex);
-
-      if (priv.movedToFirstChild) {
-        priv.movedToFirstChild = false;
-        startRow = dropIndex;
-        endRow = dropIndex + rowsLen - 1;
-
-        if (dropIndex >= Math.max.apply(Math, _toConsumableArray(rows))) {
-          startRow -= rowsLen;
-          endRow -= rowsLen;
-        }
-      } else if (priv.movedToCollapsed) {
-        var parentObject = this.dataManager.getRowParent(translatedDropIndex - 1);
-
-        if (parentObject === null || parentObject === void 0) {
-          parentObject = this.dataManager.getDataObject(translatedDropIndex - 1);
-        }
-
-        var parentIndex = this.dataManager.getRowIndex(parentObject);
-        startRow = parentIndex;
-        endRow = startRow;
-      } else if (rows[rowsLen - 1] < dropIndex) {
-        endRow = dropIndex - 1;
-        startRow = endRow - rowsLen + 1;
-      } else {
-        startRow = dropIndex;
-        endRow = startRow + rowsLen - 1;
-      }
-
-      selection = this.hot.selection;
-      lastColIndex = this.hot.countCols() - 1;
-      selection.setRangeStart(new CellCoords(startRow, 0));
-      selection.setRangeEnd(new CellCoords(endRow, lastColIndex), true);
-      priv.changeSelection = false;
+  }, {
+    key: "enableCoreAPIModifiers",
+    value: function enableCoreAPIModifiers() {
+      var priv = privatePool.get(this);
+      priv.skipCoreAPIModifiers = false;
     }
     /**
      * `beforeOnCellMousedown` hook callback.
      *
      * @private
      * @param {MouseEvent} event Mousedown event.
-     * @param {Object} coords Cell coords.
-     * @param {HTMLElement} TD clicked cell.
+     * @param {object} coords Cell coords.
+     * @param {HTMLElement} TD Clicked cell.
      */
 
   }, {
@@ -467,37 +295,56 @@ function (_BasePlugin) {
      * The modifyRowData hook callback.
      *
      * @private
-     * @param {Number} row Visual row index.
+     * @param {number} row Visual row index.
+     * @returns {boolean}
      */
 
   }, {
     key: "onModifyRowData",
     value: function onModifyRowData(row) {
+      var priv = privatePool.get(this);
+
+      if (priv.skipCoreAPIModifiers) {
+        return;
+      }
+
       return this.dataManager.getDataObject(row);
     }
     /**
      * Modify the source data length to match the length of the nested structure.
      *
      * @private
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
     key: "onModifySourceLength",
     value: function onModifySourceLength() {
+      var priv = privatePool.get(this);
+
+      if (priv.skipCoreAPIModifiers) {
+        return;
+      }
+
       return this.dataManager.countAllRows();
     }
     /**
      * @private
-     * @param {Number} index
-     * @param {Number} amount
-     * @param {Object} element
-     * @returns {Boolean}
+     * @param {number} index The index where the data was spliced.
+     * @param {number} amount An amount of items to remove.
+     * @param {object} element An element to add.
+     * @returns {boolean}
      */
 
   }, {
     key: "onBeforeDataSplice",
     value: function onBeforeDataSplice(index, amount, element) {
+      var priv = privatePool.get(this);
+
+      if (priv.skipCoreAPIModifiers || this.dataManager.isRowHighestLevel(index)) {
+        return true;
+      }
+
       this.dataManager.spliceData(index, amount, element);
       return false;
     }
@@ -505,24 +352,20 @@ function (_BasePlugin) {
      * Called before the source data filtering. Returning `false` stops the native filtering.
      *
      * @private
-     * @param {Number} index
-     * @param {Number} amount
-     * @returns {Boolean}
+     * @param {number} index The index where the data filtering starts.
+     * @param {number} amount An amount of rows which filtering applies to.
+     * @param {number} physicalRows Physical row indexes.
+     * @returns {boolean}
      */
 
   }, {
     key: "onBeforeDataFilter",
-    value: function onBeforeDataFilter(index, amount) {
-      var realLogicRows = [];
-      var startIndex = this.dataManager.translateTrimmedRow(index);
+    value: function onBeforeDataFilter(index, amount, physicalRows) {
       var priv = privatePool.get(this);
-      rangeEach(startIndex, startIndex + amount - 1, function (i) {
-        realLogicRows.push(i);
-      });
       this.collapsingUI.collapsedRowsStash.stash();
-      this.collapsingUI.collapsedRowsStash.trimStash(startIndex, amount);
-      this.collapsingUI.collapsedRowsStash.shiftStash(startIndex, -1 * amount);
-      this.dataManager.filterData(index, amount, realLogicRows);
+      this.collapsingUI.collapsedRowsStash.trimStash(physicalRows[0], amount);
+      this.collapsingUI.collapsedRowsStash.shiftStash(physicalRows[0], null, -1 * amount);
+      this.dataManager.filterData(index, amount, physicalRows);
       priv.skipRender = true;
       return false;
     }
@@ -530,7 +373,8 @@ function (_BasePlugin) {
      * `afterContextMenuDefaultOptions` hook callback.
      *
      * @private
-     * @param {Object} defaultOptions
+     * @param {object} defaultOptions The default context menu items order.
+     * @returns {boolean}
      */
 
   }, {
@@ -542,8 +386,8 @@ function (_BasePlugin) {
      * `afterGetRowHeader` hook callback.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {HTMLElement} TH row header element.
+     * @param {number} row Row index.
+     * @param {HTMLElement} TH Row header element.
      */
 
   }, {
@@ -555,8 +399,8 @@ function (_BasePlugin) {
      * `modifyRowHeaderWidth` hook callback.
      *
      * @private
-     * @param {Number} rowHeaderWidth The initial row header width(s).
-     * @returns {Number}
+     * @param {number} rowHeaderWidth The initial row header width(s).
+     * @returns {number}
      */
 
   }, {
@@ -568,10 +412,10 @@ function (_BasePlugin) {
      * `onAfterRemoveRow` hook callback.
      *
      * @private
-     * @param {Number} index Removed row.
-     * @param {Number} amount Amount of removed rows.
-     * @param {Array} logicRows
-     * @param {String} source Source of action.
+     * @param {number} index Removed row.
+     * @param {number} amount Amount of removed rows.
+     * @param {Array} logicRows An array of the removed physical rows.
+     * @param {string} source Source of action.
      */
 
   }, {
@@ -593,55 +437,43 @@ function (_BasePlugin) {
       }, 0);
     }
     /**
-     * `modifyRemovedAmount` hook callback.
+     * Callback for the `beforeRemoveRow` change list of removed physical indexes by reference. Removing parent node
+     * has effect in removing children nodes.
      *
      * @private
-     * @param {Number} amount Initial amount.
-     * @param {Number} index Index of the starting row.
-     * @returns {Number} Modified amount.
+     * @param {number} index Visual index of starter row.
+     * @param {number} amount Amount of rows to be removed.
+     * @param {Array} physicalRows List of physical indexes.
      */
 
   }, {
-    key: "onModifyRemovedAmount",
-    value: function onModifyRemovedAmount(amount, index) {
+    key: "onBeforeRemoveRow",
+    value: function onBeforeRemoveRow(index, amount, physicalRows) {
       var _this4 = this;
 
-      var lastParents = [];
-      var childrenCount = 0;
-      rangeEach(index, index + amount - 1, function (i) {
-        var isChild = false;
+      var modifiedPhysicalRows = Array.from(physicalRows.reduce(function (removedRows, physicalIndex) {
+        if (_this4.dataManager.isParent(physicalIndex)) {
+          var children = _this4.dataManager.getDataObject(physicalIndex).__children; // Preserve a parent in the list of removed rows.
 
-        var translated = _this4.collapsingUI.translateTrimmedRow(i);
 
-        var currentDataObj = _this4.dataManager.getDataObject(translated);
+          removedRows.add(physicalIndex);
 
-        if (_this4.dataManager.hasChildren(currentDataObj)) {
-          lastParents.push(currentDataObj);
-          arrayEach(lastParents, function (elem) {
-            if (elem.__children.indexOf(currentDataObj) > -1) {
-              isChild = true;
-              return false;
-            }
-          });
-
-          if (!isChild) {
-            childrenCount += _this4.dataManager.countChildren(currentDataObj);
+          if (Array.isArray(children)) {
+            // Add a children to the list of removed rows.
+            children.forEach(function (child) {
+              return removedRows.add(_this4.dataManager.getRowIndex(child));
+            });
           }
-        }
 
-        isChild = false;
-        arrayEach(lastParents, function (elem) {
-          if (elem.__children.indexOf(currentDataObj) > -1) {
-            isChild = true;
-            return false;
-          }
-        });
+          return removedRows;
+        } // Don't modify list of removed rows when already checked element isn't a parent.
 
-        if (isChild) {
-          childrenCount -= 1;
-        }
-      });
-      return amount + childrenCount;
+
+        return removedRows.add(physicalIndex);
+      }, new Set())); // Modifying hook's argument by the reference.
+
+      physicalRows.length = 0;
+      physicalRows.push.apply(physicalRows, _toConsumableArray(modifiedPhysicalRows));
     }
     /**
      * `beforeAddChild` hook callback.
@@ -658,8 +490,8 @@ function (_BasePlugin) {
      * `afterAddChild` hook callback.
      *
      * @private
-     * @param {Object} parent Parent element.
-     * @param {Object} element New child element.
+     * @param {object} parent Parent element.
+     * @param {object} element New child element.
      */
 
   }, {
@@ -684,14 +516,14 @@ function (_BasePlugin) {
      * `afterDetachChild` hook callback.
      *
      * @private
-     * @param {Object} parent Parent element.
-     * @param {Object} element New child element.
+     * @param {object} parent Parent element.
+     * @param {object} element New child element.
      */
 
   }, {
     key: "onAfterDetachChild",
     value: function onAfterDetachChild(parent, element) {
-      this.collapsingUI.collapsedRowsStash.shiftStash(this.dataManager.getRowIndex(element));
+      this.collapsingUI.collapsedRowsStash.shiftStash(this.dataManager.getRowIndex(element), null, -1);
       this.collapsingUI.collapsedRowsStash.applyStash();
       this.headersUI.updateRowHeaderWidth();
     }
@@ -699,9 +531,9 @@ function (_BasePlugin) {
      * `afterCreateRow` hook callback.
      *
      * @private
-     * @param {Number} index
-     * @param {Number} amount
-     * @param {String} source
+     * @param {number} index Represents the visual index of first newly created row in the data source array.
+     * @param {number} amount Number of newly created rows in the data source array.
+     * @param {string} source String that identifies source of hook call.
      */
 
   }, {
@@ -711,7 +543,7 @@ function (_BasePlugin) {
         return;
       }
 
-      this.dataManager.rewriteCache();
+      this.dataManager.updateWithData(this.dataManager.getRawSourceData());
     }
     /**
      * `afterInit` hook callback.
@@ -731,8 +563,8 @@ function (_BasePlugin) {
     /**
      * `beforeRender` hook callback.
      *
-     * @param {Boolean} force
-     * @param {Object} skipRender
+     * @param {boolean} force Indicates if the render call was trigered by a change of settings or data.
+     * @param {object} skipRender An object, holder for skipRender functionality.
      * @private
      */
 
@@ -759,14 +591,14 @@ function (_BasePlugin) {
     /**
      * `beforeLoadData` hook callback.
      *
-     * @param {Array} data
+     * @param {Array} data The source data.
      * @private
      */
 
   }, {
     key: "onBeforeLoadData",
     value: function onBeforeLoadData(data) {
-      this.dataManager.data = data;
+      this.dataManager.setData(data);
       this.dataManager.rewriteCache();
     }
   }]);

@@ -13,9 +13,7 @@ import { requestAnimationFrame, cancelAnimationFrame } from './../helpers/featur
  * @util
  */
 
-var Interval =
-/*#__PURE__*/
-function () {
+var Interval = /*#__PURE__*/function () {
   _createClass(Interval, null, [{
     key: "create",
     value: function create(func, delay) {
@@ -31,7 +29,7 @@ function () {
     /**
      * Animation frame request id.
      *
-     * @type {Number}
+     * @type {number}
      */
     this.timer = null;
     /**
@@ -49,7 +47,7 @@ function () {
     /**
      * Flag which indicates if interval object was stopped.
      *
-     * @type {Boolean}
+     * @type {boolean}
      * @default true
      */
 
@@ -58,7 +56,7 @@ function () {
      * Interval time (in milliseconds) of the last callback call.
      *
      * @private
-     * @type {Number}
+     * @type {number}
      */
 
     this._then = null;
@@ -140,8 +138,8 @@ export default Interval;
 /**
  * Convert delay from string format to milliseconds.
  *
- * @param {Number|String} delay
- * @returns {Number}
+ * @param {number|string} delay The delay in FPS (frame per second) or number format.
+ * @returns {number}
  */
 
 export function parseDelay(delay) {

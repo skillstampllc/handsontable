@@ -1,12 +1,15 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
@@ -15,25 +18,23 @@ import "core-js/modules/web.timers";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -42,6 +43,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import BasePlugin from './../_base';
 import { arrayEach, arrayFilter } from './../../helpers/array';
@@ -73,14 +84,14 @@ var ROW_WIDTHS_MAP_NAME = 'autoRowSize';
  * To configure the sync/async distribution, you can pass an absolute value (number of columns) or a percentage value to a config object:
  * ```js
  * // as a number (300 columns in sync, rest async)
- * autoRowSize: {syncLimit: 300},
+ * autoRowSize: {syncLimit: 300},.
  *
  * // as a string (percent)
- * autoRowSize: {syncLimit: '40%'},
+ * autoRowSize: {syncLimit: '40%'},.
  *
  * // allow sample duplication
  * autoRowSize: {syncLimit: '40%', allowSampleDuplicates: true},
- * ```
+ * ```.
  *
  * You can also use the `allowSampleDuplicates` option to allow sampling duplicate values when calculating the row
  * height. __Note__, that this might have a negative impact on performance.
@@ -91,7 +102,7 @@ var ROW_WIDTHS_MAP_NAME = 'autoRowSize';
  *
  * ```js
  * const hot = new Handsontable(document.getElementById('example'), {
- *   date: getData(),
+ *   data: getData(),
  *   autoRowSize: true
  * });
  * // Access to plugin instance:
@@ -105,10 +116,10 @@ var ROW_WIDTHS_MAP_NAME = 'autoRowSize';
  * ```
  */
 
-var AutoRowSize =
-/*#__PURE__*/
-function (_BasePlugin) {
+var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
   _inherits(AutoRowSize, _BasePlugin);
+
+  var _super = _createSuper(AutoRowSize);
 
   _createClass(AutoRowSize, null, [{
     key: "CALCULATION_STEP",
@@ -127,7 +138,7 @@ function (_BasePlugin) {
 
     _classCallCheck(this, AutoRowSize);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(AutoRowSize).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * PhysicalIndexToValueMap to keep and track heights for physical row indexes.
      *
@@ -140,7 +151,7 @@ function (_BasePlugin) {
      * Columns header's height cache.
      *
      * @private
-     * @type {Number}
+     * @type {number}
      */
 
     _this.headerHeight = null;
@@ -176,32 +187,40 @@ function (_BasePlugin) {
      * `true` if only the first calculation was performed.
      *
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.firstCalculation = true;
     /**
      * `true` if the size calculation is in progress.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.inProgress = false;
     /**
      * Number of already measured rows (we already know their sizes).
      *
-     * @type {Number}
+     * @type {number}
      */
 
-    _this.measuredRows = 0; // moved to constructor to allow auto-sizing the rows when the plugin is disabled
+    _this.measuredRows = 0;
+    /**
+     * PhysicalIndexToValueMap to keep and track heights for physical row indexes.
+     *
+     * @private
+     * @type {PhysicalIndexToValueMap}
+     */
+
+    _this.rowHeightsMap = new IndexToValueMap();
+
+    _this.hot.rowIndexMapper.registerMap(ROW_WIDTHS_MAP_NAME, _this.rowHeightsMap); // Leave the listener active to allow auto-sizing the rows when the plugin is disabled.
+    // This is necesseary for height recalculation for resize handler doubleclick (ManualRowResize).
+
 
     _this.addHook('beforeRowResize', function (size, row, isDblClick) {
       return _this.onBeforeRowResize(size, row, isDblClick);
     });
-
-    _this.rowHeightsMap = new IndexToValueMap();
-
-    _this.hot.rowIndexMapper.registerMap(ROW_WIDTHS_MAP_NAME, _this.rowHeightsMap);
 
     return _this;
   }
@@ -209,7 +228,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link AutoRowSize#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -260,22 +279,30 @@ function (_BasePlugin) {
   }, {
     key: "disablePlugin",
     value: function disablePlugin() {
+      var _this3 = this;
+
       this.headerHeight = null;
 
-      _get(_getPrototypeOf(AutoRowSize.prototype), "disablePlugin", this).call(this);
+      _get(_getPrototypeOf(AutoRowSize.prototype), "disablePlugin", this).call(this); // Leave the listener active to allow auto-sizing the rows when the plugin is disabled.
+      // This is necesseary for height recalculation for resize handler doubleclick (ManualRowResize).
+
+
+      this.addHook('beforeRowResize', function (size, row, isDblClick) {
+        return _this3.onBeforeRowResize(size, row, isDblClick);
+      });
     }
     /**
      * Calculate a given rows height.
      *
-     * @param {Number|Object} rowRange Row index or an object with `from` and `to` indexes as a range.
-     * @param {Number|Object} colRange Column index or an object with `from` and `to` indexes as a range.
-     * @param {Boolean} [force=false] If `true` the calculation will be processed regardless of whether the width exists in the cache.
+     * @param {number|object} rowRange Row index or an object with `from` and `to` indexes as a range.
+     * @param {number|object} colRange Column index or an object with `from` and `to` indexes as a range.
+     * @param {boolean} [force=false] If `true` the calculation will be processed regardless of whether the width exists in the cache.
      */
 
   }, {
     key: "calculateRowsHeight",
     value: function calculateRowsHeight() {
-      var _this3 = this;
+      var _this4 = this;
 
       var rowRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
         from: 0,
@@ -286,6 +313,7 @@ function (_BasePlugin) {
         to: this.hot.countCols() - 1
       };
       var force = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      // eslint-disable-line max-len
       var rowsRange = typeof rowRange === 'number' ? {
         from: rowRange,
         to: rowRange
@@ -303,26 +331,26 @@ function (_BasePlugin) {
       rangeEach(rowsRange.from, rowsRange.to, function (row) {
         // For rows we must calculate row height even when user had set height value manually.
         // We can shrink column but cannot shrink rows!
-        if (force || _this3.rowHeightsMap.getValueAtIndex(row) === null) {
-          var _samples = _this3.samplesGenerator.generateRowSamples(row, columnsRange);
+        if (force || _this4.rowHeightsMap.getValueAtIndex(row) === null) {
+          var _samples = _this4.samplesGenerator.generateRowSamples(row, columnsRange);
 
           arrayEach(_samples, function (_ref) {
             var _ref2 = _slicedToArray(_ref, 2),
                 rowIndex = _ref2[0],
                 sample = _ref2[1];
 
-            return _this3.ghostTable.addRow(rowIndex, sample);
+            return _this4.ghostTable.addRow(rowIndex, sample);
           });
         }
       });
 
       if (this.ghostTable.rows.length) {
-        this.hot.executeBatchOperations(function () {
-          _this3.ghostTable.getHeights(function (row, height) {
+        this.hot.batch(function () {
+          _this4.ghostTable.getHeights(function (row, height) {
             if (row < 0) {
-              _this3.headerHeight = height;
+              _this4.headerHeight = height;
             } else {
-              _this3.rowHeightsMap.setValueAtIndex(_this3.hot.toPhysicalRow(row), height);
+              _this4.rowHeightsMap.setValueAtIndex(_this4.hot.toPhysicalRow(row), height);
             }
           });
         });
@@ -332,15 +360,15 @@ function (_BasePlugin) {
     }
     /**
      * Calculate all rows heights. The calculated row will be cached in the {@link AutoRowSize#heights} property.
-     * To retrieve height for specyfied row use {@link AutoRowSize#getRowHeight} method.
+     * To retrieve height for specified row use {@link AutoRowSize#getRowHeight} method.
      *
-     * @param {Object|Number} rowRange Row index or an object with `from` and `to` properties which define row range.
+     * @param {object|number} colRange Row index or an object with `from` and `to` properties which define row range.
      */
 
   }, {
     key: "calculateAllRowsHeight",
     value: function calculateAllRowsHeight() {
-      var _this4 = this;
+      var _this5 = this;
 
       var colRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
         from: 0,
@@ -353,13 +381,13 @@ function (_BasePlugin) {
 
       var loop = function loop() {
         // When hot was destroyed after calculating finished cancel frame
-        if (!_this4.hot) {
+        if (!_this5.hot) {
           cancelAnimationFrame(timer);
-          _this4.inProgress = false;
+          _this5.inProgress = false;
           return;
         }
 
-        _this4.calculateRowsHeight({
+        _this5.calculateRowsHeight({
           from: current,
           to: Math.min(current + AutoRowSize.CALCULATION_STEP, length)
         }, colRange);
@@ -370,13 +398,13 @@ function (_BasePlugin) {
           timer = requestAnimationFrame(loop);
         } else {
           cancelAnimationFrame(timer);
-          _this4.inProgress = false; // @TODO Should call once per render cycle, currently fired separately in different plugins
+          _this5.inProgress = false; // @TODO Should call once per render cycle, currently fired separately in different plugins
 
-          _this4.hot.view.wt.wtOverlays.adjustElementsSize(true); // tmp
+          _this5.hot.view.wt.wtOverlays.adjustElementsSize(true); // tmp
 
 
-          if (_this4.hot.view.wt.wtOverlays.leftOverlay.needFullRender) {
-            _this4.hot.view.wt.wtOverlays.leftOverlay.clone.draw();
+          if (_this5.hot.view.wt.wtOverlays.leftOverlay.needFullRender) {
+            _this5.hot.view.wt.wtOverlays.leftOverlay.clone.draw();
           }
         }
       };
@@ -437,7 +465,7 @@ function (_BasePlugin) {
      * Gets value which tells how many rows should be calculated synchronously (rest of the rows will be calculated
      * asynchronously). The limit is calculated based on `syncLimit` set to autoRowSize option (see {@link Options#autoRowSize}).
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -463,9 +491,9 @@ function (_BasePlugin) {
     /**
      * Gets the calculated row height.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} [defaultHeight] Default row height. It will be picked up if no calculated height found.
-     * @returns {Number}
+     * @param {number} row Visual row index.
+     * @param {number} [defaultHeight] Default row height. It will be picked up if no calculated height found.
+     * @returns {number}
      */
 
   }, {
@@ -484,7 +512,7 @@ function (_BasePlugin) {
     /**
      * Get the calculated column header height.
      *
-     * @returns {Number|undefined}
+     * @returns {number|undefined}
      */
 
   }, {
@@ -495,7 +523,7 @@ function (_BasePlugin) {
     /**
      * Get the first visible row.
      *
-     * @returns {Number} Returns row index, -1 if table is not rendered or if there are no rows to base the the calculations on.
+     * @returns {number} Returns row index, -1 if table is not rendered or if there are no rows to base the the calculations on.
      */
 
   }, {
@@ -516,7 +544,7 @@ function (_BasePlugin) {
     /**
      * Gets the last visible row.
      *
-     * @returns {Number} Returns row index or -1 if table is not rendered.
+     * @returns {number} Returns row index or -1 if table is not rendered.
      */
 
   }, {
@@ -547,13 +575,13 @@ function (_BasePlugin) {
     /**
      * Clears cache by range.
      *
-     * @param {Object|Number} range Row index or an object with `from` and `to` properties which define row range.
+     * @param {object|number} range Row index or an object with `from` and `to` properties which define row range.
      */
 
   }, {
     key: "clearCacheByRange",
     value: function clearCacheByRange(range) {
-      var _this5 = this;
+      var _this6 = this;
 
       var _ref3 = typeof range === 'number' ? {
         from: range,
@@ -562,16 +590,16 @@ function (_BasePlugin) {
           from = _ref3.from,
           to = _ref3.to;
 
-      this.hot.executeBatchOperations(function () {
+      this.hot.batch(function () {
         rangeEach(Math.min(from, to), Math.max(from, to), function (row) {
-          _this5.rowHeightsMap.setValueAtIndex(row, null);
+          _this6.rowHeightsMap.setValueAtIndex(row, null);
         });
       });
     }
     /**
      * Checks if all heights were calculated. If not then return `true` (need recalculate).
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -620,8 +648,8 @@ function (_BasePlugin) {
      * On before row move listener.
      *
      * @private
-     * @param {Number} from Row index where was grabbed.
-     * @param {Number} to Destination row index.
+     * @param {number} from Row index where was grabbed.
+     * @param {number} to Destination row index.
      */
 
   }, {
@@ -637,10 +665,10 @@ function (_BasePlugin) {
      * On before row resize listener.
      *
      * @private
-     * @param {Number} row
-     * @param {Number} size
-     * @param {Boolean} isDblClick
-     * @returns {Number}
+     * @param {number} size The size of the current row index.
+     * @param {number} row Current row index.
+     * @param {boolean} isDblClick Indicates if the resize was triggered by doubleclick.
+     * @returns {number}
      */
 
   }, {
@@ -664,15 +692,15 @@ function (_BasePlugin) {
   }, {
     key: "onAfterLoadData",
     value: function onAfterLoadData() {
-      var _this6 = this;
+      var _this7 = this;
 
       if (this.hot.view) {
         this.recalculateAllRowsHeight();
       } else {
         // first load - initialization
         setTimeout(function () {
-          if (_this6.hot) {
-            _this6.recalculateAllRowsHeight();
+          if (_this7.hot) {
+            _this7.recalculateAllRowsHeight();
           }
         }, 0);
       }
@@ -681,7 +709,7 @@ function (_BasePlugin) {
      * On before change listener.
      *
      * @private
-     * @param {Array} changes
+     * @param {Array} changes 2D array containing information about each of the edited cells.
      */
 
   }, {

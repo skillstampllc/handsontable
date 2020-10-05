@@ -19,8 +19,8 @@ export var HEADER_SPAN_CLASS = 'colHeader';
 /**
  * Get if column state is valid.
  *
- * @param {Number} columnState Particular column state.
- * @returns {Boolean}
+ * @param {number} columnState Particular column state.
+ * @returns {boolean}
  */
 
 function isValidColumnState(columnState) {
@@ -35,8 +35,8 @@ function isValidColumnState(columnState) {
 /**
  * Get if all sorted columns states are valid.
  *
- * @param {Array} sortStates
- * @returns {Boolean}
+ * @param {Array} sortStates The sort state collection.
+ * @returns {boolean}
  */
 
 
@@ -55,10 +55,10 @@ export function areValidSortStates(sortStates) {
   return indexOccursOnlyOnce && sortStates.every(isValidColumnState);
 }
 /**
- * Get next sort order for particular column. The order sequence looks as follows: 'asc' -> 'desc' -> undefined -> 'asc'
+ * Get next sort order for particular column. The order sequence looks as follows: 'asc' -> 'desc' -> undefined -> 'asc'.
  *
- * @param {String|undefined} sortOrder sort order (`asc` for ascending, `desc` for descending and undefined for not sorted).
- * @returns {String|undefined} Next sort order (`asc` for ascending, `desc` for descending and undefined for not sorted).
+ * @param {string|undefined} sortOrder Sort order (`asc` for ascending, `desc` for descending and undefined for not sorted).
+ * @returns {string|undefined} Next sort order (`asc` for ascending, `desc` for descending and undefined for not sorted).
  */
 
 export function getNextSortOrder(sortOrder) {
@@ -73,7 +73,7 @@ export function getNextSortOrder(sortOrder) {
 /**
  * Get `span` DOM element inside `th` DOM element.
  *
- * @param {Element} TH th HTML element.
+ * @param {Element} TH Th HTML element.
  * @returns {Element | null}
  */
 
@@ -85,9 +85,9 @@ export function getHeaderSpanElement(TH) {
  *
  * Get if handled header is first level column header.
  *
- * @param {Number} column Visual column index.
- * @param {Element} TH th HTML element.
- * @returns {Boolean}
+ * @param {number} column Visual column index.
+ * @param {Element} TH Th HTML element.
+ * @returns {boolean}
  */
 
 export function isFirstLevelColumnHeader(column, TH) {
@@ -107,10 +107,10 @@ export function isFirstLevelColumnHeader(column, TH) {
 /**
  *  Get if header was clicked properly. Click on column header and NOT done by right click return `true`.
  *
- * @param {Number} row Visual row index.
- * @param {Number} column Visual column index.
+ * @param {number} row Visual row index.
+ * @param {number} column Visual column index.
  * @param {Event} clickEvent Click event.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 export function wasHeaderClickedProperly(row, column, clickEvent) {

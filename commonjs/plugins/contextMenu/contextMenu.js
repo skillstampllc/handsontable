@@ -18,7 +18,11 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -43,8 +47,6 @@ var _menu = _interopRequireDefault(require("./menu"));
 
 var _plugins = require("./../../plugins");
 
-var _event = require("./../../helpers/dom/event");
-
 var _element = require("./../../helpers/dom/element");
 
 var _predefinedItems = require("./predefinedItems");
@@ -55,15 +57,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -72,6 +68,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 _pluginHooks.default.getSingleton().register('afterContextMenuDefaultOptions');
 
@@ -82,14 +88,17 @@ _pluginHooks.default.getSingleton().register('afterContextMenuShow');
 _pluginHooks.default.getSingleton().register('afterContextMenuHide');
 
 _pluginHooks.default.getSingleton().register('afterContextMenuExecute');
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 /**
+ * @class ContextMenu
  * @description
  * This plugin creates the Handsontable Context Menu. It allows to create a new row or column at any place in the
  * grid among [other features](https://handsontable.com/docs/demo-context-menu.html).
  * Possible values:
  * * `true` (to enable default options),
  * * `false` (to disable completely)
- * * `{ uiContainer: containerDomElement }` (to declare a container for all of the Context Menu's dom elements to be placed in)
+ * * `{ uiContainer: containerDomElement }` (to declare a container for all of the Context Menu's dom elements to be placed in).
  *
  * or array of any available strings:
  * * `'row_above'`
@@ -105,7 +114,7 @@ _pluginHooks.default.getSingleton().register('afterContextMenuExecute');
  * * `'---------'` (menu item separator)
  * * `'borders'` (with {@link Options#customBorders} turned on)
  * * `'commentsAddEdit'` (with {@link Options#comments} turned on)
- * * `'commentsRemove'` (with {@link Options#comments} turned on)
+ * * `'commentsRemove'` (with {@link Options#comments} turned on).
  *
  * See [the context menu demo](https://handsontable.com/docs/demo-context-menu.html) for examples.
  *
@@ -120,11 +129,13 @@ _pluginHooks.default.getSingleton().register('afterContextMenuExecute');
  * @plugin ContextMenu
  */
 
+/* eslint-enable jsdoc/require-description-complete-sentence */
 
-var ContextMenu =
-/*#__PURE__*/
-function (_BasePlugin) {
+
+var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ContextMenu, _BasePlugin);
+
+  var _super = _createSuper(ContextMenu);
 
   _createClass(ContextMenu, null, [{
     key: "DEFAULT_ITEMS",
@@ -132,7 +143,7 @@ function (_BasePlugin) {
     /**
      * Context menu default items order when `contextMenu` options is set as `true`.
      *
-     * @returns {String[]}
+     * @returns {string[]}
      */
     get: function get() {
       return [_predefinedItems.ROW_ABOVE, _predefinedItems.ROW_BELOW, _predefinedItems.SEPARATOR, _predefinedItems.COLUMN_LEFT, _predefinedItems.COLUMN_RIGHT, _predefinedItems.SEPARATOR, _predefinedItems.REMOVE_ROW, _predefinedItems.REMOVE_COLUMN, _predefinedItems.SEPARATOR, _predefinedItems.UNDO, _predefinedItems.REDO, _predefinedItems.SEPARATOR, _predefinedItems.READ_ONLY, _predefinedItems.SEPARATOR, _predefinedItems.ALIGNMENT];
@@ -144,7 +155,7 @@ function (_BasePlugin) {
 
     _classCallCheck(this, ContextMenu);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ContextMenu).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Instance of {@link EventManager}.
      *
@@ -183,7 +194,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link ContextMenu#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -237,9 +248,6 @@ function (_BasePlugin) {
       this.addHook('afterOnCellContextMenu', function (event) {
         return _this2.onAfterOnCellContextMenu(event);
       });
-      this.addHook('afterSelection', function () {
-        return _this2.onAfterSelection.apply(_this2, arguments);
-      });
 
       _get(_getPrototypeOf(ContextMenu.prototype), "enablePlugin", this).call(this);
     }
@@ -274,12 +282,7 @@ function (_BasePlugin) {
     /**
      * Opens menu and re-position it based on the passed coordinates.
      *
-     * @param {Object|Event} position An object with `pageX` and `pageY` properties which contains values relative to
-     *                                the top left of the fully rendered content area in the browser or with `clientX`
-     *                                and `clientY` properties which contains values relative to the upper left edge
-     *                                of the content area (the viewport) of the browser window. `target` property is
-     *                                also required. This object is structurally compatible with the native mouse event
-     *                                so it can be used either.
+     * @param {Event} event The mouse event object.
      */
 
   }, {
@@ -314,11 +317,9 @@ function (_BasePlugin) {
       }
 
       this.menu.setPosition({
-        top: parseInt((0, _event.pageY)(event), 10) + offsetTop,
-        left: parseInt((0, _event.pageX)(event), 10) + offsetLeft
-      }); // ContextMenu is not detected HotTableEnv correctly because is injected outside hot-table
-
-      this.menu.hotMenu.isHotTableEnv = this.hot.isHotTableEnv;
+        top: parseInt(event.pageY, 10) + offsetTop,
+        left: parseInt(event.pageX, 10) + offsetLeft
+      });
     }
     /**
      * Closes the menu.
@@ -353,12 +354,12 @@ function (_BasePlugin) {
      *  * `'alignment:right'` - Alignment to the right
      *  * `'alignment:bottom'` - Alignment to the bottom
      *  * `'alignment:middle'` - Alignment to the middle
-     *  * `'alignment:center'` - Alignment to the center (justify)
+     *  * `'alignment:center'` - Alignment to the center (justify).
      *
      * Or you can execute command registered in settings where `key` is your command name.
      *
-     * @param {String} commandName The command name to be executed.
-     * @param {...*} params
+     * @param {string} commandName The command name to be executed.
+     * @param {*} params Additional paramteres passed to command executor module.
      */
 
   }, {
@@ -405,23 +406,10 @@ function (_BasePlugin) {
       });
     }
     /**
-     * Callback for the `afterSelection` hook.
-     *
-     * @private
-     */
-
-  }, {
-    key: "onAfterSelection",
-    value: function onAfterSelection() {
-      if (this.menu.isOpened()) {
-        this.menu.close();
-      }
-    }
-    /**
      * On contextmenu listener.
      *
      * @private
-     * @param {Event} event
+     * @param {Event} event The mouse event object.
      */
 
   }, {
@@ -430,13 +418,16 @@ function (_BasePlugin) {
       var settings = this.hot.getSettings();
       var showRowHeaders = settings.rowHeaders;
       var showColHeaders = settings.colHeaders;
+      /**
+       * @param {HTMLElement} element The element to validate.
+       * @returns {boolean}
+       */
 
       function isValidElement(element) {
         return element.nodeName === 'TD' || element.parentNode.nodeName === 'TD';
-      } // if event is from hot-table we must get web component element not element inside him
+      }
 
-
-      var element = event.realTarget;
+      var element = event.target;
       this.close();
 
       if ((0, _element.hasClass)(element, 'handsontableInput')) {
@@ -444,7 +435,7 @@ function (_BasePlugin) {
       }
 
       event.preventDefault();
-      (0, _event.stopPropagation)(event);
+      event.stopPropagation();
 
       if (!(showRowHeaders || showColHeaders)) {
         if (!isValidElement(element) && !((0, _element.hasClass)(element, 'current') && (0, _element.hasClass)(element, 'wtBorder'))) {

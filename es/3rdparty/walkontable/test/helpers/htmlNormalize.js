@@ -13,8 +13,8 @@ var INDENTATION_CHAR = ' ';
 /**
  * Normalizes all attributes of the elements by reordering attributes in alphabetical order.
  *
- * @param {String} htmlString HTML string to normalize.
- * @return {String}
+ * @param {string} htmlString HTML string to normalize.
+ * @returns {string}
  */
 
 export function normalize(htmlString) {
@@ -34,8 +34,8 @@ export function normalize(htmlString) {
 /**
  * Prettify HTML string by adding new lines and indentation between children elements.
  *
- * @param {String} htmlString HTML string to prettify.
- * @return {String}
+ * @param {string} htmlString HTML string to prettify.
+ * @returns {string}
  */
 
 export function pretty(htmlString) {
@@ -71,7 +71,7 @@ export function pretty(htmlString) {
  *
  * @param {Array} ast An array of Objects which contains node descriptions.
  * @param {Function} callback Callback function called for each node.
- * @param {Number} [levelIndex=0] Level index, which indicates the level of processed children nodes.
+ * @param {number} [levelIndex=0] Level index, which indicates the level of processed children nodes.
  */
 
 function traverseAst(ast, callback) {

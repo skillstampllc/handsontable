@@ -6,11 +6,17 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.array.join");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.get-own-property-descriptor");
 
@@ -19,6 +25,8 @@ require("core-js/modules/es.object.get-prototype-of");
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.reflect.get");
 
@@ -59,11 +67,15 @@ var _parseTable = require("./../../utils/parseTable");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -75,19 +87,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 _pluginHooks.default.getSingleton().register('afterCopyLimit');
 
@@ -109,19 +125,21 @@ var ROWS_LIMIT = 1000;
 var COLUMNS_LIMIT = 1000;
 var privatePool = new WeakMap();
 var META_HEAD = ['<meta name="generator" content="Handsontable"/>', '<style type="text/css">td{white-space:normal}br{mso-data-placement:same-cell}</style>'].join('');
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 /**
  * @description
  * This plugin enables the copy/paste functionality in the Handsontable. The functionality works for API, Context Menu,
  * using keyboard shortcuts and menu bar from the browser.
  * Possible values:
  * * `true` (to enable default options),
- * * `false` (to disable completely)
+ * * `false` (to disable completely).
  *
  * or an object with values:
  * * `'columnsLimit'` (see {@link CopyPaste#columnsLimit})
  * * `'rowsLimit'` (see {@link CopyPaste#rowsLimit})
  * * `'pasteMode'` (see {@link CopyPaste#pasteMode})
- * * `'uiContainer'` (see {@link CopyPaste#uiContainer})
+ * * `'uiContainer'` (see {@link CopyPaste#uiContainer}).
  *
  * See [the copy/paste demo](https://handsontable.com/docs/demo-copy-paste.html) for examples.
  *
@@ -141,21 +159,23 @@ var META_HEAD = ['<meta name="generator" content="Handsontable"/>', '<style type
  * @plugin CopyPaste
  */
 
-var CopyPaste =
-/*#__PURE__*/
-function (_BasePlugin) {
+/* eslint-enable jsdoc/require-description-complete-sentence */
+
+var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
   _inherits(CopyPaste, _BasePlugin);
+
+  var _super = _createSuper(CopyPaste);
 
   function CopyPaste(hotInstance) {
     var _this;
 
     _classCallCheck(this, CopyPaste);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CopyPaste).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Maximum number of columns than can be copied to clipboard using <kbd>CTRL</kbd> + <kbd>C</kbd>.
      *
-     * @type {Number}
+     * @type {number}
      * @default 1000
      */
 
@@ -181,7 +201,7 @@ function (_BasePlugin) {
      * * When set to `"shift_down"`, clipboard data will be pasted in place of current selection, while all selected cells are moved down.
      * * When set to `"shift_right"`, clipboard data will be pasted in place of current selection, while all selected cells are moved right.
      *
-     * @type {String}
+     * @type {string}
      * @default 'overwrite'
      */
 
@@ -189,7 +209,7 @@ function (_BasePlugin) {
     /**
      * Maximum number of rows than can be copied to clipboard using <kbd>CTRL</kbd> + <kbd>C</kbd>.
      *
-     * @type {Number}
+     * @type {number}
      * @default 1000
      */
 
@@ -213,7 +233,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link CopyPaste#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -327,8 +347,8 @@ function (_BasePlugin) {
     /**
      * Creates copyable text releated to range objects.
      *
-     * @param {Object[]} ranges Array of objects with properties `startRow`, `endRow`, `startCol` and `endCol`.
-     * @returns {String} Returns string which will be copied into clipboard.
+     * @param {object[]} ranges Array of objects with properties `startRow`, `endRow`, `startCol` and `endCol`.
+     * @returns {string} Returns string which will be copied into clipboard.
      */
 
   }, {
@@ -365,7 +385,7 @@ function (_BasePlugin) {
     /**
      * Creates copyable text releated to range objects.
      *
-     * @param {Object[]} ranges Array of objects with properties `startRow`, `startCol`, `endRow` and `endCol`.
+     * @param {object[]} ranges Array of objects with properties `startRow`, `startCol`, `endRow` and `endCol`.
      * @returns {Array[]} Returns array of arrays which will be copied into clipboard.
      */
 
@@ -403,7 +423,8 @@ function (_BasePlugin) {
     /**
      * Simulates the paste action.
      *
-     * @param {String} [value] Value to paste.
+     * @param {string} pastableText Value as raw string to paste.
+     * @param {string} [pastableHtml=''] Value as HTML to paste.
      */
 
   }, {
@@ -485,6 +506,7 @@ function (_BasePlugin) {
      * Verifies if editor exists and is open.
      *
      * @private
+     * @returns {boolean}
      */
 
   }, {
@@ -497,42 +519,78 @@ function (_BasePlugin) {
      * Prepares new values to populate them into datasource.
      *
      * @private
-     * @param {Array} inputArray
-     * @param {Array} selection
-     * @returns {Array} Range coordinates after populate data
+     * @param {Array} inputArray An array of the data to populate.
+     * @param {Array} [selection] The selection which indicates from what position the data will be populated.
+     * @returns {Array} Range coordinates after populate data.
      */
 
   }, {
     key: "populateValues",
     value: function populateValues(inputArray) {
-      var selection = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.hot.getSelectedLast();
+      var selection = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.hot.getSelectedRangeLast();
 
       if (!inputArray.length) {
         return;
       }
 
-      var newValuesMaxRow = inputArray.length - 1;
-      var newValuesMaxColumn = inputArray[0].length - 1;
-      var startRow = Math.min(selection[0], selection[2]);
-      var endRow = Math.max(selection[0], selection[2], newValuesMaxRow + startRow);
-      var startColumn = Math.min(selection[1], selection[3]);
-      var endColumn = Math.max(selection[1], selection[3], newValuesMaxColumn + startColumn);
-      var newValues = [];
+      var populatedRowsLength = inputArray.length;
+      var populatedColumnsLength = inputArray[0].length;
+      var newRows = [];
 
-      for (var row = startRow, valuesRow = 0; row <= endRow; row += 1) {
-        var newRow = [];
+      var _selection$getTopLeft = selection.getTopLeftCorner(),
+          startRow = _selection$getTopLeft.row,
+          startColumn = _selection$getTopLeft.col;
 
-        for (var column = startColumn, valuesColumn = 0; column <= endColumn; column += 1) {
-          newRow.push(inputArray[valuesRow][valuesColumn]);
-          valuesColumn = valuesColumn === newValuesMaxColumn ? 0 : valuesColumn += 1;
+      var _selection$getBottomR = selection.getBottomRightCorner(),
+          endRowFromSelection = _selection$getBottomR.row,
+          endColumnFromSelection = _selection$getBottomR.col;
+
+      var visualRowForPopulatedData = startRow;
+      var visualColumnForPopulatedData = startColumn;
+      var lastVisualRow = startRow;
+      var lastVisualColumn = startColumn; // We try to populate just all copied data or repeat copied data within a selection. Please keep in mind that we
+      // don't know whether populated data is bigger than selection on start as there are some cells for which values
+      // should be not inserted (it's known right after getting cell meta).
+
+      while (newRows.length < populatedRowsLength || visualRowForPopulatedData <= endRowFromSelection) {
+        var _this$hot$getCellMeta = this.hot.getCellMeta(visualRowForPopulatedData, startColumn),
+            skipRowOnPaste = _this$hot$getCellMeta.skipRowOnPaste,
+            visualRow = _this$hot$getCellMeta.visualRow;
+
+        visualRowForPopulatedData = visualRow + 1;
+
+        if (skipRowOnPaste === true) {
+          /* eslint-disable no-continue */
+          continue;
         }
 
-        newValues.push(newRow);
-        valuesRow = valuesRow === newValuesMaxRow ? 0 : valuesRow += 1;
+        lastVisualRow = visualRow;
+        visualColumnForPopulatedData = startColumn;
+        var newRow = [];
+        var insertedRow = newRows.length % populatedRowsLength;
+
+        while (newRow.length < populatedColumnsLength || visualColumnForPopulatedData <= endColumnFromSelection) {
+          var _this$hot$getCellMeta2 = this.hot.getCellMeta(startRow, visualColumnForPopulatedData),
+              skipColumnOnPaste = _this$hot$getCellMeta2.skipColumnOnPaste,
+              visualCol = _this$hot$getCellMeta2.visualCol;
+
+          visualColumnForPopulatedData = visualCol + 1;
+
+          if (skipColumnOnPaste === true) {
+            /* eslint-disable no-continue */
+            continue;
+          }
+
+          lastVisualColumn = visualCol;
+          var insertedColumn = newRow.length % populatedColumnsLength;
+          newRow.push(inputArray[insertedRow][insertedColumn]);
+        }
+
+        newRows.push(newRow);
       }
 
-      this.hot.populateFromArray(startRow, startColumn, newValues, void 0, void 0, 'CopyPaste.paste', this.pasteMode);
-      return [startRow, startColumn, endRow, endColumn];
+      this.hot.populateFromArray(startRow, startColumn, newRows, void 0, void 0, 'CopyPaste.paste', this.pasteMode);
+      return [startRow, startColumn, lastVisualRow, lastVisualColumn];
     }
     /**
      * `copy` event callback on textarea element.
@@ -668,7 +726,7 @@ function (_BasePlugin) {
      * Add copy, cut and paste options to the Context Menu.
      *
      * @private
-     * @param {Object} options Contains default added options of the Context Menu.
+     * @param {object} options Contains default added options of the Context Menu.
      */
 
   }, {

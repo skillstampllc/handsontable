@@ -15,9 +15,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class DataFilter
  * @plugin Filters
  */
-var DataFilter =
-/*#__PURE__*/
-function () {
+var DataFilter = /*#__PURE__*/function () {
   function DataFilter(conditionCollection) {
     var columnDataFactory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
       return [];
@@ -70,7 +68,7 @@ function () {
     /**
      * Filter data based on specified column index.
      *
-     * @param {Number} column Column index.
+     * @param {number} column Column index.
      * @param {Array} [dataSource] Data source as array of objects with `value` and `meta` keys (e.g. `{value: 'foo', meta: {}}`).
      * @returns {Array} Returns filtered data.
      */
@@ -93,8 +91,8 @@ function () {
      * Intersect data.
      *
      * @private
-     * @param {Array} data
-     * @param {Array} needles
+     * @param {Array} data The data to intersect.
+     * @param {Array} needles The collection intersected rows with the data.
      * @returns {Array}
      */
 

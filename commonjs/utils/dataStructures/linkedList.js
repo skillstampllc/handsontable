@@ -12,9 +12,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * Refactored implementation of LinkedList (part of javascript-algorithms project) by Github users:
  * mgechev, AndriiHeonia, Microfed and Jakeh (part of javascript-algorithms project - all project contributors
- * at repository website)
+ * at repository website).
  *
- * Link to repository: https://github.com/mgechev/javascript-algorithms
+ * Link to repository: https://github.com/mgechev/javascript-algorithms.
  */
 
 /**
@@ -28,17 +28,20 @@ var NodeStructure = function NodeStructure(data) {
 
   /**
    * Data of the node.
-   * @member {Object}
+   *
+   * @member {object}
    */
   this.data = data;
   /**
    * Next node.
+   *
    * @member {NodeStructure}
    */
 
   this.next = null;
   /**
    * Previous node.
+   *
    * @member {NodeStructure}
    */
 
@@ -54,9 +57,7 @@ var NodeStructure = function NodeStructure(data) {
 
 exports.NodeStructure = NodeStructure;
 
-var LinkedList =
-/*#__PURE__*/
-function () {
+var LinkedList = /*#__PURE__*/function () {
   function LinkedList() {
     _classCallCheck(this, LinkedList);
 
@@ -66,7 +67,7 @@ function () {
   /**
    * Add data to the end of linked list.
    *
-   * @param {Object} data Data which should be added.
+   * @param {object} data Data which should be added.
    */
 
 
@@ -88,7 +89,7 @@ function () {
     /**
      * Add data to the beginning of linked list.
      *
-     * @param {Object} data Data which should be added.
+     * @param {object} data Data which should be added.
      */
 
   }, {
@@ -125,8 +126,8 @@ function () {
     /**
      * Remove data from the linked list.
      *
-     * @param {Object} data Data which should be removed.
-     * @returns {Boolean} Returns true if data has been removed.
+     * @param {object} data Data which should be removed.
+     * @returns {boolean} Returns true if data has been removed.
      */
 
   }, {
@@ -172,7 +173,7 @@ function () {
     /**
      * Check if linked list contains cycle.
      *
-     * @returns {Boolean} Returns true if linked list contains cycle.
+     * @returns {boolean} Returns true if linked list contains cycle.
      */
 
   }, {
@@ -235,12 +236,16 @@ function () {
       return temp;
     }
     /**
-     * Reverses the linked list recursively
+     * Reverses the linked list recursively.
      */
 
   }, {
     key: "recursiveReverse",
     value: function recursiveReverse() {
+      /**
+       * @param {*} current The current value.
+       * @param {*} next The next value.
+       */
       function inverse(current, next) {
         if (!next) {
           return;
@@ -261,7 +266,7 @@ function () {
       this.last = temp;
     }
     /**
-     * Reverses the linked list iteratively
+     * Reverses the linked list iteratively.
      */
 
   }, {

@@ -9,7 +9,9 @@ import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
+import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
 
@@ -21,19 +23,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import { getWindowScrollTop, hasClass, getWindowScrollLeft } from './../../helpers/dom/element';
 import { isMobileBrowser } from './../../helpers/browser';
@@ -46,20 +52,20 @@ import { CellCoords } from './../../3rdparty/walkontable/src';
  * @plugin MultipleSelectionHandles
  */
 
-var MultipleSelectionHandles =
-/*#__PURE__*/
-function (_BasePlugin) {
+var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
   _inherits(MultipleSelectionHandles, _BasePlugin);
 
+  var _super = _createSuper(MultipleSelectionHandles);
+
   /**
-   * @param {Object} hotInstance
+   * @param {object} hotInstance The handsontable instance.
    */
   function MultipleSelectionHandles(hotInstance) {
     var _this2;
 
     _classCallCheck(this, MultipleSelectionHandles);
 
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(MultipleSelectionHandles).call(this, hotInstance));
+    _this2 = _super.call(this, hotInstance);
     /**
      * @type {Array}
      */
@@ -82,7 +88,7 @@ function (_BasePlugin) {
   /**
    * Check if the plugin is enabled in the handsontable settings.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -111,7 +117,8 @@ function (_BasePlugin) {
       _get(_getPrototypeOf(MultipleSelectionHandles.prototype), "enablePlugin", this).call(this);
     }
     /**
-     * Bind the touch events
+     * Bind the touch events.
+     *
      * @private
      */
 
@@ -123,6 +130,10 @@ function (_BasePlugin) {
       var _this = this;
 
       var rootElement = this.hot.rootElement;
+      /**
+       * @param {string} query Query for the position.
+       * @returns {boolean}
+       */
 
       function removeFromDragged(query) {
         if (_this.dragged.length === 1) {
@@ -435,7 +446,7 @@ function (_BasePlugin) {
     /**
      * Check if user is currently dragging the handle.
      *
-     * @returns {boolean} Dragging state
+     * @returns {boolean} Dragging state.
      */
 
   }, {

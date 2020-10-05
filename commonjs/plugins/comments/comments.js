@@ -16,7 +16,11 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -65,26 +69,33 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 var privatePool = new WeakMap();
 var META_COMMENT = 'comment';
 var META_COMMENT_VALUE = 'value';
 var META_STYLE = 'style';
 var META_READONLY = 'readOnly';
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 /**
+ * @class Comments
  * @plugin Comments
  *
  * @description
@@ -94,7 +105,7 @@ var META_READONLY = 'readOnly';
  * To enable the plugin, you'll need to set the comments property of the config object to `true`:
  * ```js
  * comments: true
- * ```
+ * ```.
  *
  * or an object with extra predefined plugin config:
  *
@@ -102,7 +113,7 @@ var META_READONLY = 'readOnly';
  * comments: {
  *   displayDelay: 1000
  * }
- * ```
+ * ```.
  *
  * To add comments at the table initialization, define the `comment` property in the `cell` config array as in an example below.
  *
@@ -110,7 +121,7 @@ var META_READONLY = 'readOnly';
  *
  * ```js
  * const hot = new Handsontable(document.getElementById('example'), {
- *   date: getData(),
+ *   data: getData(),
  *   comments: true,
  *   cell: [
  *     {row: 1, col: 1, comment: {value: 'Foo'}},
@@ -134,17 +145,19 @@ var META_READONLY = 'readOnly';
  * ```
  */
 
-var Comments =
-/*#__PURE__*/
-function (_BasePlugin) {
+/* eslint-enable jsdoc/require-description-complete-sentence */
+
+var Comments = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Comments, _BasePlugin);
+
+  var _super = _createSuper(Comments);
 
   function Comments(hotInstance) {
     var _this;
 
     _classCallCheck(this, Comments);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Comments).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Instance of {@link CommentEditor}.
      *
@@ -172,19 +185,19 @@ function (_BasePlugin) {
     /**
      * Current cell range, an object with `from` property, with `row` and `col` properties (e.q. `{from: {row: 1, col: 6}}`).
      *
-     * @type {Object}
+     * @type {object}
      */
 
     _this.range = {};
     /**
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.mouseDown = false;
     /**
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.contextMenuEvent = false;
@@ -204,7 +217,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link Comments#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -320,7 +333,7 @@ function (_BasePlugin) {
     /**
      * Sets the current cell range to be able to use general methods like {@link Comments#setComment}, {@link Comments#removeComment}, {@link Comments#show}.
      *
-     * @param {Object} range Object with `from` property, each with `row` and `col` properties.
+     * @param {object} range Object with `from` property, each with `row` and `col` properties.
      */
 
   }, {
@@ -341,8 +354,8 @@ function (_BasePlugin) {
      * Checks if the event target is a cell containing a comment.
      *
      * @private
-     * @param {Event} event DOM event
-     * @returns {Boolean}
+     * @param {Event} event DOM event.
+     * @returns {boolean}
      */
 
   }, {
@@ -356,7 +369,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Event} event DOM event.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -367,7 +380,7 @@ function (_BasePlugin) {
     /**
      * Sets a comment for a cell according to the previously set range (see {@link Comments#setRange}).
      *
-     * @param {String} value Comment contents.
+     * @param {string} value Comment contents.
      */
 
   }, {
@@ -394,9 +407,9 @@ function (_BasePlugin) {
     /**
      * Sets a comment for a specified cell.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @param {String} value Comment contents.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @param {string} value Comment contents.
      */
 
   }, {
@@ -410,7 +423,7 @@ function (_BasePlugin) {
     /**
      * Removes a comment from a cell according to previously set range (see {@link Comments#setRange}).
      *
-     * @param {Boolean} [forceRender=true] If set to `true`, the table will be re-rendered at the end of the operation.
+     * @param {boolean} [forceRender=true] If set to `true`, the table will be re-rendered at the end of the operation.
      */
 
   }, {
@@ -433,9 +446,9 @@ function (_BasePlugin) {
     /**
      * Removes a comment from a specified cell.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @param {Boolean} [forceRender=true] If `true`, the table will be re-rendered at the end of the operation.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @param {boolean} [forceRender=true] If `true`, the table will be re-rendered at the end of the operation.
      */
 
   }, {
@@ -450,7 +463,7 @@ function (_BasePlugin) {
     /**
      * Gets comment from a cell according to previously set range (see {@link Comments#setRange}).
      *
-     * @returns {String|undefined} Returns a content of the comment.
+     * @returns {string|undefined} Returns a content of the comment.
      */
 
   }, {
@@ -463,9 +476,9 @@ function (_BasePlugin) {
     /**
      * Gets comment from a cell at the provided coordinates.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @returns {String|undefined} Returns a content of the comment.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @returns {string|undefined} Returns a content of the comment.
      */
 
   }, {
@@ -476,7 +489,7 @@ function (_BasePlugin) {
     /**
      * Shows the comment editor accordingly to the previously set range (see {@link Comments#setRange}).
      *
-     * @returns {Boolean} Returns `true` if comment editor was shown.
+     * @returns {boolean} Returns `true` if comment editor was shown.
      */
 
   }, {
@@ -484,6 +497,14 @@ function (_BasePlugin) {
     value: function show() {
       if (!this.range.from) {
         throw new Error('Before using this method, first set cell range (hot.getPlugin("comment").setRange())');
+      }
+
+      var _this$range$from = this.range.from,
+          row = _this$range$from.row,
+          col = _this$range$from.col;
+
+      if (row < 0 || row > this.hot.countSourceRows() - 1 || col < 0 || col > this.hot.countSourceCols() - 1) {
+        return false;
       }
 
       var meta = this.hot.getCellMeta(this.range.from.row, this.range.from.col);
@@ -499,9 +520,9 @@ function (_BasePlugin) {
     /**
      * Shows comment editor according to cell coordinates.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @returns {Boolean} Returns `true` if comment editor was shown.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @returns {boolean} Returns `true` if comment editor was shown.
      */
 
   }, {
@@ -526,30 +547,58 @@ function (_BasePlugin) {
     /**
      * Refreshes comment editor position and styling.
      *
-     * @param {Boolean} [force=false] If `true` then recalculation will be forced.
+     * @param {boolean} [force=false] If `true` then recalculation will be forced.
      */
 
   }, {
     key: "refreshEditor",
     value: function refreshEditor() {
+      var _renderableRow, _renderableColumn;
+
       var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
       if (!force && (!this.range.from || !this.editor.isVisible())) {
         return;
       }
 
-      var rootWindow = this.hot.rootWindow;
-      var _this$hot$view$wt = this.hot.view.wt,
-          wtTable = _this$hot$view$wt.wtTable,
-          wtOverlays = _this$hot$view$wt.wtOverlays,
-          wtViewport = _this$hot$view$wt.wtViewport;
+      var _this$hot = this.hot,
+          rowIndexMapper = _this$hot.rowIndexMapper,
+          columnIndexMapper = _this$hot.columnIndexMapper;
+      var _this$range$from2 = this.range.from,
+          visualRow = _this$range$from2.row,
+          visualColumn = _this$range$from2.col;
+      var renderableRow = rowIndexMapper.getRenderableFromVisualIndex(visualRow);
+      var renderableColumn = columnIndexMapper.getRenderableFromVisualIndex(visualColumn); // Used when the requested row is hidden, and the editor needs to be positioned on the previous row's coords.
+
+      var targetingPreviousRow = renderableRow === null;
+
+      if (renderableRow === null) {
+        renderableRow = rowIndexMapper.getRenderableFromVisualIndex(rowIndexMapper.getFirstNotHiddenIndex(visualRow, -1));
+      }
+
+      if (renderableColumn === null) {
+        renderableColumn = columnIndexMapper.getRenderableFromVisualIndex(columnIndexMapper.getFirstNotHiddenIndex(visualColumn, -1));
+      }
+
+      var isBeforeRenderedRows = renderableRow === null;
+      var isBeforeRenderedColumns = renderableColumn === null;
+      renderableRow = (_renderableRow = renderableRow) !== null && _renderableRow !== void 0 ? _renderableRow : 0;
+      renderableColumn = (_renderableColumn = renderableColumn) !== null && _renderableColumn !== void 0 ? _renderableColumn : 0;
+      var _this$hot2 = this.hot,
+          rootWindow = _this$hot2.rootWindow,
+          wt = _this$hot2.view.wt;
+      var wtTable = wt.wtTable,
+          wtOverlays = wt.wtOverlays,
+          wtViewport = wt.wtViewport;
       var scrollableElement = wtOverlays.scrollableElement;
-      var TD = wtTable.getCell(this.range.from);
-      var row = this.range.from.row;
-      var column = this.range.from.col;
+      var TD = wtTable.getCell({
+        row: renderableRow,
+        col: renderableColumn
+      });
       var cellOffset = (0, _element.offset)(TD);
-      var lastColWidth = wtTable.getStretchedColumnWidth(column);
-      var cellTopOffset = cellOffset.top < 0 ? 0 : cellOffset.top;
+      var lastColWidth = isBeforeRenderedColumns ? 0 : wtTable.getStretchedColumnWidth(renderableColumn);
+      var lastRowHeight = targetingPreviousRow && !isBeforeRenderedRows ? (0, _element.outerHeight)(TD) : 0;
+      var cellTopOffset = cellOffset.top;
       var cellLeftOffset = cellOffset.left;
 
       if (wtViewport.hasVerticalScroll() && scrollableElement !== rootWindow) {
@@ -561,9 +610,9 @@ function (_BasePlugin) {
       }
 
       var x = cellLeftOffset + lastColWidth;
-      var y = cellTopOffset;
-      var commentStyle = this.getCommentMeta(row, column, META_STYLE);
-      var readOnly = this.getCommentMeta(row, column, META_READONLY);
+      var y = cellTopOffset + lastRowHeight;
+      var commentStyle = this.getCommentMeta(visualRow, visualColumn, META_STYLE);
+      var readOnly = this.getCommentMeta(visualRow, visualColumn, META_READONLY);
 
       if (commentStyle) {
         this.editor.setSize(commentStyle.width, commentStyle.height);
@@ -578,7 +627,7 @@ function (_BasePlugin) {
      * Checks if there is a comment for selected range.
      *
      * @private
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -591,7 +640,7 @@ function (_BasePlugin) {
       }
 
       var hasComment = false;
-      var cell = selected.from; // IN EXCEL THERE IS COMMENT ONLY FOR TOP LEFT CELL IN SELECTION
+      var cell = selected.getTopLeftCorner(); // IN EXCEL THERE IS COMMENT ONLY FOR TOP LEFT CELL IN SELECTION
 
       if (this.getCommentMeta(cell.row, cell.col, META_COMMENT_VALUE)) {
         hasComment = true;
@@ -602,9 +651,9 @@ function (_BasePlugin) {
     /**
      * Sets or update the comment-related cell meta.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @param {Object} metaObject Object defining all the comment-related meta information.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @param {object} metaObject Object defining all the comment-related meta information.
      */
 
   }, {
@@ -625,9 +674,9 @@ function (_BasePlugin) {
     /**
      * Gets the comment related meta information.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} column Visual column index.
-     * @param {String} property Cell meta property.
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @param {string} property Cell meta property.
      * @returns {Mixed}
      */
 
@@ -664,6 +713,10 @@ function (_BasePlugin) {
 
         if (eventCell) {
           coordinates = this.hot.view.wt.wtTable.getCoords(eventCell);
+          coordinates = {
+            row: this.hot.rowIndexMapper.getVisualFromRenderableIndex(coordinates.row),
+            col: this.hot.columnIndexMapper.getVisualFromRenderableIndex(coordinates.col)
+          };
         }
 
         if (!eventCell || this.range.from && coordinates && (this.range.from.row !== coordinates.row || this.range.from.col !== coordinates.col)) {
@@ -694,7 +747,7 @@ function (_BasePlugin) {
       if (this.targetIsCellWithComment(event)) {
         var coordinates = this.hot.view.wt.wtTable.getCoords(event.target);
         var range = {
-          from: new _src.CellCoords(coordinates.row, coordinates.col)
+          from: new _src.CellCoords(this.hot.rowIndexMapper.getVisualFromRenderableIndex(coordinates.row), this.hot.columnIndexMapper.getVisualFromRenderableIndex(coordinates.col))
         };
         this.displaySwitch.show(range);
       } else if ((0, _element.isChildOf)(event.target, rootDocument) && !this.targetIsCommentTextArea(event)) {
@@ -712,12 +765,12 @@ function (_BasePlugin) {
     value: function onMouseUp() {
       this.mouseDown = false;
     }
-    /** *
-     * The `afterRenderer` hook callback..
+    /**
+     * The `afterRenderer` hook callback.
      *
      * @private
      * @param {HTMLTableCellElement} TD The rendered `TD` element.
-     * @param {Object} cellProperties The rendered cell's property object.
+     * @param {object} cellProperties The rendered cell's property object.
      */
 
   }, {
@@ -790,7 +843,7 @@ function (_BasePlugin) {
       var coords = this.hot.getSelectedRangeLast();
       this.contextMenuEvent = true;
       this.setRange({
-        from: coords.from
+        from: coords.highlight
       });
       this.show();
       setTimeout(function () {
@@ -810,18 +863,15 @@ function (_BasePlugin) {
   }, {
     key: "onContextMenuRemoveComment",
     value: function onContextMenuRemoveComment() {
-      var _this$hot$getSelected = this.hot.getSelectedRangeLast(),
-          from = _this$hot$getSelected.from,
-          to = _this$hot$getSelected.to;
+      var _this5 = this;
 
+      var coords = this.hot.getSelectedRangeLast();
       this.contextMenuEvent = true;
-
-      for (var i = from.row; i <= to.row; i++) {
-        for (var j = from.col; j <= to.col; j++) {
-          this.removeCommentAtCell(i, j, false);
+      coords.forAll(function (row, column) {
+        if (row >= 0 && column >= 0) {
+          _this5.removeCommentAtCell(row, column, false);
         }
-      }
-
+      });
       this.hot.render();
     }
     /**
@@ -833,47 +883,54 @@ function (_BasePlugin) {
   }, {
     key: "onContextMenuMakeReadOnly",
     value: function onContextMenuMakeReadOnly() {
-      var _this$hot$getSelected2 = this.hot.getSelectedRangeLast(),
-          from = _this$hot$getSelected2.from,
-          to = _this$hot$getSelected2.to;
+      var _this6 = this;
 
+      var coords = this.hot.getSelectedRangeLast();
       this.contextMenuEvent = true;
+      coords.forAll(function (row, column) {
+        if (row >= 0 && column >= 0) {
+          var currentState = !!_this6.getCommentMeta(row, column, META_READONLY);
 
-      for (var i = from.row; i <= to.row; i++) {
-        for (var j = from.col; j <= to.col; j++) {
-          var currentState = !!this.getCommentMeta(i, j, META_READONLY);
-          this.updateCommentMeta(i, j, _defineProperty({}, META_READONLY, !currentState));
+          _this6.updateCommentMeta(row, column, _defineProperty({}, META_READONLY, !currentState));
         }
-      }
+      });
     }
     /**
      * Add Comments plugin options to the Context Menu.
      *
      * @private
-     * @param {Object} defaultOptions
+     * @param {object} defaultOptions The menu options.
      */
 
   }, {
     key: "addToContextMenu",
     value: function addToContextMenu(defaultOptions) {
-      var _this5 = this;
+      var _this7 = this;
+
+      var isThereAnyCellRendered = function isThereAnyCellRendered() {
+        return _this7.hot.rowIndexMapper.getRenderableIndexesLength() > 0 && _this7.hot.columnIndexMapper.getRenderableIndexesLength() > 0;
+      };
 
       defaultOptions.items.push({
         name: '---------'
       }, {
         key: 'commentsAddEdit',
         name: function name() {
-          if (_this5.checkSelectionCommentsConsistency()) {
-            return _this5.hot.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_EDIT_COMMENT);
+          if (_this7.checkSelectionCommentsConsistency()) {
+            return _this7.hot.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_EDIT_COMMENT);
           }
 
-          return _this5.hot.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_ADD_COMMENT);
+          return _this7.hot.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_ADD_COMMENT);
         },
         callback: function callback() {
-          return _this5.onContextMenuAddComment();
+          return _this7.onContextMenuAddComment();
         },
         disabled: function disabled() {
-          return !(this.getSelectedLast() && !this.selection.isSelectedByCorner());
+          if (!isThereAnyCellRendered()) {
+            return true;
+          }
+
+          return !(_this7.hot.getSelectedLast() && !_this7.hot.selection.isSelectedByCorner());
         }
       }, {
         key: 'commentsRemove',
@@ -881,19 +938,23 @@ function (_BasePlugin) {
           return this.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_REMOVE_COMMENT);
         },
         callback: function callback() {
-          return _this5.onContextMenuRemoveComment();
+          return _this7.onContextMenuRemoveComment();
         },
         disabled: function disabled() {
-          return _this5.hot.selection.isSelectedByCorner();
+          if (!isThereAnyCellRendered()) {
+            return true;
+          }
+
+          return !(_this7.hot.getSelectedLast() && !_this7.hot.selection.isSelectedByCorner());
         }
       }, {
         key: 'commentsReadOnly',
         name: function name() {
-          var _this6 = this;
+          var _this8 = this;
 
           var label = this.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_READ_ONLY_COMMENT);
           var hasProperty = (0, _utils.checkSelectionConsistency)(this.getSelectedRangeLast(), function (row, col) {
-            var readOnlyProperty = _this6.getCellMeta(row, col)[META_COMMENT];
+            var readOnlyProperty = _this8.getCellMeta(row, col)[META_COMMENT];
 
             if (readOnlyProperty) {
               readOnlyProperty = readOnlyProperty[META_READONLY];
@@ -911,10 +972,14 @@ function (_BasePlugin) {
           return label;
         },
         callback: function callback() {
-          return _this5.onContextMenuMakeReadOnly();
+          return _this7.onContextMenuMakeReadOnly();
         },
         disabled: function disabled() {
-          return _this5.hot.selection.isSelectedByCorner() || !_this5.checkSelectionCommentsConsistency();
+          if (!isThereAnyCellRendered()) {
+            return true;
+          }
+
+          return !(_this7.hot.getSelectedLast() && !_this7.hot.selection.isSelectedByCorner()) || !_this7.checkSelectionCommentsConsistency();
         }
       });
     }
@@ -922,7 +987,7 @@ function (_BasePlugin) {
      * Get `displayDelay` setting of comment plugin.
      *
      * @private
-     * @returns {Number|undefined}
+     * @returns {number|undefined}
      */
 
   }, {

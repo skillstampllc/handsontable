@@ -74,8 +74,8 @@ var KEY_CODES = {
 /**
  * Returns true if keyCode represents a printable character.
  *
- * @param {Number} keyCode
- * @returns {Boolean}
+ * @param {number} keyCode The keyboard key code.
+ * @returns {boolean}
  */
 
 exports.KEY_CODES = KEY_CODES;
@@ -90,8 +90,8 @@ function isPrintableChar(keyCode) {
   keyCode >= 65 && keyCode <= 90; // a-z
 }
 /**
- * @param {Number} keyCode
- * @returns {Boolean}
+ * @param {number} keyCode The keyboard key code.
+ * @returns {boolean}
  */
 
 
@@ -103,8 +103,8 @@ function isMetaKey(keyCode) {
  * Checks if passed key code is ctrl or cmd key. Depends on what OS the code runs it check key code based on
  * different meta key codes.
  *
- * @param {Number} keyCode Key code to check.
- * @returns {Boolean}
+ * @param {number} keyCode The keyboard key code.
+ * @returns {boolean}
  */
 
 
@@ -123,8 +123,8 @@ function isCtrlKey(keyCode) {
  * Checks if passed key code is ctrl or cmd key. This helper checks if the key code matches to meta keys
  * regardless of the OS on which it is running.
  *
- * @param {Number} keyCode Key code to check.
- * @returns {Boolean}
+ * @param {number} keyCode The keyboard key code.
+ * @returns {boolean}
  */
 
 
@@ -132,9 +132,9 @@ function isCtrlMetaKey(keyCode) {
   return [KEY_CODES.CONTROL, KEY_CODES.COMMAND_LEFT, KEY_CODES.COMMAND_RIGHT, KEY_CODES.COMMAND_FIREFOX].includes(keyCode);
 }
 /**
- * @param {Number} keyCode
- * @param {String} baseCode
- * @returns {Boolean}
+ * @param {number} keyCode The keyboard key code.
+ * @param {string} baseCode The list of the key codes to compare with.
+ * @returns {boolean}
  */
 
 

@@ -9,36 +9,34 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * @class {ViewSize}
  */
-var ViewSize =
-/*#__PURE__*/
-function () {
+var ViewSize = /*#__PURE__*/function () {
   function ViewSize() {
     _classCallCheck(this, ViewSize);
 
     /**
      * Current size of the rendered DOM elements.
      *
-     * @type {Number}
+     * @type {number}
      */
     this.currentSize = 0;
     /**
      * Next size of the rendered DOM elements which should be fulfilled.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.nextSize = 0;
     /**
      * Current offset.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.currentOffset = 0;
     /**
      * Next ofset.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.nextOffset = 0;
@@ -46,7 +44,7 @@ function () {
   /**
    * Sets new size of the rendered DOM elements.
    *
-   * @param {Number} size
+   * @param {number} size The size.
    */
 
 
@@ -59,7 +57,7 @@ function () {
     /**
      * Sets new offset.
      *
-     * @param {Number} offset
+     * @param {number} offset The offset.
      */
 
   }, {

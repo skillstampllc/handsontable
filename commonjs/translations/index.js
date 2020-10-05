@@ -10,13 +10,17 @@ var _physicalIndexToValueMap = _interopRequireDefault(require("./maps/physicalIn
 
 exports.PhysicalIndexToValueMap = _physicalIndexToValueMap.default;
 
-var _visualIndexToPhysicalIndexMap = _interopRequireDefault(require("./maps/visualIndexToPhysicalIndexMap"));
+var _indexesSequence = _interopRequireDefault(require("./maps/indexesSequence"));
 
-exports.VisualIndexToPhysicalIndexMap = _visualIndexToPhysicalIndexMap.default;
+exports.IndexesSequence = _indexesSequence.default;
 
-var _skipMap = _interopRequireDefault(require("./maps/skipMap"));
+var _trimmingMap = _interopRequireDefault(require("./maps/trimmingMap"));
 
-exports.SkipMap = _skipMap.default;
+exports.TrimmingMap = _trimmingMap.default;
+
+var _hidingMap = _interopRequireDefault(require("./maps/hidingMap"));
+
+exports.HidingMap = _hidingMap.default;
 
 var _indexMap = _interopRequireDefault(require("./maps/indexMap"));
 

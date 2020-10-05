@@ -7,7 +7,7 @@ import { arrayReduce } from './array';
  * Checks if given variable is function.
  *
  * @param {*} func Variable to check.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 export function isFunction(func) {
@@ -17,7 +17,7 @@ export function isFunction(func) {
  * Creates throttle function that enforces a maximum number of times a function (`func`) can be called over time (`wait`).
  *
  * @param {Function} func Function to invoke.
- * @param {Number} wait Delay in miliseconds.
+ * @param {number} wait Delay in miliseconds.
  * @returns {Function}
  */
 
@@ -28,6 +28,10 @@ export function throttle(func) {
     lastCallThrottled: true
   };
   var lastTimer = null;
+  /**
+   * @param {...*} args The list of arguments passed during the function invocation.
+   * @returns {object}
+   */
 
   function _throttle() {
     var _this = this;
@@ -73,8 +77,8 @@ export function throttle(func) {
  * time (`wait`) after specified hits.
  *
  * @param {Function} func Function to invoke.
- * @param {Number} wait Delay in miliseconds.
- * @param {Number} hits Number of hits after throttling will be applied.
+ * @param {number} wait Delay in miliseconds.
+ * @param {number} hits Number of hits after throttling will be applied.
  * @returns {Function}
  */
 
@@ -83,10 +87,18 @@ export function throttleAfterHits(func) {
   var hits = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
   var funcThrottle = throttle(func, wait);
   var remainHits = hits;
+  /**
+   *
+   */
 
   function _clearHits() {
     remainHits = hits;
   }
+  /**
+   * @param {*} args The list of arguments passed during the function invocation.
+   * @returns {*}
+   */
+
 
   function _throttleAfterHits() {
     for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
@@ -109,7 +121,7 @@ export function throttleAfterHits(func) {
  * has passed without it being called.
  *
  * @param {Function} func Function to invoke.
- * @param {Number} wait Delay in milliseconds.
+ * @param {number} wait Delay in milliseconds.
  * @returns {Function}
  */
 
@@ -117,6 +129,10 @@ export function debounce(func) {
   var wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
   var lastTimer = null;
   var result;
+  /**
+   * @param {*} args The list of arguments passed during the function invocation.
+   * @returns {*}
+   */
 
   function _debounce() {
     var _this2 = this;
@@ -208,6 +224,10 @@ export function partial(func) {
 
 export function curry(func) {
   var argsLength = func.length;
+  /**
+   * @param {*} argsSoFar The list of arguments passed during the function invocation.
+   * @returns {Function}
+   */
 
   function given(argsSoFar) {
     return function _curry() {
@@ -255,6 +275,10 @@ export function curry(func) {
 
 export function curryRight(func) {
   var argsLength = func.length;
+  /**
+   * @param {*} argsSoFar The list of arguments passed during the function invocation.
+   * @returns {Function}
+   */
 
   function given(argsSoFar) {
     return function _curry() {

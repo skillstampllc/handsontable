@@ -2,12 +2,16 @@ import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.for-each";
+import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
+import "core-js/modules/es.regexp.to-string";
+import "core-js/modules/es.string.includes";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/es.weak-map";
 import "core-js/modules/web.dom-collections.for-each";
@@ -22,30 +26,32 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 import BasePlugin from './../_base';
 import { addClass, hasClass, removeClass, outerHeight } from './../../helpers/dom/element';
 import EventManager from './../../eventManager';
-import { pageX } from './../../helpers/dom/event';
 import { arrayEach } from './../../helpers/array';
 import { rangeEach } from './../../helpers/number';
 import { registerPlugin } from './../../plugins';
 import { PhysicalIndexToValueMap as IndexToValueMap } from './../../translations'; // Developer note! Whenever you make a change in this file, make an analogous change in manualRowResize.js
 
-var COLUMN_WIDTHS_MAP_NAME = 'manualColumnResize';
 var PERSISTENT_STATE_KEY = 'manualColumnWidths';
 var privatePool = new WeakMap();
 /**
@@ -60,17 +66,17 @@ var privatePool = new WeakMap();
  * @plugin ManualColumnResize
  */
 
-var ManualColumnResize =
-/*#__PURE__*/
-function (_BasePlugin) {
+var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualColumnResize, _BasePlugin);
+
+  var _super = _createSuper(ManualColumnResize);
 
   function ManualColumnResize(hotInstance) {
     var _this;
 
     _classCallCheck(this, ManualColumnResize);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ManualColumnResize).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     var rootDocument = _this.hot.rootDocument;
     _this.currentTH = null;
     _this.currentCol = null;
@@ -109,7 +115,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link ManualColumnResize#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -135,7 +141,7 @@ function (_BasePlugin) {
       this.columnWidthsMap.addLocalHook('init', function () {
         return _this2.onMapInit();
       });
-      this.hot.columnIndexMapper.registerMap(COLUMN_WIDTHS_MAP_NAME, this.columnWidthsMap);
+      this.hot.columnIndexMapper.registerMap(this.pluginName, this.columnWidthsMap);
       this.addHook('modifyColWidth', function (width, col) {
         return _this2.onModifyColWidth(width, col);
       });
@@ -170,7 +176,7 @@ function (_BasePlugin) {
     value: function disablePlugin() {
       var priv = privatePool.get(this);
       priv.config = this.columnWidthsMap.getValues();
-      this.hot.columnIndexMapper.unregisterMap(COLUMN_WIDTHS_MAP_NAME);
+      this.hot.columnIndexMapper.unregisterMap(this.pluginName);
 
       _get(_getPrototypeOf(ManualColumnResize.prototype), "disablePlugin", this).call(this);
     }
@@ -202,9 +208,9 @@ function (_BasePlugin) {
     /**
      * Sets the new width for specified column index.
      *
-     * @param {Number} column Visual column index.
-     * @param {Number} width Column width (no less than 20px).
-     * @returns {Number} Returns new width.
+     * @param {number} column Visual column index.
+     * @param {number} width Column width (no less than 20px).
+     * @returns {number} Returns new width.
      */
 
   }, {
@@ -218,7 +224,7 @@ function (_BasePlugin) {
     /**
      * Clears the cache for the specified column index.
      *
-     * @param {Number} column Visual column index.
+     * @param {number} column Visual column index.
      */
 
   }, {
@@ -243,22 +249,22 @@ function (_BasePlugin) {
       var loadedManualColumnWidths = this.loadManualColumnWidths();
 
       if (typeof loadedManualColumnWidths !== 'undefined') {
-        this.hot.executeBatchOperations(function () {
-          loadedManualColumnWidths.forEach(function (width, index) {
-            _this3.columnWidthsMap.setValueAtIndex(index, width);
+        this.hot.batch(function () {
+          loadedManualColumnWidths.forEach(function (width, physicalIndex) {
+            _this3.columnWidthsMap.setValueAtIndex(physicalIndex, width);
           });
         });
       } else if (Array.isArray(initialSetting)) {
-        this.hot.executeBatchOperations(function () {
-          initialSetting.forEach(function (width, index) {
-            _this3.columnWidthsMap.setValueAtIndex(index, width);
+        this.hot.batch(function () {
+          initialSetting.forEach(function (width, physicalIndex) {
+            _this3.columnWidthsMap.setValueAtIndex(physicalIndex, width);
           });
         });
         priv.config = initialSetting;
       } else if (initialSetting === true && Array.isArray(priv.config)) {
-        this.hot.executeBatchOperations(function () {
-          priv.config.forEach(function (width, index) {
-            _this3.columnWidthsMap.setValueAtIndex(index, width);
+        this.hot.batch(function () {
+          priv.config.forEach(function (width, physicalIndex) {
+            _this3.columnWidthsMap.setValueAtIndex(physicalIndex, width);
           });
         });
       }
@@ -276,60 +282,64 @@ function (_BasePlugin) {
       var _this4 = this;
 
       if (!TH.parentNode) {
-        return false;
+        return;
       }
 
       this.currentTH = TH;
-      var cellCoords = this.hot.view.wt.wtTable.getCoords(this.currentTH);
-      var col = cellCoords.col;
-      var headerHeight = outerHeight(this.currentTH);
+      var wt = this.hot.view.wt;
+      var cellCoords = wt.wtTable.getCoords(this.currentTH);
+      var col = cellCoords.col; // Ignore column headers.
 
-      if (col >= 0) {
-        // if col header
-        var box = this.currentTH.getBoundingClientRect();
-        var fixedColumn = col < this.hot.getSettings().fixedColumnsLeft;
-        var parentOverlay = fixedColumn ? this.hot.view.wt.wtOverlays.topLeftCornerOverlay : this.hot.view.wt.wtOverlays.topOverlay;
-        var relativeHeaderPosition = parentOverlay.getRelativeCellPosition(this.currentTH, cellCoords.row, cellCoords.col); // If the TH is not a child of the top/top-left overlay, recalculate using the top-most header
-
-        if (!relativeHeaderPosition) {
-          var topMostHeader = parentOverlay.clone.wtTable.THEAD.lastChild.children[+!!this.hot.getSettings().rowHeaders + col];
-          relativeHeaderPosition = parentOverlay.getRelativeCellPosition(topMostHeader, cellCoords.row, cellCoords.col);
-        }
-
-        this.currentCol = col;
-        this.selectedCols = [];
-
-        if (this.hot.selection.isSelected() && this.hot.selection.isSelectedByColumnHeader()) {
-          var _this$hot$getSelected = this.hot.getSelectedRangeLast(),
-              from = _this$hot$getSelected.from,
-              to = _this$hot$getSelected.to;
-
-          var start = from.col;
-          var end = to.col;
-
-          if (start >= end) {
-            start = to.col;
-            end = from.col;
-          }
-
-          if (this.currentCol >= start && this.currentCol <= end) {
-            rangeEach(start, end, function (i) {
-              return _this4.selectedCols.push(i);
-            });
-          } else {
-            this.selectedCols.push(this.currentCol);
-          }
-        } else {
-          this.selectedCols.push(this.currentCol);
-        }
-
-        this.startOffset = relativeHeaderPosition.left - 6;
-        this.startWidth = parseInt(box.width, 10);
-        this.handle.style.top = "".concat(relativeHeaderPosition.top, "px");
-        this.handle.style.left = "".concat(this.startOffset + this.startWidth, "px");
-        this.handle.style.height = "".concat(headerHeight, "px");
-        this.hot.rootElement.appendChild(this.handle);
+      if (col < 0) {
+        return;
       }
+
+      var headerHeight = outerHeight(this.currentTH);
+      var box = this.currentTH.getBoundingClientRect(); // Read "fixedColumnsLeft" through the Walkontable as in that context, the fixed columns
+      // are modified (reduced by the number of hidden columns) by TableView module.
+
+      var fixedColumn = col < wt.getSetting('fixedColumnsLeft');
+      var relativeHeaderPosition;
+
+      if (fixedColumn) {
+        relativeHeaderPosition = wt.wtOverlays.topLeftCornerOverlay.getRelativeCellPosition(this.currentTH, cellCoords.row, cellCoords.col);
+      } // If the TH is not a child of the top-left overlay, recalculate using
+      // the top overlay - as this overlay contains the rest of the headers.
+
+
+      if (!relativeHeaderPosition) {
+        relativeHeaderPosition = wt.wtOverlays.topOverlay.getRelativeCellPosition(this.currentTH, cellCoords.row, cellCoords.col);
+      }
+
+      this.currentCol = this.hot.columnIndexMapper.getVisualFromRenderableIndex(col);
+      this.selectedCols = [];
+      var isFullColumnSelected = this.hot.selection.isSelectedByCorner() || this.hot.selection.isSelectedByColumnHeader();
+
+      if (this.hot.selection.isSelected() && isFullColumnSelected) {
+        var selectionRanges = this.hot.getSelectedRange();
+        arrayEach(selectionRanges, function (selectionRange) {
+          var fromColumn = selectionRange.getTopLeftCorner().col;
+          var toColumn = selectionRange.getBottomRightCorner().col; // Add every selected column for resize action.
+
+          rangeEach(fromColumn, toColumn, function (columnIndex) {
+            if (!_this4.selectedCols.includes(columnIndex)) {
+              _this4.selectedCols.push(columnIndex);
+            }
+          });
+        });
+      } // Resizing element beyond the current selection (also when there is no selection).
+
+
+      if (!this.selectedCols.includes(this.currentCol)) {
+        this.selectedCols = [this.currentCol];
+      }
+
+      this.startOffset = relativeHeaderPosition.left - 6;
+      this.startWidth = parseInt(box.width, 10);
+      this.handle.style.top = "".concat(relativeHeaderPosition.top, "px");
+      this.handle.style.left = "".concat(this.startOffset + this.startWidth, "px");
+      this.handle.style.height = "".concat(headerHeight, "px");
+      this.hot.rootElement.appendChild(this.handle);
     }
     /**
      * Refresh the resize handle position.
@@ -389,7 +399,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {HTMLElement} element HTML element.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -432,7 +442,7 @@ function (_BasePlugin) {
      * 'mouseover' event callback - set the handle position.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event.
      */
 
   }, {
@@ -521,7 +531,7 @@ function (_BasePlugin) {
      * 'mousedown' event callback.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event.
      */
 
   }, {
@@ -530,8 +540,9 @@ function (_BasePlugin) {
       var _this6 = this;
 
       if (hasClass(event.target, 'manualColumnResizer')) {
+        this.setupHandlePosition(this.currentTH);
         this.setupGuidePosition();
-        this.pressed = this.hot;
+        this.pressed = true;
 
         if (this.autoresizeTimeout === null) {
           this.autoresizeTimeout = setTimeout(function () {
@@ -542,7 +553,7 @@ function (_BasePlugin) {
         }
 
         this.dblclick += 1;
-        this.startX = pageX(event);
+        this.startX = event.pageX;
         this.newSize = this.startWidth;
       }
     }
@@ -550,7 +561,7 @@ function (_BasePlugin) {
      * 'mousemove' event callback - refresh the handle and guide positions, cache the new column width.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event.
      */
 
   }, {
@@ -559,7 +570,7 @@ function (_BasePlugin) {
       var _this7 = this;
 
       if (this.pressed) {
-        this.currentWidth = this.startWidth + (pageX(event) - this.startX);
+        this.currentWidth = this.startWidth + (event.pageX - this.startX);
         arrayEach(this.selectedCols, function (selectedCol) {
           _this7.newSize = _this7.setManualSize(selectedCol, _this7.currentWidth);
         });
@@ -652,12 +663,12 @@ function (_BasePlugin) {
       });
     }
     /**
-     * Modifies the provided column width, based on the plugin settings
+     * Modifies the provided column width, based on the plugin settings.
      *
      * @private
-     * @param {Number} width Column width.
-     * @param {Number} column Visual column index.
-     * @returns {Number}
+     * @param {number} width Column width.
+     * @param {number} column Visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -680,9 +691,9 @@ function (_BasePlugin) {
      * Modifies the provided column stretched width. This hook decides if specified column should be stretched or not.
      *
      * @private
-     * @param {Number} stretchedWidth Stretched width.
-     * @param {Number} column Physical column index.
-     * @returns {Number}
+     * @param {number} stretchedWidth Stretched width.
+     * @param {number} column Visual column index.
+     * @returns {number}
      */
 
   }, {
@@ -706,7 +717,7 @@ function (_BasePlugin) {
     key: "onBeforeColumnResize",
     value: function onBeforeColumnResize() {
       // clear the header height cache information
-      this.hot.view.wt.wtViewport.hasOversizedColumnHeadersMarked = {};
+      this.hot.view.wt.wtViewport.resetHasOversizedColumnHeadersMarked();
     }
     /**
      * Destroys the plugin instance.
@@ -715,7 +726,7 @@ function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.columnIndexMapper.unregisterMap(COLUMN_WIDTHS_MAP_NAME);
+      this.hot.columnIndexMapper.unregisterMap(this.pluginName);
 
       _get(_getPrototypeOf(ManualColumnResize.prototype), "destroy", this).call(this);
     }

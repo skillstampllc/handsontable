@@ -25,7 +25,7 @@ var _staticRegister2 = (0, _staticRegister3.default)('sorting.mainSortComparator
 /**
  * Gets sort function for the particular column basing on it's data type.
  *
- * @param {String} dataType Data type for the particular column.
+ * @param {string} type The data type.
  * @returns {Function}
  */
 

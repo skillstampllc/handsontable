@@ -15,6 +15,12 @@ exports.DO_NOT_SWAP = DO_NOT_SWAP;
 var FIRST_BEFORE_SECOND = -1;
 exports.FIRST_BEFORE_SECOND = FIRST_BEFORE_SECOND;
 var FIRST_AFTER_SECOND = 1;
+/**
+ * @param {Array} indexesWithData The data to sort.
+ * @param {string} rootComparatorId The comparator logic to use.
+ * @param {Array} argsForRootComparator Additional arguments for comparator function.
+ */
+
 exports.FIRST_AFTER_SECOND = FIRST_AFTER_SECOND;
 
 function sort(indexesWithData, rootComparatorId) {

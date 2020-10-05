@@ -17,6 +17,10 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var KEY = 'make_read_only';
+/**
+ * @returns {object}
+ */
+
 exports.KEY = KEY;
 
 function readOnlyItem() {
@@ -45,13 +49,27 @@ function readOnlyItem() {
       });
       (0, _array.arrayEach)(ranges, function (range) {
         range.forAll(function (row, col) {
-          _this2.setCellMeta(row, col, 'readOnly', !atLeastOneReadOnly);
+          if (row >= 0 && col >= 0) {
+            _this2.setCellMeta(row, col, 'readOnly', !atLeastOneReadOnly);
+          }
         });
       });
       this.render();
     },
     disabled: function disabled() {
-      return !(this.getSelectedRange() && !this.selection.isSelectedByCorner());
+      if (this.selection.isSelectedByCorner()) {
+        return true;
+      }
+
+      if (this.countRows() === 0 || this.countCols() === 0) {
+        return true;
+      }
+
+      if (!this.getSelectedRange() || this.getSelectedRange().length === 0) {
+        return true;
+      }
+
+      return false;
     }
   };
 }

@@ -1,22 +1,6 @@
-import "core-js/modules/es.symbol";
-import "core-js/modules/es.symbol.description";
-import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.includes";
-import "core-js/modules/es.array.iterator";
-import "core-js/modules/es.object.to-string";
-import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.includes";
-import "core-js/modules/es.string.iterator";
-import "core-js/modules/web.dom-collections.iterator";
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33,9 +17,7 @@ import { CellCoords, CellRange } from './../../../3rdparty/walkontable/src';
  * @util
  */
 
-var SelectionCalculations =
-/*#__PURE__*/
-function () {
+var SelectionCalculations = /*#__PURE__*/function () {
   function SelectionCalculations(plugin) {
     _classCallCheck(this, SelectionCalculations);
 
@@ -48,18 +30,18 @@ function () {
     /**
      * Class name used for fully selected merged cells.
      *
-     * @type {String}
+     * @type {string}
      */
 
     this.fullySelectedMergedCellClassName = 'fullySelectedMergedCell';
   }
   /**
    * "Snap" the delta value according to defined merged cells. (In other words, compensate the rowspan -
-   * e.g. going up with `delta.row = -1` over a merged cell with `rowspan = 3`, `delta.row` should change to `-3`.)
+   * e.g. Going up with `delta.row = -1` over a merged cell with `rowspan = 3`, `delta.row` should change to `-3`.).
    *
-   * @param {Object} delta The delta object containing `row` and `col` properties.
+   * @param {object} delta The delta object containing `row` and `col` properties.
    * @param {CellRange} selectionRange The selection range.
-   * @param {Object} mergedCell A merged cell object.
+   * @param {object} mergedCell A merged cell object.
    */
 
 
@@ -77,12 +59,12 @@ function () {
       }
     }
     /**
-     * "Jump" over the merged cell (compensate for the indexes within the merged cell to get past it)
+     * "Jump" over the merged cell (compensate for the indexes within the merged cell to get past it).
      *
      * @private
-     * @param {Object} delta The delta object.
+     * @param {object} delta The delta object.
      * @param {MergedCellCoords} mergedCell The merge cell object.
-     * @param {Number} newIndex New row/column index, created with the delta.
+     * @param {number} newIndex New row/column index, created with the delta.
      */
 
   }, {
@@ -123,7 +105,7 @@ function () {
      * Get a selection range with `to` property incremented by the provided delta.
      *
      * @param {CellRange} oldSelectionRange The base selection range.
-     * @param {Object} delta The delta object with `row` and `col` properties.
+     * @param {object} delta The delta object with `row` and `col` properties.
      * @returns {CellRange} A new `CellRange` object.
      */
 
@@ -135,52 +117,54 @@ function () {
     /**
      * Generate an additional class name for the entirely-selected merged cells.
      *
-     * @param {Number} currentRow Row index of the currently processed cell.
-     * @param {Number} currentColumn Column index of the currently cell.
+     * @param {number} currentRow Visual row index of the currently processed cell.
+     * @param {number} currentColumn Visual column index of the currently cell.
      * @param {Array} cornersOfSelection Array of the current selection in a form of `[startRow, startColumn, endRow, endColumn]`.
-     * @param {Number|undefined} layerLevel Number indicating which layer of selection is currently processed.
-     * @returns {String|undefined} A `String`, which will act as an additional `className` to be added to the currently processed cell.
+     * @param {number|undefined} layerLevel Number indicating which layer of selection is currently processed.
+     * @returns {string|undefined} A `String`, which will act as an additional `className` to be added to the currently processed cell.
      */
 
   }, {
     key: "getSelectedMergedCellClassName",
     value: function getSelectedMergedCellClassName(currentRow, currentColumn, cornersOfSelection, layerLevel) {
-      var _cornersOfSelection = _slicedToArray(cornersOfSelection, 4),
-          startRow = _cornersOfSelection[0],
-          startColumn = _cornersOfSelection[1],
-          endRow = _cornersOfSelection[2],
-          endColumn = _cornersOfSelection[3];
+      var startRow = Math.min(cornersOfSelection[0], cornersOfSelection[2]);
+      var startColumn = Math.min(cornersOfSelection[1], cornersOfSelection[3]);
+      var endRow = Math.max(cornersOfSelection[0], cornersOfSelection[2]);
+      var endColumn = Math.max(cornersOfSelection[1], cornersOfSelection[3]);
 
       if (layerLevel === void 0) {
         return;
       }
 
-      if (currentRow >= startRow && currentRow <= endRow && currentColumn >= startColumn && currentColumn <= endColumn) {
-        var isMergedCellParent = this.plugin.mergedCellsCollection.isMergedParent(currentRow, currentColumn);
+      var isFirstRenderableMergedCell = this.plugin.mergedCellsCollection.isFirstRenderableMergedCell(currentRow, currentColumn); // We add extra classes just to the first renderable merged cell.
 
-        if (!isMergedCellParent) {
-          return;
-        }
+      if (!isFirstRenderableMergedCell) {
+        return;
+      }
 
-        var mergedCell = this.plugin.mergedCellsCollection.get(currentRow, currentColumn);
+      var mergedCell = this.plugin.mergedCellsCollection.get(currentRow, currentColumn);
 
-        if (!mergedCell) {
-          return;
-        }
+      if (!mergedCell) {
+        return;
+      }
 
-        if (mergedCell.row + mergedCell.rowspan - 1 <= endRow && mergedCell.col + mergedCell.colspan - 1 <= endColumn) {
-          return "".concat(this.fullySelectedMergedCellClassName, "-").concat(layerLevel);
-        } else if (this.plugin.selectionCalculations.isMergeCellFullySelected(mergedCell, this.plugin.hot.getSelectedRange())) {
-          return "".concat(this.fullySelectedMergedCellClassName, "-multiple");
-        }
+      var mergeRowEnd = mergedCell.getLastRow();
+      var mergeColumnEnd = mergedCell.getLastColumn();
+      var fullMergeAreaWithinSelection = startRow <= mergedCell.row && startColumn <= mergedCell.col && endRow >= mergeRowEnd && endColumn >= mergeColumnEnd;
+
+      if (fullMergeAreaWithinSelection) {
+        return "".concat(this.fullySelectedMergedCellClassName, "-").concat(layerLevel);
+      } else if (this.plugin.selectionCalculations.isMergeCellFullySelected(mergedCell, this.plugin.hot.getSelectedRange())) {
+        // eslint-disable-line max-len
+        return "".concat(this.fullySelectedMergedCellClassName, "-multiple");
       }
     }
     /**
-     * Check if the provided merged cell is fully selected (by one or many layers of selection)
+     * Check if the provided merged cell is fully selected (by one or many layers of selection).
      *
      * @param {MergedCellCoords} mergedCell The merged cell to be processed.
      * @param {CellRange[]} selectionRangesArray Array of selection ranges.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -215,7 +199,7 @@ function () {
     /**
      * Generate an array of the entirely-selected merged cells' class names.
      *
-     * @returns {String[]} An `Array` of `String`s. Each of these strings will act like class names to be removed from all the cells in the table.
+     * @returns {string[]} An `Array` of `String`s. Each of these strings will act like class names to be removed from all the cells in the table.
      */
 
   }, {

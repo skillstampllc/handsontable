@@ -20,6 +20,13 @@ var TYPE_PDF = 'pdf'; // TODO
 exports.TYPE_PDF = TYPE_PDF;
 
 var EXPORT_TYPES = _defineProperty({}, TYPE_CSV, _csv.default);
+/**
+ * @param {string} type The exporter type.
+ * @param {DataProvider} dataProvider The data provider.
+ * @param {object} options Constructor options for exporter class.
+ * @returns {BaseType|null}
+ */
+
 
 exports.EXPORT_TYPES = EXPORT_TYPES;
 

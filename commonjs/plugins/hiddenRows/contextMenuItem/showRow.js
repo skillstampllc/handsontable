@@ -8,11 +8,23 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.filter");
+
+require("core-js/modules/es.array.from");
+
+require("core-js/modules/es.array.includes");
+
 require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.regexp.to-string");
+
+require("core-js/modules/es.string.includes");
 
 require("core-js/modules/es.string.iterator");
 
@@ -21,7 +33,7 @@ require("core-js/modules/web.dom-collections.iterator");
 exports.__esModule = true;
 exports.default = showRowItem;
 
-var _number = require("../../../helpers/number");
+var _array = require("../../../helpers/array");
 
 var C = _interopRequireWildcard(require("../../../i18n/constants"));
 
@@ -29,127 +41,108 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+/**
+ * @param {HiddenRows} hiddenRowsPlugin The plugin instance.
+ * @returns {object}
+ */
 function showRowItem(hiddenRowsPlugin) {
-  var beforeHiddenRows = [];
-  var afterHiddenRows = [];
+  var rows = [];
   return {
     key: 'hidden_rows_show',
     name: function name() {
-      var selection = this.getSelectedLast();
-      var pluralForm = 0;
-
-      if (Array.isArray(selection)) {
-        var _selection = _slicedToArray(selection, 3),
-            fromRow = _selection[0],
-            toRow = _selection[2];
-
-        if (fromRow > toRow) {
-          var _ref = [toRow, fromRow];
-          fromRow = _ref[0];
-          toRow = _ref[1];
-        }
-
-        var hiddenRows = 0;
-
-        if (fromRow === toRow) {
-          hiddenRows = beforeHiddenRows.length + afterHiddenRows.length;
-        } else {
-          (0, _number.rangeEach)(fromRow, toRow, function (column) {
-            if (hiddenRowsPlugin.isHidden(column)) {
-              hiddenRows += 1;
-            }
-          });
-        }
-
-        pluralForm = hiddenRows <= 1 ? 0 : 1;
-      }
-
+      var pluralForm = rows.length > 1 ? 1 : 0;
       return this.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_SHOW_ROW, pluralForm);
     },
     callback: function callback() {
-      var _this$getSelectedRang = this.getSelectedRangeLast(),
-          from = _this$getSelectedRang.from,
-          to = _this$getSelectedRang.to;
+      var _this$rowIndexMapper$, _this$rowIndexMapper$2;
 
-      var start = Math.min(from.row, to.row);
-      var end = Math.max(from.row, to.row);
-
-      if (start === end) {
-        if (beforeHiddenRows.length === start) {
-          hiddenRowsPlugin.showRows(beforeHiddenRows);
-          beforeHiddenRows.length = 0;
-        }
-
-        if (afterHiddenRows.length === this.countSourceRows() - (start + 1)) {
-          hiddenRowsPlugin.showRows(afterHiddenRows);
-          afterHiddenRows.length = 0;
-        }
-      } else {
-        (0, _number.rangeEach)(start, end, function (row) {
-          return hiddenRowsPlugin.showRow(row);
-        });
+      if (rows.length === 0) {
+        return;
       }
+
+      var startVisualRow = rows[0];
+      var endVisualRow = rows[rows.length - 1]; // Add to the selection one more visual row on the top.
+
+      startVisualRow = (_this$rowIndexMapper$ = this.rowIndexMapper.getFirstNotHiddenIndex(startVisualRow - 1, -1)) !== null && _this$rowIndexMapper$ !== void 0 ? _this$rowIndexMapper$ : 0; // Add to the selection one more visual row on the bottom.
+
+      endVisualRow = (_this$rowIndexMapper$2 = this.rowIndexMapper.getFirstNotHiddenIndex(endVisualRow + 1, 1)) !== null && _this$rowIndexMapper$2 !== void 0 ? _this$rowIndexMapper$2 : this.countRows() - 1;
+      hiddenRowsPlugin.showRows(rows); // We render rows at first. It was needed for getting fixed rows.
+      // Please take a look at #6864 for broader description.
 
       this.render();
       this.view.wt.wtOverlays.adjustElementsSize(true);
+      var allRowsSelected = endVisualRow - startVisualRow + 1 === this.countRows(); // When all headers needs to be selected then do nothing. The header selection is
+      // automatically handled by corner click.
+
+      if (!allRowsSelected) {
+        this.selectRows(startVisualRow, endVisualRow);
+      }
     },
     disabled: false,
     hidden: function hidden() {
-      if (!hiddenRowsPlugin.hiddenRows.length || !this.selection.isSelectedByRowHeader()) {
+      var _this = this;
+
+      var hiddenPhysicalRows = (0, _array.arrayMap)(hiddenRowsPlugin.getHiddenRows(), function (visualRowIndex) {
+        return _this.toPhysicalRow(visualRowIndex);
+      });
+
+      if (!(this.selection.isSelectedByRowHeader() || this.selection.isSelectedByCorner()) || hiddenPhysicalRows.length < 1) {
         return true;
       }
 
-      beforeHiddenRows.length = 0;
-      afterHiddenRows.length = 0;
+      rows.length = 0;
+      var selectedRangeLast = this.getSelectedRangeLast();
+      var visualStartRow = selectedRangeLast.getTopLeftCorner().row;
+      var visualEndRow = selectedRangeLast.getBottomRightCorner().row;
+      var rowIndexMapper = this.rowIndexMapper;
+      var renderableStartRow = rowIndexMapper.getRenderableFromVisualIndex(visualStartRow);
+      var renderableEndRow = rowIndexMapper.getRenderableFromVisualIndex(visualEndRow);
+      var notTrimmedRowIndexes = rowIndexMapper.getNotTrimmedIndexes();
+      var physicalRowIndexes = [];
 
-      var _this$getSelectedRang2 = this.getSelectedRangeLast(),
-          from = _this$getSelectedRang2.from,
-          to = _this$getSelectedRang2.to;
+      if (visualStartRow !== visualEndRow) {
+        var visualRowsInRange = visualEndRow - visualStartRow + 1;
+        var renderedRowsInRange = renderableEndRow - renderableStartRow + 1; // Collect not trimmed rows if there are some hidden rows in the selection range.
 
-      var start = Math.min(from.row, to.row);
-      var end = Math.max(from.row, to.row);
-      var hiddenInSelection = false;
+        if (visualRowsInRange > renderedRowsInRange) {
+          var physicalIndexesInRange = notTrimmedRowIndexes.slice(visualStartRow, visualEndRow + 1);
+          physicalRowIndexes.push.apply(physicalRowIndexes, _toConsumableArray(physicalIndexesInRange.filter(function (physicalIndex) {
+            return hiddenPhysicalRows.includes(physicalIndex);
+          })));
+        } // Handled row is the first rendered index and there are some visual indexes before it.
 
-      if (start === end) {
-        var totalRowsLength = this.countSourceRows();
-        (0, _number.rangeEach)(0, totalRowsLength, function (i) {
-          var partedHiddenLength = beforeHiddenRows.length + afterHiddenRows.length;
-
-          if (partedHiddenLength === hiddenRowsPlugin.hiddenRows.length) {
-            return false;
-          }
-
-          if (i < start) {
-            if (hiddenRowsPlugin.isHidden(i)) {
-              beforeHiddenRows.push(i);
-            }
-          } else if (hiddenRowsPlugin.isHidden(i)) {
-            afterHiddenRows.push(i);
-          }
-        });
-        totalRowsLength -= 1;
-
-        if (beforeHiddenRows.length === start && start > 0 || afterHiddenRows.length === totalRowsLength - start && start < totalRowsLength) {
-          hiddenInSelection = true;
-        }
+      } else if (renderableStartRow === 0 && renderableStartRow < visualStartRow) {
+        // not trimmed indexes -> array of mappings from visual (native array's index) to physical indexes (value).
+        physicalRowIndexes.push.apply(physicalRowIndexes, _toConsumableArray(notTrimmedRowIndexes.slice(0, visualStartRow))); // physical indexes
+        // When all rows are hidden and the context menu is triggered using top-left corner.
+      } else if (renderableStartRow === null) {
+        // Show all hidden rows.
+        physicalRowIndexes.push.apply(physicalRowIndexes, _toConsumableArray(notTrimmedRowIndexes.slice(0, this.countRows())));
       } else {
-        (0, _number.rangeEach)(start, end, function (i) {
-          if (hiddenRowsPlugin.isHidden(i)) {
-            hiddenInSelection = true;
-            return false;
-          }
-        });
+        var lastVisualIndex = this.countRows() - 1;
+        var lastRenderableIndex = rowIndexMapper.getRenderableFromVisualIndex(rowIndexMapper.getFirstNotHiddenIndex(lastVisualIndex, -1)); // Handled row is the last rendered index and there are some visual indexes after it.
+
+        if (renderableEndRow === lastRenderableIndex && lastVisualIndex > visualEndRow) {
+          physicalRowIndexes.push.apply(physicalRowIndexes, _toConsumableArray(notTrimmedRowIndexes.slice(visualEndRow + 1)));
+        }
       }
 
-      return !hiddenInSelection;
+      (0, _array.arrayEach)(physicalRowIndexes, function (physicalRowIndex) {
+        rows.push(_this.toVisualRow(physicalRowIndex));
+      });
+      return rows.length === 0;
     }
   };
 }

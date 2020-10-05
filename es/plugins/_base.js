@@ -21,11 +21,9 @@ var initializedPlugins = null;
  * @util
  */
 
-var BasePlugin =
-/*#__PURE__*/
-function () {
+var BasePlugin = /*#__PURE__*/function () {
   /**
-   * @param {Object} hotInstance Handsontable instance.
+   * @param {object} hotInstance Handsontable instance.
    */
   function BasePlugin(hotInstance) {
     var _this = this;
@@ -109,8 +107,8 @@ function () {
     /**
      * Add listener to plugin hooks system.
      *
-     * @param {String} name
-     * @param {Function} callback
+     * @param {string} name The hook name.
+     * @param {Function} callback The listener function to add.
      */
 
   }, {
@@ -125,7 +123,7 @@ function () {
     /**
      * Remove all hooks listeners by hook name.
      *
-     * @param {String} name
+     * @param {string} name The hook name.
      */
 
   }, {
@@ -155,7 +153,7 @@ function () {
     /**
      * Register function which will be immediately called after all plugins initialized.
      *
-     * @param {Function} callback
+     * @param {Function} callback The listener function to call.
      */
 
   }, {

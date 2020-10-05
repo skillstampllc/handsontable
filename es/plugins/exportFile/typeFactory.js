@@ -7,6 +7,13 @@ export var TYPE_EXCEL = 'excel'; // TODO
 export var TYPE_PDF = 'pdf'; // TODO
 
 export var EXPORT_TYPES = _defineProperty({}, TYPE_CSV, Csv);
+/**
+ * @param {string} type The exporter type.
+ * @param {DataProvider} dataProvider The data provider.
+ * @param {object} options Constructor options for exporter class.
+ * @returns {BaseType|null}
+ */
+
 export default function typeFactory(type, dataProvider, options) {
   if (typeof EXPORT_TYPES[type] === 'function') {
     return new EXPORT_TYPES[type](dataProvider, options);

@@ -1,11 +1,15 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
@@ -13,11 +17,15 @@ import "core-js/modules/web.dom-collections.iterator";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -27,19 +35,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import BasePlugin from "../_base";
 import { arrayEach } from "../../helpers/array";
@@ -50,24 +62,24 @@ import { isFormulaExpression, toUpperCaseFormula, isFormulaExpressionEscaped, un
 import Sheet from "./sheet";
 import DataProvider from "./dataProvider";
 import UndoRedoSnapshot from "./undoRedoSnapshot";
+import CellValue from './cell/value';
 /**
  * The formulas plugin.
  *
  * @plugin Formulas
- * @experimental
  */
 
-var Formulas =
-/*#__PURE__*/
-function (_BasePlugin) {
+var Formulas = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Formulas, _BasePlugin);
+
+  var _super = _createSuper(Formulas);
 
   function Formulas(hotInstance) {
     var _this;
 
     _classCallCheck(this, Formulas);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Formulas).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Instance of {@link EventManager}.
      *
@@ -103,7 +115,7 @@ function (_BasePlugin) {
     /**
      * Flag which indicates if table should be re-render after sheet recalculations.
      *
-     * @type {Boolean}
+     * @type {boolean}
      * @default false
      * @private
      */
@@ -115,7 +127,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link Formulas#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -214,8 +226,8 @@ function (_BasePlugin) {
     /**
      * Returns cell value (evaluated from formula expression) at specified cell coords.
      *
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
+     * @param {number} row Row index.
+     * @param {number} column Column index.
      * @returns {*}
      */
 
@@ -228,9 +240,9 @@ function (_BasePlugin) {
     /**
      * Checks if there are any formula evaluations made under specific cell coords.
      *
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
-     * @returns {Boolean}
+     * @param {number} row Row index.
+     * @param {number} column Column index.
+     * @returns {boolean}
      */
 
   }, {
@@ -268,7 +280,7 @@ function (_BasePlugin) {
     /**
      * Sets predefined variable name which can be visible while parsing formula expression.
      *
-     * @param {String} name Variable name.
+     * @param {string} name Variable name.
      * @param {*} value Variable value.
      */
 
@@ -280,7 +292,7 @@ function (_BasePlugin) {
     /**
      * Returns variable name.
      *
-     * @param {String} name Variable name.
+     * @param {string} name Variable name.
      * @returns {*}
      */
 
@@ -314,11 +326,10 @@ function (_BasePlugin) {
      * On modify row data listener. It overwrites raw values into calculated ones and force upper case all formula expressions.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
-     * @param {Object} valueHolder Value holder as an object to change value by reference.
-     * @param {String} ioMode IO operation (`get` or `set`).
-     * @returns {Array|undefined} Returns modified row data.
+     * @param {number} row Row index.
+     * @param {number} column Column index.
+     * @param {object} valueHolder Value holder as an object to change value by reference.
+     * @param {string} ioMode IO operation (`get` or `set`).
      */
 
   }, {
@@ -354,8 +365,9 @@ function (_BasePlugin) {
      *
      * @private
      * @param {*} value Value to validate.
-     * @param {Number} row Row index.
-     * @param {Number} prop Column property.
+     * @param {number} row Row index.
+     * @param {number} prop Column property.
+     * @returns {*}
      */
 
   }, {
@@ -375,7 +387,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} changes Array of changes.
-     * @param {String} [source] Source of changes.
+     * @param {string} [source] Source of changes.
      */
 
   }, {
@@ -423,9 +435,9 @@ function (_BasePlugin) {
      * On before create row listener.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} amount An amount of removed rows.
-     * @param {String} source Source of method call.
+     * @param {number} row Row index.
+     * @param {number} amount An amount of removed rows.
+     * @param {string} source Source of method call.
      */
 
   }, {
@@ -439,9 +451,9 @@ function (_BasePlugin) {
      * On after create row listener.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} amount An amount of created rows.
-     * @param {String} source Source of method call.
+     * @param {number} row Row index.
+     * @param {number} amount An amount of created rows.
+     * @param {string} source Source of method call.
      */
 
   }, {
@@ -453,8 +465,8 @@ function (_BasePlugin) {
      * On before remove row listener.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} amount An amount of removed rows.
+     * @param {number} row Row index.
+     * @param {number} amount An amount of removed rows.
      */
 
   }, {
@@ -466,8 +478,8 @@ function (_BasePlugin) {
      * On after remove row listener.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} amount An amount of removed rows.
+     * @param {number} row Row index.
+     * @param {number} amount An amount of removed rows.
      */
 
   }, {
@@ -479,9 +491,9 @@ function (_BasePlugin) {
      * On before create column listener.
      *
      * @private
-     * @param {Number} column Column index.
-     * @param {Number} amount An amount of removed columns.
-     * @param {String} source Source of method call.
+     * @param {number} column Column index.
+     * @param {number} amount An amount of removed columns.
+     * @param {string} source Source of method call.
      */
 
   }, {
@@ -495,9 +507,9 @@ function (_BasePlugin) {
      * On after create column listener.
      *
      * @private
-     * @param {Number} column Column index.
-     * @param {Number} amount An amount of created columns.
-     * @param {String} source Source of method call.
+     * @param {number} column Column index.
+     * @param {number} amount An amount of created columns.
+     * @param {string} source Source of method call.
      */
 
   }, {
@@ -509,8 +521,8 @@ function (_BasePlugin) {
      * On before remove column listener.
      *
      * @private
-     * @param {Number} column Column index.
-     * @param {Number} amount An amount of removed columns.
+     * @param {number} column Column index.
+     * @param {number} amount An amount of removed columns.
      */
 
   }, {
@@ -522,8 +534,8 @@ function (_BasePlugin) {
      * On after remove column listener.
      *
      * @private
-     * @param {Number} column Column index.
-     * @param {Number} amount An amount of created columns.
+     * @param {number} column Column index.
+     * @param {number} amount An amount of created columns.
      */
 
   }, {
@@ -535,8 +547,8 @@ function (_BasePlugin) {
      * On before column sorting listener.
      *
      * @private
-     * @param {Number} column Sorted column index.
-     * @param {Boolean} order Order type.
+     * @param {number} column Sorted column index.
+     * @param {boolean} order Order type.
      */
 
   }, {
@@ -548,8 +560,8 @@ function (_BasePlugin) {
      * On after column sorting listener.
      *
      * @private
-     * @param {Number} column Sorted column index.
-     * @param {Boolean} order Order type.
+     * @param {number} column Sorted column index.
+     * @param {boolean} order Order type.
      */
 
   }, {

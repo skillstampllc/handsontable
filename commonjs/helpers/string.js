@@ -23,8 +23,8 @@ var _mixed = require("./mixed");
 /**
  * Convert string to upper case first letter.
  *
- * @param {String} string String to convert.
- * @returns {String}
+ * @param {string} string String to convert.
+ * @returns {string}
  */
 function toUpperCaseFirst(string) {
   return string[0].toUpperCase() + string.substr(1);
@@ -32,8 +32,8 @@ function toUpperCaseFirst(string) {
 /**
  * Compare strings case insensitively.
  *
- * @param {...String} strings Strings to compare.
- * @returns {Boolean}
+ * @param {...string} strings Strings to compare.
+ * @returns {boolean}
  */
 
 
@@ -60,11 +60,14 @@ function equalsIgnoreCase() {
 /**
  * Generates a random hex string. Used as namespace for Handsontable instance events.
  *
- * @return {String} Returns 16-long character random string (eq. `'92b1bfc74ec4'`).
+ * @returns {string} Returns 16-long character random string (eq. `'92b1bfc74ec4'`).
  */
 
 
 function randomString() {
+  /**
+   * @returns {string}
+   */
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
   }
@@ -74,8 +77,8 @@ function randomString() {
 /**
  * Checks if value is valid percent.
  *
- * @param {String} value
- * @returns {Boolean}
+ * @param {string} value The value to check.
+ * @returns {boolean}
  */
 
 
@@ -86,9 +89,9 @@ function isPercentValue(value) {
  * Substitute strings placed beetwen square brackets into value defined in `variables` object. String names defined in
  * square brackets must be the same as property name of `variables` object.
  *
- * @param {String} template Template string.
- * @param {Object} variables Object which contains all available values which can be injected into template.
- * @returns {String}
+ * @param {string} template Template string.
+ * @param {object} variables Object which contains all available values which can be injected into template.
+ * @returns {string}
  */
 
 
@@ -107,8 +110,8 @@ var STRIP_TAGS_REGEX = /<\/?\w+\/?>|<\w+[\s|/][^>]*>/gi;
 /**
  * Strip any HTML tag from the string.
  *
- * @param  {String} string String to cut HTML from.
- * @return {String}
+ * @param  {string} string String to cut HTML from.
+ * @returns {string}
  */
 
 function stripTags(string) {

@@ -24,9 +24,7 @@ import { CellRange } from './../3rdparty/walkontable/src';
  * @util
  */
 
-var SelectionRange =
-/*#__PURE__*/
-function () {
+var SelectionRange = /*#__PURE__*/function () {
   function SelectionRange() {
     _classCallCheck(this, SelectionRange);
 
@@ -40,7 +38,7 @@ function () {
   /**
    * Check if selected range is empty.
    *
-   * @return {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -78,9 +76,21 @@ function () {
       return this;
     }
     /**
+     * Removes from the stack the last added coordinates.
+     *
+     * @returns {SelectionRange}
+     */
+
+  }, {
+    key: "pop",
+    value: function pop() {
+      this.ranges.pop();
+      return this;
+    }
+    /**
      * Get last added coordinates from ranges, it returns a CellRange instance.
      *
-     * @return {CellRange|undefined}
+     * @returns {CellRange|undefined}
      */
 
   }, {
@@ -91,7 +101,7 @@ function () {
     /**
      * Get previously added coordinates from ranges, it returns a CellRange instance.
      *
-     * @return {CellRange|undefined}
+     * @returns {CellRange|undefined}
      */
 
   }, {
@@ -104,7 +114,7 @@ function () {
      * the coords object is within selection range.
      *
      * @param {CellCoords} coords The CellCoords instance with defined visual coordinates.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -117,7 +127,7 @@ function () {
     /**
      * Clear collection.
      *
-     * @return {SelectionRange}
+     * @returns {SelectionRange}
      */
 
   }, {
@@ -129,7 +139,7 @@ function () {
     /**
      * Get count of added all coordinates added to the selection.
      *
-     * @return {Number}
+     * @returns {number}
      */
 
   }, {
@@ -140,8 +150,8 @@ function () {
     /**
      * Peek the coordinates based on the offset where that coordinate resides in the collection.
      *
-     * @param {Number} [offset=0] An offset where the coordinate will be retrieved from.
-     * @return {CellRange|undefined}
+     * @param {number} [offset=0] An offset where the coordinate will be retrieved from.
+     * @returns {CellRange|undefined}
      */
 
   }, {

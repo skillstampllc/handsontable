@@ -20,17 +20,15 @@ var registeredOverlays = {};
  * @class Overlay
  */
 
-var Overlay =
-/*#__PURE__*/
-function () {
+var Overlay = /*#__PURE__*/function () {
   _createClass(Overlay, null, [{
     key: "registerOverlay",
 
     /**
      * Register overlay class.
      *
-     * @param {String} type Overlay type, one of the CLONE_TYPES value
-     * @param {Overlay} overlayClass Overlay class extended from base overlay class {@link Overlay}
+     * @param {string} type Overlay type, one of the CLONE_TYPES value.
+     * @param {Overlay} overlayClass Overlay class extended from base overlay class {@link Overlay}.
      */
     value: function registerOverlay(type, overlayClass) {
       if (Overlay.CLONE_TYPES.indexOf(type) === -1) {
@@ -42,8 +40,9 @@ function () {
     /**
      * Create new instance of overlay type.
      *
-     * @param {String} type Overlay type, one of the CLONE_TYPES value
-     * @param {Walkontable} wot Walkontable instance
+     * @param {string} type Overlay type, one of the CLONE_TYPES value.
+     * @param {Walkontable} wot The Walkontable instance.
+     * @returns {Overlay}
      */
 
   }, {
@@ -54,8 +53,8 @@ function () {
     /**
      * Check if specified overlay was registered.
      *
-     * @param {String} type Overlay type, one of the CLONE_TYPES value
-     * @returns {Boolean}
+     * @param {string} type Overlay type, one of the CLONE_TYPES value.
+     * @returns {boolean}
      */
 
   }, {
@@ -66,9 +65,9 @@ function () {
     /**
      * Checks if overlay object (`overlay`) is instance of overlay type (`type`).
      *
-     * @param {Overlay} overlay Overlay object
-     * @param {String} type Overlay type, one of the CLONE_TYPES value
-     * @returns {Boolean}
+     * @param {Overlay} overlay Overlay object.
+     * @param {string} type Overlay type, one of the CLONE_TYPES value.
+     * @returns {boolean}
      */
 
   }, {
@@ -81,20 +80,20 @@ function () {
       return overlay instanceof registeredOverlays[type];
     }
     /**
-     * @param {Walkontable} wotInstance
+     * @param {Walkontable} wotInstance The Walkontable instance.
      */
 
   }, {
     key: "CLONE_TOP",
 
     /**
-     * @type {String}
+     * @type {string}
      */
     get: function get() {
       return 'top';
     }
     /**
-     * @type {String}
+     * @type {string}
      */
 
   }, {
@@ -103,7 +102,7 @@ function () {
       return 'bottom';
     }
     /**
-     * @type {String}
+     * @type {string}
      */
 
   }, {
@@ -112,7 +111,7 @@ function () {
       return 'left';
     }
     /**
-     * @type {String}
+     * @type {string}
      */
 
   }, {
@@ -121,7 +120,7 @@ function () {
       return 'top_left_corner';
     }
     /**
-     * @type {String}
+     * @type {string}
      */
 
   }, {
@@ -130,16 +129,7 @@ function () {
       return 'bottom_left_corner';
     }
     /**
-     * @type {String}
-     */
-
-  }, {
-    key: "CLONE_DEBUG",
-    get: function get() {
-      return 'debug';
-    }
-    /**
-     * List of all availables clone types
+     * List of all availables clone types.
      *
      * @type {Array}
      */
@@ -147,7 +137,7 @@ function () {
   }, {
     key: "CLONE_TYPES",
     get: function get() {
-      return [Overlay.CLONE_TOP, Overlay.CLONE_BOTTOM, Overlay.CLONE_LEFT, Overlay.CLONE_TOP_LEFT_CORNER, Overlay.CLONE_BOTTOM_LEFT_CORNER, Overlay.CLONE_DEBUG];
+      return [Overlay.CLONE_TOP, Overlay.CLONE_BOTTOM, Overlay.CLONE_LEFT, Overlay.CLONE_TOP_LEFT_CORNER, Overlay.CLONE_BOTTOM_LEFT_CORNER];
     }
   }]);
 
@@ -179,7 +169,7 @@ function () {
   /**
    * Update internal state of object with an information about the need of full rendering of the overlay.
    *
-   * @returns {Boolean} Returns `true` if the state has changed since the last check.
+   * @returns {boolean} Returns `true` if the state has changed since the last check.
    */
 
 
@@ -197,9 +187,9 @@ function () {
       return changed;
     }
     /**
-     * Checks if overlay should be fully rendered
+     * Checks if overlay should be fully rendered.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -238,9 +228,9 @@ function () {
      * NOTE: The element needs to be a child of the overlay in order for the method to work correctly.
      *
      * @param {HTMLElement} element The cell element to calculate the position for.
-     * @param {Number} rowIndex Visual row index.
-     * @param {Number} columnIndex Visual column index.
-     * @returns {{top: Number, left: Number}|undefined}
+     * @param {number} rowIndex Visual row index.
+     * @param {number} columnIndex Visual column index.
+     * @returns {{top: number, left: number}|undefined}
      */
 
   }, {
@@ -278,11 +268,11 @@ function () {
      * as a scrollable element.
      *
      * @private
-     * @param {Boolean} onFixedRowTop `true` if the coordinates point to a place within the top fixed rows.
-     * @param {Boolean} onFixedColumn `true` if the coordinates point to a place within the fixed columns.
-     * @param {Number} elementOffset Offset position of the cell element.
-     * @param {Number} spreaderOffset Offset position of the spreader element.
-     * @returns {{top: Number, left: Number}}
+     * @param {boolean} onFixedRowTop `true` if the coordinates point to a place within the top fixed rows.
+     * @param {boolean} onFixedColumn `true` if the coordinates point to a place within the fixed columns.
+     * @param {number} elementOffset Offset position of the cell element.
+     * @param {number} spreaderOffset Offset position of the spreader element.
+     * @returns {{top: number, left: number}}
      */
 
   }, {
@@ -315,12 +305,12 @@ function () {
      * as a scrollable element.
      *
      * @private
-     * @param {Boolean} onFixedRowTop `true` if the coordinates point to a place within the top fixed rows.
-     * @param {Boolean} onFixedRowBottom `true` if the coordinates point to a place within the bottom fixed rows.
-     * @param {Boolean} onFixedColumn `true` if the coordinates point to a place within the fixed columns.
-     * @param {Number} elementOffset Offset position of the cell element.
-     * @param {Number} spreaderOffset Offset position of the spreader element.
-     * @returns {{top: Number, left: Number}}
+     * @param {boolean} onFixedRowTop `true` if the coordinates point to a place within the top fixed rows.
+     * @param {boolean} onFixedRowBottom `true` if the coordinates point to a place within the bottom fixed rows.
+     * @param {boolean} onFixedColumn `true` if the coordinates point to a place within the fixed columns.
+     * @param {number} elementOffset Offset position of the cell element.
+     * @param {number} spreaderOffset Offset position of the spreader element.
+     * @returns {{top: number, left: number}}
      */
 
   }, {
@@ -351,10 +341,10 @@ function () {
       };
     }
     /**
-     * Make a clone of table for overlay
+     * Make a clone of table for overlay.
      *
-     * @param {String} direction Can be `Overlay.CLONE_TOP`, `Overlay.CLONE_LEFT`,
-     *                           `Overlay.CLONE_TOP_LEFT_CORNER`, `Overlay.CLONE_DEBUG`
+     * @param {string} direction Can be `Overlay.CLONE_TOP`, `Overlay.CLONE_LEFT`,
+     *                           `Overlay.CLONE_TOP_LEFT_CORNER`.
      * @returns {Walkontable}
      */
 
@@ -371,20 +361,21 @@ function () {
           rootWindow = _this$wot2.rootWindow;
       var clone = rootDocument.createElement('DIV');
       var clonedTable = rootDocument.createElement('TABLE');
+      var tableParent = wtTable.wtRootElement.parentNode;
       clone.className = "ht_clone_".concat(direction, " handsontable");
       clone.style.position = 'absolute';
       clone.style.top = 0;
       clone.style.left = 0;
-      clone.style.overflow = 'hidden';
+      clone.style.overflow = 'visible';
       clonedTable.className = wtTable.TABLE.className;
       clone.appendChild(clonedTable);
       this.type = direction;
-      wtTable.wtRootElement.parentNode.appendChild(clone);
+      tableParent.appendChild(clone);
       var preventOverflow = this.wot.getSetting('preventOverflow');
 
       if (preventOverflow === true || preventOverflow === 'horizontal' && this.type === Overlay.CLONE_TOP || preventOverflow === 'vertical' && this.type === Overlay.CLONE_LEFT) {
         this.mainTableScrollableElement = rootWindow;
-      } else if (rootWindow.getComputedStyle(wtTable.wtRootElement.parentNode).getPropertyValue('overflow') === 'hidden') {
+      } else if (rootWindow.getComputedStyle(tableParent).getPropertyValue('overflow') === 'hidden') {
         this.mainTableScrollableElement = wtTable.holder;
       } else {
         this.mainTableScrollableElement = getScrollableElement(wtTable.TABLE);
@@ -397,9 +388,11 @@ function () {
       });
     }
     /**
-     * Refresh/Redraw overlay
+     * Refresh/Redraw overlay.
      *
-     * @param {Boolean} [fastDraw=false]
+     * @param {boolean} [fastDraw=false] When `true`, try to refresh only the positions of borders without rerendering
+     *                                   the data. It will only work if Table.draw() does not force
+     *                                   rendering anyway.
      */
 
   }, {
@@ -437,7 +430,7 @@ function () {
       });
     }
     /**
-     * Destroy overlay instance
+     * Destroy overlay instance.
      */
 
   }, {

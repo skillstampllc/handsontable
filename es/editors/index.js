@@ -5,7 +5,7 @@ import "core-js/modules/es.weak-map";
 import "core-js/modules/web.dom-collections.iterator";
 
 /**
- * Utility to register editors and common namespace for keeping reference to all editor classes
+ * Utility to register editors and common namespace for keeping reference to all editor classes.
  */
 import staticRegister from './../utils/staticRegister';
 import Hooks from './../pluginHooks';
@@ -47,6 +47,10 @@ _register('password', PasswordEditor);
 _register('select', SelectEditor);
 
 _register('text', TextEditor);
+/**
+ * @param {BaseEditor} editorClass The editor constructor.
+ */
+
 
 export function RegisteredEditor(editorClass) {
   var instances = {};
@@ -71,8 +75,8 @@ export function RegisteredEditor(editorClass) {
 /**
  * Returns instance (singleton) of editor class.
  *
- * @param {String} name Name of an editor under which it has been stored.
- * @param {Object} hotInstance Instance of Handsontable.
+ * @param {string} name Name of an editor under which it has been stored.
+ * @param {object} hotInstance Instance of Handsontable.
  * @returns {Function} Returns instance of editor.
  */
 
@@ -100,7 +104,7 @@ export function _getEditorInstance(name, hotInstance) {
 /**
  * Retrieve editor class.
  *
- * @param {String} name Editor identification.
+ * @param {string} name Editor identification.
  * @returns {Function} Returns editor class.
  */
 
@@ -114,7 +118,7 @@ function _getItem(name) {
 /**
  * Register editor class under specified name.
  *
- * @param {String} name Editor identification.
+ * @param {string} name Editor identification.
  * @param {Function} editorClass Editor class.
  */
 

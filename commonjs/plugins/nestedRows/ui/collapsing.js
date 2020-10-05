@@ -16,11 +16,15 @@ require("core-js/modules/es.array.slice");
 
 require("core-js/modules/es.array.splice");
 
+require("core-js/modules/es.function.name");
+
 require("core-js/modules/es.object.get-prototype-of");
 
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.regexp.to-string");
 
@@ -47,13 +51,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -61,34 +69,39 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * Class responsible for the UI for collapsing and expanding groups.
  *
  * @class
  * @util
- * @extends BaseUI
+ * @private
+ * @augments BaseUI
  */
-var CollapsingUI =
-/*#__PURE__*/
-function (_BaseUI) {
+var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
   _inherits(CollapsingUI, _BaseUI);
+
+  var _super = _createSuper(CollapsingUI);
 
   function CollapsingUI(nestedRowsPlugin, hotInstance) {
     var _this;
 
     _classCallCheck(this, CollapsingUI);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CollapsingUI).call(this, nestedRowsPlugin, hotInstance));
+    _this = _super.call(this, nestedRowsPlugin, hotInstance);
     /**
      * Reference to the TrimRows plugin.
      */
@@ -97,23 +110,28 @@ function (_BaseUI) {
     _this.collapsedRows = [];
     _this.collapsedRowsStash = {
       stash: function stash() {
+        var forceRender = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
         _this.lastCollapsedRows = _this.collapsedRows.slice(0); // Workaround for wrong indexes being set in the trimRows plugin
 
-        _this.expandMultipleChildren(_this.lastCollapsedRows, false);
+        _this.expandMultipleChildren(_this.lastCollapsedRows, forceRender);
       },
-      shiftStash: function shiftStash(index) {
-        var delta = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      shiftStash: function shiftStash(baseIndex, targetIndex) {
+        var delta = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
-        var elementIndex = _this.translateTrimmedRow(index);
+        if (targetIndex === null || targetIndex === void 0) {
+          targetIndex = Infinity;
+        }
 
         (0, _array.arrayEach)(_this.lastCollapsedRows, function (elem, i) {
-          if (elem > elementIndex - 1) {
+          if (elem >= baseIndex && elem < targetIndex) {
             _this.lastCollapsedRows[i] = elem + delta;
           }
         });
       },
       applyStash: function applyStash() {
-        _this.collapseMultipleChildren(_this.lastCollapsedRows, true);
+        var forceRender = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+        _this.collapseMultipleChildren(_this.lastCollapsedRows, forceRender);
 
         _this.lastCollapsedRows = void 0;
       },
@@ -132,8 +150,10 @@ function (_BaseUI) {
   /**
    * Collapse the children of the row passed as an argument.
    *
-   * @param {Number|Object} row The parent row.
-   * @param {Boolean} [forceRender=true] Whether to render the table after the function ends.
+   * @param {number|object} row The parent row.
+   * @param {boolean} [forceRender=true] Whether to render the table after the function ends.
+   * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
+   * @returns {Array}
    */
 
 
@@ -182,9 +202,9 @@ function (_BaseUI) {
     /**
      * Collapse multiple children.
      *
-     * @param {Array} rows Rows to collapse (including their children)
-     * @param {Boolean} [forceRender = true] `true` if the table should be rendered after finishing the function.
-     * @param {Boolean} [doTrimming = true] `true` if the table should trim the provided rows.
+     * @param {Array} rows Rows to collapse (including their children).
+     * @param {boolean} [forceRender=true] `true` if the table should be rendered after finishing the function.
+     * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
      */
 
   }, {
@@ -210,8 +230,8 @@ function (_BaseUI) {
     /**
      * Collapse a single row.
      *
-     * @param {Number} rowIndex Index of the row to collapse.
-     * @param {Boolean} [recursive = true] `true` if it should collapse the row's children.
+     * @param {number} rowIndex Index of the row to collapse.
+     * @param {boolean} [recursive=true] `true` if it should collapse the row's children.
      */
 
   }, {
@@ -224,9 +244,9 @@ function (_BaseUI) {
      * Collapse multiple rows.
      *
      * @param {Array} rowIndexes Array of row indexes to collapse.
-     * @param {Boolean} [recursive = true] `true` if it should collapse the rows' children.
-     * @param {Boolean} [doTrimming = false] `true` if the provided rows should be collapsed.
-     * @returns {Array} Rows prepared for trimming (or trimmed, if doTrimming == true)
+     * @param {boolean} [recursive=true] `true` if it should collapse the rows' children.
+     * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
+     * @returns {Array} Rows prepared for trimming (or trimmed, if doTrimming == true).
      */
 
   }, {
@@ -254,10 +274,10 @@ function (_BaseUI) {
     /**
      * Collapse child rows of the row at the provided index.
      *
-     * @param {Number} parentIndex Index of the parent node.
-     * @param {Array} [rowsToTrim = []] Array of rows to trim. Defaults to an empty array.
-     * @param {Boolean} [recursive] `true` if the collapsing process should be recursive.
-     * @param {Boolean} [doTrimming = false] `true` if rows should be trimmed.
+     * @param {number} parentIndex Index of the parent node.
+     * @param {Array} [rowsToTrim=[]] Array of rows to trim. Defaults to an empty array.
+     * @param {boolean} [recursive] `true` if the collapsing process should be recursive.
+     * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
      */
 
   }, {
@@ -287,8 +307,8 @@ function (_BaseUI) {
     /**
      * Expand a single row.
      *
-     * @param {Number} rowIndex Index of the row to expand.
-     * @param {Boolean} [recursive = true] `true` if it should expand the row's children recursively.
+     * @param {number} rowIndex Index of the row to expand.
+     * @param {boolean} [recursive=true] `true` if it should expand the row's children recursively.
      */
 
   }, {
@@ -301,8 +321,8 @@ function (_BaseUI) {
      * Expand multiple rows.
      *
      * @param {Array} rowIndexes Array of indexes of the rows to expand.
-     * @param {Boolean} [recursive = true] `true` if it should expand the rows' children recursively.
-     * @param {Boolean} [doTrimming = false] `true` if rows should be untrimmed.
+     * @param {boolean} [recursive=true] `true` if it should expand the rows' children recursively.
+     * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
      * @returns {Array} Array of row indexes to be untrimmed.
      */
 
@@ -331,10 +351,10 @@ function (_BaseUI) {
     /**
      * Expand child rows of the provided index.
      *
-     * @param {Number} parentIndex Index of the parent row.
-     * @param {Array} [rowsToUntrim = []] Array of the rows to be untrimmed.
-     * @param {Boolean} [recursive] `true` if it should expand the rows' children recursively.
-     * @param {Boolean} [doTrimming = false] `true` if rows should be untrimmed.
+     * @param {number} parentIndex Index of the parent row.
+     * @param {Array} [rowsToUntrim=[]] Array of the rows to be untrimmed.
+     * @param {boolean} [recursive] `true` if it should expand the rows' children recursively.
+     * @param {boolean} [doTrimming=false] I determine whether collapsing should envolve trimming rows.
      */
 
   }, {
@@ -366,9 +386,10 @@ function (_BaseUI) {
     /**
      * Expand the children of the row passed as an argument.
      *
-     * @param {Number|Object} row Parent row.
-     * @param {Boolean} [forceRender=true] Whether to render the table after the function ends.
-     * @param {Boolean} [doTrimming=true] If set to `true`, the trimming will be applied when the function finishes.
+     * @param {number|object} row Parent row.
+     * @param {boolean} [forceRender=true] Whether to render the table after the function ends.
+     * @param {boolean} [doTrimming=true] If set to `true`, the trimming will be applied when the function finishes.
+     * @returns {number[]}
      */
 
   }, {
@@ -417,8 +438,8 @@ function (_BaseUI) {
      * Expand multiple rows' children.
      *
      * @param {Array} rows Array of rows which children are about to be expanded.
-     * @param {Boolean} [forceRender = true] `true` if the table should render after finishing the function.
-     * @param {Boolean} [doTrimming = true] `true` if the rows should be untrimmed after finishing the function.
+     * @param {boolean} [forceRender=true] `true` if the table should render after finishing the function.
+     * @param {boolean} [doTrimming=true] `true` if the rows should be untrimmed after finishing the function.
      */
 
   }, {
@@ -450,9 +471,9 @@ function (_BaseUI) {
     value: function collapseAll() {
       var _this10 = this;
 
-      var sourceData = this.hot.getSourceData();
+      var data = this.dataManager.getData();
       var parentsToCollapse = [];
-      (0, _array.arrayEach)(sourceData, function (elem) {
+      (0, _array.arrayEach)(data, function (elem) {
         if (_this10.dataManager.hasChildren(elem)) {
           parentsToCollapse.push(elem);
         }
@@ -469,9 +490,9 @@ function (_BaseUI) {
     value: function expandAll() {
       var _this11 = this;
 
-      var sourceData = this.hot.getSourceData();
+      var data = this.dataManager.getData();
       var parentsToExpand = [];
-      (0, _array.arrayEach)(sourceData, function (elem) {
+      (0, _array.arrayEach)(data, function (elem) {
         if (_this11.dataManager.hasChildren(elem)) {
           parentsToExpand.push(elem);
         }
@@ -490,7 +511,7 @@ function (_BaseUI) {
     value: function trimRows(rows) {
       var _this12 = this;
 
-      this.hot.executeBatchOperations(function () {
+      this.hot.batch(function () {
         (0, _array.arrayEach)(rows, function (physicalRow) {
           _this12.plugin.collapsedRowsMap.setValueAtIndex(physicalRow, true);
         });
@@ -507,7 +528,7 @@ function (_BaseUI) {
     value: function untrimRows(rows) {
       var _this13 = this;
 
-      this.hot.executeBatchOperations(function () {
+      this.hot.batch(function () {
         (0, _array.arrayEach)(rows, function (physicalRow) {
           _this13.plugin.collapsedRowsMap.setValueAtIndex(physicalRow, false);
         });
@@ -516,8 +537,9 @@ function (_BaseUI) {
     /**
      * Check if all child rows are collapsed.
      *
-     * @param {Number|Object} row The parent row.
      * @private
+     * @param {number|object|null} row The parent row. `null` for the top level.
+     * @returns {boolean}
      */
 
   }, {
@@ -525,13 +547,13 @@ function (_BaseUI) {
     value: function areChildrenCollapsed(row) {
       var _this14 = this;
 
-      var rowObj = null;
-      var allCollapsed = true;
+      var rowObj = isNaN(row) ? row : this.dataManager.getDataObject(row);
+      var allCollapsed = true; // Checking the children of the top-level "parent"
 
-      if (isNaN(row)) {
-        rowObj = row;
-      } else {
-        rowObj = this.dataManager.getDataObject(row);
+      if (rowObj === null) {
+        rowObj = {
+          __children: this.dataManager.data
+        };
       }
 
       if (this.dataManager.hasChildren(rowObj)) {
@@ -551,8 +573,8 @@ function (_BaseUI) {
      * Check if any of the row object parents are collapsed.
      *
      * @private
-     * @param {Object} rowObj Row object.
-     * @returns {Boolean}
+     * @param {object} rowObj Row object.
+     * @returns {boolean}
      */
 
   }, {
@@ -575,8 +597,8 @@ function (_BaseUI) {
      * Toggle collapsed state. Callback for the `beforeOnCellMousedown` hook.
      *
      * @private
-     * @param {MouseEvent} event `mousedown` event
-     * @param {Object} coords Coordinates of the clicked cell/header.
+     * @param {MouseEvent} event `mousedown` event.
+     * @param {object} coords Coordinates of the clicked cell/header.
      */
 
   }, {
@@ -599,17 +621,30 @@ function (_BaseUI) {
       }
     }
     /**
-     * Translate physical row after trimming to physical base row index.
+     * Translate visual row after trimming to physical base row index.
      *
      * @private
-     * @param {Number} row Row index.
-     * @returns {Number} Base row index.
+     * @param {number} row Row index.
+     * @returns {number} Base row index.
      */
 
   }, {
     key: "translateTrimmedRow",
     value: function translateTrimmedRow(row) {
       return this.hot.toPhysicalRow(row);
+    }
+    /**
+     * Translate physical row after trimming to visual base row index.
+     *
+     * @private
+     * @param {number} row Row index.
+     * @returns {number} Base row index.
+     */
+
+  }, {
+    key: "untranslateTrimmedRow",
+    value: function untranslateTrimmedRow(row) {
+      return this.hot.toVisualRow(row);
     }
     /**
      * Helper function to render the table and call the `adjustElementsSize` method.

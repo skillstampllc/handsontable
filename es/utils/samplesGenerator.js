@@ -22,16 +22,14 @@ import { stringify } from './../helpers/mixed';
  * @util
  */
 
-var SamplesGenerator =
-/*#__PURE__*/
-function () {
+var SamplesGenerator = /*#__PURE__*/function () {
   _createClass(SamplesGenerator, null, [{
     key: "SAMPLE_COUNT",
 
     /**
      * Number of samples to take of each value length.
      *
-     * @type {Number}
+     * @type {number}
      */
     get: function get() {
       return 3;
@@ -58,7 +56,7 @@ function () {
     /**
      * Custom number of samples to take of each value length.
      *
-     * @type {Number}
+     * @type {number}
      * @default {null}
      */
 
@@ -66,7 +64,7 @@ function () {
     /**
      * `true` if duplicate samples collection should be allowed, `false` otherwise.
      *
-     * @type {Boolean}
+     * @type {boolean}
      * @default {false}
      */
 
@@ -75,7 +73,7 @@ function () {
   /**
    * Get the sample count for this instance.
    *
-   * @returns {Number}
+   * @returns {number}
    */
 
 
@@ -91,7 +89,7 @@ function () {
     /**
      * Set the sample count.
      *
-     * @param {Number} sampleCount Number of samples to be collected.
+     * @param {number} sampleCount Number of samples to be collected.
      */
 
   }, {
@@ -102,7 +100,7 @@ function () {
     /**
      * Set if the generator should accept duplicate values.
      *
-     * @param {Boolean} allowDuplicates `true` to allow duplicate values.
+     * @param {boolean} allowDuplicates `true` to allow duplicate values.
      */
 
   }, {
@@ -113,9 +111,9 @@ function () {
     /**
      * Generate samples for row. You can control which area should be sampled by passing `rowRange` object and `colRange` object.
      *
-     * @param {Object|Number} rowRange
-     * @param {Object} colRange
-     * @returns {Object}
+     * @param {object|number} rowRange The rows range to generate the samples.
+     * @param {object} colRange The column range to generate the samples.
+     * @returns {object}
      */
 
   }, {
@@ -126,9 +124,9 @@ function () {
     /**
      * Generate samples for column. You can control which area should be sampled by passing `colRange` object and `rowRange` object.
      *
-     * @param {Object} colRange Column index.
-     * @param {Object} rowRange Column index.
-     * @returns {Object}
+     * @param {object} colRange Column index.
+     * @param {object} rowRange Column index.
+     * @returns {object}
      */
 
   }, {
@@ -139,9 +137,9 @@ function () {
     /**
      * Generate collection of samples.
      *
-     * @param {String} type Type to generate. Can be `col` or `row`.
-     * @param {Object} range
-     * @param {Object|Number} specifierRange
+     * @param {string} type Type to generate. Can be `col` or `row`.
+     * @param {object} range The range to generate the samples.
+     * @param {object|number} specifierRange The range to generate the samples.
      * @returns {Map}
      */
 
@@ -169,9 +167,9 @@ function () {
     /**
      * Generate sample for specified type (`row` or `col`).
      *
-     * @param {String} type Samples type `row` or `col`.
-     * @param {Object} range
-     * @param {Number} specifierValue
+     * @param {string} type Samples type `row` or `col`.
+     * @param {object} range The range to generate the samples.
+     * @param {number} specifierValue The range to generate the samples.
      * @returns {Map}
      */
 

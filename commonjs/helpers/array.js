@@ -2,11 +2,31 @@
 
 require("core-js/modules/es.array.concat");
 
+require("core-js/modules/es.array.filter");
+
 require("core-js/modules/es.array.from");
+
+require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.index-of");
 
+require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.regexp.exec");
+
+require("core-js/modules/es.set");
+
+require("core-js/modules/es.string.includes");
+
 require("core-js/modules/es.string.iterator");
+
+require("core-js/modules/es.string.split");
+
+require("core-js/modules/web.dom-collections.iterator");
 
 exports.__esModule = true;
 exports.to2dArray = to2dArray;
@@ -22,7 +42,14 @@ exports.arrayMin = arrayMin;
 exports.arrayAvg = arrayAvg;
 exports.arrayFlatten = arrayFlatten;
 exports.arrayUnique = arrayUnique;
+exports.getDifferenceOfArrays = getDifferenceOfArrays;
+exports.getIntersectionOfArrays = getIntersectionOfArrays;
+exports.getUnionOfArrays = getUnionOfArrays;
+exports.stringToArray = stringToArray;
 
+/**
+ * @param {Array} arr An array to process.
+ */
 function to2dArray(arr) {
   var ilen = arr.length;
   var i = 0;
@@ -32,6 +59,11 @@ function to2dArray(arr) {
     i += 1;
   }
 }
+/**
+ * @param {Array} arr An array to extend.
+ * @param {Array} extension The data to extend from.
+ */
+
 
 function extendArray(arr, extension) {
   var ilen = extension.length;
@@ -42,6 +74,11 @@ function extendArray(arr, extension) {
     i += 1;
   }
 }
+/**
+ * @param {Array} arr An array to pivot.
+ * @returns {Array}
+ */
+
 
 function pivot(arr) {
   var pivotedArr = [];
@@ -69,12 +106,12 @@ function pivot(arr) {
  * A specialized version of `.reduce` for arrays without support for callback
  * shorthands and `this` binding.
  *
- * {@link https://github.com/lodash/lodash/blob/master/lodash.js}
+ * {@link https://github.com/lodash/lodash/blob/master/lodash.js}.
  *
  * @param {Array} array The array to iterate over.
  * @param {Function} iteratee The function invoked per iteration.
  * @param {*} [accumulator] The initial value.
- * @param {Boolean} [initFromArray] Specify using the first element of `array` as the initial value.
+ * @param {boolean} [initFromArray] Specify using the first element of `array` as the initial value.
  * @returns {*} Returns the accumulated value.
  */
 
@@ -108,7 +145,7 @@ function arrayReduce(array, iteratee, accumulator, initFromArray) {
  * A specialized version of `.filter` for arrays without support for callback
  * shorthands and `this` binding.
  *
- * {@link https://github.com/lodash/lodash/blob/master/lodash.js}
+ * {@link https://github.com/lodash/lodash/blob/master/lodash.js}.
  *
  * @param {Array} array The array to iterate over.
  * @param {Function} predicate The function invoked per iteration.
@@ -176,7 +213,7 @@ function arrayMap(array, iteratee) {
  * A specialized version of `.forEach` for arrays without support for callback
  * shorthands and `this` binding.
  *
- * {@link https://github.com/lodash/lodash/blob/master/lodash.js}
+ * {@link https://github.com/lodash/lodash/blob/master/lodash.js}.
  *
  * @param {Array|*} array The array to iterate over or an any element with implemented iterator protocol.
  * @param {Function} iteratee The function invoked per iteration.
@@ -208,7 +245,7 @@ function arrayEach(array, iteratee) {
  * Calculate sum value for each item of the array.
  *
  * @param {Array} array The array to process.
- * @returns {Number} Returns calculated sum value.
+ * @returns {number} Returns calculated sum value.
  */
 
 
@@ -222,7 +259,7 @@ function arraySum(array) {
  * NOTICE: Mixed values is not supported.
  *
  * @param {Array} array The array to process.
- * @returns {Number} Returns the highest value from an array.
+ * @returns {number} Returns the highest value from an array.
  */
 
 
@@ -236,7 +273,7 @@ function arrayMax(array) {
  * NOTICE: Mixed values is not supported.
  *
  * @param {Array} array The array to process.
- * @returns {Number} Returns the lowest value from an array.
+ * @returns {number} Returns the lowest value from an array.
  */
 
 
@@ -249,7 +286,7 @@ function arrayMin(array) {
  * Calculate average value for each item of the array.
  *
  * @param {Array} array The array to process.
- * @returns {Number} Returns calculated average value.
+ * @returns {number} Returns calculated average value.
  */
 
 
@@ -263,7 +300,7 @@ function arrayAvg(array) {
 /**
  * Flatten multidimensional array.
  *
- * @param {Array} array Array of Arrays
+ * @param {Array} array Array of Arrays.
  * @returns {Array}
  */
 
@@ -289,4 +326,94 @@ function arrayUnique(array) {
     }
   });
   return unique;
+}
+/**
+ * Differences from two or more arrays.
+ *
+ * @param {...Array} arrays Array of strings or array of numbers.
+ * @returns {Array} Returns the difference between arrays.
+ */
+
+
+function getDifferenceOfArrays() {
+  for (var _len = arguments.length, arrays = new Array(_len), _key = 0; _key < _len; _key++) {
+    arrays[_key] = arguments[_key];
+  }
+
+  var _ref = [].concat(arrays),
+      first = _ref[0],
+      rest = _ref.slice(1);
+
+  var filteredFirstArray = first;
+  arrayEach(rest, function (array) {
+    filteredFirstArray = filteredFirstArray.filter(function (value) {
+      return !array.includes(value);
+    });
+  });
+  return filteredFirstArray;
+}
+/**
+ * Intersection of two or more arrays.
+ *
+ * @param {...Array} arrays Array of strings or array of numbers.
+ * @returns {Array} Returns elements that exists in every array.
+ */
+
+
+function getIntersectionOfArrays() {
+  for (var _len2 = arguments.length, arrays = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    arrays[_key2] = arguments[_key2];
+  }
+
+  var _ref2 = [].concat(arrays),
+      first = _ref2[0],
+      rest = _ref2.slice(1);
+
+  var filteredFirstArray = first;
+  arrayEach(rest, function (array) {
+    filteredFirstArray = filteredFirstArray.filter(function (value) {
+      return array.includes(value);
+    });
+  });
+  return filteredFirstArray;
+}
+/**
+ * Union of two or more arrays.
+ *
+ * @param {...Array} arrays Array of strings or array of numbers.
+ * @returns {Array} Returns the elements that exist in any of the arrays, without duplicates.
+ */
+
+
+function getUnionOfArrays() {
+  for (var _len3 = arguments.length, arrays = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    arrays[_key3] = arguments[_key3];
+  }
+
+  var _ref3 = [].concat(arrays),
+      first = _ref3[0],
+      rest = _ref3.slice(1);
+
+  var set = new Set(first);
+  arrayEach(rest, function (array) {
+    arrayEach(array, function (value) {
+      if (!set.has(value)) {
+        set.add(value);
+      }
+    });
+  });
+  return Array.from(set);
+}
+/**
+ * Convert a separated strings to an array of strings.
+ *
+ * @param {string} value A string of class name(s).
+ * @param {string|RegExp} delimiter The pattern describing where each split should occur.
+ * @returns {string[]} Returns array of string or empty array.
+ */
+
+
+function stringToArray(value) {
+  var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
+  return value.split(delimiter);
 }

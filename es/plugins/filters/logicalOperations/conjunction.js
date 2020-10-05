@@ -4,6 +4,12 @@ import { registerOperation } from '../logicalOperationRegisterer';
 export var OPERATION_ID = 'conjunction';
 export var SHORT_NAME_FOR_COMPONENT = C.FILTERS_LABELS_CONJUNCTION; // p AND q AND w AND x AND... === TRUE?
 
+/**
+ * @param {Array} conditions An array with values to check.
+ * @param {*} value The comparable value.
+ * @returns {boolean}
+ */
+
 export function operationResult(conditions, value) {
   return conditions.every(function (condition) {
     return condition.func(value);

@@ -1,17 +1,24 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -29,9 +36,7 @@ import { rangeEach } from '../../helpers/number'; // Waiting for jshint >=2.9.0 
  * @private
  */
 
-var DataProvider =
-/*#__PURE__*/
-function () {
+var DataProvider = /*#__PURE__*/function () {
   function DataProvider(hotInstance) {
     _classCallCheck(this, DataProvider);
 
@@ -44,7 +49,7 @@ function () {
     /**
      * Format type class options.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.options = {};
@@ -52,7 +57,7 @@ function () {
   /**
    * Set options for data provider.
    *
-   * @param {Object} options Object with specified options.
+   * @param {object} options Object with specified options.
    */
 
 
@@ -101,7 +106,7 @@ function () {
     /**
      * Gets list of row headers.
      *
-     * @return {Array}
+     * @returns {Array}
      */
 
   }, {
@@ -131,7 +136,7 @@ function () {
     /**
      * Gets list of columns headers.
      *
-     * @return {Array}
+     * @returns {Array}
      */
 
   }, {
@@ -162,7 +167,7 @@ function () {
      * Get data range object based on settings provided in the class constructor.
      *
      * @private
-     * @returns {Object} Returns object with keys `startRow`, `startCol`, `endRow` and `endCol`.
+     * @returns {object} Returns object with keys `startRow`, `startCol`, `endRow` and `endCol`.
      */
 
   }, {
@@ -196,27 +201,27 @@ function () {
      * Check if row at specified row index is hidden.
      *
      * @private
-     * @param {Number} row Row index.
-     * @returns {Boolean}
+     * @param {number} row Row index.
+     * @returns {boolean}
      */
 
   }, {
     key: "_isHiddenRow",
     value: function _isHiddenRow(row) {
-      return this.hot.hasHook('hiddenRow') && this.hot.runHooks('hiddenRow', row);
+      return this.hot.rowIndexMapper.isHidden(this.hot.toPhysicalRow(row));
     }
     /**
      * Check if column at specified column index is hidden.
      *
      * @private
-     * @param {Number} column Column index.
-     * @returns {Boolean}
+     * @param {number} column Visual column index.
+     * @returns {boolean}
      */
 
   }, {
     key: "_isHiddenColumn",
     value: function _isHiddenColumn(column) {
-      return this.hot.hasHook('hiddenColumn') && this.hot.runHooks('hiddenColumn', column);
+      return this.hot.columnIndexMapper.isHidden(this.hot.toPhysicalColumn(column));
     }
   }]);
 

@@ -12,6 +12,10 @@ require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
 
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.object.freeze");
+
 require("core-js/modules/es.object.get-own-property-descriptor");
 
 require("core-js/modules/es.object.get-prototype-of");
@@ -20,9 +24,13 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
 
 require("core-js/modules/es.regexp.exec");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -43,9 +51,23 @@ var _plugins = require("../../plugins");
 
 var _endpoints = _interopRequireDefault(require("./endpoints"));
 
+var _templateLiteralTag = require("./../../helpers/templateLiteralTag");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["ColumnSummary plugin: cell at (", ", ", ") is not in a \n          numeric format. Cannot do the calculation."], ["ColumnSummary plugin: cell at (", ", ", ") is not in a\\x20\n          numeric format. Cannot do the calculation."]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -53,19 +75,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 /**
  * @plugin ColumnSummary
@@ -73,7 +99,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * @description
  * Allows making pre-defined calculations on the cell values and display the results within Handsontable.
  * [See the demo for more information](https://handsontable.com/docs/demo-summary-calculations.html).
- *s
+ *
  * @example
  * const container = document.getElementById('example');
  * const hot = new Handsontable(container, {
@@ -101,17 +127,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  *   ]
  * });
  */
-var ColumnSummary =
-/*#__PURE__*/
-function (_BasePlugin) {
+var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ColumnSummary, _BasePlugin);
+
+  var _super = _createSuper(ColumnSummary);
 
   function ColumnSummary(hotInstance) {
     var _this;
 
     _classCallCheck(this, ColumnSummary);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ColumnSummary).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * The Endpoints class instance. Used to make all endpoint-related operations.
      *
@@ -126,7 +152,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link ColumnSummary#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -158,10 +184,12 @@ function (_BasePlugin) {
       });
       this.addHook('beforeCreateRow', function (index, amount, source) {
         return _this2.endpoints.resetSetupBeforeStructureAlteration('insert_row', index, amount, null, source);
-      });
+      }); // eslint-disable-line max-len
+
       this.addHook('beforeCreateCol', function (index, amount, source) {
         return _this2.endpoints.resetSetupBeforeStructureAlteration('insert_col', index, amount, null, source);
-      });
+      }); // eslint-disable-line max-len
+
       this.addHook('beforeRemoveRow', function () {
         var _this2$endpoints;
 
@@ -182,10 +210,12 @@ function (_BasePlugin) {
       });
       this.addHook('afterCreateRow', function (index, amount, source) {
         return _this2.endpoints.resetSetupAfterStructureAlteration('insert_row', index, amount, null, source);
-      });
+      }); // eslint-disable-line max-len
+
       this.addHook('afterCreateCol', function (index, amount, source) {
         return _this2.endpoints.resetSetupAfterStructureAlteration('insert_col', index, amount, null, source);
-      });
+      }); // eslint-disable-line max-len
+
       this.addHook('afterRemoveRow', function () {
         var _this2$endpoints3;
 
@@ -225,7 +255,7 @@ function (_BasePlugin) {
      * Calculates math for a single endpoint.
      *
      * @private
-     * @param {Object} endpoint Contains information about the endpoint.
+     * @param {object} endpoint Contains information about the endpoint.
      */
 
   }, {
@@ -264,8 +294,8 @@ function (_BasePlugin) {
      * Calculates sum of the values contained in ranges provided in the plugin config.
      *
      * @private
-     * @param {Object} endpoint Contains the endpoint information.
-     * @returns {Number} Sum for the selected range
+     * @param {object} endpoint Contains the endpoint information.
+     * @returns {number} Sum for the selected range.
      */
 
   }, {
@@ -280,12 +310,12 @@ function (_BasePlugin) {
       return sum;
     }
     /**
-     * Returns partial sum of values from a single row range
+     * Returns partial sum of values from a single row range.
      *
      * @private
      * @param {Array} rowRange Range for the sum.
-     * @param {Number} col Column index.
-     * @returns {Number} The partial sum.
+     * @param {number} col Column index.
+     * @returns {number} The partial sum.
      */
 
   }, {
@@ -312,12 +342,12 @@ function (_BasePlugin) {
       return Math.round(sum * Math.pow(10, biggestDecimalPlacesCount)) / Math.pow(10, biggestDecimalPlacesCount);
     }
     /**
-     * Calculates the minimal value for the selected ranges
+     * Calculates the minimal value for the selected ranges.
      *
      * @private
-     * @param {Object} endpoint Contains the endpoint information.
-     * @param {String} type `'min'` or `'max'`.
-     * @returns {Number} Min or Max value.
+     * @param {object} endpoint Contains the endpoint information.
+     * @param {string} type `'min'` or `'max'`.
+     * @returns {number} Min or Max value.
      */
 
   }, {
@@ -351,13 +381,13 @@ function (_BasePlugin) {
       return result === null ? 'Not enough data' : result;
     }
     /**
-     * Returns a local minimum of the provided sub-range
+     * Returns a local minimum of the provided sub-range.
      *
      * @private
      * @param {Array} rowRange Range for the calculation.
-     * @param {Number} col Column index.
-     * @param {String} type `'min'` or `'max'`
-     * @returns {Number} Min or max value.
+     * @param {number} col Column index.
+     * @param {string} type `'min'` or `'max'`.
+     * @returns {number} Min or max value.
      */
 
   }, {
@@ -397,8 +427,8 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} rowRange Row range for the calculation.
-     * @param {Number} col Column index.
-     * @returns {Number} Empty cells count.
+     * @param {number} col Column index.
+     * @returns {number} Empty cells count.
      */
 
   }, {
@@ -424,8 +454,8 @@ function (_BasePlugin) {
      * Counts non-empty cells in the provided row range.
      *
      * @private
-     * @param {Object} endpoint Contains the endpoint information.
-     * @returns {Number} Entry count.
+     * @param {object} endpoint Contains the endpoint information.
+     * @returns {number} Entry count.
      */
 
   }, {
@@ -449,8 +479,8 @@ function (_BasePlugin) {
      * Calculates the average value from the cells in the range.
      *
      * @private
-     * @param {Object} endpoint Contains the endpoint information.
-     * @returns {Number} Avarage value.
+     * @param {object} endpoint Contains the endpoint information.
+     * @returns {number} Avarage value.
      */
 
   }, {
@@ -464,9 +494,9 @@ function (_BasePlugin) {
      * Returns a cell value, taking into consideration a basic validation.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} col Column index.
-     * @returns {String} The cell value.
+     * @param {number} row Row index.
+     * @param {number} col Column index.
+     * @returns {string} The cell value.
      */
 
   }, {
@@ -475,7 +505,11 @@ function (_BasePlugin) {
       var visualRowIndex = this.hot.toVisualRow(row);
       var visualColumnIndex = this.hot.toVisualColumn(col);
       var cellValue = this.hot.getSourceDataAtCell(row, col);
-      var cellClassName = this.hot.getCellMeta(visualRowIndex, visualColumnIndex).className || '';
+      var cellClassName = '';
+
+      if (visualRowIndex !== null && visualColumnIndex !== null) {
+        cellClassName = this.hot.getCellMeta(visualRowIndex, visualColumnIndex).className || '';
+      }
 
       if (cellClassName.indexOf('columnSummaryResult') > -1) {
         return null;
@@ -491,7 +525,7 @@ function (_BasePlugin) {
 
       if (isNaN(cellValue)) {
         if (!this.endpoints.currentEndpoint.suppressDataTypeErrors) {
-          throw new Error("ColumnSummary plugin: cell at (".concat(row, ", ").concat(col, ") is not in a numeric format. Cannot do the calculation."));
+          throw new Error((0, _templateLiteralTag.toSingleLine)(_templateObject(), row, col));
         }
       }
 
@@ -513,8 +547,8 @@ function (_BasePlugin) {
      * `afterChange` hook callback.
      *
      * @private
-     * @param {Array} changes
-     * @param {String} source
+     * @param {Array} changes 2D array containing information about each of the edited cells.
+     * @param {string} source The string that identifies source of changes.
      */
 
   }, {
@@ -529,8 +563,8 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} rows Array of visual row indexes to be moved.
-     * @param {Number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/demo-moving.html#manualRowMove).
+     * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
+     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
      */
 
   }, {

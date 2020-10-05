@@ -13,9 +13,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class Queue
  * @util
  */
-var Queue =
-/*#__PURE__*/
-function () {
+var Queue = /*#__PURE__*/function () {
   function Queue() {
     var initial = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
@@ -67,7 +65,7 @@ function () {
     /**
      * Check if the queue is empty.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -78,7 +76,7 @@ function () {
     /**
      * Return number of elements in the queue.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {

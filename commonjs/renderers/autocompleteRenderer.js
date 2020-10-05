@@ -1,7 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.concat");
-
 exports.__esModule = true;
 exports.default = void 0;
 
@@ -16,17 +14,16 @@ var _index = require("./index");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Autocomplete renderer
+ * Autocomplete renderer.
  *
  * @private
- * @renderer AutocompleteRenderer
- * @param {Object} instance Handsontable instance
- * @param {Element} TD Table cell where to render
- * @param {Number} row
- * @param {Number} col
- * @param {String|Number} prop Row object property name
- * @param value Value to render (remember to escape unsafe HTML before inserting to DOM!)
- * @param {Object} cellProperties Cell properites (shared by cell renderer and editor)
+ * @param {Core} instance The Handsontable instance.
+ * @param {HTMLTableCellElement} TD The rendered cell element.
+ * @param {number} row The visual row index.
+ * @param {number} col The visual column index.
+ * @param {number|string} prop The column property (passed when datasource is an array of objects).
+ * @param {*} value The rendered value.
+ * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 function autocompleteRenderer(instance, TD, row, col, prop, value, cellProperties) {
   var rootDocument = instance.rootDocument;
@@ -34,12 +31,7 @@ function autocompleteRenderer(instance, TD, row, col, prop, value, cellPropertie
   var ARROW = rootDocument.createElement('DIV');
   ARROW.className = 'htAutocompleteArrow';
   ARROW.appendChild(rootDocument.createTextNode(String.fromCharCode(9660)));
-
-  for (var _len = arguments.length, args = new Array(_len > 7 ? _len - 7 : 0), _key = 7; _key < _len; _key++) {
-    args[_key - 7] = arguments[_key];
-  }
-
-  (0, _index.getRenderer)(rendererType).apply(this, [instance, TD, row, col, prop, value, cellProperties].concat(args));
+  (0, _index.getRenderer)(rendererType).apply(this, [instance, TD, row, col, prop, value, cellProperties]);
 
   if (!TD.firstChild) {
     // http://jsperf.com/empty-node-if-needed

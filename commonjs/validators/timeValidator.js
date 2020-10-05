@@ -12,12 +12,11 @@ var STRICT_FORMATS = ['YYYY-MM-DDTHH:mm:ss.SSSZ', 'X', // Unix timestamp
 'x' // Unix ms timestamp
 ];
 /**
- * Time cell validator
+ * The Time cell validator.
  *
  * @private
- * @validator TimeValidator
- * @param {*} value - Value of edited cell
- * @param {Function} callback - Callback called with validation result
+ * @param {*} value Value of edited cell.
+ * @param {Function} callback Callback called with validation result.
  */
 
 function timeValidator(value, callback) {

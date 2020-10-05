@@ -111,8 +111,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 /**
  * Converts any value to string.
  *
- * @param {*} value
- * @returns {String}
+ * @param {*} value The value to stringify.
+ * @returns {string}
  */
 function stringify(value) {
   var result;
@@ -142,7 +142,7 @@ function stringify(value) {
  * Checks if given variable is defined.
  *
  * @param {*} variable Variable to check.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 
@@ -153,7 +153,7 @@ function isDefined(variable) {
  * Checks if given variable is undefined.
  *
  * @param {*} variable Variable to check.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 
@@ -164,7 +164,7 @@ function isUndefined(variable) {
  * Check if given variable is null, empty string or undefined.
  *
  * @param {*} variable Variable to check.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 
@@ -175,7 +175,7 @@ function isEmpty(variable) {
  * Check if given variable is a regular expression.
  *
  * @param {*} variable Variable to check.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 
@@ -252,7 +252,7 @@ var domMessages = {
 function _injectProductInfo(key, element) {
   var hasValidType = !isEmpty(key);
   var isNonCommercial = typeof key === 'string' && key.toLowerCase() === 'non-commercial-and-evaluation';
-  var hotVersion = "7.4.2";
+  var hotVersion = "8.1.0";
   var keyValidityDate;
   var consoleMessageState = 'invalid';
   var domMessageState = 'invalid';
@@ -262,7 +262,7 @@ function _injectProductInfo(key, element) {
 
   if (hasValidType || isNonCommercial || schemaValidity) {
     if (schemaValidity) {
-      var releaseDate = (0, _moment.default)("19/02/2020", 'DD/MM/YYYY');
+      var releaseDate = (0, _moment.default)("01/10/2020", 'DD/MM/YYYY');
       var releaseDays = Math.floor(releaseDate.toDate().getTime() / 8.64e7);
 
       var keyValidityDays = _extractTime(key);

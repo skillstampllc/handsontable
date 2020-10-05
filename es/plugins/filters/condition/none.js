@@ -1,6 +1,10 @@
 import * as C from '../../../i18n/constants';
 import { registerCondition } from '../conditionRegisterer';
 export var CONDITION_NAME = 'none';
+/**
+ * @returns {boolean}
+ */
+
 export function condition() {
   return true;
 }

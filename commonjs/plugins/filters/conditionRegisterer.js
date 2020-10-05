@@ -11,7 +11,7 @@ var conditions = {};
 /**
  * Get condition closure with pre-bound arguments.
  *
- * @param {String} name Condition name.
+ * @param {string} name Condition name.
  * @param {Array} args Condition arguments.
  * @returns {Function}
  */
@@ -39,8 +39,8 @@ function getCondition(name, args) {
 /**
  * Get condition object descriptor which defines some additional informations about this condition.
  *
- * @param {String} name Condition name.
- * @returns {Object}
+ * @param {string} name Condition name.
+ * @returns {object}
  */
 
 
@@ -54,9 +54,9 @@ function getConditionDescriptor(name) {
 /**
  * Condition registerer.
  *
- * @param {String} name Condition name.
- * @param {Function} condition Condition function
- * @param {Object} descriptor Condition descriptor
+ * @param {string} name Condition name.
+ * @param {Function} condition Condition function.
+ * @param {object} descriptor Condition descriptor.
  */
 
 

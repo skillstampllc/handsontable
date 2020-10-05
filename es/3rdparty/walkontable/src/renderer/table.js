@@ -44,13 +44,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *         <td>  /                    /
  *       </tr>                       /
  *     </tbody>  ___________________/
- *   </table>
+ *   </table>.
  *
  * @class {RowsRenderer}
  */
-var TableRenderer =
-/*#__PURE__*/
-function () {
+var TableRenderer = /*#__PURE__*/function () {
   function TableRenderer(rootNode) {
     var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
         cellRenderer = _ref.cellRenderer;
@@ -136,14 +134,14 @@ function () {
     /**
      * Indicates how much rows should be rendered to fill whole table viewport.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.rowsToRender = 0;
     /**
      * Indicates how much columns should be rendered to fill whole table viewport.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.columnsToRender = 0;
@@ -157,7 +155,7 @@ function () {
     /**
      * Count of the function used to render row headers.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.rowHeadersCount = 0;
@@ -171,7 +169,7 @@ function () {
     /**
      * Count of the function used to render column headers.
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.columnHeadersCount = 0;
@@ -200,8 +198,8 @@ function () {
     /**
      * Sets viewport size of the table.
      *
-     * @param {Number} rowsCount An amount of rows to render.
-     * @param {Number} columnsCount An amount of columns to render.
+     * @param {number} rowsCount An amount of rows to render.
+     * @param {number} columnsCount An amount of columns to render.
      */
 
   }, {
@@ -241,6 +239,7 @@ function () {
     /**
      * Sets table renderers.
      *
+     * @param {renderers} renderers The renderer units.
      * @param {RowHeadersRenderer} renderers.rowHeaders Row headers renderer.
      * @param {ColumnHeadersRenderer} renderers.columnHeaders Column headers renderer.
      * @param {ColGroupRenderer} renderers.colGroup Col group renderer.
@@ -272,8 +271,8 @@ function () {
     /**
      * Transforms visual/rendered row index to source index.
      *
-     * @param {Number} rowIndex Rendered index.
-     * @return {Number}
+     * @param {number} rowIndex Rendered index.
+     * @returns {number}
      */
 
   }, {
@@ -284,8 +283,8 @@ function () {
     /**
      * Transforms visual/rendered column index to source index.
      *
-     * @param {Number} columnIndex Rendered index.
-     * @return {Number}
+     * @param {number} columnIndex Rendered index.
+     * @returns {number}
      */
 
   }, {

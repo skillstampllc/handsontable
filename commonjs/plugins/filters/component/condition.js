@@ -12,6 +12,8 @@ require("core-js/modules/es.array.from");
 
 require("core-js/modules/es.array.iterator");
 
+require("core-js/modules/es.array.slice");
+
 require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.get-own-property-descriptor");
@@ -21,6 +23,8 @@ require("core-js/modules/es.object.get-prototype-of");
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.reflect.get");
 
@@ -67,13 +71,17 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -81,35 +89,39 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 /**
  * @class ConditionComponent
  * @plugin Filters
  */
-var ConditionComponent =
-/*#__PURE__*/
-function (_BaseComponent) {
+var ConditionComponent = /*#__PURE__*/function (_BaseComponent) {
   _inherits(ConditionComponent, _BaseComponent);
+
+  var _super = _createSuper(ConditionComponent);
 
   function ConditionComponent(hotInstance, options) {
     var _this;
 
     _classCallCheck(this, ConditionComponent);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ConditionComponent).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     _this.id = options.id;
     _this.name = options.name;
     _this.addSeparator = options.addSeparator;
@@ -157,7 +169,7 @@ function (_BaseComponent) {
     /**
      * Set state of the component.
      *
-     * @param {Object} value State to restore.
+     * @param {object} value State to restore.
      */
 
   }, {
@@ -196,7 +208,7 @@ function (_BaseComponent) {
     /**
      * Export state of the component (get selected filter and filter arguments).
      *
-     * @returns {Object} Returns object where `command` key keeps used condition filter and `args` key its arguments.
+     * @returns {object} Returns object where `command` key keeps used condition filter and `args` key its arguments.
      */
 
   }, {
@@ -216,10 +228,11 @@ function (_BaseComponent) {
     }
     /**
      * Update state of component.
-     * @param {Object} condition Object with keys:
-     *  * `command` Object, Command object with condition name as `key` property.
-     *  * `args` Array, Condition arguments.
-     * @param column Physical column index.
+     *
+     * @param {object} condition The condition object.
+     * @param {object} condition.command The command object with condition name as `key` property.
+     * @param {Array} condition.args An array of values to compare.
+     * @param {number} column Physical column index.
      */
 
   }, {
@@ -253,7 +266,7 @@ function (_BaseComponent) {
     /**
      * Get input element.
      *
-     * @param {Number} index Index an array of elements.
+     * @param {number} index Index an array of elements.
      * @returns {InputUI}
      */
 
@@ -279,7 +292,7 @@ function (_BaseComponent) {
     /**
      * Get menu object descriptor.
      *
-     * @returns {Object}
+     * @returns {object}
      */
 
   }, {
@@ -347,7 +360,7 @@ function (_BaseComponent) {
      * On condition select listener.
      *
      * @private
-     * @param {Object} command Menu item object (command).
+     * @param {object} command Menu item object (command).
      */
 
   }, {
@@ -356,7 +369,7 @@ function (_BaseComponent) {
       (0, _array.arrayEach)(this.getInputElements(), function (element, index) {
         element[command.inputsCount > index ? 'show' : 'hide']();
 
-        if (!index) {
+        if (index === 0) {
           setTimeout(function () {
             return element.focus();
           }, 10);
@@ -379,7 +392,7 @@ function (_BaseComponent) {
      * Key down listener.
      *
      * @private
-     * @param {Event} event DOM event object.
+     * @param {Event} event The DOM event object.
      */
 
   }, {

@@ -6,7 +6,6 @@ exports.setPlatformMeta = setPlatformMeta;
 exports.isChrome = isChrome;
 exports.isEdge = isEdge;
 exports.isIE = isIE;
-exports.isIE8 = isIE8;
 exports.isIE9 = isIE9;
 exports.isMSBrowser = isMSBrowser;
 exports.isMobileBrowser = isMobileBrowser;
@@ -42,10 +41,6 @@ var browsers = {
   }),
   ie: tester(function (ua) {
     return /Trident/.test(ua);
-  }),
-  // eslint-disable-next-line no-restricted-globals
-  ie8: tester(function () {
-    return !document.createTextNode('test').textContent;
   }),
   // eslint-disable-next-line no-restricted-globals
   ie9: tester(function () {
@@ -106,38 +101,65 @@ function setPlatformMeta() {
 
 setBrowserMeta();
 setPlatformMeta();
+/**
+ * @returns {boolean}
+ */
 
 function isChrome() {
   return browsers.chrome.value;
 }
+/**
+ * @returns {boolean}
+ */
+
 
 function isEdge() {
   return browsers.edge.value;
 }
+/**
+ * @returns {boolean}
+ */
+
 
 function isIE() {
   return browsers.ie.value;
 }
+/**
+ * @returns {boolean}
+ */
 
-function isIE8() {
-  return browsers.ie8.value;
-}
 
 function isIE9() {
   return browsers.ie9.value;
 }
+/**
+ * @returns {boolean}
+ */
+
 
 function isMSBrowser() {
   return browsers.ie.value || browsers.edge.value;
 }
+/**
+ * @returns {boolean}
+ */
+
 
 function isMobileBrowser() {
   return browsers.mobile.value;
 }
+/**
+ * @returns {boolean}
+ */
+
 
 function isSafari() {
   return browsers.safari.value;
 }
+/**
+ * @returns {boolean}
+ */
+
 
 function isFirefox() {
   return browsers.firefox.value;

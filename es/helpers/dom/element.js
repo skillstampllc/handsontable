@@ -2,12 +2,14 @@ import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.concat";
+import "core-js/modules/es.array.filter";
 import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.join";
 import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.constructor";
@@ -20,21 +22,25 @@ import "core-js/modules/es.string.split";
 import "core-js/modules/es.string.trim";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-import { isIE8, isIE9, isSafari } from '../browser';
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 import { hasCaptionProblem, isClassListSupported, isTextContentSupported, isGetComputedStyleSupported } from '../feature';
+import { isSafari, isIE9 } from '../browser';
 /**
  * Get the parent of the specified node in the DOM tree.
  *
- * @param  {HTMLElement} element Element from which traversing is started.
- * @param  {Number} [level=0] Traversing deep level.
+ * @param {HTMLElement} element Element from which traversing is started.
+ * @param {number} [level=0] Traversing deep level.
  * @returns {HTMLElement|null}
  */
 
@@ -82,8 +88,9 @@ export function getParentWindow(frame) {
 }
 /**
  * Checks if script has access to read from parent frame of specified frame.
-
+ *
  * @param {Window} frame Frame from which should be get frameElement in safe way.
+ * @returns {boolean}
  */
 
 export function hasAccessToParentWindow(frame) {
@@ -94,7 +101,7 @@ export function hasAccessToParentWindow(frame) {
  * This method goes up through web components.
  *
  * @param {Node} element Element from which traversing is started.
- * @param {(string | Node)[]} [nodes] Array of elements or Array of elements name (in uppercase form).
+ * @param {Array<string|Node>} [nodes] Array of elements or Array of elements name (in uppercase form).
  * @param {Node} [until] The element until the traversing ends.
  * @returns {Node|null}
  */
@@ -131,9 +138,9 @@ export function closest(element) {
 /**
  * Goes "down" the DOM tree (including given element) until it finds an element that matches the nodes or nodes name.
  *
- * @param {HTMLElement} element Element from which traversing is started
- * @param {Array} nodes Array of elements or Array of elements name
- * @param {HTMLElement} [until]
+ * @param {HTMLElement} element Element from which traversing is started.
+ * @param {Array} nodes Array of elements or Array of elements name.
+ * @param {HTMLElement} [until] The list of elements until the traversing ends.
  * @returns {HTMLElement|null}
  */
 
@@ -163,10 +170,10 @@ export function closestDown(element, nodes, until) {
 /**
  * Goes up the DOM tree and checks if element is child of another element.
  *
- * @param child Child element
- * @param {Object|String} parent Parent element OR selector of the parent element.
+ * @param {HTMLElement} child Child element An element to check.
+ * @param {object|string} parent Parent element OR selector of the parent element.
  *                               If string provided, function returns `true` for the first occurrence of element with that class.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 export function isChildOf(child, parent) {
@@ -194,70 +201,13 @@ export function isChildOf(child, parent) {
   return false;
 }
 /**
- * Check if an element is part of `hot-table` web component.
- *
- * @param {Element} element
- * @returns {Boolean}
- */
-
-export function isChildOfWebComponentTable(element) {
-  var hotTableName = 'hot-table';
-  var result = false;
-  var parentNode = polymerWrap(element);
-
-  function isHotTable(testElement) {
-    return testElement.nodeType === Node.ELEMENT_NODE && testElement.nodeName === hotTableName.toUpperCase();
-  }
-
-  while (parentNode !== null) {
-    if (isHotTable(parentNode)) {
-      result = true;
-      break;
-    } else if (parentNode.host && parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      result = isHotTable(parentNode.host);
-
-      if (result) {
-        break;
-      }
-
-      parentNode = parentNode.host;
-    }
-
-    parentNode = parentNode.parentNode;
-  }
-
-  return result;
-}
-/* global Polymer wrap unwrap */
-
-/**
- * Wrap element into polymer/webcomponent container if exists
- *
- * @param element
- * @returns {*}
- */
-
-export function polymerWrap(element) {
-  return typeof Polymer !== 'undefined' && typeof wrap === 'function' ? wrap(element) : element;
-}
-/**
- * Unwrap element from polymer/webcomponent container if exists
- *
- * @param element
- * @returns {*}
- */
-
-export function polymerUnwrap(element) {
-  return typeof Polymer !== 'undefined' && typeof unwrap === 'function' ? unwrap(element) : element;
-}
-/**
- * Counts index of element within its parent
- * WARNING: for performance reasons, assumes there are only element nodes (no text nodes). This is true for Walkotnable
- * Otherwise would need to check for nodeType or use previousElementSibling
+ * Counts index of element within its parent.
+ * WARNING: for performance reasons, assumes there are only element nodes (no text nodes). This is true
+ * for Walkotnable, otherwise would need to check for nodeType or use previousElementSibling.
  *
  * @see http://jsperf.com/sibling-index/10
- * @param {Element} element
- * @returns {Number}
+ * @param {Element} element The element to check.
+ * @returns {number}
  */
 
 export function index(element) {
@@ -274,11 +224,11 @@ export function index(element) {
   return i;
 }
 /**
- * Check if the provided overlay contains the provided element
+ * Check if the provided overlay contains the provided element.
  *
- * @param {String} overlay
- * @param {HTMLElement} element
- * @param {HTMLElement} root
+ * @param {string} overlayType The type of the overlay.
+ * @param {HTMLElement} element An element to check.
+ * @param {HTMLElement} root The root element.
  * @returns {boolean}
  */
 
@@ -292,22 +242,20 @@ var _hasClass;
 var _addClass;
 
 var _removeClass;
+/**
+ * @param {string} classNames The element "class" attribute string.
+ * @returns {string[]}
+ */
+
 
 function filterEmptyClassNames(classNames) {
-  var result = [];
-
   if (!classNames || !classNames.length) {
-    return result;
+    return [];
   }
 
-  var len = 0;
-
-  while (classNames[len]) {
-    result.push(classNames[len]);
-    len += 1;
-  }
-
-  return result;
+  return classNames.filter(function (x) {
+    return !!x;
+  });
 }
 
 if (isClassListSupported()) {
@@ -386,7 +334,6 @@ if (isClassListSupported()) {
   };
 
   _addClass = function _addClass(element, classes) {
-    var len = 0;
     var _className = element.className;
     var className = classes;
 
@@ -394,15 +341,15 @@ if (isClassListSupported()) {
       className = className.split(' ');
     }
 
+    className = filterEmptyClassNames(className);
+
     if (_className === '') {
       _className = className.join(' ');
     } else {
-      while (className && className[len]) {
-        if (!createClassNameRegExp(className[len]).test(_className)) {
+      for (var len = 0; len < className.length; len++) {
+        if (className[len] && !createClassNameRegExp(className[len]).test(_className)) {
           _className += " ".concat(className[len]);
         }
-
-        len += 1;
       }
     }
 
@@ -418,6 +365,8 @@ if (isClassListSupported()) {
       className = className.split(' ');
     }
 
+    className = filterEmptyClassNames(className);
+
     while (className && className[len]) {
       // String.prototype.trim is defined in polyfill.js
       _className = _className.replace(createClassNameRegExp(className[len]), ' ').trim();
@@ -430,11 +379,11 @@ if (isClassListSupported()) {
   };
 }
 /**
- * Checks if element has class name
+ * Checks if element has class name.
  *
- * @param {HTMLElement} element
- * @param {String} className Class name to check
- * @returns {Boolean}
+ * @param {HTMLElement} element An element to check.
+ * @param {string} className Class name to check.
+ * @returns {boolean}
  */
 
 
@@ -442,28 +391,32 @@ export function hasClass(element, className) {
   return _hasClass(element, className);
 }
 /**
- * Add class name to an element
+ * Add class name to an element.
  *
- * @param {HTMLElement} element
- * @param {String|Array} className Class name as string or array of strings
+ * @param {HTMLElement} element An element to process.
+ * @param {string|Array} className Class name as string or array of strings.
  */
 
 export function addClass(element, className) {
-  return _addClass(element, className);
+  _addClass(element, className);
 }
 /**
- * Remove class name from an element
+ * Remove class name from an element.
  *
- * @param {HTMLElement} element
- * @param {String|Array} className Class name as string or array of strings
+ * @param {HTMLElement} element An element to process.
+ * @param {string|Array} className Class name as string or array of strings.
  */
 
 export function removeClass(element, className) {
-  return _removeClass(element, className);
+  _removeClass(element, className);
 }
-export function removeTextNodes(element, parent) {
+/**
+ * @param {HTMLElement} element An element from the text is removed.
+ */
+
+export function removeTextNodes(element) {
   if (element.nodeType === 3) {
-    parent.removeChild(element); // bye text nodes!
+    element.parentNode.removeChild(element); // bye text nodes!
   } else if (['TABLE', 'THEAD', 'TBODY', 'TFOOT', 'TR'].indexOf(element.nodeName) > -1) {
     var childs = element.childNodes;
 
@@ -476,12 +429,10 @@ export function removeTextNodes(element, parent) {
  * Remove childs function
  * WARNING - this doesn't unload events and data attached by jQuery
  * http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/9
- * http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/11 - no siginificant improvement with Chrome remove() method
+ * http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/11 - no siginificant improvement with Chrome remove() method.
  *
- * @param element
- * @returns {void}
+ * @param {HTMLElement} element An element to clear.
  */
-//
 
 export function empty(element) {
   var child;
@@ -494,7 +445,9 @@ export function empty(element) {
 export var HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
 /**
  * Insert content into element trying avoid innerHTML method.
- * @returns {void}
+ *
+ * @param {HTMLElement} element An element to write into.
+ * @param {string} content The text to write.
  */
 
 export function fastInnerHTML(element, content) {
@@ -505,8 +458,10 @@ export function fastInnerHTML(element, content) {
   }
 }
 /**
- * Insert text content into element
- * @returns {Boolean}
+ * Insert text content into element.
+ *
+ * @param {HTMLElement} element An element to write into.
+ * @param {string} content The text to write.
  */
 
 export function fastInnerText(element, content) {
@@ -528,16 +483,17 @@ export function fastInnerText(element, content) {
   }
 }
 /**
- * Returns true if element is attached to the DOM and visible, false otherwise
- * @param elem
+ * Returns true if element is attached to the DOM and visible, false otherwise.
+ *
+ * @param {HTMLElement} element An element to check.
  * @returns {boolean}
  */
 
-export function isVisible(elem) {
-  var documentElement = elem.ownerDocument.documentElement;
-  var next = elem;
+export function isVisible(element) {
+  var documentElement = element.ownerDocument.documentElement;
+  var next = element;
 
-  while (polymerUnwrap(next) !== documentElement) {
+  while (next !== documentElement) {
     // until <html> reached
     if (next === null) {
       // parent detached from DOM
@@ -571,15 +527,15 @@ export function isVisible(elem) {
 /**
  * Returns elements top and left offset relative to the document. Function is not compatible with jQuery offset.
  *
- * @param {HTMLElement} elem
- * @returns {Object} Returns object with `top` and `left` props
+ * @param {HTMLElement} element An element to get the offset position from.
+ * @returns {object} Returns object with `top` and `left` props.
  */
 
-export function offset(elem) {
-  var rootDocument = elem.ownerDocument;
+export function offset(element) {
+  var rootDocument = element.ownerDocument;
   var rootWindow = rootDocument.defaultView;
   var documentElement = rootDocument.documentElement;
-  var elementToCheck = elem;
+  var elementToCheck = element;
   var offsetLeft;
   var offsetTop;
   var lastElem;
@@ -626,8 +582,8 @@ export function offset(elem) {
 /**
  * Returns the document's scrollTop property.
  *
- * @param {Window} rootWindow
- * @returns {Number}
+ * @param {Window} [rootWindow] The document window owner.
+ * @returns {number}
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -645,8 +601,8 @@ export function getWindowScrollTop() {
 /**
  * Returns the document's scrollLeft property.
  *
- * @param {Window} rootWindow
- * @returns {Number}
+ * @param {Window} [rootWindow] The document window owner.
+ * @returns {number}
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -664,9 +620,9 @@ export function getWindowScrollLeft() {
 /**
  * Returns the provided element's scrollTop property.
  *
- * @param element
- * @param {Window} rootWindow
- * @returns {Number}
+ * @param {HTMLElement} element An element to get the scroll top position from.
+ * @param {Window} [rootWindow] The document window owner.
+ * @returns {number}
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -682,9 +638,9 @@ export function getScrollTop(element) {
 /**
  * Returns the provided element's scrollLeft property.
  *
- * @param element
- * @param {Window} rootWindow
- * @returns {Number}
+ * @param {HTMLElement} element An element to get the scroll left position from.
+ * @param {Window} [rootWindow] The document window owner.
+ * @returns {number}
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -700,8 +656,8 @@ export function getScrollLeft(element) {
 /**
  * Returns a DOM element responsible for scrolling of the provided element.
  *
- * @param {HTMLElement} element
- * @returns {HTMLElement} Element's scrollable parent
+ * @param {HTMLElement} element An element to get the scrollable element from.
+ * @returns {HTMLElement} Element's scrollable parent.
  */
 
 export function getScrollableElement(element) {
@@ -754,8 +710,8 @@ export function getScrollableElement(element) {
 /**
  * Returns a DOM element responsible for trimming the provided element.
  *
- * @param {HTMLElement} base Base element
- * @returns {HTMLElement} Base element's trimming parent
+ * @param {HTMLElement} base Base element.
+ * @returns {HTMLElement} Base element's trimming parent.
  */
 
 export function getTrimmingContainer(base) {
@@ -786,10 +742,10 @@ export function getTrimmingContainer(base) {
 /**
  * Returns a style property for the provided element. (Be it an inline or external style).
  *
- * @param {HTMLElement} element
- * @param {String} prop Wanted property
- * @param {Window} rootWindow
- * @returns {String|undefined} Element's style property
+ * @param {HTMLElement} element An element to get the style from.
+ * @param {string} prop Wanted property.
+ * @param {Window} [rootWindow] The document window owner.
+ * @returns {string|undefined} Element's style property.
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -825,7 +781,7 @@ export function getStyle(element, prop) {
  *
  * @param {Element} element Element to verify with selector text.
  * @param {CSSRule} rule Selector text from CSSRule.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 export function matchesCSSRules(element, rule) {
@@ -845,9 +801,9 @@ export function matchesCSSRules(element, rule) {
 /**
  * Returns a computed style object for the provided element. (Needed if style is declared in external stylesheet).
  *
- * @param element
- * @param {Window} rootWindow
- * @returns {IEElementStyle|CssStyle} Elements computed style object
+ * @param {HTMLElement} element An element to get style from.
+ * @param {Window} [rootWindow] The document window owner.
+ * @returns {IEElementStyle|CssStyle} Elements computed style object.
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -858,22 +814,22 @@ export function getComputedStyle(element) {
 /**
  * Returns the element's outer width.
  *
- * @param element
- * @returns {number} Element's outer width
+ * @param {HTMLElement} element An element to get the width from.
+ * @returns {number} Element's outer width.
  */
 
 export function outerWidth(element) {
-  return element.offsetWidth;
+  return Math.ceil(element.getBoundingClientRect().width);
 }
 /**
- * Returns the element's outer height
+ * Returns the element's outer height.
  *
- * @param elem
- * @returns {number} Element's outer height
+ * @param {HTMLElement} element An element to get the height from.
+ * @returns {number} Element's outer height.
  */
 
-export function outerHeight(elem) {
-  if (hasCaptionProblem() && elem.firstChild && elem.firstChild.nodeName === 'CAPTION') {
+export function outerHeight(element) {
+  if (hasCaptionProblem() && element.firstChild && element.firstChild.nodeName === 'CAPTION') {
     // fixes problem with Firefox ignoring <caption> in TABLE.offsetHeight
     // jQuery (1.10.1) still has this unsolved
     // may be better to just switch to getBoundingClientRect
@@ -881,16 +837,16 @@ export function outerHeight(elem) {
     // http://lists.w3.org/Archives/Public/www-style/2009Oct/0089.html
     // http://bugs.jquery.com/ticket/2196
     // http://lists.w3.org/Archives/Public/www-style/2009Oct/0140.html#start140
-    return elem.offsetHeight + elem.firstChild.offsetHeight;
+    return element.offsetHeight + element.firstChild.offsetHeight;
   }
 
-  return elem.offsetHeight;
+  return element.offsetHeight;
 }
 /**
  * Returns the element's inner height.
  *
- * @param element
- * @returns {number} Element's inner height
+ * @param {HTMLElement} element An element to get the height from.
+ * @returns {number} Element's inner height.
  */
 
 export function innerHeight(element) {
@@ -899,44 +855,37 @@ export function innerHeight(element) {
 /**
  * Returns the element's inner width.
  *
- * @param element
- * @returns {number} Element's inner width
+ * @param {HTMLElement} element An element to get the width from.
+ * @returns {number} Element's inner width.
  */
 
 export function innerWidth(element) {
   return element.clientWidth || element.innerWidth;
 }
+/**
+ * @param {HTMLElement} element An element to which the event is added.
+ * @param {string} event The event name.
+ * @param {Function} callback The callback to add.
+ */
+
 export function addEvent(element, event, callback) {
-  var rootWindow = element.defaultView;
-
-  if (!rootWindow) {
-    rootWindow = element.document ? element : element.ownerDocument.defaultView;
-  }
-
-  if (rootWindow.addEventListener) {
-    element.addEventListener(event, callback, false);
-  } else {
-    element.attachEvent("on".concat(event), callback);
-  }
-}
-export function removeEvent(element, event, callback) {
-  var rootWindow = element.defaultView;
-
-  if (!rootWindow) {
-    rootWindow = element.document ? element : element.ownerDocument.defaultView;
-  }
-
-  if (rootWindow.removeEventListener) {
-    element.removeEventListener(event, callback, false);
-  } else {
-    element.detachEvent("on".concat(event), callback);
-  }
+  element.addEventListener(event, callback, false);
 }
 /**
- * Returns caret position in text input
+ * @param {HTMLElement} element An element from which the event is removed.
+ * @param {string} event The event name.
+ * @param {Function} callback The function reference to remove.
+ */
+
+export function removeEvent(element, event, callback) {
+  element.removeEventListener(event, callback, false);
+}
+/**
+ * Returns caret position in text input.
  *
  * @author https://stackoverflow.com/questions/263743/how-to-get-caret-position-in-textarea
- * @returns {Number}
+ * @param {HTMLElement} el An element to check.
+ * @returns {number}
  */
 
 export function getCaretPosition(el) {
@@ -963,9 +912,10 @@ export function getCaretPosition(el) {
   return 0;
 }
 /**
- * Returns end of the selection in text input
+ * Returns end of the selection in text input.
  *
- * @returns {Number}
+ * @param {HTMLElement} el An element to check.
+ * @returns {number}
  */
 
 export function getSelectionEndPosition(el) {
@@ -990,8 +940,8 @@ export function getSelectionEndPosition(el) {
 /**
  * Returns text under selection.
  *
- * @param {Window} rootWindow
- * @returns {String}
+ * @param {Window} [rootWindow] The document window owner.
+ * @returns {string}
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -1011,7 +961,7 @@ export function getSelectionText() {
 /**
  * Cross-platform helper to clear text selection.
  *
- * @param {Window} rootWindow
+ * @param {Window} [rootWindow] The document window owner.
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -1036,9 +986,9 @@ export function clearTextSelection() {
  * Sets caret position in text input.
  *
  * @author http://blog.vishalon.net/index.php/javascript-getting-and-setting-caret-position-in-textarea/
- * @param {Element} element
- * @param {Number} pos
- * @param {Number} endPos
+ * @param {Element} element An element to process.
+ * @param {number} pos The selection start position.
+ * @param {number} endPos The selection end position.
  */
 
 export function setCaretPosition(element, pos, endPos) {
@@ -1058,22 +1008,16 @@ export function setCaretPosition(element, pos, endPos) {
       element.setSelectionRange(pos, endPos);
       elementParent.style.display = parentDisplayValue;
     }
-  } else if (element.createTextRange) {
-    // IE8
-    var range = element.createTextRange();
-    range.collapse(true);
-    range.moveEnd('character', endPos);
-    range.moveStart('character', pos);
-    range.select();
   }
 }
 var cachedScrollbarWidth;
 /**
  * Helper to calculate scrollbar width.
- * Source: https://stackoverflow.com/questions/986937/how-can-i-get-the-browsers-scrollbar-sizes
+ * Source: https://stackoverflow.com/questions/986937/how-can-i-get-the-browsers-scrollbar-sizes.
  *
  * @private
- * @param {Document} rootDocument
+ * @param {Document} rootDocument The onwer of the document.
+ * @returns {number}
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -1107,8 +1051,8 @@ function walkontableCalculateScrollbarWidth() {
 /**
  * Returns the computed width of the native browser scroll bar.
  *
- * @param {Document} rootDocument
- * @returns {Number} width
+ * @param {Document} [rootDocument] The owner of the document.
+ * @returns {number} Width.
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -1125,8 +1069,8 @@ export function getScrollbarWidth() {
 /**
  * Checks if the provided element has a vertical scrollbar.
  *
- * @param {HTMLElement} element
- * @returns {Boolean}
+ * @param {HTMLElement} element An element to check.
+ * @returns {boolean}
  */
 
 export function hasVerticalScrollbar(element) {
@@ -1135,19 +1079,23 @@ export function hasVerticalScrollbar(element) {
 /**
  * Checks if the provided element has a vertical scrollbar.
  *
- * @param {HTMLElement} element
- * @returns {Boolean}
+ * @param {HTMLElement} element An element to check.
+ * @returns {boolean}
  */
 
 export function hasHorizontalScrollbar(element) {
   return element.offsetHeight !== element.clientHeight;
 }
 /**
- * Sets overlay position depending on it's type and used browser
+ * Sets overlay position depending on it's type and used browser.
+ *
+ * @param {HTMLElement} overlayElem An element to process.
+ * @param {number} left The left position of the overlay.
+ * @param {number} top The top position of the overlay.
  */
 
 export function setOverlayPosition(overlayElem, left, top) {
-  if (isIE8() || isIE9()) {
+  if (isIE9()) {
     overlayElem.style.top = top;
     overlayElem.style.left = left;
   } else if (isSafari()) {
@@ -1157,6 +1105,11 @@ export function setOverlayPosition(overlayElem, left, top) {
     overlayElem.style.transform = "translate3d(".concat(left, ",").concat(top, ",0)");
   }
 }
+/**
+ * @param {HTMLElement} element An element to process.
+ * @returns {number|Array}
+ */
+
 export function getCssTransform(element) {
   var transform;
 
@@ -1168,6 +1121,10 @@ export function getCssTransform(element) {
 
   return -1;
 }
+/**
+ * @param {HTMLElement} element An element to process.
+ */
+
 export function resetCssTransform(element) {
   if (element.style.transform && element.style.transform !== '') {
     element.style.transform = '';
@@ -1177,10 +1134,10 @@ export function resetCssTransform(element) {
 }
 /**
  * Determines if the given DOM element is an input field.
- * Notice: By 'input' we mean input, textarea and select nodes
+ * Notice: By 'input' we mean input, textarea and select nodes.
  *
- * @param {HTMLElement} element - DOM element
- * @returns {Boolean}
+ * @param {HTMLElement} element - DOM element.
+ * @returns {boolean}
  */
 
 export function isInput(element) {
@@ -1189,19 +1146,19 @@ export function isInput(element) {
 }
 /**
  * Determines if the given DOM element is an input field placed OUTSIDE of HOT.
- * Notice: By 'input' we mean input, textarea and select nodes
+ * Notice: By 'input' we mean input, textarea and select nodes which have defined 'data-hot-input' attribute.
  *
- * @param {HTMLElement} element - DOM element
- * @returns {Boolean}
+ * @param {HTMLElement} element - DOM element.
+ * @returns {boolean}
  */
 
 export function isOutsideInput(element) {
-  return isInput(element) && element.className.indexOf('handsontableInput') === -1 && element.className.indexOf('HandsontableCopyPaste') === -1;
+  return isInput(element) && element.hasAttribute('data-hot-input') === false;
 }
 /**
  * Check if the given DOM element can be focused (by using "select" method).
  *
- * @param {HTMLElement} element - DOM element
+ * @param {HTMLElement} element - DOM element.
  */
 
 export function selectElementIfAllowed(element) {

@@ -5,7 +5,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import { getWindowScrollLeft, getWindowScrollTop } from './../../helpers/dom/element';
-import { pageX, pageY } from './../../helpers/dom/event';
 /**
  * Helper class for checking if element will fit at the desired side of cursor.
  *
@@ -13,9 +12,7 @@ import { pageX, pageY } from './../../helpers/dom/event';
  * @plugin ContextMenu
  */
 
-var Cursor =
-/*#__PURE__*/
-function () {
+var Cursor = /*#__PURE__*/function () {
   function Cursor(object, rootWindow) {
     _classCallCheck(this, Cursor);
 
@@ -40,8 +37,8 @@ function () {
       top += windowScrollTop;
       left += windowScrollLeft;
     } else if (this.type === 'event') {
-      top = parseInt(pageY(object), 10);
-      left = parseInt(pageX(object), 10);
+      top = parseInt(object.pageY, 10);
+      left = parseInt(object.pageX, 10);
       cellHeight = object.target.clientHeight;
       cellWidth = object.target.clientWidth;
       topRelative = top - windowScrollTop;
@@ -61,7 +58,7 @@ function () {
    * Get source type name.
    *
    * @param {*} object Event or Object with coordinates.
-   * @returns {String} Returns one of this values: `'literal'`, `'event'`.
+   * @returns {string} Returns one of this values: `'literal'`, `'event'`.
    */
 
 
@@ -80,7 +77,7 @@ function () {
      * Checks if element can be placed above the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit above the cursor.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -92,8 +89,8 @@ function () {
      * Checks if element can be placed below the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit below the cursor.
-     * @param {Number} [viewportHeight] The viewport height.
-     * @returns {Boolean}
+     * @param {number} [viewportHeight] The viewport height.
+     * @returns {boolean}
      */
 
   }, {
@@ -106,8 +103,8 @@ function () {
      * Checks if element can be placed on the right of the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit on the right of the cursor.
-     * @param {Number} [viewportWidth] The viewport width.
-     * @returns {Boolean}
+     * @param {number} [viewportWidth] The viewport width.
+     * @returns {boolean}
      */
 
   }, {
@@ -120,7 +117,7 @@ function () {
      * Checks if element can be placed on the left on the cursor.
      *
      * @param {HTMLElement} element Element to check if it's size will fit on the left of the cursor.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

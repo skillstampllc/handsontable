@@ -8,9 +8,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class Stack
  * @util
  */
-var Stack =
-/*#__PURE__*/
-function () {
+var Stack = /*#__PURE__*/function () {
   function Stack() {
     var initial = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
@@ -62,7 +60,7 @@ function () {
     /**
      * Check if the stack is empty.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -73,7 +71,7 @@ function () {
     /**
      * Return number of elements in the stack.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {

@@ -63,9 +63,7 @@ registerOperation(removeRow.OPERATION_NAME, removeRow);
  * @util
  */
 
-var AlterManager =
-/*#__PURE__*/
-function () {
+var AlterManager = /*#__PURE__*/function () {
   function AlterManager(sheet) {
     _classCallCheck(this, AlterManager);
 
@@ -101,8 +99,8 @@ function () {
    * Prepare to execute an alter algorithm. This preparation can be useful for collecting some variables and
    * states before specific algorithm will be executed.
    *
-   * @param  {String} action One of the action defined in alterOperation.
-   * @param  {*} args Arguments pass to alter operation.
+   * @param {string} action One of the action defined in alterOperation.
+   * @param {*} args Arguments pass to alter operation.
    */
 
 
@@ -122,7 +120,7 @@ function () {
     /**
      * Trigger an alter algorithm and after executing code trigger local hook ("afterAlter").
      *
-     * @param {String} action One of the action defined in alterOperation.
+     * @param {string} action One of the action defined in alterOperation.
      * @param {*} args Arguments pass to alter operation.
      */
 
@@ -162,6 +160,11 @@ var _default = AlterManager;
 exports.default = _default;
 
 var empty = function empty() {};
+/**
+ * @param {string} name The ID of the operation to register.
+ * @param {object} descriptor The object with `prepare` and `operate` methods which holds the operation logic.
+ */
+
 
 function registerOperation(name, descriptor) {
   if (!operations.has(name)) {

@@ -1,4 +1,9 @@
 import * as C from './../../../i18n/constants';
+/**
+ * @param {CopyPaste} copyPastePlugin The plugin instance.
+ * @returns {object}
+ */
+
 export default function cutItem(copyPastePlugin) {
   return {
     key: 'cut',
@@ -9,7 +14,11 @@ export default function cutItem(copyPastePlugin) {
       copyPastePlugin.cut();
     },
     disabled: function disabled() {
-      var selected = this.getSelected();
+      if (this.countRows() === 0 || this.countCols() === 0) {
+        return true;
+      }
+
+      var selected = this.getSelected(); // Disable for no selection or for non-contiquous selection.
 
       if (!selected || selected.length > 1) {
         return true;

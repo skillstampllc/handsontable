@@ -16,9 +16,9 @@ export var OPERATION_NAME = 'insert_row';
 /**
  * Execute changes.
  *
- * @param {Number} start Index row from which the operation starts.
- * @param {Number} amount Count of rows to be inserted.
- * @param {Boolean} [modifyFormula=true] If `true` all formula expressions will be modified according to the changes.
+ * @param {number} start Index row from which the operation starts.
+ * @param {number} amount Count of rows to be inserted.
+ * @param {boolean} [modifyFormula=true] If `true` all formula expressions will be modified according to the changes.
  *                                       `false` value is used by UndoRedo plugin which saves snapshoots before alter
  *                                       operation so it doesn't modify formulas if undo action is triggered.
  */
@@ -62,6 +62,13 @@ export function operate(start, amount) {
     }
   });
 }
+/**
+ * @param {cellCoord} cell The cell coordinates.
+ * @param {string} axis The axis defined as "row" or "column".
+ * @param {number} delta The shift/delta betwen old and new position.
+ * @param {number} startFromIndex The index from the operation was performed.
+ * @returns {Array}
+ */
 
 function customTranslateModifier(cell, axis, delta, startFromIndex) {
   var start = cell.start,

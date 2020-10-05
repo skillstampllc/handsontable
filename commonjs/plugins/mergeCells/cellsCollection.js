@@ -16,6 +16,8 @@ require("core-js/modules/es.array.slice");
 
 require("core-js/modules/es.array.splice");
 
+require("core-js/modules/es.function.name");
+
 require("core-js/modules/es.object.freeze");
 
 require("core-js/modules/es.object.to-string");
@@ -46,7 +48,7 @@ var _templateLiteralTag = require("./../../helpers/templateLiteralTag");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "], overlaps with the other declared merged \n    cell. The overlapping merged cell was not added to the table, please fix your setup."]);
+  var data = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "], overlaps \n      with the other declared merged cell. The overlapping merged cell was not added to the table, please \n      fix your setup."], ["The merged cell declared at [", ", ", "], overlaps\\x20\n      with the other declared merged cell. The overlapping merged cell was not added to the table, please\\x20\n      fix your setup."]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -57,13 +59,17 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77,9 +83,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class MergedCellsCollection
  * @plugin MergeCells
  */
-var MergedCellsCollection =
-/*#__PURE__*/
-function () {
+var MergedCellsCollection = /*#__PURE__*/function () {
   function MergedCellsCollection(plugin) {
     _classCallCheck(this, MergedCellsCollection);
 
@@ -107,8 +111,8 @@ function () {
   /**
    * Get a warning message for when the declared merged cell data overlaps already existing merged cells.
    *
-   * @param {Object} newMergedCell Object containg information about the merged cells that was about to be added.
-   * @return {String}
+   * @param {object} newMergedCell Object containg information about the merged cells that was about to be added.
+   * @returns {string}
    */
 
 
@@ -119,9 +123,9 @@ function () {
      * Get a merged cell from the container, based on the provided arguments. You can provide either the "starting coordinates"
      * of a merged cell, or any coordinates from the body of the merged cell.
      *
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
-     * @returns {MergedCellCoords|Boolean} Returns a wanted merged cell on success and `false` on failure.
+     * @param {number} row Row index.
+     * @param {number} column Column index.
+     * @returns {MergedCellCoords|boolean} Returns a wanted merged cell on success and `false` on failure.
      */
     value: function get(row, column) {
       var mergedCells = this.mergedCells;
@@ -139,8 +143,8 @@ function () {
     /**
      * Get a merged cell containing the provided range.
      *
-     * @param {CellRange|Object} range The range to search merged cells for.
-     * @return {MergedCellCoords|Boolean}
+     * @param {CellRange|object} range The range to search merged cells for.
+     * @returns {MergedCellCoords|boolean}
      */
 
   }, {
@@ -161,9 +165,9 @@ function () {
     /**
      * Get a merged cell contained in the provided range.
      *
-     * @param {CellRange|Object} range The range to search merged cells in.
-     * @param [countPartials=false] If set to `true`, all the merged cells overlapping the range will be taken into calculation.
-     * @return {Array|Boolean} Array of found merged cells of `false` if none were found.
+     * @param {CellRange|object} range The range to search merged cells in.
+     * @param {boolean} [countPartials=false] If set to `true`, all the merged cells overlapping the range will be taken into calculation.
+     * @returns {Array|boolean} Array of found merged cells of `false` if none were found.
      */
 
   }, {
@@ -198,8 +202,8 @@ function () {
     /**
      * Add a merged cell to the container.
      *
-     * @param {Object} mergedCellInfo The merged cell information object. Has to contain `row`, `col`, `colspan` and `rowspan` properties.
-     * @return {MergedCellCoords|Boolean} Returns the new merged cell on success and `false` on failure.
+     * @param {object} mergedCellInfo The merged cell information object. Has to contain `row`, `col`, `colspan` and `rowspan` properties.
+     * @returns {MergedCellCoords|boolean} Returns the new merged cell on success and `false` on failure.
      */
 
   }, {
@@ -230,9 +234,9 @@ function () {
      * Remove a merged cell from the container. You can provide either the "starting coordinates"
      * of a merged cell, or any coordinates from the body of the merged cell.
      *
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
-     * @return {MergedCellCoords|Boolean} Returns the removed merged cell on success and `false` on failure.
+     * @param {number} row Row index.
+     * @param {number} column Column index.
+     * @returns {MergedCellCoords|boolean} Returns the removed merged cell on success and `false` on failure.
      */
 
   }, {
@@ -294,16 +298,16 @@ function () {
      * Check if the provided merged cell overlaps with the others in the container.
      *
      * @param {MergedCellCoords} mergedCell The merged cell to check against all others in the container.
-     * @return {Boolean} `true` if the provided merged cell overlaps with the others, `false` otherwise.
+     * @returns {boolean} `true` if the provided merged cell overlaps with the others, `false` otherwise.
      */
 
   }, {
     key: "isOverlapping",
     value: function isOverlapping(mergedCell) {
-      var mergedCellRange = new _index.CellRange(null, new _index.CellCoords(mergedCell.row, mergedCell.col), new _index.CellCoords(mergedCell.row + mergedCell.rowspan - 1, mergedCell.col + mergedCell.colspan - 1));
+      var mergedCellRange = new _index.CellRange(new _index.CellCoords(0, 0), new _index.CellCoords(mergedCell.row, mergedCell.col), new _index.CellCoords(mergedCell.row + mergedCell.rowspan - 1, mergedCell.col + mergedCell.colspan - 1));
       var result = false;
       (0, _array.arrayEach)(this.mergedCells, function (col) {
-        var currentRange = new _index.CellRange(null, new _index.CellCoords(col.row, col.col), new _index.CellCoords(col.row + col.rowspan - 1, col.col + col.colspan - 1));
+        var currentRange = new _index.CellRange(new _index.CellCoords(0, 0), new _index.CellCoords(col.row, col.col), new _index.CellCoords(col.row + col.rowspan - 1, col.col + col.colspan - 1));
 
         if (currentRange.overlaps(mergedCellRange)) {
           result = true;
@@ -315,34 +319,48 @@ function () {
       return result;
     }
     /**
-     * Check whether the provided row/col coordinates direct to a merged parent.
+     * Check whether the provided row/col coordinates direct to a first not hidden cell within merge area.
      *
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
-     * @return {Boolean}
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @returns {boolean}
      */
 
   }, {
-    key: "isMergedParent",
-    value: function isMergedParent(row, column) {
-      var mergedCells = this.mergedCells;
-      var result = false;
-      (0, _array.arrayEach)(mergedCells, function (mergedCell) {
-        if (mergedCell.row === row && mergedCell.col === column) {
-          result = true;
-          return false;
-        }
+    key: "isFirstRenderableMergedCell",
+    value: function isFirstRenderableMergedCell(row, column) {
+      var mergeParent = this.get(row, column); // Return if row and column indexes are within merge area and if they are first rendered indexes within the area.
 
-        return true;
-      });
-      return result;
+      return mergeParent && this.hot.rowIndexMapper.getFirstNotHiddenIndex(mergeParent.row, 1) === row && this.hot.columnIndexMapper.getFirstNotHiddenIndex(mergeParent.col, 1) === column;
+    }
+    /**
+     * Get the first renderable coords of the merged cell at the provided coordinates.
+     *
+     * @param {number} row Visual row index.
+     * @param {number} column Visual column index.
+     * @returns {CellCoords} A `CellCoords` object with the coordinates to the first renderable cell within the
+     *                        merged cell.
+     */
+
+  }, {
+    key: "getFirstRenderableCoords",
+    value: function getFirstRenderableCoords(row, column) {
+      var mergeParent = this.get(row, column);
+
+      if (!mergeParent || this.isFirstRenderableMergedCell(row, column)) {
+        return new _index.CellCoords(row, column);
+      }
+
+      var firstRenderableRow = this.hot.rowIndexMapper.getFirstNotHiddenIndex(mergeParent.row, 1);
+      var firstRenderableColumn = this.hot.columnIndexMapper.getFirstNotHiddenIndex(mergeParent.col, 1);
+      return new _index.CellCoords(firstRenderableRow, firstRenderableColumn);
     }
     /**
      * Shift the merged cell in the direction and by an offset defined in the arguments.
      *
-     * @param {String} direction `right`, `left`, `up` or `down`.
-     * @param {Number} index Index where the change, which caused the shifting took place.
-     * @param {Number} count Number of rows/columns added/removed in the preceding action.
+     * @param {string} direction `right`, `left`, `up` or `down`.
+     * @param {number} index Index where the change, which caused the shifting took place.
+     * @param {number} count Number of rows/columns added/removed in the preceding action.
      */
 
   }, {

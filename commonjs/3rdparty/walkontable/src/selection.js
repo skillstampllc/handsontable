@@ -10,9 +10,15 @@ require("core-js/modules/es.array.concat");
 
 require("core-js/modules/es.array.for-each");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.to-string");
 
@@ -41,11 +47,15 @@ var _range = _interopRequireDefault(require("./cell/range"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -60,12 +70,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @class Selection
  */
-var Selection =
-/*#__PURE__*/
-function () {
+var Selection = /*#__PURE__*/function () {
   /**
-   * @param {Object} settings
-   * @param {CellRange} cellRange
+   * @param {object} settings The selection settings object.
+   * @param {CellRange} cellRange The cell range instance.
    */
   function Selection(settings, cellRange) {
     _classCallCheck(this, Selection);
@@ -78,9 +86,9 @@ function () {
   }
   /**
    * Each Walkontable clone requires it's own border for every selection. This method creates and returns selection
-   * borders per instance
+   * borders per instance.
    *
-   * @param {Walkontable} wotInstance
+   * @param {Walkontable} wotInstance The Walkontable instance.
    * @returns {Border}
    */
 
@@ -95,9 +103,9 @@ function () {
       return this.instanceBorders[wotInstance.guid];
     }
     /**
-     * Checks if selection is empty
+     * Checks if selection is empty.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -106,9 +114,10 @@ function () {
       return this.cellRange === null;
     }
     /**
-     * Adds a cell coords to the selection
+     * Adds a cell coords to the selection.
      *
-     * @param {CellCoords} coords
+     * @param {CellCoords} coords The cell coordinates to add.
+     * @returns {Selection}
      */
 
   }, {
@@ -124,11 +133,11 @@ function () {
     }
     /**
      * If selection range from or to property equals oldCoords, replace it with newCoords. Return boolean
-     * information about success
+     * information about success.
      *
-     * @param {CellCoords} oldCoords
-     * @param {CellCoords} newCoords
-     * @returns {Boolean}
+     * @param {CellCoords} oldCoords An old cell coordinates to replace.
+     * @param {CellCoords} newCoords The new cell coordinates.
+     * @returns {boolean}
      */
 
   }, {
@@ -149,7 +158,7 @@ function () {
       return false;
     }
     /**
-     * Clears selection
+     * Clears selection.
      *
      * @returns {Selection}
      */
@@ -161,26 +170,26 @@ function () {
       return this;
     }
     /**
-     * Returns the top left (TL) and bottom right (BR) selection coordinates
+     * Returns the top left (TL) and bottom right (BR) selection coordinates.
      *
-     * @returns {Array} Returns array of coordinates for example `[1, 1, 5, 5]`
+     * @returns {Array} Returns array of coordinates for example `[1, 1, 5, 5]`.
      */
 
   }, {
     key: "getCorners",
     value: function getCorners() {
-      var topLeft = this.cellRange.getTopLeftCorner();
-      var bottomRight = this.cellRange.getBottomRightCorner();
+      var topLeft = this.cellRange.getOuterTopLeftCorner();
+      var bottomRight = this.cellRange.getOuterBottomRightCorner();
       return [topLeft.row, topLeft.col, bottomRight.row, bottomRight.col];
     }
     /**
-     * Adds class name to cell element at given coords
+     * Adds class name to cell element at given coords.
      *
-     * @param {Walkontable} wotInstance Walkontable instance
-     * @param {Number} sourceRow Cell row coord
-     * @param {Number} sourceColumn Cell column coord
-     * @param {String} className Class name
-     * @param {Boolean} [markIntersections=false] If `true`, linear className generator will be used to add CSS classes
+     * @param {Walkontable} wotInstance Walkontable instance.
+     * @param {number} sourceRow Cell row coord.
+     * @param {number} sourceColumn Cell column coord.
+     * @param {string} className Class name.
+     * @param {boolean} [markIntersections=false] If `true`, linear className generator will be used to add CSS classes
      *                                            in a continuous way.
      * @returns {Selection}
      */
@@ -211,11 +220,11 @@ function () {
      * Generate helper for calculating classNames based on previously added base className.
      * The generated className is always generated as a continuation of the previous className. For example, when
      * the currently checked element has 'area-2' className the generated new className will be 'area-3'. When
-     * the element doesn't have any classNames than the base className will be returned ('area');
+     * the element doesn't have any classNames than the base className will be returned ('area');.
      *
-     * @param {String} baseClassName Base className to be used.
-     * @param {Number} layerLevelOwner Layer level which the instance of the Selection belongs to.
-     * @return {Function}
+     * @param {string} baseClassName Base className to be used.
+     * @param {number} layerLevelOwner Layer level which the instance of the Selection belongs to.
+     * @returns {Function}
      */
 
   }, {
@@ -245,7 +254,7 @@ function () {
       };
     }
     /**
-     * @param wotInstance
+     * @param {Walkontable} wotInstance The Walkontable instance.
      */
 
   }, {
@@ -269,73 +278,79 @@ function () {
           bottomRow = _corners[2],
           bottomColumn = _corners[3];
 
-      for (var column = 0; column < renderedColumns; column += 1) {
-        var sourceCol = wotInstance.wtTable.columnFilter.renderedToSource(column);
+      if (topColumn !== null && bottomColumn !== null) {
+        for (var column = 0; column < renderedColumns; column += 1) {
+          var sourceCol = wotInstance.wtTable.columnFilter.renderedToSource(column);
 
-        if (sourceCol >= topColumn && sourceCol <= bottomColumn) {
-          var TH = wotInstance.wtTable.getColumnHeader(sourceCol);
+          if (sourceCol >= topColumn && sourceCol <= bottomColumn) {
+            var TH = wotInstance.wtTable.getColumnHeader(sourceCol);
 
-          if (TH) {
-            var newClasses = [];
+            if (TH) {
+              var newClasses = [];
 
-            if (this.settings.highlightHeaderClassName) {
-              newClasses.push(this.settings.highlightHeaderClassName);
+              if (this.settings.highlightHeaderClassName) {
+                newClasses.push(this.settings.highlightHeaderClassName);
+              }
+
+              if (this.settings.highlightColumnClassName) {
+                newClasses.push(this.settings.highlightColumnClassName);
+              }
+
+              (0, _element.addClass)(TH, newClasses);
             }
-
-            if (this.settings.highlightColumnClassName) {
-              newClasses.push(this.settings.highlightColumnClassName);
-            }
-
-            (0, _element.addClass)(TH, newClasses);
           }
         }
       }
 
-      for (var row = 0; row < renderedRows; row += 1) {
-        var sourceRow = wotInstance.wtTable.rowFilter.renderedToSource(row);
+      if (topRow !== null && bottomRow !== null) {
+        for (var row = 0; row < renderedRows; row += 1) {
+          var sourceRow = wotInstance.wtTable.rowFilter.renderedToSource(row);
 
-        if (sourceRow >= topRow && sourceRow <= bottomRow) {
-          var _TH = wotInstance.wtTable.getRowHeader(sourceRow);
+          if (sourceRow >= topRow && sourceRow <= bottomRow) {
+            var _TH = wotInstance.wtTable.getRowHeader(sourceRow);
 
-          if (_TH) {
-            var _newClasses = [];
+            if (_TH) {
+              var _newClasses = [];
 
-            if (this.settings.highlightHeaderClassName) {
-              _newClasses.push(this.settings.highlightHeaderClassName);
-            }
+              if (this.settings.highlightHeaderClassName) {
+                _newClasses.push(this.settings.highlightHeaderClassName);
+              }
 
-            if (this.settings.highlightRowClassName) {
-              _newClasses.push(this.settings.highlightRowClassName);
-            }
+              if (this.settings.highlightRowClassName) {
+                _newClasses.push(this.settings.highlightRowClassName);
+              }
 
-            (0, _element.addClass)(_TH, _newClasses);
-          }
-        }
-
-        for (var _column = 0; _column < renderedColumns; _column += 1) {
-          var _sourceCol = wotInstance.wtTable.columnFilter.renderedToSource(_column);
-
-          if (sourceRow >= topRow && sourceRow <= bottomRow && _sourceCol >= topColumn && _sourceCol <= bottomColumn) {
-            // selected cell
-            if (this.settings.className) {
-              this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.className, this.settings.markIntersections);
-            }
-          } else if (sourceRow >= topRow && sourceRow <= bottomRow) {
-            // selection is in this row
-            if (this.settings.highlightRowClassName) {
-              this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.highlightRowClassName);
-            }
-          } else if (_sourceCol >= topColumn && _sourceCol <= bottomColumn) {
-            // selection is in this column
-            if (this.settings.highlightColumnClassName) {
-              this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.highlightColumnClassName);
+              (0, _element.addClass)(_TH, _newClasses);
             }
           }
 
-          var additionalSelectionClass = wotInstance.getSetting('onAfterDrawSelection', sourceRow, _sourceCol, corners, this.settings.layerLevel);
+          if (topColumn !== null && bottomColumn !== null) {
+            for (var _column = 0; _column < renderedColumns; _column += 1) {
+              var _sourceCol = wotInstance.wtTable.columnFilter.renderedToSource(_column);
 
-          if (typeof additionalSelectionClass === 'string') {
-            this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, additionalSelectionClass);
+              if (sourceRow >= topRow && sourceRow <= bottomRow && _sourceCol >= topColumn && _sourceCol <= bottomColumn) {
+                // selected cell
+                if (this.settings.className) {
+                  this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.className, this.settings.markIntersections);
+                }
+              } else if (sourceRow >= topRow && sourceRow <= bottomRow) {
+                // selection is in this row
+                if (this.settings.highlightRowClassName) {
+                  this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.highlightRowClassName);
+                }
+              } else if (_sourceCol >= topColumn && _sourceCol <= bottomColumn) {
+                // selection is in this column
+                if (this.settings.highlightColumnClassName) {
+                  this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.highlightColumnClassName);
+                }
+              }
+
+              var additionalSelectionClass = wotInstance.getSetting('onAfterDrawSelection', sourceRow, _sourceCol, this.settings.layerLevel);
+
+              if (typeof additionalSelectionClass === 'string') {
+                this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, additionalSelectionClass);
+              }
+            }
           }
         }
       }

@@ -12,9 +12,7 @@ import "core-js/modules/web.dom-collections.iterator";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _construct(Parent, args, Class) { if (isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22,15 +20,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 import { addClass, getScrollbarWidth, getScrollLeft, getWindowScrollTop, hasClass, outerWidth, removeClass, setOverlayPosition, resetCssTransform } from './../../../../helpers/dom/element';
 import LeftOverlayTable from './../table/left';
@@ -39,20 +41,20 @@ import Overlay from './_base';
  * @class LeftOverlay
  */
 
-var LeftOverlay =
-/*#__PURE__*/
-function (_Overlay) {
+var LeftOverlay = /*#__PURE__*/function (_Overlay) {
   _inherits(LeftOverlay, _Overlay);
 
+  var _super = _createSuper(LeftOverlay);
+
   /**
-   * @param {Walkontable} wotInstance
+   * @param {Walkontable} wotInstance The Walkontable instance.
    */
   function LeftOverlay(wotInstance) {
     var _this;
 
     _classCallCheck(this, LeftOverlay);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(LeftOverlay).call(this, wotInstance));
+    _this = _super.call(this, wotInstance);
     _this.clone = _this.makeClone(Overlay.CLONE_LEFT);
     return _this;
   }
@@ -60,7 +62,7 @@ function (_Overlay) {
    * Factory method to create a subclass of `Table` that is relevant to this overlay.
    *
    * @see Table#constructor
-   * @param {...*} args Parameters that will be forwarded to the `Table` constructor
+   * @param {...*} args Parameters that will be forwarded to the `Table` constructor.
    * @returns {Table}
    */
 
@@ -77,16 +79,18 @@ function (_Overlay) {
     /**
      * Checks if overlay should be fully rendered.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
     key: "shouldBeRendered",
     value: function shouldBeRendered() {
-      return !!(this.wot.getSetting('fixedColumnsLeft') || this.wot.getSetting('rowHeaders').length);
+      return this.wot.getSetting('shouldRenderLeftOverlay');
     }
     /**
      * Updates the left overlay position.
+     *
+     * @returns {boolean}
      */
 
   }, {
@@ -104,9 +108,9 @@ function (_Overlay) {
       var preventOverflow = this.wot.getSetting('preventOverflow');
 
       if (this.trimmingContainer === this.wot.rootWindow && (!preventOverflow || preventOverflow !== 'horizontal')) {
-        var box = wtTable.hider.getBoundingClientRect();
-        var left = Math.ceil(box.left);
-        var right = Math.ceil(box.right);
+        var hiderRect = wtTable.hider.getBoundingClientRect();
+        var left = Math.ceil(hiderRect.left);
+        var right = Math.ceil(hiderRect.right);
         var finalLeft;
         var finalTop;
         finalTop = wtTable.hider.style.top;
@@ -126,14 +130,15 @@ function (_Overlay) {
         resetCssTransform(overlayRoot);
       }
 
-      this.adjustHeaderBordersPosition(headerPosition);
+      var positionChanged = this.adjustHeaderBordersPosition(headerPosition);
       this.adjustElementsSize();
+      return positionChanged;
     }
     /**
      * Sets the main overlay's horizontal scroll position.
      *
-     * @param {Number} pos
-     * @returns {Boolean}
+     * @param {number} pos The scroll position.
+     * @returns {boolean}
      */
 
   }, {
@@ -164,9 +169,9 @@ function (_Overlay) {
     /**
      * Calculates total sum cells width.
      *
-     * @param {Number} from Column index which calculates started from.
-     * @param {Number} to Column index where calculation is finished.
-     * @returns {Number} Width sum.
+     * @param {number} from Column index which calculates started from.
+     * @param {number} to Column index where calculation is finished.
+     * @returns {number} Width sum.
      */
 
   }, {
@@ -186,7 +191,7 @@ function (_Overlay) {
     /**
      * Adjust overlay root element, childs and master table element sizes (width, height).
      *
-     * @param {Boolean} [force=false]
+     * @param {boolean} [force=false] When `true`, it adjusts the DOM nodes sizes for that overlay.
      */
 
   }, {
@@ -235,7 +240,7 @@ function (_Overlay) {
 
       this.clone.wtTable.holder.style.height = overlayRootStyle.height;
       var tableWidth = outerWidth(this.clone.wtTable.TABLE);
-      overlayRootStyle.width = "".concat(tableWidth === 0 ? tableWidth : tableWidth + 4, "px");
+      overlayRootStyle.width = "".concat(tableWidth, "px");
     }
     /**
      * Adjust overlay root childs size.
@@ -244,15 +249,16 @@ function (_Overlay) {
   }, {
     key: "adjustRootChildrenSize",
     value: function adjustRootChildrenSize() {
-      var scrollbarWidth = getScrollbarWidth(this.wot.rootDocument);
+      var _selections$getCell$g;
+
+      var holder = this.clone.wtTable.holder;
+      var selections = this.wot.selections;
+      var selectionCornerOffset = Math.abs((_selections$getCell$g = selections === null || selections === void 0 ? void 0 : selections.getCell().getBorder(this.wot).cornerCenterPointOffset) !== null && _selections$getCell$g !== void 0 ? _selections$getCell$g : 0);
       this.clone.wtTable.hider.style.height = this.hider.style.height;
-      this.clone.wtTable.holder.style.height = this.clone.wtTable.holder.parentNode.style.height;
+      holder.style.height = holder.parentNode.style.height; // Add selection corner protruding part to the holder total width to make sure that
+      // borders' corner won't be cut after horizontal scroll (#6937).
 
-      if (scrollbarWidth === 0) {
-        scrollbarWidth = 30;
-      }
-
-      this.clone.wtTable.holder.style.width = "".concat(parseInt(this.clone.wtTable.holder.parentNode.style.width, 10) + scrollbarWidth, "px");
+      holder.style.width = "".concat(parseInt(holder.parentNode.style.width, 10) + selectionCornerOffset, "px");
     }
     /**
      * Adjust the overlay dimensions and position.
@@ -297,9 +303,10 @@ function (_Overlay) {
     /**
      * Scrolls horizontally to a column at the left edge of the viewport.
      *
-     * @param {Number} sourceCol  Column index which you want to scroll to.
-     * @param {Boolean} [beyondRendered]  if `true`, scrolls according to the bottom edge (top edge is by default).
-     * @returns {Boolean}
+     * @param {number} sourceCol  Column index which you want to scroll to.
+     * @param {boolean} [beyondRendered]  If `true`, scrolls according to the bottom
+     *                                    edge (top edge is by default).
+     * @returns {boolean}
      */
 
   }, {
@@ -327,7 +334,7 @@ function (_Overlay) {
     /**
      * Gets table parent left position.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -345,7 +352,7 @@ function (_Overlay) {
     /**
      * Gets the main overlay's horizontal scroll position.
      *
-     * @returns {Number} Main table's vertical scroll position.
+     * @returns {number} Main table's vertical scroll position.
      */
 
   }, {
@@ -356,7 +363,8 @@ function (_Overlay) {
     /**
      * Adds css classes to hide the header border's header (cell-selection border hiding issue).
      *
-     * @param {Number} position Header X position if trimming container is window or scroll top if not.
+     * @param {number} position Header X position if trimming container is window or scroll top if not.
+     * @returns {boolean}
      */
 
   }, {
@@ -373,6 +381,8 @@ function (_Overlay) {
         addClass(masterParent, 'emptyRows');
       }
 
+      var positionChanged = false;
+
       if (fixedColumnsLeft && !rowHeaders.length) {
         addClass(masterParent, 'innerBorderLeft');
       } else if (!fixedColumnsLeft && rowHeaders.length) {
@@ -380,14 +390,14 @@ function (_Overlay) {
 
         if (position) {
           addClass(masterParent, 'innerBorderLeft');
+          positionChanged = !previousState;
         } else {
           removeClass(masterParent, 'innerBorderLeft');
-        }
-
-        if (!previousState && position || previousState && !position) {
-          this.wot.wtOverlays.adjustElementsSize();
+          positionChanged = previousState;
         }
       }
+
+      return positionChanged;
     }
   }]);
 

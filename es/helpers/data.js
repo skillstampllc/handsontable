@@ -1,13 +1,16 @@
+import "core-js/modules/es.array.for-each";
 import "core-js/modules/es.object.get-prototype-of";
+import "core-js/modules/es.object.keys";
+import "core-js/modules/web.dom-collections.for-each";
 import { getCellType } from './../cellTypes';
-import { hasOwnProperty } from './object';
+import { deepObjectSize, hasOwnProperty, isObject } from './object';
 var COLUMN_LABEL_BASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var COLUMN_LABEL_BASE_LENGTH = COLUMN_LABEL_BASE.length;
 /**
  * Generates spreadsheet-like column names: A, B, C, ..., Z, AA, AB, etc.
  *
- * @param {Number} index Column index.
- * @returns {String}
+ * @param {number} index Column index.
+ * @returns {string}
  */
 
 export function spreadsheetColumnLabel(index) {
@@ -26,8 +29,8 @@ export function spreadsheetColumnLabel(index) {
 /**
  * Generates spreadsheet-like column index from theirs labels: A, B, C ...., Z, AA, AB, etc.
  *
- * @param {String} label Column label.
- * @returns {Number}
+ * @param {string} label Column label.
+ * @returns {number}
  */
 
 export function spreadsheetColumnIndex(label) {
@@ -45,8 +48,8 @@ export function spreadsheetColumnIndex(label) {
 /**
  * Creates 2D array of Excel-like values "A1", "A2", ...
  *
- * @param {Number} rows Number of rows to generate.
- * @param {Number} columns Number of columns to generate.
+ * @param {number} rows Number of rows to generate.
+ * @param {number} columns Number of columns to generate.
  * @returns {Array}
  */
 
@@ -72,8 +75,8 @@ export function createSpreadsheetData() {
 /**
  * Creates 2D array of Excel-like values "A1", "A2", as an array of objects.
  *
- * @param {Number} rows Number of rows to generate.
- * @param {Number} colCount Number of columns to generate.
+ * @param {number} rows Number of rows to generate.
+ * @param {number} colCount Number of columns to generate.
  * @returns {Array}
  */
 
@@ -99,8 +102,8 @@ export function createSpreadsheetObjectData() {
 /**
  * Generates an empty data object.
  *
- * @param {Number} rows Number of rows to generate.
- * @param {Number} columns Number of columns to generate
+ * @param {number} rows Number of rows to generate.
+ * @param {number} columns Number of columns to generate.
  * @returns {Array}
  */
 
@@ -120,6 +123,11 @@ export function createEmptySpreadsheetData(rows, columns) {
 
   return data;
 }
+/**
+ * @param {Array} input The data to translate.
+ * @returns {Array}
+ */
+
 export function translateRowsToColumns(input) {
   var output = [];
   var i;
@@ -154,8 +162,8 @@ export function translateRowsToColumns(input) {
  * it reaches the Object.prototype.
  *
  *
- * @param methodName {String} name of the method/property to search (i.e. 'renderer', 'validator', 'copyable')
- * @param allowUndefined {Boolean} [optional] if false, the search is continued if methodName has not been found in cell "type"
+ * @param {string} methodName Name of the method/property to search (i.e. 'renderer', 'validator', 'copyable').
+ * @param {boolean} [allowUndefined] If `false`, the search is continued if methodName has not been found in cell "type".
  * @returns {Function}
  */
 
@@ -164,14 +172,16 @@ export function cellMethodLookupFactory(methodName, allowUndefined) {
   return function cellMethodLookup(row, col) {
     return function getMethodFromProperties(properties) {
       if (!properties) {
-        return; // method not found
-      } else if (hasOwnProperty(properties, methodName) && properties[methodName] !== void 0) {
+        return; // method or property not found
+      }
+
+      if (hasOwnProperty(properties, methodName) && properties[methodName] !== void 0) {
         // check if it is own and is not empty
         return properties[methodName]; // method defined directly
       } else if (hasOwnProperty(properties, 'type') && properties.type) {
         // check if it is own and is not empty
         if (typeof properties.type !== 'string') {
-          throw new Error('Cell type must be a string ');
+          throw new Error('Cell "type" must be a string');
         }
 
         var type = getCellType(properties.type);
@@ -186,4 +196,55 @@ export function cellMethodLookupFactory(methodName, allowUndefined) {
       return getMethodFromProperties(Object.getPrototypeOf(properties));
     }(typeof row === 'number' ? this.getCellMeta(row, col) : row);
   };
+}
+/**
+ * Transform a data row (either an array or an object) or an array of data rows to array of changes in a form of `[row, prop/col, value]`.
+ * Convenient to use with `setDataAtRowProp` and `setSourceDataAtCell` methods.
+ *
+ * @param {Array|object} dataRow Object of row data, array of row data or an array of either.
+ * @param {number} rowOffset Row offset to be passed to the resulting change list. Defaults to `0`.
+ * @returns {Array} Array of changes (in a form of an array).
+ */
+
+export function dataRowToChangesArray(dataRow) {
+  var rowOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  var dataRows = dataRow;
+  var changesArray = [];
+
+  if (!Array.isArray(dataRow) || !Array.isArray(dataRow[0])) {
+    dataRows = [dataRow];
+  }
+
+  dataRows.forEach(function (row, rowIndex) {
+    if (Array.isArray(row)) {
+      row.forEach(function (value, column) {
+        changesArray.push([rowIndex + rowOffset, column, value]);
+      });
+    } else {
+      Object.keys(row).forEach(function (propName) {
+        changesArray.push([rowIndex + rowOffset, propName, row[propName]]);
+      });
+    }
+  });
+  return changesArray;
+}
+/**
+ * Count the number of keys (or, basically, columns when the data is an array or arrays) in the first row of the provided dataset.
+ *
+ * @param {Array} data The dataset.
+ * @returns {number} Number of keys in the first row of the dataset.
+ */
+
+export function countFirstRowKeys(data) {
+  var result = 0;
+
+  if (Array.isArray(data)) {
+    if (data[0] && Array.isArray(data[0])) {
+      result = data[0].length;
+    } else if (data[0] && isObject(data[0])) {
+      result = deepObjectSize(data[0]);
+    }
+  }
+
+  return result;
 }

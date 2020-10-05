@@ -13,9 +13,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var GhostTable =
-/*#__PURE__*/
-function () {
+var GhostTable = /*#__PURE__*/function () {
   function GhostTable(plugin) {
     _classCallCheck(this, GhostTable);
 
@@ -55,6 +53,7 @@ function () {
       this.nestedHeaders.hot.rootElement.appendChild(this.container);
       var columns = this.container.querySelectorAll('tr:last-of-type th');
       var maxColumns = columns.length;
+      this.widthsCache.length = 0;
 
       for (var i = 0; i < maxColumns; i++) {
         this.widthsCache.push(columns[i].offsetWidth);
@@ -68,7 +67,7 @@ function () {
      * Build temporary table for getting minimal columns widths.
      *
      * @private
-     * @param {HTMLElement} container
+     * @param {HTMLElement} container The element where the DOM nodes are injected.
      */
 
   }, {
@@ -79,7 +78,7 @@ function () {
       var table = rootDocument.createElement('table');
       var lastRowColspan = false;
       var isDropdownEnabled = !!this.nestedHeaders.hot.getSettings().dropdownMenu;
-      var maxRows = this.nestedHeaders.colspanArray.length;
+      var maxRows = this.nestedHeaders.getLayersCount();
       var maxCols = this.nestedHeaders.hot.countCols();
       var lastRowIndex = maxRows - 1;
 
@@ -89,9 +88,9 @@ function () {
 
         for (var col = 0; col < maxCols; col++) {
           var td = rootDocument.createElement('th');
-          var headerObj = (0, _object.clone)(this.nestedHeaders.colspanArray[row][col]);
+          var headerObj = (0, _object.clone)(this.nestedHeaders.getHeaderSettings(row, col));
 
-          if (headerObj && !headerObj.hidden) {
+          if (headerObj && !headerObj.isHidden) {
             if (row === lastRowIndex) {
               if (headerObj.colspan > 1) {
                 lastRowColspan = true;

@@ -12,14 +12,14 @@ var MIXIN_NAME = 'calculatedColumns';
  * This mixin is meant to be applied in the subclasses of `Table`
  * that use virtual rendering in the horizontal axis.
  *
- * @type {Object}
+ * @type {object}
  */
 
 var calculatedColumns = {
   /**
    * Get the source index of the first rendered column. If no columns are rendered, returns an error code: -1.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   getFirstRenderedColumn: function getFirstRenderedColumn() {
     var startColumn = this.wot.wtViewport.columnsRenderCalculator.startColumn;
@@ -34,7 +34,7 @@ var calculatedColumns = {
   /**
    * Get the source index of the first column fully visible in the viewport. If no columns are fully visible, returns an error code: -1.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   getFirstVisibleColumn: function getFirstVisibleColumn() {
     var startColumn = this.wot.wtViewport.columnsVisibleCalculator.startColumn;
@@ -49,7 +49,7 @@ var calculatedColumns = {
   /**
    * Get the source index of the last rendered column. If no columns are rendered, returns an error code: -1.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   getLastRenderedColumn: function getLastRenderedColumn() {
     var endColumn = this.wot.wtViewport.columnsRenderCalculator.endColumn;
@@ -64,7 +64,7 @@ var calculatedColumns = {
   /**
    * Get the source index of the last column fully visible in the viewport. If no columns are fully visible, returns an error code: -1.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   getLastVisibleColumn: function getLastVisibleColumn() {
     var endColumn = this.wot.wtViewport.columnsVisibleCalculator.endColumn;
@@ -79,7 +79,7 @@ var calculatedColumns = {
   /**
    * Get the number of rendered columns.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   getRenderedColumnsCount: function getRenderedColumnsCount() {
     return this.wot.wtViewport.columnsRenderCalculator.count;
@@ -88,7 +88,7 @@ var calculatedColumns = {
   /**
    * Get the number of fully visible columns in the viewport.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   getVisibleColumnsCount: function getVisibleColumnsCount() {
     return this.wot.wtViewport.columnsVisibleCalculator.count;

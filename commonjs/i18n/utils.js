@@ -12,7 +12,7 @@ exports.__esModule = true;
 exports.extendNotExistingKeys = extendNotExistingKeys;
 exports.createCellHeadersRange = createCellHeadersRange;
 exports.normalizeLanguageCode = normalizeLanguageCode;
-exports.applyLanguageSetting = applyLanguageSetting;
+exports.getValidLanguageCode = getValidLanguageCode;
 exports.warnUserAboutLanguageRegistration = warnUserAboutLanguageRegistration;
 
 var _mixed = require("./../helpers/mixed");
@@ -26,7 +26,7 @@ var _templateLiteralTag = require("./../helpers/templateLiteralTag");
 var _dictionariesManager = require("./dictionariesManager");
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["Language with code \"", "\" was not found. You should register particular language \n    before using it. Read more about this issue at: https://handsontable.com/docs/i18n/missing-language-code."]);
+  var data = _taggedTemplateLiteral(["Language with code \"", "\" was not found. You should register particular language \n    before using it. Read more about this issue at: https://docs.handsontable.com/i18n/missing-language-code."], ["Language with code \"", "\" was not found. You should register particular language\\x20\n    before using it. Read more about this issue at: https://docs.handsontable.com/i18n/missing-language-code."]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -40,10 +40,12 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 /**
  * Perform shallow extend of a target object with only this extension's properties which doesn't exist in the target.
  *
- * @param {Object} target An object that will receive the new properties.
- * @param {Object} extension An object containing additional properties to merge into the target.
+ * TODO: Maybe it should be moved to global helpers? It's changed `extend` function.
+ *
+ * @param {object} target An object that will receive the new properties.
+ * @param {object} extension An object containing additional properties to merge into the target.
+ * @returns {object}
  */
-// TODO: Maybe it should be moved to global helpers? It's changed `extend` function.
 function extendNotExistingKeys(target, extension) {
   (0, _object.objectEach)(extension, function (value, key) {
     if ((0, _mixed.isUndefined)(target[key])) {
@@ -58,13 +60,13 @@ function extendNotExistingKeys(target, extension) {
  * createCellHeadersRange(2, 7) => `2-7`
  * createCellHeadersRange(7, 2) => `2-7`
  * createCellHeadersRange(0, 4, 'A', 'D') => `A-D`
- * createCellHeadersRange(4, 0, 'D', 'A') => `A-D`
+ * createCellHeadersRange(4, 0, 'D', 'A') => `A-D`.
  *
- * @param {number} firstRowIndex Index of "first" cell
- * @param {number} nextRowIndex Index of "next" cell
- * @param {*} fromValue Value which will represent "first" cell
- * @param {*} toValue Value which will represent "next" cell
- * @returns {String} Value representing range i.e. A-Z, 11-15.
+ * @param {number} firstRowIndex Index of "first" cell.
+ * @param {number} nextRowIndex Index of "next" cell.
+ * @param {*} fromValue Value which will represent "first" cell.
+ * @param {*} toValue Value which will represent "next" cell.
+ * @returns {string} Value representing range i.e. A-Z, 11-15.
  */
 
 
@@ -85,10 +87,10 @@ function createCellHeadersRange(firstRowIndex, nextRowIndex) {
 }
 /**
  * Normalize language code. It takes handled languageCode proposition and change it to proper languageCode.
- * For example, when it takes `eN-us` as parameter it return `en-US`
+ * For example, when it takes `eN-us` as parameter it return `en-US`.
  *
- * @param {String} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
- * @returns {String}
+ * @param {string} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
+ * @returns {string}
  */
 
 
@@ -103,29 +105,28 @@ function normalizeLanguageCode(languageCode) {
   return languageCode;
 }
 /**
- * Set proper start language code. User may set language code which is not proper.
+ * Returns valid language code. If the passed language code doesn't exist default one will be used.
  *
- * @param {Object} settings Settings object.
- * @param {String} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
- * @returns {String}
+ * @param {string} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
+ * @returns {string}
  */
 
 
-function applyLanguageSetting(settings, languageCode) {
+function getValidLanguageCode(languageCode) {
   var normalizedLanguageCode = normalizeLanguageCode(languageCode);
 
-  if ((0, _dictionariesManager.hasLanguageDictionary)(normalizedLanguageCode)) {
-    settings.language = normalizedLanguageCode;
-  } else {
-    settings.language = _dictionariesManager.DEFAULT_LANGUAGE_CODE;
+  if (!(0, _dictionariesManager.hasLanguageDictionary)(normalizedLanguageCode)) {
+    normalizedLanguageCode = _dictionariesManager.DEFAULT_LANGUAGE_CODE;
     warnUserAboutLanguageRegistration(languageCode);
   }
+
+  return normalizedLanguageCode;
 }
 /**
  *
  * Warn user if there is no registered language.
  *
- * @param {String} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
+ * @param {string} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
  */
 
 

@@ -12,11 +12,9 @@ import { RENDER_TYPE, FULLY_VISIBLE_TYPE, ViewportColumnsCalculator, ViewportRow
  * @class Viewport
  */
 
-var Viewport =
-/*#__PURE__*/
-function () {
+var Viewport = /*#__PURE__*/function () {
   /**
-   * @param wotInstance
+   * @param {Walkontable} wotInstance The Walkontable instance.
    */
   function Viewport(wotInstance) {
     var _this = this;
@@ -113,9 +111,9 @@ function () {
       return width;
     }
     /**
-     * Checks if viewport has vertical scroll
+     * Checks if viewport has vertical scroll.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -124,9 +122,9 @@ function () {
       return this.getWorkspaceActualHeight() > this.getWorkspaceHeight();
     }
     /**
-     * Checks if viewport has horizontal scroll
+     * Checks if viewport has horizontal scroll.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -135,9 +133,9 @@ function () {
       return this.getWorkspaceActualWidth() > this.getWorkspaceWidth();
     }
     /**
-     * @param from
-     * @param length
-     * @returns {Number}
+     * @param {number} from The visual column index from the width sum is start calculated.
+     * @param {number} length The length of the column to traverse.
+     * @returns {number}
      */
 
   }, {
@@ -155,7 +153,7 @@ function () {
       return sum;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -176,7 +174,7 @@ function () {
       return fillWidth;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -185,7 +183,7 @@ function () {
       return offset(this.wot.wtTable.TABLE);
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -194,7 +192,7 @@ function () {
       return outerHeight(this.wot.wtTable.TABLE);
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -204,7 +202,7 @@ function () {
       return outerWidth(wtTable.TABLE) || outerWidth(wtTable.TBODY) || outerWidth(wtTable.THEAD); // IE8 reports 0 as <table> offsetWidth;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -221,7 +219,7 @@ function () {
       return this.columnHeaderHeight;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -242,7 +240,7 @@ function () {
       return containerHeight;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -287,7 +285,7 @@ function () {
       return this.rowHeaderWidth;
     }
     /**
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -309,9 +307,11 @@ function () {
     }
     /**
      * Creates:
-     *  - rowsRenderCalculator (before draw, to qualify rows for rendering)
-     *  - rowsVisibleCalculator (after draw, to measure which rows are actually visible)
+     * - rowsRenderCalculator (before draw, to qualify rows for rendering)
+     * - rowsVisibleCalculator (after draw, to measure which rows are actually visible).
      *
+     * @param {number} calculationType The render type ID, which determines for what type of
+     *                                 calculation calculator is created.
      * @returns {ViewportRowsCalculator}
      */
 
@@ -376,9 +376,11 @@ function () {
     }
     /**
      * Creates:
-     *  - columnsRenderCalculator (before draw, to qualify columns for rendering)
-     *  - columnsVisibleCalculator (after draw, to measure which columns are actually visible)
+     * - columnsRenderCalculator (before draw, to qualify columns for rendering)
+     * - columnsVisibleCalculator (after draw, to measure which columns are actually visible).
      *
+     * @param {number} calculationType The render type ID, which determines for what type of
+     *                                 calculation calculator is created.
      * @returns {ViewportRowsCalculator}
      */
 
@@ -428,11 +430,11 @@ function () {
     }
     /**
      * Creates rowsRenderCalculator and columnsRenderCalculator (before draw, to determine what rows and
-     * cols should be rendered)
+     * cols should be rendered).
      *
-     * @param fastDraw {Boolean} If `true`, will try to avoid full redraw and only update the border positions.
-     *                           If `false` or `undefined`, will perform a full redraw
-     * @returns fastDraw {Boolean} The fastDraw value, possibly modified
+     * @param {boolean} fastDraw If `true`, will try to avoid full redraw and only update the border positions.
+     *                           If `false` or `undefined`, will perform a full redraw.
+     * @returns {boolean} The fastDraw value, possibly modified.
      */
 
   }, {
@@ -462,7 +464,7 @@ function () {
     }
     /**
      * Creates rowsVisibleCalculator and columnsVisibleCalculator (after draw, to determine what are
-     * the actually fully visible rows and columns)
+     * the actually fully visible rows and columns).
      */
 
   }, {
@@ -473,11 +475,11 @@ function () {
     }
     /**
      * Returns information whether proposedRowsVisibleCalculator viewport
-     * is contained inside rows rendered in previous draw (cached in rowsRenderCalculator)
+     * is contained inside rows rendered in previous draw (cached in rowsRenderCalculator).
      *
-     * @param {Object} proposedRowsVisibleCalculator
-     * @returns {Boolean} Returns `true` if all proposed visible rows are already rendered (meaning: redraw is not needed).
-     *                    Returns `false` if at least one proposed visible row is not already rendered (meaning: redraw is needed)
+     * @param {ViewportRowsCalculator} proposedRowsVisibleCalculator The instance of the viewport calculator to compare with.
+     * @returns {boolean} Returns `true` if all proposed visible rows are already rendered (meaning: redraw is not needed).
+     *                    Returns `false` if at least one proposed visible row is not already rendered (meaning: redraw is needed).
      */
 
   }, {
@@ -503,11 +505,11 @@ function () {
     }
     /**
      * Returns information whether proposedColumnsVisibleCalculator viewport
-     * is contained inside column rendered in previous draw (cached in columnsRenderCalculator)
+     * is contained inside column rendered in previous draw (cached in columnsRenderCalculator).
      *
-     * @param {Object} proposedColumnsVisibleCalculator
-     * @returns {Boolean} Returns `true` if all proposed visible columns are already rendered (meaning: redraw is not needed).
-     *                    Returns `false` if at least one proposed visible column is not already rendered (meaning: redraw is needed)
+     * @param {ViewportRowsCalculator} proposedColumnsVisibleCalculator The instance of the viewport calculator to compare with.
+     * @returns {boolean} Returns `true` if all proposed visible columns are already rendered (meaning: redraw is not needed).
+     *                    Returns `false` if at least one proposed visible column is not already rendered (meaning: redraw is needed).
      */
 
   }, {

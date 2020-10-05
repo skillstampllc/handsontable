@@ -16,7 +16,11 @@ require("core-js/modules/es.array.includes");
 
 require("core-js/modules/es.array.iterator");
 
+require("core-js/modules/es.array.slice");
+
 require("core-js/modules/es.array.splice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.get-own-property-descriptor");
 
@@ -25,6 +29,8 @@ require("core-js/modules/es.object.get-prototype-of");
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.reflect.get");
 
@@ -75,21 +81,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -97,19 +107,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 _pluginHooks.default.getSingleton().register('beforeMergeCells');
 
@@ -139,17 +153,17 @@ var privatePool = new WeakMap();
  * ```
  */
 
-var MergeCells =
-/*#__PURE__*/
-function (_BasePlugin) {
+var MergeCells = /*#__PURE__*/function (_BasePlugin) {
   _inherits(MergeCells, _BasePlugin);
+
+  var _super = _createSuper(MergeCells);
 
   function MergeCells(hotInstance) {
     var _this;
 
     _classCallCheck(this, MergeCells);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MergeCells).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     privatePool.set(_assertThisInitialized(_this), {
       lastDesiredCoords: null
     });
@@ -183,7 +197,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link MergeCells#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -225,6 +239,12 @@ function (_BasePlugin) {
       });
       this.addHook('modifyGetCellCoords', function () {
         return _this2.onModifyGetCellCoords.apply(_this2, arguments);
+      });
+      this.addHook('beforeSetRangeStart', function () {
+        return _this2.onBeforeSetRangeStart.apply(_this2, arguments);
+      });
+      this.addHook('beforeSetRangeStartOnly', function () {
+        return _this2.onBeforeSetRangeStart.apply(_this2, arguments);
       });
       this.addHook('beforeSetRangeEnd', function () {
         return _this2.onBeforeSetRangeEnd.apply(_this2, arguments);
@@ -307,8 +327,8 @@ function (_BasePlugin) {
      * Validates a single setting object, represented by a single merged cell information object.
      *
      * @private
-     * @param {Object} setting An object with `row`, `col`, `rowspan` and `colspan` properties.
-     * @return {Boolean}
+     * @param {object} setting An object with `row`, `col`, `rowspan` and `colspan` properties.
+     * @returns {boolean}
      */
 
   }, {
@@ -340,7 +360,7 @@ function (_BasePlugin) {
      * Generates the merged cells from the settings provided to the plugin.
      *
      * @private
-     * @param {Array|Boolean} settings The settings provided to the plugin.
+     * @param {Array|boolean} settings The settings provided to the plugin.
      */
 
   }, {
@@ -376,7 +396,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} populationArgumentsList Array in a form of `[row, column, dataUnderCollection]`.
-     * @return {Array} Array in a form of `[row, column, dataOfAllCollections]`.
+     * @returns {Array} Array in a form of `[row, column, dataOfAllCollections]`.
      */
 
   }, {
@@ -397,18 +417,18 @@ function (_BasePlugin) {
 
         (0, _array.arrayEach)(mergedCellData, function (mergedCellRow, rowIndex) {
           (0, _array.arrayEach)(mergedCellRow, function (mergedCellElement, columnIndex) {
-            newDataAtRange[mergedCellRowIndex - populationDataRange[0] + rowIndex][mergedCellColumnIndex - populationDataRange[1] + columnIndex] = mergedCellElement;
+            newDataAtRange[mergedCellRowIndex - populationDataRange[0] + rowIndex][mergedCellColumnIndex - populationDataRange[1] + columnIndex] = mergedCellElement; // eslint-disable-line max-len
           });
         });
       });
       return [populationDataRange[0], populationDataRange[1], newDataAtRange];
     }
     /**
-     * Gets the range of combined data ranges provided in a form of an array of arrays ([row, column, dataUnderCollection])
+     * Gets the range of combined data ranges provided in a form of an array of arrays ([row, column, dataUnderCollection]).
      *
      * @private
      * @param {Array} populationArgumentsList Array containing argument lists for the `populateFromArray` method - row, column and data for population.
-     * @return {Array[]} Start and end coordinates of the merged cell range. (in a form of [rowIndex, columnIndex])
+     * @returns {Array[]} Start and end coordinates of the merged cell range. (in a form of [rowIndex, columnIndex]).
      */
 
   }, {
@@ -443,9 +463,9 @@ function (_BasePlugin) {
      * Returns `true` if a range is mergeable.
      *
      * @private
-     * @param {Object} newMergedCellInfo Merged cell information object to test.
-     * @param {Boolean} [auto=false] `true` if triggered at initialization.
-     * @returns {Boolean}
+     * @param {object} newMergedCellInfo Merged cell information object to test.
+     * @param {boolean} [auto=false] `true` if triggered at initialization.
+     * @returns {boolean}
      */
 
   }, {
@@ -522,9 +542,9 @@ function (_BasePlugin) {
      *
      * @private
      * @param {CellRange} cellRange Cell range to merge.
-     * @param {Boolean} [auto=false] `true` if is called automatically, e.g. at initialization.
-     * @param {Boolean} [preventPopulation=false] `true`, if the method should not run `populateFromArray` at the end, but rather return its arguments.
-     * @returns {Array|Boolean} Returns an array of [row, column, dataUnderCollection] if preventPopulation is set to true. If the the merging process went successful, it returns `true`, otherwise - `false`.
+     * @param {boolean} [auto=false] `true` if is called automatically, e.g. At initialization.
+     * @param {boolean} [preventPopulation=false] `true`, if the method should not run `populateFromArray` at the end, but rather return its arguments.
+     * @returns {Array|boolean} Returns an array of [row, column, dataUnderCollection] if preventPopulation is set to true. If the the merging process went successful, it returns `true`, otherwise - `false`.
      * @fires Hooks#beforeMergeCells
      * @fires Hooks#afterMergeCells
      */
@@ -590,7 +610,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {CellRange} cellRange Selection cell range.
-     * @param {Boolean} [auto=false] `true` if called automatically by the plugin.
+     * @param {boolean} [auto=false] `true` if called automatically by the plugin.
      *
      * @fires Hooks#beforeUnmergeCells
      * @fires Hooks#afterUnmergeCells
@@ -645,10 +665,10 @@ function (_BasePlugin) {
     /**
      * Merges the specified range.
      *
-     * @param {Number} startRow Start row of the merged cell.
-     * @param {Number} startColumn Start column of the merged cell.
-     * @param {Number} endRow End row of the merged cell.
-     * @param {Number} endColumn End column of the merged cell.
+     * @param {number} startRow Start row of the merged cell.
+     * @param {number} startColumn Start column of the merged cell.
+     * @param {number} endRow End row of the merged cell.
+     * @param {number} endColumn End column of the merged cell.
      * @fires Hooks#beforeMergeCells
      * @fires Hooks#afterMergeCells
      */
@@ -663,10 +683,10 @@ function (_BasePlugin) {
     /**
      * Unmerges the merged cell in the provided range.
      *
-     * @param {Number} startRow Start row of the merged cell.
-     * @param {Number} startColumn Start column of the merged cell.
-     * @param {Number} endRow End row of the merged cell.
-     * @param {Number} endColumn End column of the merged cell.
+     * @param {number} startRow Start row of the merged cell.
+     * @param {number} startColumn Start column of the merged cell.
+     * @param {number} endRow End row of the merged cell.
+     * @param {number} endColumn End column of the merged cell.
      * @fires Hooks#beforeUnmergeCells
      * @fires Hooks#afterUnmergeCells
      */
@@ -713,8 +733,8 @@ function (_BasePlugin) {
      * Modifies the information on whether the current selection contains multiple cells. The `afterIsMultipleSelection` hook callback.
      *
      * @private
-     * @param {Boolean} isMultiple
-     * @returns {Boolean}
+     * @param {boolean} isMultiple Determines whether the current selection contains multiple cells.
+     * @returns {boolean}
      */
 
   }, {
@@ -725,7 +745,7 @@ function (_BasePlugin) {
         var selectionRange = this.hot.getSelectedRangeLast();
 
         for (var group = 0; group < mergedCells.length; group += 1) {
-          if (selectionRange.highlight.row === mergedCells[group].row && selectionRange.highlight.col === mergedCells[group].col && selectionRange.to.row === mergedCells[group].row + mergedCells[group].rowspan - 1 && selectionRange.to.col === mergedCells[group].col + mergedCells[group].colspan - 1) {
+          if (selectionRange.from.row === mergedCells[group].row && selectionRange.from.col === mergedCells[group].col && selectionRange.to.row === mergedCells[group].row + mergedCells[group].rowspan - 1 && selectionRange.to.col === mergedCells[group].col + mergedCells[group].colspan - 1) {
             return false;
           }
         }
@@ -737,7 +757,7 @@ function (_BasePlugin) {
      * `modifyTransformStart` hook callback.
      *
      * @private
-     * @param {Object} delta The transformation delta.
+     * @param {object} delta The transformation delta.
      */
 
   }, {
@@ -788,14 +808,15 @@ function (_BasePlugin) {
       }
 
       nextPosition = new _src.CellCoords(currentlySelectedRange.highlight.row + newDelta.row, currentlySelectedRange.highlight.col + newDelta.col);
-      var nextParentIsMerged = this.mergedCellsCollection.get(nextPosition.row, nextPosition.col);
+      var nextPositionMergedCell = this.mergedCellsCollection.get(nextPosition.row, nextPosition.col);
 
-      if (nextParentIsMerged) {
+      if (nextPositionMergedCell) {
         // skipping the invisible cells in the merge range
+        var firstRenderableCoords = this.mergedCellsCollection.getFirstRenderableCoords(nextPositionMergedCell.row, nextPositionMergedCell.col);
         priv.lastDesiredCoords = nextPosition;
         newDelta = {
-          row: nextParentIsMerged.row - currentPosition.row,
-          col: nextParentIsMerged.col - currentPosition.col
+          row: firstRenderableCoords.row - currentPosition.row,
+          col: firstRenderableCoords.col - currentPosition.col
         };
       }
 
@@ -811,7 +832,7 @@ function (_BasePlugin) {
      * `modifyTransformEnd` hook callback. Needed to handle "jumping over" merged merged cells, while selecting.
      *
      * @private
-     * @param {Object} delta The transformation delta.
+     * @param {object} delta The transformation delta.
      */
 
   }, {
@@ -840,22 +861,37 @@ function (_BasePlugin) {
      * `modifyGetCellCoords` hook callback. Swaps the `getCell` coords with the merged parent coords.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
-     * @returns {Array}
+     * @param {number} row Row index.
+     * @param {number} column Visual column index.
+     * @returns {Array|undefined} Visual coordinates of the merge.
      */
 
   }, {
     key: "onModifyGetCellCoords",
     value: function onModifyGetCellCoords(row, column) {
+      if (row < 0 || column < 0) {
+        return;
+      }
+
       var mergeParent = this.mergedCellsCollection.get(row, column);
-      return mergeParent ? [mergeParent.row, mergeParent.col, mergeParent.row + mergeParent.rowspan - 1, mergeParent.col + mergeParent.colspan - 1] : void 0;
+
+      if (!mergeParent) {
+        return;
+      }
+
+      var mergeRow = mergeParent.row,
+          mergeColumn = mergeParent.col,
+          colspan = mergeParent.colspan,
+          rowspan = mergeParent.rowspan;
+      return [// Most top-left merged cell coords.
+      mergeRow, mergeColumn, // Most bottom-right merged cell coords.
+      mergeRow + rowspan - 1, mergeColumn + colspan - 1];
     }
     /**
      * `afterContextMenuDefaultOptions` hook callback.
      *
      * @private
-     * @param {Object} defaultOptions The default context menu options.
+     * @param {object} defaultOptions The default context menu options.
      */
 
   }, {
@@ -870,22 +906,80 @@ function (_BasePlugin) {
      *
      * @private
      * @param {HTMLElement} TD The cell to be modified.
-     * @param {Number} row Row index.
-     * @param {Number} col Column index.
+     * @param {number} row Row index.
+     * @param {number} col Visual column index.
      */
 
   }, {
     key: "onAfterRenderer",
     value: function onAfterRenderer(TD, row, col) {
-      var mergedCell = this.mergedCellsCollection.get(row, col);
-      (0, _utils.applySpanProperties)(TD, mergedCell, row, col);
+      var mergedCell = this.mergedCellsCollection.get(row, col); // We shouldn't override data in the collection.
+
+      var mergedCellCopy = (0, _object.isObject)(mergedCell) ? (0, _object.clone)(mergedCell) : void 0;
+
+      if ((0, _object.isObject)(mergedCellCopy)) {
+        var _this$hot3 = this.hot,
+            rowMapper = _this$hot3.rowIndexMapper,
+            columnMapper = _this$hot3.columnIndexMapper;
+        var mergeRow = mergedCellCopy.row,
+            mergeColumn = mergedCellCopy.col,
+            colspan = mergedCellCopy.colspan,
+            rowspan = mergedCellCopy.rowspan;
+
+        var _this$translateMerged = this.translateMergedCellToRenderable(mergeRow, rowspan, mergeColumn, colspan),
+            _this$translateMerged2 = _slicedToArray(_this$translateMerged, 2),
+            lastMergedRowIndex = _this$translateMerged2[0],
+            lastMergedColumnIndex = _this$translateMerged2[1];
+
+        var renderedRowIndex = rowMapper.getRenderableFromVisualIndex(row);
+        var renderedColumnIndex = columnMapper.getRenderableFromVisualIndex(col);
+        var maxRowSpan = lastMergedRowIndex - renderedRowIndex + 1; // Number of rendered columns.
+
+        var maxColSpan = lastMergedColumnIndex - renderedColumnIndex + 1; // Number of rendered columns.
+        // We just try to determine some values basing on the actual number of rendered indexes (some columns may be hidden).
+
+        mergedCellCopy.row = rowMapper.getFirstNotHiddenIndex(mergedCellCopy.row, 1); // We just try to determine some values basing on the actual number of rendered indexes (some columns may be hidden).
+
+        mergedCellCopy.col = columnMapper.getFirstNotHiddenIndex(mergedCellCopy.col, 1); // The `rowSpan` property for a `TD` element should be at most equal to number of rendered rows in the merge area.
+
+        mergedCellCopy.rowspan = Math.min(mergedCellCopy.rowspan, maxRowSpan); // The `colSpan` property for a `TD` element should be at most equal to number of rendered columns in the merge area.
+
+        mergedCellCopy.colspan = Math.min(mergedCellCopy.colspan, maxColSpan);
+      }
+
+      (0, _utils.applySpanProperties)(TD, mergedCellCopy, row, col);
+    }
+    /**
+     * `beforeSetRangeStart` and `beforeSetRangeStartOnly` hook callback.
+     * A selection within merge area should be rewritten to the start of merge area.
+     *
+     * @private
+     * @param {object} coords Cell coords.
+     */
+
+  }, {
+    key: "onBeforeSetRangeStart",
+    value: function onBeforeSetRangeStart(coords) {
+      // TODO: It is a workaround, but probably this hook may be needed. Every selection on the merge area
+      // could set start point of the selection to the start of the merge area. However, logic inside `expandByRange` need
+      // an initial start point. Click on the merge cell when there are some hidden indexes break the logic in some cases.
+      // Please take a look at #7010 for more information. I'm not sure if selection directions are calculated properly
+      // and what was idea for flipping direction inside `expandByRange` method.
+      if (this.mergedCellsCollection.isFirstRenderableMergedCell(coords.row, coords.col)) {
+        var mergeParent = this.mergedCellsCollection.get(coords.row, coords.col);
+        var _ref = [mergeParent.row, mergeParent.col];
+        coords.row = _ref[0];
+        coords.col = _ref[1];
+      }
     }
     /**
      * `beforeSetRangeEnd` hook callback.
-     * While selecting cells with keyboard or mouse, make sure that rectangular area is expanded to the extent of the merged cell
+     * While selecting cells with keyboard or mouse, make sure that rectangular area is expanded to the extent of the merged cell.
+     *
+     * Note: Please keep in mind that callback may modify both start and end range coordinates by the reference.
      *
      * @private
-     * @param {Object} coords Cell coords.
+     * @param {object} coords Cell coords.
      */
 
   }, {
@@ -920,9 +1014,9 @@ function (_BasePlugin) {
      * The `afterGetCellMeta` hook callback.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} col Column index.
-     * @param {Object} cellProperties The cell properties object.
+     * @param {number} row Row index.
+     * @param {number} col Column index.
+     * @param {object} cellProperties The cell properties object.
      */
 
   }, {
@@ -943,75 +1037,197 @@ function (_BasePlugin) {
      * `afterViewportRowCalculatorOverride` hook callback.
      *
      * @private
-     * @param {Object} calc The row calculator object.
+     * @param {object} calc The row calculator object.
      */
 
   }, {
     key: "onAfterViewportRowCalculatorOverride",
     value: function onAfterViewportRowCalculatorOverride(calc) {
-      var _this7 = this;
+      var nrOfColumns = this.hot.countCols();
+      this.modifyViewportRowStart(calc, nrOfColumns);
+      this.modifyViewportRowEnd(calc, nrOfColumns);
+    }
+    /**
+     * Modify viewport start when needed. We extend viewport when merged cells aren't fully visible.
+     *
+     * @private
+     * @param {object} calc The row calculator object.
+     * @param {number} nrOfColumns Number of visual columns.
+     */
 
-      var colCount = this.hot.countCols();
-      var mergeParent;
-      (0, _number.rangeEach)(0, colCount - 1, function (c) {
-        mergeParent = _this7.mergedCellsCollection.get(calc.startRow, c);
+  }, {
+    key: "modifyViewportRowStart",
+    value: function modifyViewportRowStart(calc, nrOfColumns) {
+      var rowMapper = this.hot.rowIndexMapper;
+      var visualStartRow = rowMapper.getVisualFromRenderableIndex(calc.startRow);
 
-        if (mergeParent) {
-          if (mergeParent.row < calc.startRow) {
-            calc.startRow = mergeParent.row;
-            return _this7.onAfterViewportRowCalculatorOverride.call(_this7, calc); // recursively search upwards
+      for (var visualColumnIndex = 0; visualColumnIndex < nrOfColumns; visualColumnIndex += 1) {
+        var mergeParentForViewportStart = this.mergedCellsCollection.get(visualStartRow, visualColumnIndex);
+
+        if ((0, _object.isObject)(mergeParentForViewportStart)) {
+          var renderableIndexAtMergeStart = rowMapper.getRenderableFromVisualIndex(rowMapper.getFirstNotHiddenIndex(mergeParentForViewportStart.row, 1)); // Merge start is out of the viewport (i.e. when we scrolled to the bottom and we can see just part of a merge).
+
+          if (renderableIndexAtMergeStart < calc.startRow) {
+            // We extend viewport when some rows have been merged.
+            calc.startRow = renderableIndexAtMergeStart; // We are looking for next merges inside already extended viewport (starting again from row equal to 0).
+
+            this.modifyViewportRowStart(calc, nrOfColumns); // recursively search upwards
+
+            return; // Finish the current loop. Everything will be checked from the beginning by above recursion.
           }
         }
+      }
+    }
+    /**
+     *  Modify viewport end when needed. We extend viewport when merged cells aren't fully visible.
+     *
+     * @private
+     * @param {object} calc The row calculator object.
+     * @param {number} nrOfColumns Number of visual columns.
+     */
 
-        mergeParent = _this7.mergedCellsCollection.get(calc.endRow, c);
+  }, {
+    key: "modifyViewportRowEnd",
+    value: function modifyViewportRowEnd(calc, nrOfColumns) {
+      var rowMapper = this.hot.rowIndexMapper;
+      var visualEndRow = rowMapper.getVisualFromRenderableIndex(calc.endRow);
 
-        if (mergeParent) {
-          var mergeEnd = mergeParent.row + mergeParent.rowspan - 1;
+      for (var visualColumnIndex = 0; visualColumnIndex < nrOfColumns; visualColumnIndex += 1) {
+        var mergeParentForViewportEnd = this.mergedCellsCollection.get(visualEndRow, visualColumnIndex);
 
-          if (mergeEnd > calc.endRow) {
-            calc.endRow = mergeEnd;
-            return _this7.onAfterViewportRowCalculatorOverride.call(_this7, calc); // recursively search upwards
+        if ((0, _object.isObject)(mergeParentForViewportEnd)) {
+          var mergeEnd = mergeParentForViewportEnd.row + mergeParentForViewportEnd.rowspan - 1;
+          var renderableIndexAtMergeEnd = rowMapper.getRenderableFromVisualIndex(rowMapper.getFirstNotHiddenIndex(mergeEnd, -1)); // Merge end is out of the viewport.
+
+          if (renderableIndexAtMergeEnd > calc.endRow) {
+            // We extend the viewport when some rows have been merged.
+            calc.endRow = renderableIndexAtMergeEnd; // We are looking for next merges inside already extended viewport (starting again from row equal to 0).
+
+            this.modifyViewportRowEnd(calc, nrOfColumns); // recursively search upwards
+
+            return; // Finish the current loop. Everything will be checked from the beginning by above recursion.
           }
         }
-
-        return true;
-      });
+      }
     }
     /**
      * `afterViewportColumnCalculatorOverride` hook callback.
      *
      * @private
-     * @param {Object} calc The column calculator object.
+     * @param {object} calc The column calculator object.
      */
 
   }, {
     key: "onAfterViewportColumnCalculatorOverride",
     value: function onAfterViewportColumnCalculatorOverride(calc) {
-      var _this8 = this;
+      var nrOfRows = this.hot.countRows();
+      this.modifyViewportColumnStart(calc, nrOfRows);
+      this.modifyViewportColumnEnd(calc, nrOfRows);
+    }
+    /**
+     * Modify viewport start when needed. We extend viewport when merged cells aren't fully visible.
+     *
+     * @private
+     * @param {object} calc The column calculator object.
+     * @param {number} nrOfRows Number of visual rows.
+     */
 
-      var rowCount = this.hot.countRows();
-      var mergeParent;
-      (0, _number.rangeEach)(0, rowCount - 1, function (r) {
-        mergeParent = _this8.mergedCellsCollection.get(r, calc.startColumn);
+  }, {
+    key: "modifyViewportColumnStart",
+    value: function modifyViewportColumnStart(calc, nrOfRows) {
+      var columnMapper = this.hot.columnIndexMapper;
+      var visualStartCol = columnMapper.getVisualFromRenderableIndex(calc.startColumn);
 
-        if (mergeParent && mergeParent.col < calc.startColumn) {
-          calc.startColumn = mergeParent.col;
-          return _this8.onAfterViewportColumnCalculatorOverride.call(_this8, calc); // recursively search upwards
-        }
+      for (var visualRowIndex = 0; visualRowIndex < nrOfRows; visualRowIndex += 1) {
+        var mergeParentForViewportStart = this.mergedCellsCollection.get(visualRowIndex, visualStartCol);
 
-        mergeParent = _this8.mergedCellsCollection.get(r, calc.endColumn);
+        if ((0, _object.isObject)(mergeParentForViewportStart)) {
+          var renderableIndexAtMergeStart = columnMapper.getRenderableFromVisualIndex(columnMapper.getFirstNotHiddenIndex(mergeParentForViewportStart.col, 1)); // Merge start is out of the viewport (i.e. when we scrolled to the right and we can see just part of a merge).
 
-        if (mergeParent) {
-          var mergeEnd = mergeParent.col + mergeParent.colspan - 1;
+          if (renderableIndexAtMergeStart < calc.startColumn) {
+            // We extend viewport when some columns have been merged.
+            calc.startColumn = renderableIndexAtMergeStart; // We are looking for next merges inside already extended viewport (starting again from column equal to 0).
 
-          if (mergeEnd > calc.endColumn) {
-            calc.endColumn = mergeEnd;
-            return _this8.onAfterViewportColumnCalculatorOverride.call(_this8, calc); // recursively search upwards
+            this.modifyViewportColumnStart(calc, nrOfRows); // recursively search upwards
+
+            return; // Finish the current loop. Everything will be checked from the beginning by above recursion.
           }
         }
+      }
+    }
+    /**
+     *  Modify viewport end when needed. We extend viewport when merged cells aren't fully visible.
+     *
+     * @private
+     * @param {object} calc The column calculator object.
+     * @param {number} nrOfRows Number of visual rows.
+     */
 
-        return true;
-      });
+  }, {
+    key: "modifyViewportColumnEnd",
+    value: function modifyViewportColumnEnd(calc, nrOfRows) {
+      var columnMapper = this.hot.columnIndexMapper;
+      var visualEndCol = columnMapper.getVisualFromRenderableIndex(calc.endColumn);
+
+      for (var visualRowIndex = 0; visualRowIndex < nrOfRows; visualRowIndex += 1) {
+        var mergeParentForViewportEnd = this.mergedCellsCollection.get(visualRowIndex, visualEndCol);
+
+        if ((0, _object.isObject)(mergeParentForViewportEnd)) {
+          var mergeEnd = mergeParentForViewportEnd.col + mergeParentForViewportEnd.colspan - 1;
+          var renderableIndexAtMergeEnd = columnMapper.getRenderableFromVisualIndex(columnMapper.getFirstNotHiddenIndex(mergeEnd, -1)); // Merge end is out of the viewport.
+
+          if (renderableIndexAtMergeEnd > calc.endColumn) {
+            // We extend the viewport when some columns have been merged.
+            calc.endColumn = renderableIndexAtMergeEnd; // We are looking for next merges inside already extended viewport (starting again from column equal to 0).
+
+            this.modifyViewportColumnEnd(calc, nrOfRows); // recursively search upwards
+
+            return; // Finish the current loop. Everything will be checked from the beginning by above recursion.
+          }
+        }
+      }
+    }
+    /**
+     * Translates merged cell coordinates to renderable indexes.
+     *
+     * @private
+     * @param {number} parentRow Visual row index.
+     * @param {number} rowspan Rowspan which describes shift which will be applied to parent row
+     *                         to calculate renderable index which points to the most bottom
+     *                         index position. Pass rowspan as `0` to calculate the most top
+     *                         index position.
+     * @param {number} parentColumn Visual column index.
+     * @param {number} colspan Colspan which describes shift which will be applied to parent column
+     *                         to calculate renderable index which points to the most right
+     *                         index position. Pass colspan as `0` to calculate the most left
+     *                         index position.
+     * @returns {number[]}
+     */
+
+  }, {
+    key: "translateMergedCellToRenderable",
+    value: function translateMergedCellToRenderable(parentRow, rowspan, parentColumn, colspan) {
+      var _this$hot4 = this.hot,
+          rowMapper = _this$hot4.rowIndexMapper,
+          columnMapper = _this$hot4.columnIndexMapper;
+      var firstNonHiddenRow;
+      var firstNonHiddenColumn;
+
+      if (rowspan === 0) {
+        firstNonHiddenRow = rowMapper.getFirstNotHiddenIndex(parentRow, 1);
+      } else {
+        firstNonHiddenRow = rowMapper.getFirstNotHiddenIndex(parentRow + rowspan - 1, -1);
+      }
+
+      if (colspan === 0) {
+        firstNonHiddenColumn = columnMapper.getFirstNotHiddenIndex(parentColumn, 1);
+      } else {
+        firstNonHiddenColumn = columnMapper.getFirstNotHiddenIndex(parentColumn + colspan - 1, -1);
+      }
+
+      var renderableRow = parentRow >= 0 ? rowMapper.getRenderableFromVisualIndex(firstNonHiddenRow) : parentRow;
+      var renderableColumn = parentColumn >= 0 ? columnMapper.getRenderableFromVisualIndex(firstNonHiddenColumn) : parentColumn;
+      return [renderableRow, renderableColumn];
     }
     /**
      * The `modifyAutofillRange` hook callback.
@@ -1019,7 +1235,7 @@ function (_BasePlugin) {
      * @private
      * @param {Array} drag The drag area coordinates.
      * @param {Array} select The selection information.
-     * @return {Array} The new drag area.
+     * @returns {Array} The new drag area.
      */
 
   }, {
@@ -1056,8 +1272,8 @@ function (_BasePlugin) {
      * `afterCreateCol` hook callback.
      *
      * @private
-     * @param {Number} column Column index.
-     * @param {Number} count Number of created columns.
+     * @param {number} column Column index.
+     * @param {number} count Number of created columns.
      */
 
   }, {
@@ -1069,8 +1285,8 @@ function (_BasePlugin) {
      * `afterRemoveCol` hook callback.
      *
      * @private
-     * @param {Number} column Column index.
-     * @param {Number} count Number of removed columns.
+     * @param {number} column Column index.
+     * @param {number} count Number of removed columns.
      */
 
   }, {
@@ -1082,9 +1298,9 @@ function (_BasePlugin) {
      * `afterCreateRow` hook callback.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} count Number of created rows.
-     * @param {String} source Source of change.
+     * @param {number} row Row index.
+     * @param {number} count Number of created rows.
+     * @param {string} source Source of change.
      */
 
   }, {
@@ -1100,8 +1316,8 @@ function (_BasePlugin) {
      * `afterRemoveRow` hook callback.
      *
      * @private
-     * @param {Number} row Row index.
-     * @param {Number} count Number of removed rows.
+     * @param {number} row Row index.
+     * @param {number} count Number of removed rows.
      */
 
   }, {
@@ -1114,7 +1330,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} changes The changes array.
-     * @param {String} source Determines the source of the change.
+     * @param {string} source Determines the source of the change.
      */
 
   }, {
@@ -1130,8 +1346,8 @@ function (_BasePlugin) {
      * `beforeDrawAreaBorders` hook callback.
      *
      * @private
-     * @param {Array} corners Coordinates of the area corners.
-     * @param {String} className Class name for the area.
+     * @param {Array} corners Visual coordinates of the area corners.
+     * @param {string} className Class name for the area.
      */
 
   }, {
@@ -1154,8 +1370,8 @@ function (_BasePlugin) {
      *
      * @private
      * @param {CellCoords} coords Coordinates of the to-be-selected cell.
-     * @param {Number} rowTransformDir Row transformation direction (negative value = up, 0 = none, positive value = down)
-     * @param {Number} colTransformDir Column transformation direction (negative value = up, 0 = none, positive value = down)
+     * @param {number} rowTransformDir Row transformation direction (negative value = up, 0 = none, positive value = down).
+     * @param {number} colTransformDir Column transformation direction (negative value = up, 0 = none, positive value = down).
      */
 
   }, {
@@ -1189,23 +1405,28 @@ function (_BasePlugin) {
      * `afterDrawSelection` hook callback. Used to add the additional class name for the entirely-selected merged cells.
      *
      * @private
-     * @param {Number} currentRow Row index of the currently processed cell.
-     * @param {Number} currentColumn Column index of the currently cell.
+     * @param {number} currentRow Visual row index of the currently processed cell.
+     * @param {number} currentColumn Visual column index of the currently cell.
      * @param {Array} cornersOfSelection Array of the current selection in a form of `[startRow, startColumn, endRow, endColumn]`.
-     * @param {Number|undefined} layerLevel Number indicating which layer of selection is currently processed.
-     * @returns {String|undefined} A `String`, which will act as an additional `className` to be added to the currently processed cell.
+     * @param {number|undefined} layerLevel Number indicating which layer of selection is currently processed.
+     * @returns {string|undefined} A `String`, which will act as an additional `className` to be added to the currently processed cell.
      */
 
   }, {
     key: "onAfterDrawSelection",
     value: function onAfterDrawSelection(currentRow, currentColumn, cornersOfSelection, layerLevel) {
+      // Nothing's selected (hook might be triggered by the custom borders)
+      if (!cornersOfSelection) {
+        return;
+      }
+
       return this.selectionCalculations.getSelectedMergedCellClassName(currentRow, currentColumn, cornersOfSelection, layerLevel);
     }
     /**
      * `beforeRemoveCellClassNames` hook callback. Used to remove additional class name from all cells in the table.
      *
      * @private
-     * @returns {String[]} An `Array` of `String`s. Each of these strings will act like class names to be removed from all the cells in the table.
+     * @returns {string[]} An `Array` of `String`s. Each of these strings will act like class names to be removed from all the cells in the table.
      */
 
   }, {

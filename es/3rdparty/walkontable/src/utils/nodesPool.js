@@ -9,23 +9,21 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * @class {NodesPool}
  */
-var NodesPool =
-/*#__PURE__*/
-function () {
+var NodesPool = /*#__PURE__*/function () {
   function NodesPool(nodeType) {
     _classCallCheck(this, NodesPool);
 
     /**
      * Node type to generate (ew 'th', 'td').
      *
-     * @type {String}
+     * @type {string}
      */
     this.nodeType = nodeType.toUpperCase();
   }
   /**
    * Set document owner for this instance.
    *
-   * @param {HTMLDocument} rootDocument
+   * @param {HTMLDocument} rootDocument The document window owner.
    */
 
 

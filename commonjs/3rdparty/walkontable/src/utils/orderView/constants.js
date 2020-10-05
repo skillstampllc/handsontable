@@ -7,7 +7,7 @@ exports.WORKING_SPACE_BOTTOM = exports.WORKING_SPACE_TOP = exports.WORKING_SPACE
  * Describes that ViewSizeSet instance doesn't share sizes with another
  * instance (root node can contain only one type of children nodes).
  *
- * @type {Number}
+ * @type {number}
  */
 var WORKING_SPACE_ALL = 0;
 /**
@@ -15,7 +15,7 @@ var WORKING_SPACE_ALL = 0;
  * set working space for this instance to 'top' (root node can contain multiple
  * types of children and this instance will be occupied top space of the root node).
  *
- * @type {Number}
+ * @type {number}
  */
 
 exports.WORKING_SPACE_ALL = WORKING_SPACE_ALL;
@@ -25,7 +25,7 @@ var WORKING_SPACE_TOP = 1;
  * set working space for this instance to 'bottom' (root node can contain multiple
  * types of children and this instance will be occupied bottom space of the root node).
  *
- * @type {Number}
+ * @type {number}
  */
 
 exports.WORKING_SPACE_TOP = WORKING_SPACE_TOP;

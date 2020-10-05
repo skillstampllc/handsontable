@@ -189,6 +189,68 @@ describe('WalkontableBorder', function () {
     expect($corner.position().top).toBe(65);
     expect($corner.position().left).toBe(95);
   });
+  it('should properly render a selection corner on the edge of the left fixed column', function () {
+    var wt = walkontable({
+      data: getData,
+      totalRows: 5,
+      totalColumns: 5,
+      fixedColumnsLeft: 2,
+      selections: createSelectionController({
+        current: new Walkontable.Selection({
+          border: {
+            width: 2,
+            color: 'green',
+            cornerVisible: function cornerVisible() {
+              return true;
+            }
+          }
+        }),
+        area: new Walkontable.Selection({})
+      }),
+      onCellMouseDown: function onCellMouseDown(event, coords) {
+        wt.selections.getCell().clear();
+        wt.selections.getCell().add(coords);
+        wt.draw();
+      }
+    });
+    wt.draw();
+    var $td1 = spec().$table.find('tbody tr:eq(2) td:eq(1)');
+    var $corner = $(wt.selections.getCell().getBorder(wt).corner);
+    var leftOverlay = $(wt.wtOverlays.leftOverlay.clone.wtTable.holder);
+    $td1.simulate('mousedown');
+    expect(leftOverlay.position().left + leftOverlay.outerWidth()).toBe($corner.position().left + $corner.outerWidth());
+  });
+  it('should properly render a selection corner on the edge of the top fixed row', function () {
+    var wt = walkontable({
+      data: getData,
+      totalRows: 5,
+      totalColumns: 5,
+      fixedRowsTop: 2,
+      selections: createSelectionController({
+        current: new Walkontable.Selection({
+          border: {
+            width: 2,
+            color: 'green',
+            cornerVisible: function cornerVisible() {
+              return true;
+            }
+          }
+        }),
+        area: new Walkontable.Selection({})
+      }),
+      onCellMouseDown: function onCellMouseDown(event, coords) {
+        wt.selections.getCell().clear();
+        wt.selections.getCell().add(coords);
+        wt.draw();
+      }
+    });
+    wt.draw();
+    var $td1 = spec().$table.find('tbody tr:eq(1) td:eq(1)');
+    var $corner = $(wt.selections.getCell().getBorder(wt).corner);
+    var topOverlay = $(wt.wtOverlays.topOverlay.clone.wtTable.holder);
+    $td1.simulate('mousedown');
+    expect(topOverlay.position().top + topOverlay.outerHeight()).toBe($corner.position().top + $corner.outerHeight());
+  });
   it('should draw only one corner if selection is added between overlays', function () {
     var wt = walkontable({
       data: getData,
@@ -198,7 +260,8 @@ describe('WalkontableBorder', function () {
       fixedRowsTop: 2,
       selections: createSelectionController({
         current: new Walkontable.Selection({
-          className: 'current'
+          className: 'current',
+          border: {}
         }),
         area: new Walkontable.Selection({
           className: 'area',

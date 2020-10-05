@@ -6,26 +6,40 @@ import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.includes";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
-import "core-js/modules/web.timers";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33,38 +47,43 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 import BasePlugin from './../_base';
 import Hooks from './../../pluginHooks';
 import { offset, outerHeight, outerWidth } from './../../helpers/dom/element';
-import { arrayEach } from './../../helpers/array';
-import { rangeEach } from './../../helpers/number';
+import { arrayEach, arrayMap } from './../../helpers/array';
 import EventManager from './../../eventManager';
 import { registerPlugin } from './../../plugins';
 import { CellCoords } from './../../3rdparty/walkontable/src';
 import { getDeltas, getDragDirectionAndRange, DIRECTIONS, getMappedFillHandleSetting } from './utils';
 Hooks.getSingleton().register('modifyAutofillRange');
 Hooks.getSingleton().register('beforeAutofill');
+Hooks.getSingleton().register('afterAutofill');
 var INSERT_ROW_ALTER_ACTION_NAME = 'insert_row';
 var INTERVAL_FOR_ADDING_ROW = 200;
 /**
  * This plugin provides "drag-down" and "copy-down" functionalities, both operated using the small square in the right
  * bottom of the cell selection.
  *
- * "Drag-down" expands the value of the selected cells to the neighbouring cells when you drag the small square in the corner.
+ * "Drag-down" expands the value of the selected cells to the neighbouring cells when you drag the small
+ * square in the corner.
  *
  * "Copy-down" copies the value of the selection to all empty cells below when you double click the small square.
  *
@@ -72,17 +91,17 @@ var INTERVAL_FOR_ADDING_ROW = 200;
  * @plugin Autofill
  */
 
-var Autofill =
-/*#__PURE__*/
-function (_BasePlugin) {
+var Autofill = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Autofill, _BasePlugin);
+
+  var _super = _createSuper(Autofill);
 
   function Autofill(hotInstance) {
     var _this;
 
     _classCallCheck(this, Autofill);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Autofill).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Event manager instance.
      *
@@ -95,7 +114,7 @@ function (_BasePlugin) {
      * Specifies if adding new row started.
      *
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.addingStarted = false;
@@ -103,7 +122,7 @@ function (_BasePlugin) {
      * Specifies if there was mouse down on the cell corner.
      *
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.mouseDownOnCellCorner = false;
@@ -111,7 +130,7 @@ function (_BasePlugin) {
      * Specifies if mouse was dragged outside Handsontable.
      *
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.mouseDragOutside = false;
@@ -119,7 +138,7 @@ function (_BasePlugin) {
      * Specifies how many cell levels were dragged using the handle.
      *
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.handleDraggedCells = 0;
@@ -127,14 +146,14 @@ function (_BasePlugin) {
      * Specifies allowed directions of drag (`'horizontal'` or '`vertical`').
      *
      * @private
-     * @type {String[]}
+     * @type {string[]}
      */
 
     _this.directions = [];
     /**
      * Specifies if can insert new rows if needed.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     _this.autoInsertRow = false;
@@ -143,7 +162,7 @@ function (_BasePlugin) {
   /**
    * Checks if the plugin is enabled in the Handsontable settings.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -203,37 +222,10 @@ function (_BasePlugin) {
       _get(_getPrototypeOf(Autofill.prototype), "disablePlugin", this).call(this);
     }
     /**
-     * Prepares copyable ranges from the cells selection.
+     * Gets selection data.
      *
      * @private
-     * @returns {Object[]} ranges Array of objects with properties `startRow`, `startCol`, `endRow` and `endCol`.
-     */
-
-  }, {
-    key: "getCopyableRanges",
-    value: function getCopyableRanges() {
-      var selRange = this.hot.getSelectedRangeLast();
-      var topLeft = selRange.getTopLeftCorner();
-      var bottomRight = selRange.getBottomRightCorner();
-      var startRow = topLeft.row;
-      var startCol = topLeft.col;
-      var endRow = bottomRight.row;
-      var endCol = bottomRight.col;
-      var copyableRanges = [];
-      copyableRanges.push({
-        startRow: startRow,
-        startCol: startCol,
-        endRow: endRow,
-        endCol: endCol
-      });
-      copyableRanges = this.hot.runHooks('modifyCopyableRange', copyableRanges);
-      return copyableRanges;
-    }
-    /**
-     * Gets selection data
-     *
-     * @private
-     * @returns {Array} Array with the data.
+     * @returns {object[]} Ranges Array of objects with properties `startRow`, `startCol`, `endRow` and `endCol`.
      */
 
   }, {
@@ -241,21 +233,37 @@ function (_BasePlugin) {
     value: function getSelectionData() {
       var _this3 = this;
 
-      var copyableRanges = this.getCopyableRanges();
+      var selection = this.hot.getSelectedRangeLast();
+
+      var _selection$getTopLeft = selection.getTopLeftCorner(),
+          startRow = _selection$getTopLeft.row,
+          startCol = _selection$getTopLeft.col;
+
+      var _selection$getBottomR = selection.getBottomRightCorner(),
+          endRow = _selection$getBottomR.row,
+          endCol = _selection$getBottomR.col;
+
+      var copyableRanges = this.hot.runHooks('modifyCopyableRange', [{
+        startRow: startRow,
+        startCol: startCol,
+        endRow: endRow,
+        endCol: endCol
+      }]);
       var copyableRows = [];
       var copyableColumns = [];
       var data = [];
       arrayEach(copyableRanges, function (range) {
-        rangeEach(range.startRow, range.endRow, function (row) {
-          if (copyableRows.indexOf(row) === -1) {
-            copyableRows.push(row);
+        for (var visualRow = range.startRow; visualRow <= range.endRow; visualRow += 1) {
+          if (copyableRows.indexOf(visualRow) === -1) {
+            copyableRows.push(visualRow);
           }
-        });
-        rangeEach(range.startCol, range.endCol, function (column) {
-          if (copyableColumns.indexOf(column) === -1) {
-            copyableColumns.push(column);
+        }
+
+        for (var visualColumn = range.startCol; visualColumn <= range.endCol; visualColumn += 1) {
+          if (copyableColumns.indexOf(visualColumn) === -1) {
+            copyableColumns.push(visualColumn);
           }
-        });
+        }
       });
       arrayEach(copyableRows, function (row) {
         var rowSet = [];
@@ -270,10 +278,11 @@ function (_BasePlugin) {
      * Try to apply fill values to the area in fill border, omitting the selection border.
      *
      * @private
-     * @returns {Boolean} reports if fill was applied.
+     * @returns {boolean} Reports if fill was applied.
      *
      * @fires Hooks#modifyAutofillRange
      * @fires Hooks#beforeAutofill
+     * @fires Hooks#afterAutofill
      */
 
   }, {
@@ -281,11 +290,24 @@ function (_BasePlugin) {
     value: function fillIn() {
       if (this.hot.selection.highlight.getFill().isEmpty()) {
         return false;
-      }
+      } // Fill area may starts or ends with invisible cell. There won't be any information about it as highlighted
+      // selection store just renderable indexes (It's part of Walkontable). I extrapolate where the start or/and
+      // the end is.
 
-      var cornersOfSelectionAndDragAreas = this.hot.selection.highlight.getFill().getCorners();
+
+      var _this$hot$selection$h = this.hot.selection.highlight.getFill().getVisualCorners(),
+          _this$hot$selection$h2 = _slicedToArray(_this$hot$selection$h, 4),
+          fillStartRow = _this$hot$selection$h2[0],
+          fillStartColumn = _this$hot$selection$h2[1],
+          fillEndRow = _this$hot$selection$h2[2],
+          fillEndColumn = _this$hot$selection$h2[3];
+
+      var selectionRangeLast = this.hot.getSelectedRangeLast();
+      var topLeftCorner = selectionRangeLast.getTopLeftCorner();
+      var bottomRightCorner = selectionRangeLast.getBottomRightCorner();
+      var cornersOfSelectionAndDragAreas = [Math.min(topLeftCorner.row, fillStartRow), Math.min(topLeftCorner.col, fillStartColumn), Math.max(bottomRightCorner.row, fillEndRow), Math.max(bottomRightCorner.col, fillEndColumn)];
       this.resetSelectionOfDraggedArea();
-      var cornersOfSelectedCells = this.getCornersOfSelectedCells();
+      var cornersOfSelectedCells = [topLeftCorner.row, topLeftCorner.col, bottomRightCorner.row, bottomRightCorner.col];
       cornersOfSelectionAndDragAreas = this.hot.runHooks('modifyAutofillRange', cornersOfSelectionAndDragAreas, cornersOfSelectedCells);
 
       var _getDragDirectionAndR = getDragDirectionAndRange(cornersOfSelectedCells, cornersOfSelectionAndDragAreas),
@@ -295,7 +317,14 @@ function (_BasePlugin) {
 
       if (startOfDragCoords && startOfDragCoords.row > -1 && startOfDragCoords.col > -1) {
         var selectionData = this.getSelectionData();
-        this.hot.runHooks('beforeAutofill', startOfDragCoords, endOfDragCoords, selectionData);
+        var beforeAutofillHook = this.hot.runHooks('beforeAutofill', startOfDragCoords, endOfDragCoords, selectionData);
+
+        if (beforeAutofillHook === false) {
+          this.hot.selection.highlight.getFill().clear();
+          this.hot.render();
+          return false;
+        }
+
         var deltas = getDeltas(startOfDragCoords, endOfDragCoords, selectionData, directionOfDrag);
         var fillData = selectionData;
 
@@ -315,11 +344,11 @@ function (_BasePlugin) {
             dragLength = endOfDragCoords.col - startOfDragCoords.col + 1;
             fillOffset = dragLength % selectionData[0].length;
 
-            for (var _i = 0; _i < selectionData.length; _i++) {
+            for (var _i2 = 0; _i2 < selectionData.length; _i2++) {
               fillData.push([]);
 
               for (var j = 0; j < dragLength; j++) {
-                fillData[_i].push(selectionData[_i][(j + (selectionData[_i].length - fillOffset)) % selectionData[_i].length]);
+                fillData[_i2].push(selectionData[_i2][(j + (selectionData[_i2].length - fillOffset)) % selectionData[_i2].length]);
               }
             }
           }
@@ -327,6 +356,7 @@ function (_BasePlugin) {
 
         this.hot.populateFromArray(startOfDragCoords.row, startOfDragCoords.col, fillData, endOfDragCoords.row, endOfDragCoords.col, "".concat(this.pluginName, ".fill"), null, directionOfDrag, deltas);
         this.setSelection(cornersOfSelectionAndDragAreas);
+        this.hot.runHooks('afterAutofill', startOfDragCoords, endOfDragCoords, selectionData);
       } else {
         // reset to avoid some range bug
         this.hot._refreshBorders();
@@ -338,7 +368,7 @@ function (_BasePlugin) {
      * Reduces the selection area if the handle was dragged outside of the table or on headers.
      *
      * @private
-     * @param {CellCoords} coords indexes of selection corners.
+     * @param {CellCoords} coords Indexes of selection corners.
      * @returns {CellCoords}
      */
 
@@ -360,17 +390,27 @@ function (_BasePlugin) {
      *
      * @private
      * @param {CellCoords} coordsOfSelection `CellCoords` coord object.
-     * @returns {Array}
+     * @returns {CellCoords}
      */
 
   }, {
     key: "getCoordsOfDragAndDropBorders",
     value: function getCoordsOfDragAndDropBorders(coordsOfSelection) {
-      var topLeftCorner = this.hot.getSelectedRangeLast().getTopLeftCorner();
-      var bottomRightCorner = this.hot.getSelectedRangeLast().getBottomRightCorner();
-      var coords;
+      var currentSelection = this.hot.getSelectedRangeLast();
+      var bottomRightCorner = currentSelection.getBottomRightCorner();
+      var coords = coordsOfSelection;
 
-      if (this.directions.includes(DIRECTIONS.vertical) && (bottomRightCorner.row < coordsOfSelection.row || topLeftCorner.row > coordsOfSelection.row)) {
+      if (this.directions.includes(DIRECTIONS.vertical) && this.directions.includes(DIRECTIONS.horizontal)) {
+        var topLeftCorner = currentSelection.getTopLeftCorner();
+
+        if (bottomRightCorner.col <= coordsOfSelection.col || topLeftCorner.col >= coordsOfSelection.col) {
+          coords = new CellCoords(bottomRightCorner.row, coordsOfSelection.col);
+        }
+
+        if (bottomRightCorner.row < coordsOfSelection.row || topLeftCorner.row > coordsOfSelection.row) {
+          coords = new CellCoords(coordsOfSelection.row, bottomRightCorner.col);
+        }
+      } else if (this.directions.includes(DIRECTIONS.vertical)) {
         coords = new CellCoords(coordsOfSelection.row, bottomRightCorner.col);
       } else if (this.directions.includes(DIRECTIONS.horizontal)) {
         coords = new CellCoords(bottomRightCorner.row, coordsOfSelection.col);
@@ -398,7 +438,7 @@ function (_BasePlugin) {
       }
     }
     /**
-     * Add new row
+     * Add new row.
      *
      * @private
      */
@@ -408,11 +448,11 @@ function (_BasePlugin) {
     value: function addRow() {
       var _this4 = this;
 
-      this.hot._registerTimeout(setTimeout(function () {
+      this.hot._registerTimeout(function () {
         _this4.hot.alter(INSERT_ROW_ALTER_ACTION_NAME, void 0, 1, "".concat(_this4.pluginName, ".fill"));
 
         _this4.addingStarted = false;
-      }, INTERVAL_FOR_ADDING_ROW));
+      }, INTERVAL_FOR_ADDING_ROW);
     }
     /**
      * Add new rows if they are needed to continue auto-filling values.
@@ -423,9 +463,9 @@ function (_BasePlugin) {
   }, {
     key: "addNewRowIfNeeded",
     value: function addNewRowIfNeeded() {
-      if (this.hot.selection.highlight.getFill().cellRange && this.addingStarted === false && this.autoInsertRow) {
+      if (!this.hot.selection.highlight.getFill().isEmpty() && this.addingStarted === false && this.autoInsertRow) {
         var cornersOfSelectedCells = this.hot.getSelectedLast();
-        var cornersOfSelectedDragArea = this.hot.selection.highlight.getFill().getCorners();
+        var cornersOfSelectedDragArea = this.hot.selection.highlight.getFill().getVisualCorners();
         var nrOfTableRows = this.hot.countRows();
 
         if (cornersOfSelectedCells[2] < nrOfTableRows - 1 && cornersOfSelectedDragArea[2] === nrOfTableRows - 1) {
@@ -435,28 +475,12 @@ function (_BasePlugin) {
       }
     }
     /**
-     * Get corners of selected cells.
+     * Get index of last adjacent filled in row.
      *
      * @private
-     * @returns {Array}
-     */
-
-  }, {
-    key: "getCornersOfSelectedCells",
-    value: function getCornersOfSelectedCells() {
-      if (this.hot.selection.isMultiple()) {
-        return this.hot.selection.highlight.createOrGetArea().getCorners();
-      }
-
-      return this.hot.selection.highlight.getCell().getCorners();
-    }
-    /**
-     * Get index of last adjacent filled in row
-     *
-     * @private
-     * @param {Array} cornersOfSelectedCells indexes of selection corners.
-     * @returns {Number} gives number greater than or equal to zero when selection adjacent can be applied.
-     * or -1 when selection adjacent can't be applied
+     * @param {Array} cornersOfSelectedCells Indexes of selection corners.
+     * @returns {number} Gives number greater than or equal to zero when selection adjacent can be applied.
+     *                   Or -1 when selection adjacent can't be applied.
      */
 
   }, {
@@ -489,20 +513,20 @@ function (_BasePlugin) {
      * Adds a selection from the start area to the specific row index.
      *
      * @private
-     * @param {Array} selectStartArea selection area from which we start to create more comprehensive selection.
-     * @param {Number} rowIndex
+     * @param {Array} selectStartArea Selection area from which we start to create more comprehensive selection.
+     * @param {number} rowIndex The row index into the selection will be added.
      */
 
   }, {
     key: "addSelectionFromStartAreaToSpecificRowIndex",
     value: function addSelectionFromStartAreaToSpecificRowIndex(selectStartArea, rowIndex) {
-      this.hot.selection.highlight.getFill().clear().add(new CellCoords(selectStartArea[0], selectStartArea[1])).add(new CellCoords(rowIndex, selectStartArea[3]));
+      this.hot.selection.highlight.getFill().clear().add(new CellCoords(selectStartArea[0], selectStartArea[1])).add(new CellCoords(rowIndex, selectStartArea[3])).commit();
     }
     /**
      * Sets selection based on passed corners.
      *
      * @private
-     * @param {Array} cornersOfArea
+     * @param {Array} cornersOfArea An array witch defines selection.
      */
 
   }, {
@@ -510,19 +534,21 @@ function (_BasePlugin) {
     value: function setSelection(cornersOfArea) {
       var _this$hot;
 
-      (_this$hot = this.hot).selectCell.apply(_this$hot, _toConsumableArray(cornersOfArea).concat([false, false]));
+      (_this$hot = this.hot).selectCell.apply(_this$hot, _toConsumableArray(arrayMap(cornersOfArea, function (index) {
+        return Math.max(index, 0);
+      })).concat([false, false]));
     }
     /**
      * Try to select cells down to the last row in the left column and then returns if selection was applied.
      *
      * @private
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
     key: "selectAdjacent",
     value: function selectAdjacent() {
-      var cornersOfSelectedCells = this.getCornersOfSelectedCells();
+      var cornersOfSelectedCells = this.hot.getSelectedLast();
       var lastFilledInRowIndex = this.getIndexOfLastAdjacentFilledInRow(cornersOfSelectedCells);
 
       if (lastFilledInRowIndex === -1 || lastFilledInRowIndex === void 0) {
@@ -554,7 +580,7 @@ function (_BasePlugin) {
   }, {
     key: "redrawBorders",
     value: function redrawBorders(coords) {
-      this.hot.selection.highlight.getFill().clear().add(this.hot.getSelectedRangeLast().from).add(this.hot.getSelectedRangeLast().to).add(coords);
+      this.hot.selection.highlight.getFill().clear().add(this.hot.getSelectedRangeLast().from).add(this.hot.getSelectedRangeLast().to).add(coords).commit();
       this.hot.view.render();
     }
     /**
@@ -562,7 +588,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {MouseEvent} event `mousemove` event properties.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

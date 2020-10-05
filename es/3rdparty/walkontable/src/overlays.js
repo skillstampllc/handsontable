@@ -18,11 +18,9 @@ import Overlay from './overlay/_base';
  * @class Overlays
  */
 
-var Overlays =
-/*#__PURE__*/
-function () {
+var Overlays = /*#__PURE__*/function () {
   /**
-   * @param {Walkontable} wotInstance
+   * @param {Walkontable} wotInstance The Walkontable instance.
    */
   function Overlays(wotInstance) {
     _classCallCheck(this, Overlays);
@@ -40,7 +38,7 @@ function () {
         wtTable = _this$wot.wtTable;
     /**
      * Sometimes `line-height` might be set to 'normal'. In that case, a default `font-size` should be multiplied by roughly 1.2.
-     * https://developer.mozilla.org/pl/docs/Web/CSS/line-height#Values
+     * Https://developer.mozilla.org/pl/docs/Web/CSS/line-height#Values.
      */
 
     var BODY_LINE_HEIGHT = parseInt(rootWindow.getComputedStyle(rootDocument.body).lineHeight, 10);
@@ -77,7 +75,7 @@ function () {
   /**
    * Prepare overlays based on user settings.
    *
-   * @returns {Boolean} Returns `true` if changes applied to overlay needs scroll synchronization.
+   * @returns {boolean} Returns `true` if changes applied to overlay needs scroll synchronization.
    */
 
 
@@ -138,14 +136,10 @@ function () {
         }
       }
 
-      if (this.wot.getSetting('debug') && !this.debug) {
-        this.debug = Overlay.createOverlay(Overlay.CLONE_DEBUG, this.wot);
-      }
-
       return syncScroll;
     }
     /**
-     * Refresh and redraw table
+     * Refresh and redraw table.
      */
 
   }, {
@@ -252,9 +246,9 @@ function () {
       this.eventManager.clearEvents(true);
     }
     /**
-     * Scroll listener
+     * Scroll listener.
      *
-     * @param {Event} event
+     * @param {Event} event The mouse event object.
      */
 
   }, {
@@ -279,7 +273,8 @@ function () {
     /**
      * Wheel listener for cloned overlays.
      *
-     * @param {Event} event
+     * @param {Event} event The mouse event object.
+     * @param {boolean} preventDefault If `true`, the `preventDefault` will be called on event object.
      */
 
   }, {
@@ -307,7 +302,9 @@ function () {
       }
     }
     /**
-     * Key down listener
+     * Key down listener.
+     *
+     * @param {Event} event The keyboard event object.
      */
 
   }, {
@@ -316,7 +313,7 @@ function () {
       this.keyPressed = isKey(event.keyCode, 'ARROW_UP|ARROW_RIGHT|ARROW_DOWN|ARROW_LEFT');
     }
     /**
-     * Key up listener
+     * Key up listener.
      */
 
   }, {
@@ -325,10 +322,11 @@ function () {
       this.keyPressed = false;
     }
     /**
-     * Translate wheel event into scroll event and sync scroll overlays position
+     * Translate wheel event into scroll event and sync scroll overlays position.
      *
      * @private
-     * @param {Event} event
+     * @param {Event} event The mouse event object.
+     * @returns {boolean}
      */
 
   }, {
@@ -350,7 +348,8 @@ function () {
     /**
      * Scrolls main scrollable element horizontally.
      *
-     * @param {Number} delta Relative value to scroll.
+     * @param {number} delta Relative value to scroll.
+     * @returns {boolean}
      */
 
   }, {
@@ -363,7 +362,8 @@ function () {
     /**
      * Scrolls main scrollable element horizontally.
      *
-     * @param {Number} delta Relative value to scroll.
+     * @param {number} delta Relative value to scroll.
+     * @returns {boolean}
      */
 
   }, {
@@ -413,7 +413,7 @@ function () {
       this.refreshAll();
     }
     /**
-     * Synchronize overlay scrollbars with the master scrollbar
+     * Synchronize overlay scrollbars with the master scrollbar.
      */
 
   }, {
@@ -486,14 +486,12 @@ function () {
         this.bottomLeftCornerOverlay.destroy();
       }
 
-      if (this.debug) {
-        this.debug.destroy();
-      }
-
       this.destroyed = true;
     }
     /**
-     * @param {Boolean} [fastDraw=false]
+     * @param {boolean} [fastDraw=false] When `true`, try to refresh only the positions of borders without rerendering
+     *                                   the data. It will only work if Table.draw() does not force
+     *                                   rendering anyway.
      */
 
   }, {
@@ -527,15 +525,11 @@ function () {
       if (this.bottomLeftCornerOverlay && this.bottomLeftCornerOverlay.clone) {
         this.bottomLeftCornerOverlay.refresh(fastDraw);
       }
-
-      if (this.debug) {
-        this.debug.refresh(fastDraw);
-      }
     }
     /**
-     * Adjust overlays elements size and master table size
+     * Adjust overlays elements size and master table size.
      *
-     * @param {Boolean} [force=false]
+     * @param {boolean} [force=false] When `true`, it adjust the DOM nodes sizes for all overlays.
      */
 
   }, {
@@ -602,8 +596,8 @@ function () {
     /**
      * Get the parent overlay of the provided element.
      *
-     * @param {HTMLElement} element
-     * @returns {Object|null}
+     * @param {HTMLElement} element An element to process.
+     * @returns {object|null}
      */
 
   }, {
@@ -625,6 +619,24 @@ function () {
         }
       });
       return result;
+    }
+    /**
+     * Synchronize the class names between the main overlay table and the tables on the other overlays.
+     *
+     */
+
+  }, {
+    key: "syncOverlayTableClassNames",
+    value: function syncOverlayTableClassNames() {
+      var masterTable = this.instance.wtTable.TABLE;
+      var overlays = [this.topOverlay, this.leftOverlay, this.bottomOverlay, this.topLeftCornerOverlay, this.bottomLeftCornerOverlay];
+      arrayEach(overlays, function (elem) {
+        if (!elem) {
+          return;
+        }
+
+        elem.clone.wtTable.TABLE.className = masterTable.className;
+      });
     }
   }]);
 

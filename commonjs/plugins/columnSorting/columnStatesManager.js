@@ -33,9 +33,7 @@ var HEADER_ACTION_DEFAULT = true;
  */
 // eslint-disable-next-line import/prefer-default-export
 
-var ColumnStatesManager =
-/*#__PURE__*/
-function () {
+var ColumnStatesManager = /*#__PURE__*/function () {
   function ColumnStatesManager() {
     _classCallCheck(this, ColumnStatesManager);
 
@@ -48,21 +46,21 @@ function () {
     /**
      * Determines whether we should sort empty cells.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.sortEmptyCells = SORT_EMPTY_CELLS_DEFAULT;
     /**
      * Determines whether indicator should be visible (for sorted columns).
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.indicator = SHOW_SORT_INDICATOR_DEFAULT;
     /**
      * Determines whether click on the header perform sorting.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.headerAction = HEADER_ACTION_DEFAULT;
@@ -77,7 +75,7 @@ function () {
    *
    * **Note**: All column properties can be overwritten by [columns](https://handsontable.com/docs/Options.html#columns) option.
    *
-   * @param {Object} allSortSettings Column sorting plugin's configuration object.
+   * @param {object} allSortSettings Column sorting plugin's configuration object.
    */
 
 
@@ -99,7 +97,7 @@ function () {
     /**
      * Get all column properties which affect the sorting result.
      *
-     * @returns {Object}
+     * @returns {object}
      */
 
   }, {
@@ -120,7 +118,7 @@ function () {
     /**
      * Get index of first sorted column.
      *
-     * @returns {Number|undefined}
+     * @returns {number|undefined}
      */
 
   }, {
@@ -137,8 +135,8 @@ function () {
     /**
      * Get sort order of column.
      *
-     * @param {Number} searchedColumn Physical column index.
-     * @returns {String|undefined} Sort order (`asc` for ascending, `desc` for descending and undefined for not sorted).
+     * @param {number} searchedColumn Physical column index.
+     * @returns {string|undefined} Sort order (`asc` for ascending, `desc` for descending and undefined for not sorted).
      */
 
   }, {
@@ -173,8 +171,8 @@ function () {
     /**
      * Get order of particular column in the states queue.
      *
-     * @param {Number} column Physical column index.
-     * @returns {Number}
+     * @param {number} column Physical column index.
+     * @returns {number}
      */
 
   }, {
@@ -185,7 +183,7 @@ function () {
     /**
      * Get number of sorted columns.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -196,7 +194,7 @@ function () {
     /**
      * Get if list of sorted columns is empty.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -207,8 +205,8 @@ function () {
     /**
      * Get if particular column is sorted.
      *
-     * @param {Number} column Physical column index.
-     * @returns {Boolean}
+     * @param {number} column Physical column index.
+     * @returns {boolean}
      */
 
   }, {
@@ -232,8 +230,8 @@ function () {
      *
      * **Note**: Please keep in mind that returned objects expose **physical** column index under the `column` key.
      *
-     * @param {Number} column Physical column index.
-     * @returns {Object|undefined}
+     * @param {number} column Physical column index.
+     * @returns {object|undefined}
      */
 
   }, {
@@ -246,7 +244,7 @@ function () {
     /**
      * Set all sorted columns states.
      *
-     * @param {Array} sortStates
+     * @param {Array} sortStates The sort state.
      */
 
   }, {

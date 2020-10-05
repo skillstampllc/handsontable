@@ -23,9 +23,7 @@ import { WORKING_SPACE_ALL, WORKING_SPACE_TOP, WORKING_SPACE_BOTTOM } from './co
  * @class {ViewSizeSet}
  */
 
-var ViewSizeSet =
-/*#__PURE__*/
-function () {
+var ViewSizeSet = /*#__PURE__*/function () {
   function ViewSizeSet() {
     _classCallCheck(this, ViewSizeSet);
 
@@ -39,7 +37,7 @@ function () {
      * Defines if this instance shares its size with another instance. If it's in the shared
      * mode it defines what space it occupies ('top' or 'bottom').
      *
-     * @type {Number}
+     * @type {number}
      */
 
     this.workingSpace = WORKING_SPACE_ALL;
@@ -55,7 +53,7 @@ function () {
    * Sets the size for rendered elements. It can be a size for rows, cells or size for row
    * headers etc.
    *
-   * @param {Number} size
+   * @param {number} size The size.
    */
 
 
@@ -68,7 +66,7 @@ function () {
      * Sets the offset for rendered elements. The offset describes the shift between 0 and
      * the first rendered element according to the scroll position.
      *
-     * @param {Number} offset
+     * @param {number} offset The offset.
      */
 
   }, {
@@ -90,7 +88,7 @@ function () {
     /**
      * Checks if this ViewSizeSet is sharing the size with another instance.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -101,8 +99,8 @@ function () {
     /**
      * Checks what working space describes this size instance.
      *
-     * @param {Number} workingSpace The number which describes the type of the working space (see constants.js).
-     * @returns {Boolean}
+     * @param {number} workingSpace The number which describes the type of the working space (see constants.js).
+     * @returns {boolean}
      */
 
   }, {
@@ -113,7 +111,7 @@ function () {
     /**
      * Appends the ViewSizeSet instance to this instance that turns it into a shared mode.
      *
-     * @param {ViewSizeSet} viewSizeSet
+     * @param {ViewSizeSet} viewSize The instance of the ViewSizeSet class.
      */
 
   }, {
@@ -126,7 +124,7 @@ function () {
     /**
      * Prepends the ViewSize instance to this instance that turns it into a shared mode.
      *
-     * @param {ViewSizeSet} viewSizeSet
+     * @param {ViewSizeSet} viewSize The instance of the ViewSizeSet class.
      */
 
   }, {

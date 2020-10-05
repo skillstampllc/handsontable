@@ -20,7 +20,11 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -47,8 +51,6 @@ var _plugins = require("../../plugins");
 
 var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
 
-var _event = require("../../helpers/dom/event");
-
 var _predefinedItems = require("../contextMenu/predefinedItems");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -57,15 +59,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -74,6 +70,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 _pluginHooks.default.getSingleton().register('afterDropdownMenuDefaultOptions');
 
@@ -86,16 +92,18 @@ _pluginHooks.default.getSingleton().register('afterDropdownMenuHide');
 _pluginHooks.default.getSingleton().register('afterDropdownMenuExecute');
 
 var BUTTON_CLASS_NAME = 'changeType';
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 /**
+ * @class DropdownMenu
  * @plugin DropdownMenu
- * @dependencies ContextMenu
  *
  * @description
  * This plugin creates the Handsontable Dropdown Menu. It allows to create a new row or column at any place in the grid
  * among [other features](https://handsontable.com/docs/demo-context-menu.html).
  * Possible values:
  * * `true` (to enable default options),
- * * `false` (to disable completely)
+ * * `false` (to disable completely).
  *
  * or array of any available strings:
  * * `["row_above", "row_below", "col_left", "col_right",
@@ -123,10 +131,12 @@ var BUTTON_CLASS_NAME = 'changeType';
  * ```
  */
 
-var DropdownMenu =
-/*#__PURE__*/
-function (_BasePlugin) {
+/* eslint-enable jsdoc/require-description-complete-sentence */
+
+var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
   _inherits(DropdownMenu, _BasePlugin);
+
+  var _super = _createSuper(DropdownMenu);
 
   _createClass(DropdownMenu, null, [{
     key: "DEFAULT_ITEMS",
@@ -146,7 +156,7 @@ function (_BasePlugin) {
 
     _classCallCheck(this, DropdownMenu);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DropdownMenu).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Instance of {@link EventManager}.
      *
@@ -190,7 +200,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link DropdownMenu#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -322,7 +332,7 @@ function (_BasePlugin) {
     /**
      * Opens menu and re-position it based on the passed coordinates.
      *
-     * @param {Object|Event} position An object with `pageX` and `pageY` properties which contains values relative to
+     * @param {object|Event} position An object with `pageX` and `pageY` properties which contains values relative to
      *                                the top left of the fully rendered content area in the browser or with `clientX`
      *                                and `clientY`  properties which contains values relative to the upper left edge
      *                                of the content area (the viewport) of the browser window. This object is structurally
@@ -344,9 +354,7 @@ function (_BasePlugin) {
         this.menu.setOffset('left', position.width);
       }
 
-      this.menu.setPosition(position); // ContextMenu is not detected HotTableEnv correctly because is injected outside hot-table
-
-      this.menu.hotMenu.isHotTableEnv = this.hot.isHotTableEnv; // Handsontable.eventManager.isHotTableEnv = this.hot.isHotTableEnv;
+      this.menu.setPosition(position);
     }
     /**
      * Closes dropdown menu.
@@ -380,12 +388,12 @@ function (_BasePlugin) {
      *  * `'alignment:right'` - Alignment to the right
      *  * `'alignment:bottom'` - Alignment to the bottom
      *  * `'alignment:middle'` - Alignment to the middle
-     *  * `'alignment:center'` - Alignment to the center (justify)
+     *  * `'alignment:center'` - Alignment to the center (justify).
      *
      * Or you can execute command registered in settings where `key` is your command name.
      *
-     * @param {String} commandName Command name to execute.
-     * @param {*} params
+     * @param {string} commandName Command name to execute.
+     * @param {*} params Additional parameters passed to the command executor.
      */
 
   }, {
@@ -400,10 +408,10 @@ function (_BasePlugin) {
       (_this$commandExecutor = this.commandExecutor).execute.apply(_this$commandExecutor, [commandName].concat(params));
     }
     /**
-     * Turns on / off listening on dropdown menu
+     * Turns on / off listening on dropdown menu.
      *
      * @private
-     * @param {Boolean} listen Turn on listening when value is set to true, otherwise turn it off.
+     * @param {boolean} listen Turn on listening when value is set to true, otherwise turn it off.
      */
 
   }, {
@@ -423,13 +431,13 @@ function (_BasePlugin) {
      * Table click listener.
      *
      * @private
-     * @param {Event} event
+     * @param {Event} event The mouse event object.
      */
 
   }, {
     key: "onTableClick",
     value: function onTableClick(event) {
-      (0, _event.stopPropagation)(event);
+      event.stopPropagation();
 
       if ((0, _element.hasClass)(event.target, BUTTON_CLASS_NAME) && !this.menu.isOpened()) {
         var offsetTop = 0;
@@ -459,8 +467,8 @@ function (_BasePlugin) {
      * On after get column header listener.
      *
      * @private
-     * @param {Number} col
-     * @param {HTMLTableCellElement} TH
+     * @param {number} col Visual column index.
+     * @param {HTMLTableCellElement} TH Header's TH element.
      */
 
   }, {

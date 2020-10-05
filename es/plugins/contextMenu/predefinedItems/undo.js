@@ -1,5 +1,9 @@
 import * as C from './../../../i18n/constants';
 export var KEY = 'undo';
+/**
+ * @returns {object}
+ */
+
 export default function undoItem() {
   return {
     key: KEY,

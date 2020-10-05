@@ -11,6 +11,7 @@ import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.map";
 import "core-js/modules/es.array.slice";
 import "core-js/modules/es.array.sort";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.map";
 import "core-js/modules/es.number.constructor";
 import "core-js/modules/es.number.is-integer";
@@ -21,6 +22,7 @@ import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.keys";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
@@ -29,13 +31,17 @@ import "core-js/modules/web.dom-collections.iterator";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -53,19 +59,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import { addClass, removeClass } from '../../helpers/dom/element';
 import { isUndefined, isDefined } from '../../helpers/mixed';
@@ -74,7 +84,7 @@ import { isFunction } from '../../helpers/function';
 import { arrayMap } from '../../helpers/array';
 import BasePlugin from '../_base';
 import { registerPlugin } from './../../plugins';
-import { VisualIndexToPhysicalIndexMap as IndexToIndexMap, PhysicalIndexToValueMap as IndexToValueMap } from '../../translations';
+import { IndexesSequence, PhysicalIndexToValueMap as IndexToValueMap } from '../../translations';
 import Hooks from '../../pluginHooks';
 import { isPressedCtrlKey } from '../../utils/keyStateObserver';
 import { ColumnStatesManager } from './columnStatesManager';
@@ -137,17 +147,17 @@ Hooks.getSingleton().register('afterColumnSort'); // DIFF - MultiColumnSorting &
  * }]```
  */
 
-var ColumnSorting =
-/*#__PURE__*/
-function (_BasePlugin) {
+var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ColumnSorting, _BasePlugin);
+
+  var _super = _createSuper(ColumnSorting);
 
   function ColumnSorting(hotInstance) {
     var _this;
 
     _classCallCheck(this, ColumnSorting);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ColumnSorting).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     /**
      * Instance of column state manager.
      *
@@ -168,7 +178,7 @@ function (_BasePlugin) {
      * Main settings key designed for the plugin.
      *
      * @private
-     * @type {String}
+     * @type {string}
      */
 
     _this.pluginKey = PLUGIN_KEY;
@@ -176,7 +186,7 @@ function (_BasePlugin) {
      * Plugin indexes cache.
      *
      * @private
-     * @type {null|VisualIndexToPhysicalIndexMap}
+     * @type {null|IndexesSequence}
      */
 
     _this.indexesSequenceCache = null;
@@ -186,7 +196,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the Handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link ColumnSorting#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -208,7 +218,7 @@ function (_BasePlugin) {
         return;
       }
 
-      this.columnMetaCache = this.hot.columnIndexMapper.registerMap("".concat(this.pluginKey, ".columnMeta"), new IndexToValueMap(function (physicalIndex) {
+      this.columnMetaCache = new IndexToValueMap(function (physicalIndex) {
         var visualIndex = _this2.hot.toVisualColumn(physicalIndex);
 
         if (visualIndex === null) {
@@ -216,7 +226,8 @@ function (_BasePlugin) {
         }
 
         return _this2.getMergedPluginSettings(visualIndex);
-      }));
+      });
+      this.hot.columnIndexMapper.registerMap("".concat(this.pluginKey, ".columnMeta"), this.columnMetaCache);
       this.addHook('afterGetColHeader', function (column, TH) {
         return _this2.onAfterGetColHeader(column, TH);
       });
@@ -263,7 +274,7 @@ function (_BasePlugin) {
       this.hot.addHookOnce('afterRender', function () {
         _this3.hot.removeHook('afterGetColHeader', clearColHeader);
       });
-      this.hot.executeBatchOperations(function () {
+      this.hot.batch(function () {
         if (_this3.indexesSequenceCache !== null) {
           _this3.hot.rowIndexMapper.setIndexesSequence(_this3.indexesSequenceCache.getValues());
 
@@ -279,7 +290,7 @@ function (_BasePlugin) {
     /**
      * Sorts the table by chosen columns and orders.
      *
-     * @param {undefined|Object} sortConfig Single column sort configuration. The configuration object contains `column` and `sortOrder` properties.
+     * @param {undefined|object} sortConfig Single column sort configuration. The configuration object contains `column` and `sortOrder` properties.
      * First of them contains visual column index, the second one contains sort order (`asc` for ascending, `desc` for descending).
      *
      * **Note**: Please keep in mind that every call of `sort` function set an entirely new sort order. Previous sort configs aren't preserved.
@@ -310,7 +321,7 @@ function (_BasePlugin) {
       }
 
       if (currentSortConfig.length === 0 && this.indexesSequenceCache === null) {
-        this.indexesSequenceCache = this.hot.rowIndexMapper.registerMap(this.pluginKey, new IndexToIndexMap());
+        this.indexesSequenceCache = this.hot.rowIndexMapper.registerMap(this.pluginKey, new IndexesSequence());
         this.indexesSequenceCache.setValues(this.hot.rowIndexMapper.getIndexesSequence());
       }
 
@@ -320,7 +331,7 @@ function (_BasePlugin) {
               restOfProperties = _objectWithoutProperties(_ref, ["column"]);
 
           return _objectSpread({
-            column: _this4.hot.toPhysicalColumn(visualColumn)
+            column: _this4.hot.columnIndexMapper.getPhysicalFromVisualIndex(visualColumn)
           }, restOfProperties);
         };
 
@@ -351,7 +362,7 @@ function (_BasePlugin) {
     /**
      * Checks if the table is sorted (any column have to be sorted).
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -364,8 +375,8 @@ function (_BasePlugin) {
      *
      * **Note**: Please keep in mind that returned objects expose **visual** column index under the `column` key. They are handled by the `sort` function.
      *
-     * @param {Number} [column] Visual column index.
-     * @returns {undefined|Object|Array}
+     * @param {number} [column] Visual column index.
+     * @returns {undefined|object|Array}
      */
 
   }, {
@@ -417,7 +428,7 @@ function (_BasePlugin) {
      *   return false; // The blockade for the default sort action.
      * }```
      *
-     * @param {undefined|Object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
+     * @param {undefined|object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
      * The configuration object contains `column` and `sortOrder` properties. First of them contains visual column index, the second one contains
      * sort order (`asc` for ascending, `desc` for descending).
      */
@@ -450,7 +461,7 @@ function (_BasePlugin) {
      * Get normalized sort configs.
      *
      * @private
-     * @param {Object|Array} [sortConfig=[]] Single column sort configuration or full sort configuration (for all sorted columns).
+     * @param {object|Array} [sortConfig=[]] Single column sort configuration or full sort configuration (for all sorted columns).
      * The configuration object contains `column` and `sortOrder` properties. First of them contains visual column index, the second one contains
      * sort order (`asc` for ascending, `desc` for descending).
      * @returns {Array}
@@ -472,7 +483,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {Array} sortConfigs Sort configuration for all sorted columns. Objects contain `column` and `sortOrder` properties.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -510,7 +521,7 @@ function (_BasePlugin) {
      * Get all saved sorting settings. Loading works only when {@link Options#persistentState} option is enabled.
      *
      * @private
-     * @returns {Object} Previously saved sort settings.
+     * @returns {object} Previously saved sort settings.
      *
      * @fires Hooks#persistentStateLoad
      */
@@ -545,8 +556,8 @@ function (_BasePlugin) {
      * **Note**: Please keep in mind that returned object expose **visual** column index under the `column` key.
      *
      * @private
-     * @param {Number} column Visual column index.
-     * @returns {undefined|Object}
+     * @param {number} column Visual column index.
+     * @returns {undefined|object}
      */
 
   }, {
@@ -579,8 +590,8 @@ function (_BasePlugin) {
      * Get sort configuration with "next order" for particular column.
      *
      * @private
-     * @param {Number} columnToChange Visual column index of column which order will be changed.
-     * @param {String} strategyId ID of strategy. Possible values: 'append' and 'replace'. The first one
+     * @param {number} columnToChange Visual column index of column which order will be changed.
+     * @param {string} strategyId ID of strategy. Possible values: 'append' and 'replace'. The first one
      * change order of particular column and change it's position in the sort queue to the last one. The second one
      * just change order of particular column.
      *
@@ -621,8 +632,8 @@ function (_BasePlugin) {
      * Get plugin's column config for the specified column index.
      *
      * @private
-     * @param {Object} columnConfig Configuration inside `columns` property for the specified column index.
-     * @returns {Object}
+     * @param {object} columnConfig Configuration inside `columns` property for the specified column index.
+     * @returns {object}
      */
 
   }, {
@@ -642,8 +653,8 @@ function (_BasePlugin) {
      * Get plugin settings related properties, properly merged from cascade settings.
      *
      * @private
-     * @param {Number} column Visual column index.
-     * @returns {Object}
+     * @param {number} column Visual column index.
+     * @returns {object}
      */
 
   }, {
@@ -666,8 +677,8 @@ function (_BasePlugin) {
      * Get copy of settings for first cell in the column.
      *
      * @private
-     * @param {Number} column Visual column index.
-     * @returns {Object}
+     * @param {number} column Visual column index.
+     * @returns {object}
      */
     // TODO: Workaround. Inheriting of non-primitive cell meta values doesn't work. Instead of getting properties from column meta we call this function.
     // TODO: Remove test named: "should not break the dataset when inserted new row" (#5431).
@@ -684,8 +695,8 @@ function (_BasePlugin) {
      * Get number of rows which should be sorted.
      *
      * @private
-     * @param {Number} numberOfRows Total number of displayed rows.
-     * @returns {Number}
+     * @param {number} numberOfRows Total number of displayed rows.
+     * @returns {number}
      */
 
   }, {
@@ -723,7 +734,8 @@ function (_BasePlugin) {
         return arrayMap(sortedColumnsList, function (physicalColumn) {
           return _this8.hot.getDataAtCell(visualRowIndex, _this8.hot.toVisualColumn(physicalColumn));
         });
-      };
+      }; // eslint-disable-line max-len
+
 
       for (var visualRowIndex = 0; visualRowIndex < this.getNumberOfRowsToSort(numberOfRows); visualRowIndex += 1) {
         indexesWithData.push([this.hot.toPhysicalRow(visualRowIndex)].concat(getDataForSortedColumns(visualRowIndex)));
@@ -748,13 +760,14 @@ function (_BasePlugin) {
       var indexMapping = new Map(arrayMap(indexesBefore, function (indexBefore, indexInsideArray) {
         return [indexBefore, indexesAfter[indexInsideArray]];
       }));
-      this.hot.rowIndexMapper.setIndexesSequence(arrayMap(this.hot.rowIndexMapper.getIndexesSequence(), function (physicalIndex) {
+      var newIndexesSequence = arrayMap(this.hot.rowIndexMapper.getIndexesSequence(), function (physicalIndex) {
         if (indexMapping.has(physicalIndex)) {
           return indexMapping.get(physicalIndex);
         }
 
         return physicalIndex;
-      }));
+      });
+      this.hot.rowIndexMapper.setIndexesSequence(newIndexesSequence);
     }
     /**
      * Load saved settings or sort by predefined plugin configuration.
@@ -778,7 +791,7 @@ function (_BasePlugin) {
      * Sort the table by provided configuration.
      *
      * @private
-     * @param {Object} allSortSettings All sort config settings. Object may contain `initialConfig`, `indicator`,
+     * @param {object} allSortSettings All sort config settings. Object may contain `initialConfig`, `indicator`,
      * `sortEmptyCells`, `headerAction` and `compareFunctionFactory` properties.
      */
 
@@ -801,7 +814,7 @@ function (_BasePlugin) {
      * Callback for the `onAfterGetColHeader` hook. Adds column sorting CSS classes.
      *
      * @private
-     * @param {Number} column Visual column index.
+     * @param {number} column Visual column index.
      * @param {Element} TH TH HTML element.
      */
 
@@ -814,7 +827,7 @@ function (_BasePlugin) {
         return;
       }
 
-      var physicalColumn = this.hot.toPhysicalColumn(column);
+      var physicalColumn = this.hot.columnIndexMapper.getPhysicalFromVisualIndex(column);
       var pluginSettingsForColumn = this.getFirstCellSettings(column)[this.pluginKey];
       var showSortIndicator = pluginSettingsForColumn.indicator;
       var headerActionEnabled = pluginSettingsForColumn.headerAction;
@@ -846,7 +859,7 @@ function (_BasePlugin) {
      * for `updateSettings` in specific situations.
      *
      * @private
-     * @param {Object} newSettings New settings object.
+     * @param {object} newSettings New settings object.
      */
 
   }, {
@@ -855,7 +868,8 @@ function (_BasePlugin) {
       _get(_getPrototypeOf(ColumnSorting.prototype), "onUpdateSettings", this).call(this);
 
       if (this.columnMetaCache !== null) {
-        this.columnMetaCache.init(this.hot.countSourceCols());
+        // Column meta cache base on settings, thus we should re-init the map.
+        this.columnMetaCache.init(this.hot.columnIndexMapper.getNumberOfIndexes());
       }
 
       if (isDefined(newSettings[this.pluginKey])) {
@@ -866,7 +880,7 @@ function (_BasePlugin) {
      * Callback for the `afterLoadData` hook.
      *
      * @private
-     * @param {Boolean} initialLoad flag that determines whether the data has been loaded during the initialization.
+     * @param {boolean} initialLoad Flag that determines whether the data has been loaded during the initialization.
      */
 
   }, {
@@ -884,8 +898,8 @@ function (_BasePlugin) {
      *
      * @private
      * @param {MouseEvent} event The `mousedown` event.
-     * @param {Number} column Visual column index.
-     * @returns {Boolean}
+     * @param {number} column Visual column index.
+     * @returns {boolean}
      */
 
   }, {
@@ -893,7 +907,7 @@ function (_BasePlugin) {
     value: function wasClickableHeaderClicked(event, column) {
       var pluginSettingsForColumn = this.getFirstCellSettings(column)[this.pluginKey];
       var headerActionEnabled = pluginSettingsForColumn.headerAction;
-      return headerActionEnabled && event.realTarget.nodeName === 'SPAN';
+      return headerActionEnabled && event.target.nodeName === 'SPAN';
     }
     /**
      * Changes the behavior of selection / dragging.
@@ -901,8 +915,9 @@ function (_BasePlugin) {
      * @private
      * @param {MouseEvent} event The `mousedown` event.
      * @param {CellCoords} coords Visual coordinates.
-     * @param {HTMLElement} TD
-     * @param {Object} blockCalculations
+     * @param {HTMLElement} TD The cell element.
+     * @param {object} blockCalculations A literal object which holds boolean values which controls
+     *                                   how the selection while selecting neighboring cells.
      */
 
   }, {

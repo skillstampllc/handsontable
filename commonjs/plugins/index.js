@@ -98,10 +98,6 @@ var _bindRowsWithHeaders = _interopRequireDefault(require("./bindRowsWithHeaders
 
 exports.BindRowsWithHeaders = _bindRowsWithHeaders.default;
 
-var _collapsibleColumns = _interopRequireDefault(require("./collapsibleColumns/collapsibleColumns"));
-
-exports.CollapsibleColumns = _collapsibleColumns.default;
-
 var _columnSummary = _interopRequireDefault(require("./columnSummary/columnSummary"));
 
 exports.ColumnSummary = _columnSummary.default;
@@ -122,10 +118,6 @@ var _formulas = _interopRequireDefault(require("./formulas/formulas"));
 
 exports.Formulas = _formulas.default;
 
-var _ganttChart = _interopRequireDefault(require("./ganttChart/ganttChart"));
-
-exports.GanttChart = _ganttChart.default;
-
 var _headerTooltips = _interopRequireDefault(require("./headerTooltips/headerTooltips"));
 
 exports.HeaderTooltips = _headerTooltips.default;
@@ -133,6 +125,10 @@ exports.HeaderTooltips = _headerTooltips.default;
 var _nestedHeaders = _interopRequireDefault(require("./nestedHeaders/nestedHeaders"));
 
 exports.NestedHeaders = _nestedHeaders.default;
+
+var _collapsibleColumns = _interopRequireDefault(require("./collapsibleColumns/collapsibleColumns"));
+
+exports.CollapsibleColumns = _collapsibleColumns.default;
 
 var _nestedRows = _interopRequireDefault(require("./nestedRows/nestedRows"));
 

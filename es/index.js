@@ -19,18 +19,22 @@ import * as functionHelpers from './helpers/function';
 import * as mixedHelpers from './helpers/mixed';
 import * as numberHelpers from './helpers/number';
 import * as objectHelpers from './helpers/object';
-import * as settingHelpers from './helpers/setting';
 import * as stringHelpers from './helpers/string';
 import * as unicodeHelpers from './helpers/unicode';
 import * as domHelpers from './helpers/dom/element';
 import * as domEventHelpers from './helpers/dom/event';
 import * as plugins from './plugins/index';
 import { registerPlugin } from './plugins';
-import DefaultSettings from './defaultSettings';
+import { metaSchemaFactory } from './dataMap/index';
 import { rootInstanceSymbol } from './utils/rootInstance';
 import { getTranslatedPhrase } from './i18n';
 import * as constants from './i18n/constants';
 import { registerLanguageDictionary, getLanguagesDictionaries, getLanguageDictionary } from './i18n/dictionariesManager';
+/**
+ * @param {HTMLElement} rootElement The element to which the Handsontable instance is injected.
+ * @param {object} userSettings The user defined options.
+ * @returns {Core}
+ */
 
 function Handsontable(rootElement, userSettings) {
   var instance = new Core(rootElement, userSettings || {}, rootInstanceSymbol);
@@ -45,22 +49,22 @@ Handsontable.Core = function (rootElement) {
   return new Core(rootElement, userSettings, rootInstanceSymbol);
 };
 
-Handsontable.DefaultSettings = DefaultSettings;
+Handsontable.DefaultSettings = metaSchemaFactory();
 Handsontable.EventManager = EventManager;
 Handsontable._getListenersCounter = getListenersCounter; // For MemoryLeak tests
 
 Handsontable._getRegisteredMapsCounter = getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "09/09/2020 12:36:06";
-Handsontable.version = "7.4.2"; // Export Hooks singleton
+Handsontable.buildDate = "05/10/2020 15:36:37";
+Handsontable.version = "8.1.0"; // Export Hooks singleton
 
 Handsontable.hooks = Hooks.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
 
 Handsontable.__GhostTable = GhostTable; //
 // Export all helpers to the Handsontable object
 
-var HELPERS = [arrayHelpers, browserHelpers, dataHelpers, dateHelpers, featureHelpers, functionHelpers, mixedHelpers, numberHelpers, objectHelpers, settingHelpers, stringHelpers, unicodeHelpers, parseTableHelpers];
+var HELPERS = [arrayHelpers, browserHelpers, dataHelpers, dateHelpers, featureHelpers, functionHelpers, mixedHelpers, numberHelpers, objectHelpers, stringHelpers, unicodeHelpers, parseTableHelpers];
 var DOM = [domHelpers, domEventHelpers];
 Handsontable.helper = {};
 Handsontable.dom = {}; // Fill general helpers.

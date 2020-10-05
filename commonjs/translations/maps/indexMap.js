@@ -24,9 +24,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Map for storing mappings from an index to a value.
  */
-var IndexMap =
-/*#__PURE__*/
-function () {
+var IndexMap = /*#__PURE__*/function () {
   function IndexMap() {
     var initValueOrFn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -63,7 +61,7 @@ function () {
     /**
      * Get value for the particular index.
      *
-     * @param {Number} index Index for which value is got.
+     * @param {number} index Index for which value is got.
      * @returns {*}
      */
 
@@ -79,6 +77,8 @@ function () {
     /**
      * Set new values for particular indexes.
      *
+     * Note: Please keep in mind that `change` hook triggered by the method may not update cache of a collection immediately.
+     *
      * @param {Array} values List of set values.
      */
 
@@ -91,9 +91,14 @@ function () {
     /**
      * Set new value for the particular index.
      *
-     * @param {Number} index
-     * @param {*} value
-     * @returns {Boolean}
+     * @param {number} index The index.
+     * @param {*} value The value to save.
+     *
+     * Note: Please keep in mind that it is not possible to set value beyond the map (not respecting already set
+     * map's size). Please use the `setValues` method when you would like to extend the map.
+     * Note: Please keep in mind that `change` hook triggered by the method may not update cache of a collection immediately.
+     *
+     * @returns {boolean}
      */
 
   }, {
@@ -119,7 +124,7 @@ function () {
     /**
      * Get length of index map.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -130,8 +135,10 @@ function () {
     /**
      * Set default values for elements from `0` to `n`, where `n` is equal to the handled variable.
      *
+     * Note: Please keep in mind that `change` hook triggered by the method may not update cache of a collection immediately.
+     *
      * @private
-     * @param {Number} [length] Length of list.
+     * @param {number} [length] Length of list.
      */
 
   }, {
@@ -158,7 +165,7 @@ function () {
      * Initialize list with default values for particular indexes.
      *
      * @private
-     * @param {Number} length New length of indexed list.
+     * @param {number} length New length of indexed list.
      * @returns {Array}
      */
 
@@ -172,6 +179,8 @@ function () {
     /**
      * Add values to the list.
      *
+     * Note: Please keep in mind that `change` hook triggered by the method may not update cache of a collection immediately.
+     *
      * @private
      */
 
@@ -182,6 +191,8 @@ function () {
     }
     /**
      * Remove values from the list.
+     *
+     * Note: Please keep in mind that `change` hook triggered by the method may not update cache of a collection immediately.
      *
      * @private
      */

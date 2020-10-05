@@ -39,13 +39,13 @@ describe('ViewportRowsCalculator', function () {
       calculationType: _calculator.RENDER_TYPE,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(0);
@@ -71,13 +71,13 @@ describe('ViewportRowsCalculator', function () {
       calculationType: _calculator.RENDER_TYPE,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(3);
@@ -110,13 +110,13 @@ describe('ViewportRowsCalculator', function () {
       calculationType: _calculator.RENDER_TYPE,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(1);
@@ -148,13 +148,13 @@ describe('ViewportRowsCalculator', function () {
       },
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(0);
@@ -179,13 +179,13 @@ describe('ViewportRowsCalculator', function () {
       overrideFn: void 0,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.count).toBe(6);
@@ -203,13 +203,13 @@ describe('ViewportRowsCalculator', function () {
       overrideFn: void 0,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(0);
@@ -233,13 +233,13 @@ describe('ViewportRowsCalculator', function () {
       overrideFn: void 0,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(0);
@@ -263,13 +263,13 @@ describe('ViewportRowsCalculator', function () {
       overrideFn: void 0,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(0);
@@ -293,13 +293,13 @@ describe('ViewportRowsCalculator', function () {
       overrideFn: void 0,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(null);
@@ -331,13 +331,13 @@ describe('ViewportRowsCalculator', function () {
       },
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(null);
@@ -362,13 +362,13 @@ describe('ViewportRowsCalculator', function () {
       overrideFn: void 0,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(10);
@@ -393,13 +393,13 @@ describe('ViewportRowsCalculator', function () {
       overrideFn: void 0,
       scrollbarHeight: void 0
     };
-    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var renderedCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.RENDER_TYPE
     }));
-    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var fullyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.FULLY_VISIBLE_TYPE
     }));
-    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread({}, options, {
+    var partiallyVisibleCalc = new _calculator.ViewportRowsCalculator(_objectSpread(_objectSpread({}, options), {}, {
       calculationType: _calculator.PARTIALLY_VISIBLE_TYPE
     }));
     expect(renderedCalc.startRow).toBe(0);

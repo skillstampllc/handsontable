@@ -18,6 +18,10 @@ require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
 
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
+
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.promise");
@@ -61,16 +65,22 @@ var _htmlNormalize = require("./htmlNormalize");
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+/**
+ * @param {number} [delay=100] The delay in ms after which the Promise is resolved.
+ * @returns {Promise}
+ */
 function sleep() {
   var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
   return Promise.resolve({
@@ -86,7 +96,7 @@ function sleep() {
 /**
  * Test context object.
  *
- * @type {Object}
+ * @type {object}
  */
 
 
@@ -94,7 +104,7 @@ var specContext = {};
 /**
  * Get the test case context.
  *
- * @returns {Object|null}
+ * @returns {object|null}
  */
 
 function spec() {
@@ -102,8 +112,10 @@ function spec() {
 }
 /**
  * Create the Walkontable instance with the provided options and cache it as `wotInstance` in the test context.
- * @param {Object} options Walkontable options.
+ *
+ * @param {object} options Walkontable options.
  * @param {HTMLTableElement} [table] The table element to base the instance on.
+ * @returns {Walkontable}
  */
 
 
@@ -118,6 +130,13 @@ function walkontable(options, table) {
   currentSpec.wotInstance = new Walkontable.Core(options);
   return currentSpec.wotInstance;
 }
+/**
+ * Creates the new data into an object returned by "spec()" function.
+ *
+ * @param {number} [rows=100] The number of rows to generate.
+ * @param {number} [cols=4] The number of columns to generate.
+ */
+
 
 function createDataArray() {
   var rows = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
@@ -141,14 +160,34 @@ function createDataArray() {
     spec().data.push(row);
   }
 }
+/**
+ * Returns the date value at specified coordinates.
+ *
+ * @param {number} row The physical row index.
+ * @param {number} col The physical column index.
+ * @returns {*}
+ */
+
 
 function getData(row, col) {
   return spec().data[row][col];
 }
+/**
+ * Returns the total rows of the currently used dataset.
+ *
+ * @returns {number}
+ */
+
 
 function getTotalRows() {
   return spec().data.length;
 }
+/**
+ * Returns the total columns of the currently used dataset.
+ *
+ * @returns {number}
+ */
+
 
 function getTotalColumns() {
   return spec().data[0] ? spec().data[0].length : 0;
@@ -157,8 +196,8 @@ function getTotalColumns() {
  * Simulates WheelEvent on the element.
  *
  * @param {Element} elem Element to dispatch event.
- * @param {Number} deltaX Relative distance in px to scroll horizontally.
- * @param {Number} deltaY Relative distance in px to scroll vertically.
+ * @param {number} deltaX Relative distance in px to scroll horizontally.
+ * @param {number} deltaY Relative distance in px to scroll vertically.
  */
 
 
@@ -201,16 +240,6 @@ beforeEach(function () {
             pass: actualHTML === expectedHTML
           };
           result.message = "Expected ".concat(actualHTML, " NOT to be ").concat(expectedHTML);
-
-          if ((typeof jest === "undefined" ? "undefined" : _typeof(jest)) === 'object') {
-            /* eslint-disable global-require */
-            var jestMatcherUtils = require('jest-matcher-utils');
-
-            result.message = function () {
-              return jestMatcherUtils.diff(expectedHTML, actualHTML);
-            };
-          }
-
           return result;
         }
       };
@@ -220,10 +249,10 @@ beforeEach(function () {
         compare: function compare(actual, expected) {
           var diff = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
           var pass = actual >= expected - diff && actual <= expected + diff;
-          var message = "Expected ".concat(actual, " to be around ").concat(expected, " (between ").concat(expected - diff, " and ").concat(expected + diff, ")");
+          var message = "Expected ".concat(actual, " to be around ").concat(expected, "\n (between ").concat(expected - diff, " and ").concat(expected + diff, ")");
 
           if (!pass) {
-            message = "Expected ".concat(actual, " NOT to be around ").concat(expected, " (between ").concat(expected - diff, " and ").concat(expected + diff, ")");
+            message = "Expected ".concat(actual, " NOT to be around ").concat(expected, "\n (between ").concat(expected - diff, " and ").concat(expected + diff, ")");
           }
 
           return {
@@ -240,10 +269,24 @@ afterEach(function () {
   specContext.spec = null;
   window.scrollTo(0, 0);
 });
+/**
+ * Returns the table width.
+ *
+ * @param {Element} elem An table element to check.
+ * @returns {number}
+ */
 
 function getTableWidth(elem) {
   return $(elem).outerWidth() || $(elem).find('tbody').outerWidth() || $(elem).find('thead').outerWidth(); // IE8 reports 0 as <table> offsetWidth
 }
+/**
+ * Creates an array with data defined by the range.
+ *
+ * @param {number} start The first index.
+ * @param {number} end The last index.
+ * @returns {Array}
+ */
+
 
 function range(start, end) {
   if (!arguments.length) {
@@ -275,8 +318,8 @@ function range(start, end) {
  * Creates the selection controller necessary for the Walkontable to make selections typical for Handsontable such as
  * current selection, area selection, selection for autofill and custom borders.
  *
- * @param {Object} selections An object with custom selection instances.
- * @returns {Object} Selection controller.
+ * @param {object} selections An object with custom selection instances.
+ * @returns {object} Selection controller.
  */
 
 
@@ -326,18 +369,38 @@ function createSelectionController() {
     return [fillCtrl, currentCtrl, areaCtrl].concat(_toConsumableArray(customCtrl))[Symbol.iterator]();
   });
 }
+/**
+ * @returns {jQuery}
+ */
+
 
 function getTableTopClone() {
   return $('.ht_clone_top');
 }
+/**
+ * @returns {jQuery}
+ */
+
 
 function getTableLeftClone() {
   return $('.ht_clone_left');
 }
+/**
+ * @returns {jQuery}
+ */
+
 
 function getTableCornerClone() {
   return $('.ht_clone_top_left_corner');
 }
+/**
+ * Creates spreadsheet data as an array of arrays filled with spreadsheet-like label values (e.q "A1", "A2"...).
+ *
+ * @param {number} rows The number of rows to generate.
+ * @param {number} columns The number of columns to generate.
+ * @returns {Array}
+ */
+
 
 function createSpreadsheetData(rows, columns) {
   var _rows = [];
@@ -362,8 +425,8 @@ var COLUMN_LABEL_BASE_LENGTH = COLUMN_LABEL_BASE.length;
 /**
  * Generates spreadsheet-like column names: A, B, C, ..., Z, AA, AB, etc.
  *
- * @param {Number} index Column index.
- * @returns {String}
+ * @param {number} index The column index.
+ * @returns {string}
  */
 
 function spreadsheetColumnLabel(index) {
@@ -379,6 +442,12 @@ function spreadsheetColumnLabel(index) {
 
   return columnLabel;
 }
+/**
+ * Returns the computed width of the native browser scroll bar.
+ *
+ * @returns {number}
+ */
+
 
 function walkontableCalculateScrollbarWidth() {
   var inner = document.createElement('div');
@@ -408,6 +477,11 @@ function walkontableCalculateScrollbarWidth() {
 }
 
 var cachedScrollbarWidth;
+/**
+ * Returns the computed width of the native browser scroll bar.
+ *
+ * @returns {number}
+ */
 
 function getScrollbarWidth() {
   if (cachedScrollbarWidth === void 0) {
@@ -417,10 +491,12 @@ function getScrollbarWidth() {
   return cachedScrollbarWidth;
 }
 /**
- * Run expectation towards a certain WtTable overlay
- * @param {*} wt WOT instance
- * @param {*} name Name of the overlay
- * @param {*} callb Callback that will receive wtTable of that overlay
+ * Run expectation towards a certain WtTable overlay.
+ *
+ * @param {*} wt WOT instance.
+ * @param {*} callb Callback that will receive wtTable of that overlay.
+ * @param {*} name Name of the overlay.
+ * @returns {Function}
  */
 
 

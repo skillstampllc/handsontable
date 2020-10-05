@@ -6,7 +6,9 @@ import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
+import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
 
@@ -18,19 +20,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import { KEY_CODES } from './../helpers/unicode';
 import { extend } from './../helpers/object';
@@ -39,20 +45,18 @@ import { stopImmediatePropagation, isImmediatePropagationStopped } from './../he
 import TextEditor from './textEditor';
 /**
  * @private
- * @editor HandsontableEditor
  * @class HandsontableEditor
- * @dependencies TextEditor
  */
 
-var HandsontableEditor =
-/*#__PURE__*/
-function (_TextEditor) {
+var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
   _inherits(HandsontableEditor, _TextEditor);
+
+  var _super = _createSuper(HandsontableEditor);
 
   function HandsontableEditor() {
     _classCallCheck(this, HandsontableEditor);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(HandsontableEditor).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(HandsontableEditor, [{
@@ -104,18 +108,18 @@ function (_TextEditor) {
     /**
      * Prepares editor's meta data and configuration of the internal Handsontable's instance.
      *
-     * @param {Number} row
-     * @param {Number} col
-     * @param {Number|String} prop
-     * @param {HTMLTableCellElement} td
-     * @param {*} originalValue
-     * @param {Object} cellProperties
+     * @param {number} row The visual row index.
+     * @param {number} col The visual column index.
+     * @param {number|string} prop The column property (passed when datasource is an array of objects).
+     * @param {HTMLTableCellElement} td The rendered cell element.
+     * @param {*} value The rendered value.
+     * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
      */
 
   }, {
     key: "prepare",
-    value: function prepare(td, row, col, prop, value, cellProperties) {
-      _get(_getPrototypeOf(HandsontableEditor.prototype), "prepare", this).call(this, td, row, col, prop, value, cellProperties);
+    value: function prepare(row, col, prop, td, value, cellProperties) {
+      _get(_getPrototypeOf(HandsontableEditor.prototype), "prepare", this).call(this, row, col, prop, td, value, cellProperties);
 
       var parent = this;
       var options = {
@@ -152,8 +156,8 @@ function (_TextEditor) {
     /**
      * Begins editing on a highlighted cell and hides fillHandle corner if was present.
      *
-     * @param {*} newInitialValue
-     * @param {*} event
+     * @param {*} newInitialValue The editor initial value.
+     * @param {*} event The keyboard event object.
      */
 
   }, {
@@ -166,15 +170,6 @@ function (_TextEditor) {
       }
 
       _get(_getPrototypeOf(HandsontableEditor.prototype), "beginEditing", this).call(this, newInitialValue, event);
-    }
-    /**
-     * Sets focus state on the select element.
-     */
-
-  }, {
-    key: "focus",
-    value: function focus(safeFocus) {
-      _get(_getPrototypeOf(HandsontableEditor.prototype), "focus", this).call(this, safeFocus);
     }
     /**
      * Creates an editor's elements and adds necessary CSS classnames.
@@ -194,9 +189,9 @@ function (_TextEditor) {
     /**
      * Finishes editing and start saving or restoring process for editing cell or last selected range.
      *
-     * @param {Boolean} restoreOriginalValue If true, then closes editor without saving value from the editor into a cell.
-     * @param {Boolean} ctrlDown If true, then saveValue will save editor's value to each cell in the last selected range.
-     * @param {Function} callback
+     * @param {boolean} restoreOriginalValue If true, then closes editor without saving value from the editor into a cell.
+     * @param {boolean} ctrlDown If true, then saveValue will save editor's value to each cell in the last selected range.
+     * @param {Function} callback The callback function, fired after editor closing.
      */
 
   }, {
@@ -216,7 +211,7 @@ function (_TextEditor) {
         }
       }
 
-      return _get(_getPrototypeOf(HandsontableEditor.prototype), "finishEditing", this).call(this, restoreOriginalValue, ctrlDown, callback);
+      _get(_getPrototypeOf(HandsontableEditor.prototype), "finishEditing", this).call(this, restoreOriginalValue, ctrlDown, callback);
     }
     /**
      * Assings afterDestroy callback to prevent memory leaks.
@@ -236,10 +231,10 @@ function (_TextEditor) {
       });
     }
     /**
-     * onBeforeKeyDown callback.
+     * OnBeforeKeyDown callback.
      *
      * @private
-     * @param {Event} event
+     * @param {Event} event The keyboard event object.
      */
 
   }, {

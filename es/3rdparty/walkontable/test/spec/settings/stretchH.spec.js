@@ -47,11 +47,7 @@ describe('stretchH option', function () {
 
     expect(spec().$table.find('col:eq(2)').width() - spec().$table.find('col:eq(1)').width()).toBeInArray([-1, 0, 1]);
   });
-  it('should stretch all visible columns when stretchH equals \'all\' and window is resized',
-  /*#__PURE__*/
-  _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee() {
+  it('should stretch all visible columns when stretchH equals \'all\' and window is resized', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     var wt, initialTableWidth, evt, currentTableWidth;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {

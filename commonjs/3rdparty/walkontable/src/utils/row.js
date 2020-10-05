@@ -14,9 +14,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * @class {RowUtils}
  */
-var RowUtils =
-/*#__PURE__*/
-function () {
+var RowUtils = /*#__PURE__*/function () {
   function RowUtils(wot) {
     _classCallCheck(this, RowUtils);
 
@@ -25,8 +23,8 @@ function () {
   /**
    * Returns row height based on passed source index.
    *
-   * @param {Number} sourceIndex Row source index.
-   * @returns {Number}
+   * @param {number} sourceIndex Row source index.
+   * @returns {number}
    */
 
 

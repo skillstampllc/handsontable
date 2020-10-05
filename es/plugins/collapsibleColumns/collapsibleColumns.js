@@ -1,30 +1,38 @@
 import "core-js/modules/es.symbol";
 import "core-js/modules/es.symbol.description";
 import "core-js/modules/es.symbol.iterator";
+import "core-js/modules/es.array.concat";
 import "core-js/modules/es.array.from";
+import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
-import "core-js/modules/es.array.splice";
+import "core-js/modules/es.array.slice";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.map";
 import "core-js/modules/es.object.get-own-property-descriptor";
 import "core-js/modules/es.object.get-prototype-of";
 import "core-js/modules/es.object.set-prototype-of";
 import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.reflect.get";
 import "core-js/modules/es.regexp.to-string";
-import "core-js/modules/es.set";
 import "core-js/modules/es.string.iterator";
+import "core-js/modules/es.weak-map";
 import "core-js/modules/web.dom-collections.iterator";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32,32 +40,50 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-import { objectEach, deepClone } from '../../helpers/object';
-import { arrayEach } from '../../helpers/array';
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+import { arrayEach, arrayFilter, arrayUnique } from '../../helpers/array';
 import { rangeEach } from '../../helpers/number';
 import { warn } from '../../helpers/console';
 import { addClass, hasClass, fastInnerText } from '../../helpers/dom/element';
 import EventManager from '../../eventManager';
 import { registerPlugin } from '../../plugins';
 import { stopImmediatePropagation } from '../../helpers/dom/event';
+import { HidingMap } from '../../translations';
 import BasePlugin from '../_base';
+var actionDictionary = new Map([['collapse', {
+  hideColumn: true,
+  beforeHook: 'beforeColumnCollapse',
+  afterHook: 'afterColumnCollapse'
+}], ['expand', {
+  hideColumn: false,
+  beforeHook: 'beforeColumnExpand',
+  afterHook: 'afterColumnExpand'
+}]]);
 /**
  * @plugin CollapsibleColumns
- * @dependencies NestedHeaders HiddenColumns
  *
  * @description
  * The {@link CollapsibleColumns} plugin allows collapsing of columns, covered by a header with the `colspan` property defined.
@@ -77,6 +103,7 @@ import BasePlugin from '../_base';
  *   data: generateDataObj(),
  *   colHeaders: true,
  *   rowHeaders: true,
+ *   nestedHeaders: true,
  *   // enable plugin
  *   collapsibleColumns: true,
  * });
@@ -86,6 +113,7 @@ import BasePlugin from '../_base';
  *   data: generateDataObj(),
  *   colHeaders: true,
  *   rowHeaders: true,
+ *   nestedHeaders: true,
  *   // enable and configure which columns can be collapsed
  *   collapsibleColumns: [
  *     {row: -4, col: 1, collapsible: true},
@@ -95,101 +123,47 @@ import BasePlugin from '../_base';
  * ```
  */
 
-var CollapsibleColumns =
-/*#__PURE__*/
-function (_BasePlugin) {
+var _collapsedColumnsMap = new WeakMap();
+
+var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
   _inherits(CollapsibleColumns, _BasePlugin);
 
-  function CollapsibleColumns(hotInstance) {
+  var _super = _createSuper(CollapsibleColumns);
+
+  function CollapsibleColumns() {
     var _this;
 
     _classCallCheck(this, CollapsibleColumns);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CollapsibleColumns).call(this, hotInstance));
-    /**
-     * Cached plugin settings.
-     *
-     * @private
-     * @type {Boolean|Array}
-     */
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.settings = null;
-    /**
-     * Map listing headers with buttons enabled.
-     *
-     * @private
-      * @type {Map<number, Set<number>>}
-     */
+    _this = _super.call.apply(_super, [this].concat(args));
 
-    _this.buttonEnabledList = new Map();
-    /**
-     * Cached reference to the HiddenColumns plugin.
-     *
-     * @private
-     * @type {Object}
-     */
+    _defineProperty(_assertThisInitialized(_this), "nestedHeadersPlugin", null);
 
-    _this.hiddenColumnsPlugin = null;
-    /**
-     * Cached reference to the NestedHeaders plugin.
-     *
-     * @private
-     * @type {Object}
-     */
+    _defineProperty(_assertThisInitialized(_this), "eventManager", new EventManager(_assertThisInitialized(_this)));
 
-    _this.nestedHeadersPlugin = null;
-    /**
-     * Map listing the currently collapsed sections.
-     *
-     * @private
-      * @type {Map<number, any[]>}
-     */
+    _defineProperty(_assertThisInitialized(_this), "headerStateManager", null);
 
-    _this.collapsedSections = new Map();
-    /**
-     * Number of column header levels.
-     *
-     * @private
-     * @type {Number}
-     */
+    _collapsedColumnsMap.set(_assertThisInitialized(_this), {
+      writable: true,
+      value: null
+    });
 
-    _this.columnHeaderLevelCount = null;
-    /**
-     * Event manager instance reference.
-     *
-     * @private
-     * @type {EventManager}
-     */
-
-    _this.eventManager = null;
-    /**
-     * List of currently collapsed columns.
-     *
-     * @private
-     * @type {Number[]}
-     */
-
-    _this.collapsedColumns = [];
-    /**
-     * List of collapsable coords.
-     *
-     * @private
-     * @type {Map<number, Set<number>>}
-     */
-
-    _this.collapsableCoordsList = new Map();
     return _this;
   }
-  /**
-   * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
-   * hook and if it returns `true` than the {@link CollapsibleColumns#enablePlugin} method is called.
-   *
-   * @returns {Boolean}
-   */
-
 
   _createClass(CollapsibleColumns, [{
     key: "isEnabled",
+
+    /**
+     * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
+     * hook and if it returns `true` than the {@link CollapsibleColumns#enablePlugin} method is called.
+     *
+     * @returns {boolean}
+     */
     value: function isEnabled() {
       return !!this.hot.getSettings().collapsibleColumns;
     }
@@ -206,20 +180,23 @@ function (_BasePlugin) {
         return;
       }
 
-      this.settings = this.hot.getSettings().collapsibleColumns;
+      var _this$hot$getSettings = this.hot.getSettings(),
+          nestedHeaders = _this$hot$getSettings.nestedHeaders;
 
-      if (typeof this.settings !== 'boolean') {
-        this.parseSettings();
+      if (!nestedHeaders) {
+        warn('You need to configure the Nested Headers plugin in order to use collapsible headers.');
       }
 
-      this.hiddenColumnsPlugin = this.hot.getPlugin('hiddenColumns');
+      _classPrivateFieldSet(this, _collapsedColumnsMap, new HidingMap());
+
+      this.hot.columnIndexMapper.registerMap(this.pluginName, _classPrivateFieldGet(this, _collapsedColumnsMap));
       this.nestedHeadersPlugin = this.hot.getPlugin('nestedHeaders');
-      this.checkDependencies();
-      this.addHook('afterRender', function () {
-        return _this2.onAfterRender();
+      this.headerStateManager = this.nestedHeadersPlugin.getStateManager();
+      this.addHook('init', function () {
+        return _this2.onInit();
       });
-      this.addHook('afterInit', function () {
-        return _this2.onAfterInit();
+      this.addHook('afterLoadData', function () {
+        return _this2.onAfterLoadData.apply(_this2, arguments);
       });
       this.addHook('afterGetColHeader', function (col, TH) {
         return _this2.onAfterGetColHeader(col, TH);
@@ -227,9 +204,41 @@ function (_BasePlugin) {
       this.addHook('beforeOnCellMouseDown', function (event, coords, TD) {
         return _this2.onBeforeOnCellMouseDown(event, coords, TD);
       });
-      this.eventManager = new EventManager(this.hot);
 
-      _get(_getPrototypeOf(CollapsibleColumns.prototype), "enablePlugin", this).call(this);
+      _get(_getPrototypeOf(CollapsibleColumns.prototype), "enablePlugin", this).call(this); // @TODO: Workaround for broken plugin initialization abstraction (#6806).
+
+
+      this.updatePlugin();
+    }
+    /**
+     * Updates the plugin state. This method is executed when {@link Core#updateSettings} is invoked.
+     */
+
+  }, {
+    key: "updatePlugin",
+    value: function updatePlugin() {
+      // @TODO: Workaround for broken plugin initialization abstraction (#6806).
+      if (!this.hot.view) {
+        return;
+      }
+
+      if (!this.nestedHeadersPlugin.detectedOverlappedHeaders) {
+        var _this$hot$getSettings2 = this.hot.getSettings(),
+            collapsibleColumns = _this$hot$getSettings2.collapsibleColumns;
+
+        if (typeof collapsibleColumns === 'boolean') {
+          // Add `collapsible: true` attribute to all headers with colspan higher than 1.
+          this.headerStateManager.mapState(function (headerSettings) {
+            return {
+              collapsible: headerSettings.origColspan > 1
+            };
+          });
+        } else if (Array.isArray(collapsibleColumns)) {
+          this.headerStateManager.mergeStateWith(collapsibleColumns);
+        }
+      }
+
+      _get(_getPrototypeOf(CollapsibleColumns.prototype), "updatePlugin", this).call(this);
     }
     /**
      * Disables the plugin functionality for this Handsontable instance.
@@ -238,10 +247,11 @@ function (_BasePlugin) {
   }, {
     key: "disablePlugin",
     value: function disablePlugin() {
-      this.settings = null;
-      this.buttonEnabledList.clear();
-      this.hiddenColumnsPlugin = null;
-      this.collapsedSections.clear();
+      this.hot.columnIndexMapper.unregisterMap(this.pluginName);
+
+      _classPrivateFieldSet(this, _collapsedColumnsMap, null);
+
+      this.nestedHeadersPlugin = null;
       this.clearButtons();
 
       _get(_getPrototypeOf(CollapsibleColumns.prototype), "disablePlugin", this).call(this);
@@ -291,162 +301,9 @@ function (_BasePlugin) {
       }, true);
     }
     /**
-     * Parses the plugin settings and create a button configuration array.
-     *
-     * @private
-     */
-
-  }, {
-    key: "parseSettings",
-    value: function parseSettings() {
-      var _this3 = this;
-
-      objectEach(this.settings, function (val) {
-        if (!_this3.buttonEnabledList.has(val.row)) {
-          _this3.buttonEnabledList.set(val.row, new Set());
-        }
-
-        _this3.buttonEnabledList.get(val.row).add(val.col);
-      });
-      this.collapsableCoordsList = this.buttonEnabledList;
-    }
-    /**
-     * Checks if plugin dependencies are met.
-     *
-     * @private
-     * @returns {Boolean}
-     */
-
-  }, {
-    key: "meetsDependencies",
-    value: function meetsDependencies() {
-      var settings = this.hot.getSettings();
-      return settings.nestedHeaders && settings.hiddenColumns;
-    }
-    /**
-     * Checks if all the required dependencies are enabled.
-     *
-     * @private
-     */
-
-  }, {
-    key: "checkDependencies",
-    value: function checkDependencies() {
-      var settings = this.hot.getSettings();
-
-      if (this.meetsDependencies()) {
-        return;
-      }
-
-      if (!settings.nestedHeaders) {
-        warn('You need to configure the Nested Headers plugin in order to use collapsible headers.');
-      }
-
-      if (!settings.hiddenColumns) {
-        warn('You need to configure the Hidden Columns plugin in order to use collapsible headers.');
-      }
-    }
-    /**
-     * Generates the indicator element.
-     *
-     * @private
-     * @param {Number} column Column index.
-     * @param {HTMLElement} TH TH Element.
-     * @returns {HTMLElement}
-     */
-
-  }, {
-    key: "generateIndicator",
-    value: function generateIndicator(column, TH) {
-      var TR = TH.parentNode;
-      var THEAD = TR.parentNode;
-      var row = -1 * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
-
-      if (this.buttonEnabledList.size > 0 && (!this.buttonEnabledList.has(row) || !this.buttonEnabledList.get(row).has(column))) {
-        return null;
-      }
-
-      var divEl = this.hot.rootDocument.createElement('DIV');
-      addClass(divEl, 'collapsibleIndicator');
-
-      if (this.collapsedSections.has(row) && this.collapsedSections.get(row)[column] === true) {
-        addClass(divEl, 'collapsed');
-        fastInnerText(divEl, '+');
-      } else {
-        addClass(divEl, 'expanded');
-        fastInnerText(divEl, '-');
-      }
-
-      return divEl;
-    }
-    /**
-     * Generates the list of collapsable coords.
-     *
-     * @private
-     * @param {Number} column Column index.
-     * @param {HTMLElement} TH TH Element.
-     */
-
-  }, {
-    key: "generateCollapsableCoordsList",
-    value: function generateCollapsableCoordsList(column, TH) {
-      var TR = TH.parentNode;
-      var THEAD = TR.parentNode;
-      var row = -1 * THEAD.childNodes.length + Array.from(THEAD.childNodes).indexOf(TR);
-
-      if (!this.collapsableCoordsList.has(row)) {
-        this.collapsableCoordsList.set(row, new Set());
-      }
-
-      this.collapsableCoordsList.get(row).add(column);
-    }
-    /**
-     * Marks (internally) a section as 'collapsed' or 'expanded' (optionally, also mark the 'child' headers).
-     *
-     * @private
-     * @param {String} state State ('collapsed' or 'expanded').
-     * @param {Number} row Row index.
-     * @param {Number} column Column index.
-     * @param {Boolean} recursive If `true`, it will also attempt to mark the child sections.
-     */
-
-  }, {
-    key: "markSectionAs",
-    value: function markSectionAs(state, row, column, recursive) {
-      if (!this.collapsedSections.has(row)) {
-        this.collapsedSections.set(row, []);
-      }
-
-      switch (state) {
-        case 'collapsed':
-          this.collapsedSections.get(row)[column] = true;
-          break;
-
-        case 'expanded':
-          this.collapsedSections.get(row)[column] = void 0;
-          break;
-
-        default:
-          break;
-      }
-
-      if (recursive) {
-        var nestedHeadersColspans = this.nestedHeadersPlugin.colspanArray;
-        var level = this.nestedHeadersPlugin.rowCoordsToLevel(row);
-        var childHeaders = this.nestedHeadersPlugin.getChildHeaders(row, column);
-        var childColspanLevel = nestedHeadersColspans[level + 1];
-
-        for (var i = 1; i < childHeaders.length; i++) {
-          if (childColspanLevel && childColspanLevel[childHeaders[i]].colspan > 1) {
-            this.markSectionAs(state, row + 1, childHeaders[i], true);
-          }
-        }
-      }
-    }
-    /**
      * Expands section at the provided coords.
      *
-     * @param {Object} coords Contains coordinates information. (`coords.row`, `coords.col`)
+     * @param {object} coords Contains coordinates information. (`coords.row`, `coords.col`).
      */
 
   }, {
@@ -457,7 +314,7 @@ function (_BasePlugin) {
     /**
      * Collapses section at the provided coords.
      *
-     * @param {Object} coords Contains coordinates information. (`coords.row`, `coords.col`)
+     * @param {object} coords Contains coordinates information. (`coords.row`, `coords.col`).
      */
 
   }, {
@@ -468,48 +325,28 @@ function (_BasePlugin) {
     /**
      * Collapses or expand all collapsible sections, depending on the action parameter.
      *
-     * @param {String} action 'collapse' or 'expand'.
+     * @param {string} action 'collapse' or 'expand'.
      */
 
   }, {
     key: "toggleAllCollapsibleSections",
     value: function toggleAllCollapsibleSections(action) {
-      var _this4 = this;
+      var _this3 = this;
 
-      var nestedHeadersColspanArray = this.nestedHeadersPlugin.colspanArray;
-      var sectionToToggle = [];
+      var coords = this.headerStateManager.mapNodes(function (_ref) {
+        var collapsible = _ref.collapsible,
+            origColspan = _ref.origColspan,
+            headerLevel = _ref.headerLevel,
+            columnIndex = _ref.columnIndex;
 
-      if (this.settings === true) {
-        arrayEach(nestedHeadersColspanArray, function (headerLevel, i) {
-          arrayEach(headerLevel, function (header, j) {
-            if (header.colspan > 1) {
-              var row = _this4.nestedHeadersPlugin.levelToRowCoords(parseInt(i, 10));
-
-              var col = parseInt(j, 10);
-              sectionToToggle.push({
-                row: row,
-                col: col
-              });
-            }
-          });
-        });
-      } else {
-        arrayEach(this.buttonEnabledList, function (_ref) {
-          var _ref2 = _slicedToArray(_ref, 2),
-              headerRowIndex = _ref2[0],
-              columnIndexes = _ref2[1];
-
-          arrayEach(columnIndexes, function (columnIndex) {
-            var rowIndex = parseInt(headerRowIndex, 10);
-            sectionToToggle.push({
-              row: rowIndex,
-              col: columnIndex
-            });
-          });
-        });
-      }
-
-      this.toggleCollapsibleSection(sectionToToggle, action);
+        if (collapsible === true && origColspan > 1) {
+          return {
+            row: _this3.headerStateManager.levelToRowCoords(headerLevel),
+            col: columnIndex
+          };
+        }
+      });
+      this.toggleCollapsibleSection(coords, action);
     }
     /**
      * Collapses all collapsible sections.
@@ -533,7 +370,7 @@ function (_BasePlugin) {
      * Collapses/Expands a section.
      *
      * @param {Array} coords Array of coords - section coordinates.
-     * @param {String} action Action definition ('collapse' or 'expand').
+     * @param {string} [action] Action definition ('collapse' or 'expand').
      * @fires Hooks#beforeColumnCollapse
      * @fires Hooks#beforeColumnExpand
      * @fires Hooks#afterColumnCollapse
@@ -543,136 +380,155 @@ function (_BasePlugin) {
   }, {
     key: "toggleCollapsibleSection",
     value: function toggleCollapsibleSection(coords, action) {
-      var _this5 = this;
+      var _this4 = this;
+
+      if (!actionDictionary.has(action)) {
+        throw new Error("Unsupported action is passed (".concat(action, ")."));
+      }
 
       if (!Array.isArray(coords)) {
         return;
-      }
+      } // Ignore coordinates which points to the cells range.
 
-      var currentCollapsedColumns = this.collapsedColumns;
-      var hiddenColumns = this.hiddenColumnsPlugin.hiddenColumns;
-      var cloneCollapsedSections = new Map(deepClone(Array.from(this.collapsedSections)));
-      var collapsePossible;
-      arrayEach(coords, function (currentCoords) {
-        if (currentCoords.row) {
-          currentCoords.row = parseInt(currentCoords.row, 10);
-        }
 
-        if (currentCoords.col) {
-          currentCoords.col = parseInt(currentCoords.col, 10);
-        }
+      var filteredCoords = arrayFilter(coords, function (_ref2) {
+        var row = _ref2.row;
+        return row < 0;
+      });
+      var isActionPossible = filteredCoords.length > 0;
+      arrayEach(filteredCoords, function (_ref3) {
+        var row = _ref3.row,
+            column = _ref3.col;
 
-        if (!_this5.collapsableCoordsList.has(currentCoords.row) || _this5.collapsableCoordsList.has(currentCoords.row) && !_this5.collapsableCoordsList.get(currentCoords.row).has(currentCoords.col)) {
-          collapsePossible = false;
+        var _this4$headerStateMan = _this4.headerStateManager.getHeaderSettings(row, column),
+            collapsible = _this4$headerStateMan.collapsible,
+            isCollapsed = _this4$headerStateMan.isCollapsed;
+
+        if (!collapsible || isCollapsed && action === 'collapse' || !isCollapsed && action === 'expand') {
+          isActionPossible = false;
           return false;
         }
+      });
+      var nodeModRollbacks = [];
+      var affectedColumnsIndexes = [];
 
-        collapsePossible = _this5.collapsableCoordsList.get(currentCoords.row).has(currentCoords.col);
-        var colspanArray = _this5.nestedHeadersPlugin.colspanArray;
+      if (isActionPossible) {
+        arrayEach(filteredCoords, function (_ref4) {
+          var row = _ref4.row,
+              column = _ref4.col;
 
-        var level = _this5.nestedHeadersPlugin.rowCoordsToLevel(currentCoords.row);
+          var _this4$headerStateMan2 = _this4.headerStateManager.triggerNodeModification(action, row, column),
+              colspanCompensation = _this4$headerStateMan2.colspanCompensation,
+              affectedColumns = _this4$headerStateMan2.affectedColumns,
+              rollbackModification = _this4$headerStateMan2.rollbackModification;
 
-        var currentHeaderColspan = colspanArray[level][currentCoords.col].colspan;
-
-        var childHeaders = _this5.nestedHeadersPlugin.getChildHeaders(currentCoords.row, currentCoords.col);
-
-        var nextLevel = level + 1;
-        var childColspanLevel = colspanArray[nextLevel];
-        var firstChildColspan = childColspanLevel ? childColspanLevel[childHeaders[0]].colspan || 1 : 1;
-
-        while (firstChildColspan === currentHeaderColspan && nextLevel < _this5.columnHeaderLevelCount) {
-          nextLevel += 1;
-          childColspanLevel = colspanArray[nextLevel];
-          firstChildColspan = childColspanLevel ? childColspanLevel[childHeaders[0]].colspan || 1 : 1;
-        }
-
-        rangeEach(firstChildColspan, currentHeaderColspan - 1, function (i) {
-          var colToHide = currentCoords.col + i;
-
-          switch (action) {
-            case 'collapse':
-              if (!_this5.hiddenColumnsPlugin.isHidden(colToHide)) {
-                hiddenColumns.push(colToHide);
-              }
-
-              _this5.markSectionAs('collapsed', currentCoords.row, currentCoords.col, true);
-
-              break;
-
-            case 'expand':
-              if (_this5.hiddenColumnsPlugin.isHidden(colToHide)) {
-                hiddenColumns.splice(hiddenColumns.indexOf(colToHide), 1);
-              }
-
-              _this5.markSectionAs('expanded', currentCoords.row, currentCoords.col, true);
-
-              break;
-
-            default:
-              break;
+          if (colspanCompensation > 0) {
+            affectedColumnsIndexes.push.apply(affectedColumnsIndexes, _toConsumableArray(affectedColumns));
+            nodeModRollbacks.push(rollbackModification);
           }
         });
+      }
+
+      var currentCollapsedColumns = this.getCollapsedColumns();
+      var destinationCollapsedColumns = [];
+
+      if (action === 'collapse') {
+        destinationCollapsedColumns = arrayUnique([].concat(_toConsumableArray(currentCollapsedColumns), affectedColumnsIndexes));
+      } else if (action === 'expand') {
+        destinationCollapsedColumns = arrayFilter(currentCollapsedColumns, function (index) {
+          return !affectedColumnsIndexes.includes(index);
+        });
+      }
+
+      var actionTranslator = actionDictionary.get(action);
+      var isActionAllowed = this.hot.runHooks(actionTranslator.beforeHook, currentCollapsedColumns, destinationCollapsedColumns, isActionPossible);
+
+      if (isActionAllowed === false) {
+        // Rollback all header nodes modification (collapse or expand).
+        arrayEach(nodeModRollbacks, function (nodeModRollback) {
+          nodeModRollback();
+        });
+        return;
+      }
+
+      this.hot.batch(function () {
+        arrayEach(affectedColumnsIndexes, function (visualColumn) {
+          _classPrivateFieldGet(_this4, _collapsedColumnsMap).setValueAtIndex(_this4.hot.toPhysicalColumn(visualColumn), actionTranslator.hideColumn);
+        });
       });
-      var destinationCollapsedColumns = Array.from(hiddenColumns);
-
-      if (action === 'collapse') {
-        var allowColumnCollapse = this.hot.runHooks('beforeColumnCollapse', currentCollapsedColumns, destinationCollapsedColumns, collapsePossible);
-
-        if (allowColumnCollapse === false) {
-          this.hiddenColumnsPlugin.hiddenColumns = Array.from(this.collapsedColumns);
-          this.collapsedSections = cloneCollapsedSections;
-          return;
-        }
-      } else {
-        var allowColumnExpand = this.hot.runHooks('beforeColumnExpand', currentCollapsedColumns, destinationCollapsedColumns, collapsePossible);
-
-        if (allowColumnExpand === false) {
-          this.hiddenColumnsPlugin.hiddenColumns = Array.from(this.collapsedColumns);
-          this.collapsedSections = cloneCollapsedSections;
-          return;
-        }
-      }
-
-      this.collapsedColumns = destinationCollapsedColumns;
-
-      if (action === 'collapse') {
-        this.hot.runHooks('afterColumnCollapse', currentCollapsedColumns, destinationCollapsedColumns, collapsePossible, destinationCollapsedColumns.length > currentCollapsedColumns.length);
-      } else {
-        this.hot.runHooks('afterColumnExpand', currentCollapsedColumns, destinationCollapsedColumns, collapsePossible, destinationCollapsedColumns.length < currentCollapsedColumns.length);
-      }
-
+      var isActionPerformed = this.getCollapsedColumns().length !== currentCollapsedColumns.length;
+      this.hot.runHooks(actionTranslator.afterHook, currentCollapsedColumns, destinationCollapsedColumns, isActionPossible, isActionPerformed);
       this.hot.render();
       this.hot.view.wt.wtOverlays.adjustElementsSize(true);
+    }
+    /**
+     * Gets an array of physical indexes of collapsed columns.
+     *
+     * @private
+     * @returns {number[]}
+     */
+
+  }, {
+    key: "getCollapsedColumns",
+    value: function getCollapsedColumns() {
+      return _classPrivateFieldGet(this, _collapsedColumnsMap).getHiddenIndexes();
+    }
+    /**
+     * Generates the indicator element.
+     *
+     * @private
+     * @param {number} row Row index.
+     * @param {number} column Column index.
+     * @returns {HTMLElement}
+     */
+
+  }, {
+    key: "generateIndicator",
+    value: function generateIndicator(row, column) {
+      var divEl = this.hot.rootDocument.createElement('div');
+      var columnSettings = this.headerStateManager.getHeaderSettings(row, column);
+      addClass(divEl, 'collapsibleIndicator');
+
+      if (columnSettings.isCollapsed) {
+        addClass(divEl, 'collapsed');
+        fastInnerText(divEl, '+');
+      } else {
+        addClass(divEl, 'expanded');
+        fastInnerText(divEl, '-');
+      }
+
+      return divEl;
     }
     /**
      * Adds the indicator to the headers.
      *
      * @private
-     * @param {Number} column Column index.
+     * @param {number} column Column index.
      * @param {HTMLElement} TH TH element.
      */
 
   }, {
     key: "onAfterGetColHeader",
     value: function onAfterGetColHeader(column, TH) {
-      if (TH.hasAttribute('colspan') && TH.getAttribute('colspan') > 1 && column >= this.hot.getSettings().fixedColumnsLeft) {
-        var button = this.generateIndicator(column, TH);
+      var TR = TH.parentNode;
+      var THEAD = TR.parentNode;
+      var row = -1 * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
 
-        if (this.buttonEnabledList.size === 0) {
-          this.generateCollapsableCoordsList(column, TH);
-        }
+      var _this$headerStateMana = this.headerStateManager.getHeaderSettings(row, column),
+          collapsible = _this$headerStateMana.collapsible,
+          origColspan = _this$headerStateMana.origColspan;
 
-        if (button !== null) {
-          TH.querySelector('div:first-child').appendChild(button);
-        }
+      if (collapsible && origColspan > 1 && column >= this.hot.getSettings().fixedColumnsLeft) {
+        var button = this.generateIndicator(row, column);
+        TH.querySelector('div:first-child').appendChild(button);
       }
     }
     /**
      * Indicator mouse event callback.
      *
      * @private
-     * @param {Object} event Mouse event.
-     * @param {Object} coords Event coordinates.
+     * @param {object} event Mouse event.
+     * @param {object} coords Event coordinates.
      */
 
   }, {
@@ -680,11 +536,6 @@ function (_BasePlugin) {
     value: function onBeforeOnCellMouseDown(event, coords) {
       if (hasClass(event.target, 'collapsibleIndicator')) {
         if (hasClass(event.target, 'expanded')) {
-          // mark section as collapsed
-          if (!this.collapsedSections.has(coords.row)) {
-            this.collapsedSections.set(coords.row, []);
-          }
-
           this.eventManager.fireEvent(event.target, 'mouseup');
           this.toggleCollapsibleSection([coords], 'collapse');
         } else if (hasClass(event.target, 'collapsed')) {
@@ -693,31 +544,34 @@ function (_BasePlugin) {
         }
 
         stopImmediatePropagation(event);
-        return false;
       }
     }
     /**
-     * AfterInit hook callback.
+     * Updates the plugin state after HoT initialization.
      *
      * @private
      */
 
   }, {
-    key: "onAfterInit",
-    value: function onAfterInit() {
-      this.columnHeaderLevelCount = this.hot.view.wt.getSetting('columnHeaders').length;
+    key: "onInit",
+    value: function onInit() {
+      // @TODO: Workaround for broken plugin initialization abstraction (#6806).
+      this.updatePlugin();
     }
     /**
-     * AfterRender hook callback.
+     * Updates the plugin state after new dataset load.
      *
      * @private
+     * @param {Array[]} sourceData Array of arrays or array of objects containing data.
+     * @param {boolean} initialLoad Flag that determines whether the data has been loaded
+     *                              during the initialization.
      */
 
   }, {
-    key: "onAfterRender",
-    value: function onAfterRender() {
-      if (!this.nestedHeadersPlugin.enabled || !this.hiddenColumnsPlugin.enabled) {
-        this.disablePlugin();
+    key: "onAfterLoadData",
+    value: function onAfterLoadData(sourceData, initialLoad) {
+      if (!initialLoad) {
+        this.updatePlugin();
       }
     }
     /**
@@ -727,14 +581,9 @@ function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.settings = null;
-      this.buttonEnabledList = null;
-      this.hiddenColumnsPlugin = null;
-      this.nestedHeadersPlugin = null;
-      this.collapsedSections = null;
-      this.columnHeaderLevelCount = null;
-      this.collapsedColumns = null;
-      this.collapsableCoordsList = null;
+      _classPrivateFieldSet(this, _collapsedColumnsMap, null);
+
+      this.hot.columnIndexMapper.unregisterMap(this.pluginName);
 
       _get(_getPrototypeOf(CollapsibleColumns.prototype), "destroy", this).call(this);
     }

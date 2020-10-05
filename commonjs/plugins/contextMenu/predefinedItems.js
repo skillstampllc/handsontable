@@ -78,7 +78,7 @@ var _predefinedItems = (_predefinedItems2 = {}, _defineProperty(_predefinedItems
 /**
  * Gets new object with all predefined menu items.
  *
- * @returns {Object}
+ * @returns {object}
  */
 
 
@@ -92,8 +92,8 @@ function predefinedItems() {
 /**
  * Add new predefined menu item to the collection.
  *
- * @param {String} key Menu command id.
- * @param {Object} item Object command descriptor.
+ * @param {string} key Menu command id.
+ * @param {object} item Object command descriptor.
  */
 
 

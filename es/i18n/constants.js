@@ -37,8 +37,10 @@ export var CONTEXTMENU_ITEMS_BORDERS_RIGHT = "".concat(CONTEXT_MENU_ITEMS_NAMESP
 export var CONTEXTMENU_ITEMS_BORDERS_BOTTOM = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".borders.bottom");
 export var CONTEXTMENU_ITEMS_BORDERS_LEFT = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".borders.left");
 export var CONTEXTMENU_ITEMS_REMOVE_BORDERS = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".borders.remove");
-export var CONTEXTMENU_ITEMS_NESTED_ROWS_INSERT_CHILD = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".nestedHeaders.insertChildRow");
-export var CONTEXTMENU_ITEMS_NESTED_ROWS_DETACH_CHILD = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".nestedHeaders.detachFromParent");
+export var CONTEXTMENU_ITEMS_NESTED_ROWS_INSERT_CHILD = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".nestedHeaders.insertChildRow"); // eslint-disable-line max-len
+
+export var CONTEXTMENU_ITEMS_NESTED_ROWS_DETACH_CHILD = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".nestedHeaders.detachFromParent"); // eslint-disable-line max-len
+
 export var CONTEXTMENU_ITEMS_HIDE_COLUMN = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".hideColumn");
 export var CONTEXTMENU_ITEMS_SHOW_COLUMN = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".showColumn");
 export var CONTEXTMENU_ITEMS_HIDE_ROW = "".concat(CONTEXT_MENU_ITEMS_NAMESPACE, ".hideRow");

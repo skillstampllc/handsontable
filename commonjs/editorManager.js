@@ -1,8 +1,22 @@
 "use strict";
 
+require("core-js/modules/es.symbol");
+
+require("core-js/modules/es.symbol.description");
+
+require("core-js/modules/es.symbol.iterator");
+
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.iterator");
 
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
+
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -29,27 +43,37 @@ var _element = require("./helpers/dom/element");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var EditorManager =
-/*#__PURE__*/
-function () {
+var EditorManager = /*#__PURE__*/function () {
   /**
-   * @param {Handsontable} instance
-   * @param {GridSettings} priv
-   * @param {Selection} selection
+   * @param {Core} instance The Handsontable instance.
+   * @param {TableMeta} tableMeta The table meta instance.
+   * @param {Selection} selection The selection instance.
    */
-  function EditorManager(instance, priv, selection) {
+  function EditorManager(instance, tableMeta, selection) {
     var _this = this;
 
     _classCallCheck(this, EditorManager);
 
     /**
-     * Instance of {@link Handsontable}
+     * Instance of {@link Handsontable}.
      *
      * @private
      * @type {Handsontable}
@@ -62,9 +86,9 @@ function () {
      * @type {GridSettings}
      */
 
-    this.priv = priv;
+    this.tableMeta = tableMeta;
     /**
-     * Instance of {@link Selection}
+     * Instance of {@link Selection}.
      *
      * @private
      * @type {Selection}
@@ -83,7 +107,7 @@ function () {
      * Determines if EditorManager is destroyed.
      *
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.destroyed = false;
@@ -91,7 +115,7 @@ function () {
      * Determines if EditorManager is locked.
      *
      * @private
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.lock = false;
@@ -106,10 +130,17 @@ function () {
     /**
      * Keeps a reference to the cell's properties object.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.cellProperties = void 0;
+    /**
+     * Keeps last keyCode pressed from the keydown event.
+     *
+     * @type {number}
+     */
+
+    this.lastKeyCode = void 0;
     this.instance.addHook("afterDocumentKeyDown", function (event) {
       return _this.onAfterDocumentKeyDown(event);
     });
@@ -158,7 +189,8 @@ function () {
     /**
      * Destroy current editor, if exists.
      *
-     * @param {Boolean} revertOriginal
+     * @param {boolean} revertOriginal If `false` and the cell using allowInvalid option,
+     *                                 then an editor won't be closed until validation is passed.
      */
 
   }, {
@@ -204,20 +236,43 @@ function () {
       var _this$instance$select = this.instance.selection.selectedRange.current().highlight,
           row = _this$instance$select.row,
           col = _this$instance$select.col;
-      this.cellProperties = this.instance.getCellMeta(row, col);
+      var modifiedCellCoords = this.instance.runHooks('modifyGetCellCoords', row, col);
+      var visualRowToCheck = row;
+      var visualColumnToCheck = col;
+
+      if (Array.isArray(modifiedCellCoords)) {
+        var _modifiedCellCoords = _slicedToArray(modifiedCellCoords, 2);
+
+        visualRowToCheck = _modifiedCellCoords[0];
+        visualColumnToCheck = _modifiedCellCoords[1];
+      } // Getting values using the modified coordinates.
+
+
+      this.cellProperties = this.instance.getCellMeta(visualRowToCheck, visualColumnToCheck);
+      var activeElement = this.instance.rootDocument.activeElement;
+
+      if (activeElement) {
+        // Bluring the activeElement removes unwanted border around the focusable element
+        // (and resets activeElement prop). Without blurring the activeElement points to the
+        // previously focusable element after clicking onto the cell (#6877).
+        activeElement.blur();
+      }
 
       if (this.cellProperties.readOnly) {
         this.clearActiveEditor();
         return;
       }
 
-      var editorClass = this.instance.getCellEditor(this.cellProperties);
+      var editorClass = this.instance.getCellEditor(this.cellProperties); // Getting element using coordinates from the selection.
+
       var td = this.instance.getCell(row, col, true);
 
       if (editorClass && td) {
-        var prop = this.instance.colToProp(col);
-        var originalValue = this.instance.getSourceDataAtCell(this.instance.toPhysicalRow(row), col);
-        this.activeEditor = (0, _editors.getEditorInstance)(editorClass, this.instance);
+        var prop = this.instance.colToProp(visualColumnToCheck);
+        var originalValue = this.instance.getSourceDataAtCell(this.instance.toPhysicalRow(visualRowToCheck), visualColumnToCheck);
+        this.activeEditor = (0, _editors.getEditorInstance)(editorClass, this.instance); // Using not modified coordinates, as we need to get the table element using selection coordinates.
+        // There is an extra translation in the editor for saving value.
+
         this.activeEditor.prepare(row, col, prop, td, originalValue, this.cellProperties);
       } else {
         this.clearActiveEditor();
@@ -226,7 +281,7 @@ function () {
     /**
      * Check is editor is opened/showed.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -237,8 +292,8 @@ function () {
     /**
      * Open editor with initial value.
      *
-     * @param {null|String} newInitialValue new value from which editor will start if handled property it's not the `null`.
-     * @param {Event} event
+     * @param {null|string} newInitialValue New value from which editor will start if handled property it's not the `null`.
+     * @param {Event} event The event object.
      */
 
   }, {
@@ -253,9 +308,9 @@ function () {
     /**
      * Close editor, finish editing cell.
      *
-     * @param {Boolean} restoreOriginalValue
-     * @param {Boolean} [isCtrlPressed]
-     * @param {Function} [callback]
+     * @param {boolean} restoreOriginalValue If `true`, then closes editor without saving value from the editor into a cell.
+     * @param {boolean} isCtrlPressed If `true`, then editor will save value to each cell in the last selected range.
+     * @param {Function} callback The callback function, fired after editor closing.
      */
 
   }, {
@@ -270,7 +325,7 @@ function () {
     /**
      * Close editor and save changes.
      *
-     * @param {Boolean} isCtrlPressed
+     * @param {boolean} isCtrlPressed If `true`, then editor will save value to each cell in the last selected range.
      */
 
   }, {
@@ -281,13 +336,13 @@ function () {
     /**
      * Close editor and restore original value.
      *
-     * @param {Boolean} isCtrlPressed
+     * @param {boolean} isCtrlPressed Indication of whether the CTRL button is pressed.
      */
 
   }, {
     key: "closeEditorAndRestoreOriginalValue",
     value: function closeEditorAndRestoreOriginalValue(isCtrlPressed) {
-      return this.closeEditor(true, isCtrlPressed);
+      this.closeEditor(true, isCtrlPressed);
     }
     /**
      * Clears reference to an instance of the active editor.
@@ -304,13 +359,13 @@ function () {
      * Controls selection's behaviour after clicking `Enter`.
      *
      * @private
-     * @param {Boolean} isShiftPressed
+     * @param {boolean} isShiftPressed If `true`, then the selection will move up after hit enter.
      */
 
   }, {
     key: "moveSelectionAfterEnter",
     value: function moveSelectionAfterEnter(isShiftPressed) {
-      var enterMoves = typeof this.priv.settings.enterMoves === "function" ? this.priv.settings.enterMoves(event) : this.priv.settings.enterMoves;
+      var enterMoves = typeof this.tableMeta.enterMoves === 'function' ? this.tableMeta.enterMoves(event) : this.tableMeta.enterMoves;
 
       if (isShiftPressed) {
         // move selection up
@@ -324,7 +379,7 @@ function () {
      * Controls selection behaviour after clicking `arrow up`.
      *
      * @private
-     * @param {Boolean} isShiftPressed
+     * @param {boolean} isShiftPressed If `true`, then the selection will expand up.
      */
 
   }, {
@@ -340,7 +395,7 @@ function () {
      * Controls selection's behaviour after clicking `arrow down`.
      *
      * @private
-     * @param {Boolean} isShiftPressed
+     * @param {boolean} isShiftPressed If `true`, then the selection will expand down.
      */
 
   }, {
@@ -357,7 +412,7 @@ function () {
      * Controls selection's behaviour after clicking `arrow right`.
      *
      * @private
-     * @param {Boolean} isShiftPressed
+     * @param {boolean} isShiftPressed If `true`, then the selection will expand right.
      */
 
   }, {
@@ -373,7 +428,7 @@ function () {
      * Controls selection's behaviour after clicking `arrow left`.
      *
      * @private
-     * @param {Boolean} isShiftPressed
+     * @param {boolean} isShiftPressed If `true`, then the selection will expand left.
      */
 
   }, {
@@ -386,10 +441,10 @@ function () {
       }
     }
     /**
-     * onAfterDocumentKeyDown callback.
+     * OnAfterDocumentKeyDown callback.
      *
      * @private
-     * @param {KeyboardEvent} event
+     * @param {KeyboardEvent} event The keyboard event object.
      */
 
   }, {
@@ -410,7 +465,7 @@ function () {
         return;
       }
 
-      this.priv.lastKeyCode = event.keyCode;
+      this.lastKeyCode = event.keyCode;
 
       if (!this.selection.isSelected()) {
         return;
@@ -435,7 +490,7 @@ function () {
           if (!this.isEditorOpened() && isCtrlPressed) {
             this.instance.selectAll();
             event.preventDefault();
-            (0, _event.stopPropagation)(event);
+            event.stopPropagation();
           }
 
           break;
@@ -447,7 +502,7 @@ function () {
 
           this.moveSelectionUp(isShiftPressed);
           event.preventDefault();
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.ARROW_DOWN:
@@ -457,7 +512,7 @@ function () {
 
           this.moveSelectionDown(isShiftPressed);
           event.preventDefault();
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.ARROW_RIGHT:
@@ -467,7 +522,7 @@ function () {
 
           this.moveSelectionRight(isShiftPressed);
           event.preventDefault();
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.ARROW_LEFT:
@@ -477,11 +532,11 @@ function () {
 
           this.moveSelectionLeft(isShiftPressed);
           event.preventDefault();
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.TAB:
-          tabMoves = typeof this.priv.settings.tabMoves === "function" ? this.priv.settings.tabMoves(event) : this.priv.settings.tabMoves;
+          tabMoves = typeof this.tableMeta.tabMoves === 'function' ? this.tableMeta.tabMoves(event) : this.tableMeta.tabMoves;
 
           if (isShiftPressed) {
             // move selection left
@@ -492,7 +547,7 @@ function () {
           }
 
           event.preventDefault();
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.BACKSPACE:
@@ -556,7 +611,7 @@ function () {
 
           event.preventDefault(); // don't scroll the window
 
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.END:
@@ -568,21 +623,21 @@ function () {
 
           event.preventDefault(); // don't scroll the window
 
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.PAGE_UP:
           this.selection.transformStart(-this.instance.countVisibleRows(), 0);
           event.preventDefault(); // don't page up the window
 
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         case _unicode.KEY_CODES.PAGE_DOWN:
           this.selection.transformStart(this.instance.countVisibleRows(), 0);
           event.preventDefault(); // don't page down the window
 
-          (0, _event.stopPropagation)(event);
+          event.stopPropagation();
           break;
 
         default:
@@ -590,12 +645,12 @@ function () {
       }
     }
     /**
-     * onCellDblClick callback.
+     * OnCellDblClick callback.
      *
      * @private
-     * @param {MouseEvent} event
-     * @param {Object} coords
-     * @param {HTMLTableCellElement|HTMLTableHeaderCellElement} elem
+     * @param {MouseEvent} event The mouse event object.
+     * @param {object} coords The cell coordinates.
+     * @param {HTMLTableCellElement|HTMLTableHeaderCellElement} elem The element which triggers the action.
      */
 
   }, {
@@ -627,17 +682,17 @@ function () {
 
 var instances = new WeakMap();
 /**
- * @param {Handsontable} hotInstance
- * @param {GridSettings} hotSettings
- * @param {Selection} selection
- * @param {DataMap} datamap
+ * @param {Core} hotInstance The Handsontable instance.
+ * @param {TableMeta} tableMeta The table meta class instance.
+ * @param {Selection} selection The selection instance.
+ * @returns {EditorManager}
  */
 
-EditorManager.getInstance = function (hotInstance, hotSettings, selection, datamap) {
+EditorManager.getInstance = function (hotInstance, tableMeta, selection) {
   var editorManager = instances.get(hotInstance);
 
   if (!editorManager) {
-    editorManager = new EditorManager(hotInstance, hotSettings, selection, datamap);
+    editorManager = new EditorManager(hotInstance, tableMeta, selection);
     instances.set(hotInstance, editorManager);
   }
 

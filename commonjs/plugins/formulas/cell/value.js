@@ -10,11 +10,17 @@ require("core-js/modules/es.array.concat");
 
 require("core-js/modules/es.array.for-each");
 
+require("core-js/modules/es.array.from");
+
 require("core-js/modules/es.array.index-of");
 
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.array.join");
+
+require("core-js/modules/es.array.slice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.get-prototype-of");
 
@@ -23,6 +29,8 @@ require("core-js/modules/es.object.keys");
 require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.reflect.construct");
 
 require("core-js/modules/es.regexp.exec");
 
@@ -51,21 +59,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -74,6 +80,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 var STATE_OUT_OFF_DATE = 1;
 var STATE_COMPUTING = 2;
@@ -88,10 +104,10 @@ var states = [STATE_OUT_OFF_DATE, STATE_COMPUTING, STATE_UP_TO_DATE];
  * @util
  */
 
-var CellValue =
-/*#__PURE__*/
-function (_BaseCell) {
+var CellValue = /*#__PURE__*/function (_BaseCell) {
   _inherits(CellValue, _BaseCell);
+
+  var _super = _createSuper(CellValue);
 
   _createClass(CellValue, null, [{
     key: "STATE_OUT_OFF_DATE",
@@ -99,7 +115,7 @@ function (_BaseCell) {
     /**
      * Out of date state indicates cells ready for recomputing.
      *
-     * @returns {Number}
+     * @returns {number}
      */
     get: function get() {
       return 1; // PhantomJS crashes when we want to use constant above
@@ -107,7 +123,7 @@ function (_BaseCell) {
     /**
      * Computing state indicates cells under processing.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -118,7 +134,7 @@ function (_BaseCell) {
     /**
      * Up to date state indicates cells with fresh computed value.
      *
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -133,7 +149,7 @@ function (_BaseCell) {
 
     _classCallCheck(this, CellValue);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CellValue).call(this, row, column));
+    _this = _super.call(this, row, column);
     /**
      * List of precedents cells.
      *
@@ -165,14 +181,14 @@ function (_BaseCell) {
     /**
      * Error name.
      *
-     * @type {String|null}
+     * @type {string|null}
      */
 
     _this.error = null;
     /**
      * Indicates cell state.
      *
-     * @type {String}
+     * @type {string}
      */
 
     _this.state = CellValue.STATE_UP_TO_DATE;
@@ -188,7 +204,7 @@ function (_BaseCell) {
   /**
    * Set computed value.
    *
-   * @param {*} value
+   * @param {*} value The calculated formula value.
    */
 
 
@@ -311,7 +327,7 @@ function (_BaseCell) {
     /**
      * Set error message for this cell.
      *
-     * @param {String} error Error name.
+     * @param {string} error Error name.
      */
 
   }, {
@@ -322,7 +338,7 @@ function (_BaseCell) {
     /**
      * Get error name for this cell.
      *
-     * @returns {String|null}
+     * @returns {string|null}
      */
 
   }, {
@@ -333,7 +349,7 @@ function (_BaseCell) {
     /**
      * Check if cell value is marked as error.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -344,7 +360,7 @@ function (_BaseCell) {
     /**
      * Set cell state.
      *
-     * @param {Number} state Cell state.
+     * @param {number} state Cell state.
      */
 
   }, {
@@ -359,7 +375,8 @@ function (_BaseCell) {
     /**
      * Check cell state.
      *
-     * @returns {Boolean}
+     * @param {number} state The state to compare with.
+     * @returns {boolean}
      */
 
   }, {
@@ -424,7 +441,7 @@ function (_BaseCell) {
     /**
      * Check if cell value has precedents cells.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -436,7 +453,7 @@ function (_BaseCell) {
      * Check if cell reference is precedents this cell.
      *
      * @param {CellReference} cellReference Cell reference object.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

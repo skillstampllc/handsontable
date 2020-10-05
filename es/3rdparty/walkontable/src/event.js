@@ -22,9 +22,7 @@ var privatePool = new WeakMap();
  * @class Event
  */
 
-var Event =
-/*#__PURE__*/
-function () {
+var Event = /*#__PURE__*/function () {
   /**
    * @param {*} instance Walkontable instance.
    */
@@ -131,8 +129,8 @@ function () {
      * Checks if an element is already selected.
      *
      * @private
-     * @param {Element} touchTarget
-     * @returns {Boolean}
+     * @param {Element} touchTarget An element to check.
+     * @returns {boolean}
      */
 
   }, {
@@ -158,8 +156,8 @@ function () {
      * Gets closest TD or TH element.
      *
      * @private
-     * @param {Element} elem
-     * @returns {Object} Contains coordinates and reference to TD or TH if it exists. Otherwise it's empty object.
+     * @param {Element} elem An element from the traversing starts.
+     * @returns {object} Contains coordinates and reference to TD or TH if it exists. Otherwise it's empty object.
      */
 
   }, {
@@ -185,10 +183,10 @@ function () {
       return cell;
     }
     /**
-     * onMouseDown callback.
+     * OnMouseDown callback.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event object.
      */
 
   }, {
@@ -196,8 +194,8 @@ function () {
     value: function onMouseDown(event) {
       var priv = privatePool.get(this);
       var activeElement = this.instance.rootDocument.activeElement;
-      var getParentNode = partial(getParent, event.realTarget);
-      var realTarget = event.realTarget; // ignore focusable element from mouse down processing (https://github.com/handsontable/handsontable/issues/3555)
+      var getParentNode = partial(getParent, event.target);
+      var realTarget = event.target; // ignore focusable element from mouse down processing (https://github.com/handsontable/handsontable/issues/3555)
 
       if (realTarget === activeElement || getParentNode(0) === activeElement || getParentNode(1) === activeElement) {
         return;
@@ -221,17 +219,17 @@ function () {
       }
     }
     /**
-     * onContextMenu callback.
+     * OnContextMenu callback.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event object.
      */
 
   }, {
     key: "onContextMenu",
     value: function onContextMenu(event) {
       if (this.instance.hasSetting('onCellContextMenu')) {
-        var cell = this.parentCell(event.realTarget);
+        var cell = this.parentCell(event.target);
 
         if (cell.TD) {
           this.instance.getSetting('onCellContextMenu', event, cell.coords, cell.TD, this.instance);
@@ -239,10 +237,10 @@ function () {
       }
     }
     /**
-     * onMouseOver callback.
+     * OnMouseOver callback.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event object.
      */
 
   }, {
@@ -253,7 +251,7 @@ function () {
       }
 
       var table = this.instance.wtTable.TABLE;
-      var td = closestDown(event.realTarget, ['TD', 'TH'], table);
+      var td = closestDown(event.target, ['TD', 'TH'], table);
       var mainWOT = this.instance.cloneSource || this.instance;
 
       if (td && td !== mainWOT.lastMouseOver && isChildOf(td, table)) {
@@ -262,10 +260,10 @@ function () {
       }
     }
     /**
-     * onMouseOut callback.
+     * OnMouseOut callback.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event object.
      */
 
   }, {
@@ -276,7 +274,7 @@ function () {
       }
 
       var table = this.instance.wtTable.TABLE;
-      var lastTD = closestDown(event.realTarget, ['TD', 'TH'], table);
+      var lastTD = closestDown(event.target, ['TD', 'TH'], table);
       var nextTD = closestDown(event.relatedTarget, ['TD', 'TH'], table);
 
       if (lastTD && lastTD !== nextTD && isChildOf(lastTD, table)) {
@@ -284,17 +282,17 @@ function () {
       }
     }
     /**
-     * onMouseUp callback.
+     * OnMouseUp callback.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event object.
      */
 
   }, {
     key: "onMouseUp",
     value: function onMouseUp(event) {
       var priv = privatePool.get(this);
-      var cell = this.parentCell(event.realTarget);
+      var cell = this.parentCell(event.target);
 
       if (cell.TD && this.instance.hasSetting('onCellMouseUp')) {
         this.instance.getSetting('onCellMouseUp', event, cell.coords, cell.TD, this.instance);
@@ -306,7 +304,7 @@ function () {
       }
 
       if (cell.TD === priv.dblClickOrigin[0] && cell.TD === priv.dblClickOrigin[1]) {
-        if (hasClass(event.realTarget, 'corner')) {
+        if (hasClass(event.target, 'corner')) {
           this.instance.getSetting('onCellCornerDblClick', event, cell.coords, cell.TD, this.instance);
         } else {
           this.instance.getSetting('onCellDblClick', event, cell.coords, cell.TD, this.instance);
@@ -323,10 +321,10 @@ function () {
       }
     }
     /**
-     * onTouchStart callback. Simulates mousedown event.
+     * OnTouchStart callback. Simulates mousedown event.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event object.
      */
 
   }, {
@@ -338,10 +336,10 @@ function () {
       this.onMouseDown(event);
     }
     /**
-     * onTouchEnd callback. Simulates mouseup event.
+     * OnTouchEnd callback. Simulates mouseup event.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event object.
      */
 
   }, {

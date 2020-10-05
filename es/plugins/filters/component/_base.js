@@ -13,9 +13,7 @@ import stateSaver from '../../../mixins/stateSaver';
  * @class BaseComponent
  */
 
-var BaseComponent =
-/*#__PURE__*/
-function () {
+var BaseComponent = /*#__PURE__*/function () {
   function BaseComponent(hotInstance) {
     _classCallCheck(this, BaseComponent);
 
@@ -30,7 +28,7 @@ function () {
     /**
      * Flag which determines if element is hidden.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.hidden = false;
@@ -68,7 +66,7 @@ function () {
     /**
      * Check if component is hidden.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {

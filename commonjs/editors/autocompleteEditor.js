@@ -24,9 +24,13 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
 
 require("core-js/modules/es.regexp.exec");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -63,50 +67,52 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 var privatePool = new WeakMap();
 /**
  * @private
- * @editor AutocompleteEditor
  * @class AutocompleteEditor
- * @dependencies HandsontableEditor
  */
 
-var AutocompleteEditor =
-/*#__PURE__*/
-function (_HandsontableEditor) {
+var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
   _inherits(AutocompleteEditor, _HandsontableEditor);
+
+  var _super = _createSuper(AutocompleteEditor);
 
   function AutocompleteEditor(instance) {
     var _this;
 
     _classCallCheck(this, AutocompleteEditor);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(AutocompleteEditor).call(this, instance));
+    _this = _super.call(this, instance);
     /**
      * Query string to turn available values over.
      *
-     * @type {String}
+     * @type {string}
      */
 
     _this.query = null;
     /**
      * Contains stripped choices.
      *
-     * @type {String[]}
+     * @type {string[]}
      */
 
     _this.strippedChoices = [];
@@ -118,14 +124,15 @@ function (_HandsontableEditor) {
 
     _this.rawChoices = [];
     privatePool.set(_assertThisInitialized(_this), {
-      skipOne: false
+      skipOne: false,
+      isMacOS: _this.hot.rootWindow.navigator.platform.indexOf('Mac') > -1
     });
     return _this;
   }
   /**
    * Gets current value from editable element.
    *
-   * @returns {String}
+   * @returns {string}
    */
 
 
@@ -179,10 +186,15 @@ function (_HandsontableEditor) {
       var trimDropdown = this.cellProperties.trimDropdown === void 0 ? true : this.cellProperties.trimDropdown;
       this.showEditableElement();
       this.focus();
-      var scrollbarWidth = (0, _element.getScrollbarWidth)(this.hot.rootDocument);
+      var scrollbarWidth = (0, _element.getScrollbarWidth)();
+
+      if (scrollbarWidth === 0 && priv.isMacOS) {
+        scrollbarWidth += 15; // default scroll bar width if scroll bars are visible only when scrolling
+      }
+
       choicesListHot.updateSettings({
         colWidths: trimDropdown ? [(0, _element.outerWidth)(this.TEXTAREA) - 2] : void 0,
-        width: trimDropdown ? (0, _element.outerWidth)(this.TEXTAREA) + scrollbarWidth + 2 : void 0,
+        width: trimDropdown ? (0, _element.outerWidth)(this.TEXTAREA) + scrollbarWidth : void 0,
         renderer: function renderer(instance, TD, row, col, prop, value, cellProperties) {
           (0, _renderers.getRenderer)('text')(instance, TD, row, col, prop, value, cellProperties);
           var _this3$cellProperties = _this3.cellProperties,
@@ -205,9 +217,7 @@ function (_HandsontableEditor) {
           TD.innerHTML = cellValue;
         },
         autoColumnSize: true
-      }); // Add additional space for autocomplete holder
-
-      this.htEditor.view.wt.wtTable.holder.parentNode.style['padding-right'] = "".concat(scrollbarWidth + 2, "px");
+      });
 
       if (priv.skipOne) {
         priv.skipOne = false;
@@ -229,9 +239,10 @@ function (_HandsontableEditor) {
       _get(_getPrototypeOf(AutocompleteEditor.prototype), "close", this).call(this);
     }
     /**
-     * Verifies result of validation or closes editor if user's cancelled changes. Re-renders WalkOnTable.
+     * Verifies result of validation or closes editor if user's cancelled changes.
      *
-     * @param {Boolean|undefined} result
+     * @param {boolean|undefined} result If `false` and the cell using allowInvalid option,
+     *                                   then an editor won't be closed until validation is passed.
      */
 
   }, {
@@ -245,7 +256,7 @@ function (_HandsontableEditor) {
      * Prepares choices list based on applied argument.
      *
      * @private
-     * @param {String} query
+     * @param {string} query The query.
      */
 
   }, {
@@ -273,7 +284,7 @@ function (_HandsontableEditor) {
      * Updates list of the possible completions to choose.
      *
      * @private
-     * @param {Array} choicesList
+     * @param {Array} choicesList The choices list to process.
      */
 
   }, {
@@ -325,14 +336,14 @@ function (_HandsontableEditor) {
         this.highlightBestMatchingChoice(highlightIndex);
       }
 
-      this.hot.listen(false);
+      this.hot.listen();
       (0, _element.setCaretPosition)(this.TEXTAREA, pos, pos === endPos ? void 0 : endPos);
     }
     /**
      * Checks where is enough place to open editor.
      *
      * @private
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -370,8 +381,8 @@ function (_HandsontableEditor) {
      * Checks if the internal table should generate scrollbar or could be rendered without it.
      *
      * @private
-     * @param {Number} spaceAvailable
-     * @param {Number} dropdownHeight
+     * @param {number} spaceAvailable The free space as height definded in px available for dropdown list.
+     * @param {number} dropdownHeight The dropdown height.
      */
 
   }, {
@@ -392,7 +403,7 @@ function (_HandsontableEditor) {
         height = tempHeight - lastRowHeight;
 
         if (this.htEditor.flipped) {
-          this.htEditor.rootElement.style.top = "".concat(parseInt(this.htEditor.rootElement.style.top, 10) + dropdownHeight - height, "px");
+          this.htEditor.rootElement.style.top = "".concat(parseInt(this.htEditor.rootElement.style.top, 10) + dropdownHeight - height, "px"); // eslint-disable-line max-len
         }
 
         this.setDropdownHeight(tempHeight - lastRowHeight);
@@ -402,7 +413,7 @@ function (_HandsontableEditor) {
      * Configures editor to open it at the top.
      *
      * @private
-     * @param {Number} dropdownHeight
+     * @param {number} dropdownHeight The dropdown height.
      */
 
   }, {
@@ -452,7 +463,7 @@ function (_HandsontableEditor) {
      * Sets new height of the internal Handsontable's instance.
      *
      * @private
-     * @param {Number} height
+     * @param {number} height The new dropdown height.
      */
 
   }, {
@@ -466,7 +477,7 @@ function (_HandsontableEditor) {
      * Creates new selection on specified row index, or deselects selected cells.
      *
      * @private
-     * @param {Number|undefined} index
+     * @param {number|undefined} index The visual row index.
      */
 
   }, {
@@ -482,7 +493,7 @@ function (_HandsontableEditor) {
      * Calculates and return the internal Handsontable's height.
      *
      * @private
-     * @returns {Number}
+     * @returns {number}
      */
 
   }, {
@@ -490,14 +501,14 @@ function (_HandsontableEditor) {
     value: function getDropdownHeight() {
       var firstRowHeight = this.htEditor.getInstance().getRowHeight(0) || 23;
       var visibleRows = this.cellProperties.visibleRows;
-      return this.strippedChoices.length >= visibleRows ? visibleRows * firstRowHeight : this.strippedChoices.length * firstRowHeight + 8;
+      return this.strippedChoices.length >= visibleRows ? visibleRows * firstRowHeight : this.strippedChoices.length * firstRowHeight + 8; // eslint-disable-line max-len
     }
     /**
      * Sanitizes value from potential dangerous tags.
      *
      * @private
-     * @param {String} value
-     * @returns {String}
+     * @param {string} value The value to sanitize.
+     * @returns {string}
      */
 
   }, {
@@ -509,8 +520,8 @@ function (_HandsontableEditor) {
      * Sanitizes an array of the values from potential dangerous tags.
      *
      * @private
-     * @param {String[]} values
-     * @returns {String[]}
+     * @param {string[]} values The value to sanitize.
+     * @returns {string[]}
      */
 
   }, {
@@ -529,8 +540,8 @@ function (_HandsontableEditor) {
      * Captures use of arrow down and up to control their behaviour.
      *
      * @private
-     * @param {Number} keyCode
-     * @returns {Boolean}
+     * @param {number} keyCode The keyboard keycode.
+     * @returns {boolean}
      */
 
   }, {
@@ -553,10 +564,10 @@ function (_HandsontableEditor) {
       return allowed;
     }
     /**
-     * onBeforeKeyDown callback.
+     * OnBeforeKeyDown callback.
      *
      * @private
-     * @param {KeyboardEvent} event
+     * @param {KeyboardEvent} event The keyboard event object.
      */
 
   }, {
@@ -596,10 +607,10 @@ function (_HandsontableEditor) {
 /**
  * Filters and sorts by relevance.
  *
- * @param value
- * @param choices
- * @param caseSensitive
- * @returns {Number[]} array of indexes in original choices array
+ * @param {*} value The selected value.
+ * @param {string[]} choices The list of available choices.
+ * @param {boolean} caseSensitive Indicates if it's sorted by case.
+ * @returns {number[]} Array of indexes in original choices array.
  */
 
 

@@ -2725,9 +2725,9 @@ describe('WalkontableTable', function () {
       });
       wt.draw();
       expect($('.ht_clone_top_left_corner thead tr th').eq(0).css('border-left-width')).toBe('1px');
-      expect($('.ht_clone_top_left_corner thead tr th').eq(0).css('border-right-width')).toBe('1px');
-      expect($('.ht_clone_top_left_corner thead tr th').eq(1).css('border-left-width')).toBe('1px'); // was 0 before https://github.com/handsontable/handsontable/commit/32c163c6a98903a30daddac7582276d18a12a81a
+      expect($('.ht_clone_top_left_corner thead tr th').eq(0).css('border-right-width')).toBe('1px'); // was 0 before https://github.com/handsontable/handsontable/commit/32c163c6a98903a30daddac7582276d18a12a81a
 
+      expect($('.ht_clone_top_left_corner thead tr th').eq(1).css('border-left-width')).toBe('1px');
       expect($('.ht_clone_top_left_corner thead tr th').eq(1).css('border-right-width')).toBe('1px');
     });
   });
@@ -3067,6 +3067,23 @@ describe('WalkontableTable', function () {
       expectWtTable(wt, function (wtTable) {
         return wtTable.getFirstRenderedRow();
       }, 'top').toBe(0);
+    });
+    it('should return 0 as the first rendered row, when there\'s more fixed bottom rows than rows in total', function () {
+      createDataArray(18, 18);
+      spec().$wrapper.width(250).height(170);
+      var wt = walkontable({
+        data: [[1], [1]],
+        totalRows: 2,
+        totalColumns: 1,
+        fixedRowsBottom: 3
+      });
+      wt.draw();
+      expectWtTable(wt, function (wtTable) {
+        return wtTable.getFirstRenderedRow();
+      }, 'master').toBe(0);
+      expectWtTable(wt, function (wtTable) {
+        return wtTable.getFirstRenderedRow();
+      }, 'bottom').toBe(0);
     });
   });
   describe('isRowBeforeRenderedRows', function () {

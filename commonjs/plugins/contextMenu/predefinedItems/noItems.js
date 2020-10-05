@@ -7,6 +7,10 @@ exports.KEY = void 0;
 var _constants = require("./../../../i18n/constants");
 
 var KEY = 'no_items';
+/**
+ * @returns {object}
+ */
+
 exports.KEY = KEY;
 
 function noItemsItem() {

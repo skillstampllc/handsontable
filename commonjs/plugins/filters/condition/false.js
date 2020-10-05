@@ -7,6 +7,10 @@ exports.CONDITION_NAME = void 0;
 var _conditionRegisterer = require("../conditionRegisterer");
 
 var CONDITION_NAME = 'false';
+/**
+ * @returns {boolean}
+ */
+
 exports.CONDITION_NAME = CONDITION_NAME;
 
 function condition() {

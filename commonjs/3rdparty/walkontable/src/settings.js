@@ -16,12 +16,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * @class Settings
  */
-var Settings =
-/*#__PURE__*/
-function () {
+var Settings = /*#__PURE__*/function () {
   /**
-   * @param {Walkontable} wotInstance
-   * @param {Object} settings
+   * @param {Walkontable} wotInstance The Walkontable instance.
+   * @param {object} settings The user defined settings.
    */
   function Settings(wotInstance, settings) {
     var _this = this;
@@ -34,8 +32,6 @@ function () {
 
     this.defaults = {
       table: void 0,
-      debug: false,
-      // shows WalkontableDebugOverlay
       // presentation mode
       externalRowCalculator: false,
       stretchH: 'none',
@@ -49,9 +45,24 @@ function () {
       // data source
       data: void 0,
       freezeOverlays: false,
+      // Number of renderable columns for the left overlay.
       fixedColumnsLeft: 0,
+      // Number of renderable rows for the top overlay.
       fixedRowsTop: 0,
+      // Number of renderable rows for the bottom overlay.
       fixedRowsBottom: 0,
+      // Enable the left overlay when conditions are met.
+      shouldRenderLeftOverlay: function shouldRenderLeftOverlay() {
+        return _this.getSetting('fixedColumnsLeft') > 0 || _this.getSetting('rowHeaders').length > 0;
+      },
+      // Enable the top overlay when conditions are met.
+      shouldRenderTopOverlay: function shouldRenderTopOverlay() {
+        return _this.getSetting('fixedRowsTop') > 0 || _this.getSetting('columnHeaders').length > 0;
+      },
+      // Enable the bottom overlay when conditions are met.
+      shouldRenderBottomOverlay: function shouldRenderBottomOverlay() {
+        return _this.getSetting('fixedRowsBottom') > 0;
+      },
       minSpareRows: 0,
       // this must be array of functions: [function (row, TH) {}]
       rowHeaders: function rowHeaders() {
@@ -126,10 +137,10 @@ function () {
     });
   }
   /**
-   * Update settings
+   * Update settings.
    *
-   * @param {Object} settings
-   * @param {*} value
+   * @param {object} settings The singular settings to update or if passed as object to merge with.
+   * @param {*} value The value to set if the first argument is passed as string.
    * @returns {Walkontable}
    */
 
@@ -152,13 +163,13 @@ function () {
       return this.wot;
     }
     /**
-     * Get setting by name
+     * Get setting by name.
      *
-     * @param {String} key
-     * @param {*} param1
-     * @param {*} param2
-     * @param {*} param3
-     * @param {*} param4
+     * @param {string} key The settings key to retrieve.
+     * @param {*} [param1] Additional parameter passed to the options defined as function.
+     * @param {*} [param2] Additional parameter passed to the options defined as function.
+     * @param {*} [param3] Additional parameter passed to the options defined as function.
+     * @param {*} [param4] Additional parameter passed to the options defined as function.
      * @returns {*}
      */
 
@@ -176,10 +187,10 @@ function () {
       return this.settings[key];
     }
     /**
-     * Checks if setting exists
+     * Checks if setting exists.
      *
-     * @param {Boolean} key
-     * @returns {Boolean}
+     * @param {boolean} key The settings key to check.
+     * @returns {boolean}
      */
 
   }, {

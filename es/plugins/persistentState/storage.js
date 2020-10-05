@@ -13,9 +13,7 @@ import { arrayEach } from './../../helpers/array';
  * @plugin PersistentState
  */
 
-var Storage =
-/*#__PURE__*/
-function () {
+var Storage = /*#__PURE__*/function () {
   // eslint-disable-next-line no-restricted-globals
   function Storage(prefix) {
     var rootWindow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window;
@@ -31,7 +29,7 @@ function () {
     /**
      * Prefix for key (id element).
      *
-     * @type {String}
+     * @type {string}
      */
 
     this.prefix = prefix;
@@ -47,7 +45,7 @@ function () {
   /**
    * Save data to localStorage.
    *
-   * @param {String} key Key string.
+   * @param {string} key Key string.
    * @param {Mixed} value Value to save.
    */
 
@@ -65,10 +63,10 @@ function () {
     /**
      * Load data from localStorage.
      *
-     * @param {String} key Key string.
-     * @param {Object} defaultValue Object containing the loaded data.
+     * @param {string} key Key string.
+     * @param {object} defaultValue Object containing the loaded data.
      *
-     * @returns {}
+     * @returns {object|undefined}
      */
 
   }, {
@@ -81,7 +79,7 @@ function () {
     /**
      * Reset given data from localStorage.
      *
-     * @param {String} key Key string.
+     * @param {string} key Key string.
      */
 
   }, {

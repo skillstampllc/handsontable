@@ -26,7 +26,11 @@ require("core-js/modules/es.array.map");
 
 require("core-js/modules/es.array.reduce");
 
+require("core-js/modules/es.array.slice");
+
 require("core-js/modules/es.array.splice");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.keys");
 
@@ -57,13 +61,17 @@ var _element = require("./../helpers/dom/element");
 
 var _mixed = require("./../helpers/mixed");
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 var ESCAPED_HTML_CHARS = {
   '&nbsp;': '\x20',
@@ -78,7 +86,7 @@ var regEscapedChars = new RegExp(Object.keys(ESCAPED_HTML_CHARS).map(function (k
  * Verifies if node is an HTMLTable element.
  *
  * @param {Node} element Node to verify if it's an HTMLTable.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 
 function isHTMLTable(element) {
@@ -87,8 +95,8 @@ function isHTMLTable(element) {
 /**
  * Converts Handsontable into HTMLTableElement.
  *
- * @param {Core} instance
- * @returns {String} outerHTML of the HTMLTableElement
+ * @param {Core} instance The Handsontable instance.
+ * @returns {string} OuterHTML of the HTMLTableElement.
  */
 
 
@@ -163,8 +171,8 @@ function instanceToHTML(instance) {
 /**
  * Converts 2D array into HTMLTableElement.
  *
- * @param {Array} input Input array which will be converted to HTMLTable
- * @returns {String} outerHTML of the HTMLTableElement
+ * @param {Array} input Input array which will be converted to HTMLTable.
+ * @returns {string} OuterHTML of the HTMLTableElement.
  */
 // eslint-disable-next-line no-restricted-globals
 
@@ -201,9 +209,9 @@ function _dataToHTML(input) {
 /**
  * Converts HTMLTable or string into Handsontable configuration object.
  *
- * @param {Element|String} element Node element which should contain `<table>...</table>`.
- * @param {Document} [rootDocument]
- * @returns {Object} Return configuration object. Contains keys as DefaultSettings.
+ * @param {Element|string} element Node element which should contain `<table>...</table>`.
+ * @param {Document} [rootDocument] The document window owner.
+ * @returns {object} Return configuration object. Contains keys as DefaultSettings.
  */
 // eslint-disable-next-line no-restricted-globals
 

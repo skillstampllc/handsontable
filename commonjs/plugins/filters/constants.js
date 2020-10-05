@@ -128,7 +128,7 @@ var TYPE_DATE = 'date';
 /**
  * Default types and order for filter conditions.
  *
- * @type {Object}
+ * @type {object}
  */
 
 exports.TYPE_DATE = TYPE_DATE;
@@ -136,7 +136,8 @@ var TYPES = (_TYPES = {}, _defineProperty(_TYPES, TYPE_NUMERIC, [_none.CONDITION
 /**
  * Get options list for conditional filter by data type (e.q: `'text'`, `'numeric'`, `'date'`).
  *
- * @returns {Object}
+ * @param {string} type The data type.
+ * @returns {object}
  */
 
 exports.TYPES = TYPES;

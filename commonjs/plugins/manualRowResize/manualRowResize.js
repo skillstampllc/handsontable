@@ -8,6 +8,8 @@ require("core-js/modules/es.symbol.iterator");
 
 require("core-js/modules/es.array.for-each");
 
+require("core-js/modules/es.array.includes");
+
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.object.get-own-property-descriptor");
@@ -18,7 +20,13 @@ require("core-js/modules/es.object.set-prototype-of");
 
 require("core-js/modules/es.object.to-string");
 
+require("core-js/modules/es.reflect.construct");
+
 require("core-js/modules/es.reflect.get");
+
+require("core-js/modules/es.regexp.to-string");
+
+require("core-js/modules/es.string.includes");
 
 require("core-js/modules/es.string.iterator");
 
@@ -39,8 +47,6 @@ var _element = require("./../../helpers/dom/element");
 
 var _eventManager = _interopRequireDefault(require("./../../eventManager"));
 
-var _event = require("./../../helpers/dom/event");
-
 var _array = require("./../../helpers/array");
 
 var _number = require("./../../helpers/number");
@@ -48,6 +54,8 @@ var _number = require("./../../helpers/number");
 var _plugins = require("./../../plugins");
 
 var _translations = require("./../../translations");
+
+var _src = require("../../3rdparty/walkontable/src");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59,22 +67,25 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-// Developer note! Whenever you make a change in this file, make an analogous change in manualRowResize.js
-var ROW_HEIGHTS_MAP_NAME = 'manualRowResize';
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+// Developer note! Whenever you make a change in this file, make an analogous change in manualColumnResize.js
 var PERSISTENT_STATE_KEY = 'manualRowHeights';
 var privatePool = new WeakMap();
 /**
@@ -89,17 +100,17 @@ var privatePool = new WeakMap();
  * @plugin ManualRowResize
  */
 
-var ManualRowResize =
-/*#__PURE__*/
-function (_BasePlugin) {
+var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualRowResize, _BasePlugin);
+
+  var _super = _createSuper(ManualRowResize);
 
   function ManualRowResize(hotInstance) {
     var _this;
 
     _classCallCheck(this, ManualRowResize);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ManualRowResize).call(this, hotInstance));
+    _this = _super.call(this, hotInstance);
     var rootDocument = _this.hot.rootDocument;
     _this.currentTH = null;
     _this.currentRow = null;
@@ -138,7 +149,7 @@ function (_BasePlugin) {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link ManualRowResize#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
 
 
@@ -164,7 +175,7 @@ function (_BasePlugin) {
       this.rowHeightsMap.addLocalHook('init', function () {
         return _this2.onMapInit();
       });
-      this.hot.rowIndexMapper.registerMap(ROW_HEIGHTS_MAP_NAME, this.rowHeightsMap);
+      this.hot.rowIndexMapper.registerMap(this.pluginName, this.rowHeightsMap);
       this.addHook('modifyRowHeight', function (height, row) {
         return _this2.onModifyRowHeight(height, row);
       });
@@ -193,12 +204,13 @@ function (_BasePlugin) {
     value: function disablePlugin() {
       var priv = privatePool.get(this);
       priv.config = this.rowHeightsMap.getValues();
-      this.hot.rowIndexMapper.unregisterMap(ROW_HEIGHTS_MAP_NAME);
+      this.hot.rowIndexMapper.unregisterMap(this.pluginName);
 
       _get(_getPrototypeOf(ManualRowResize.prototype), "disablePlugin", this).call(this);
     }
     /**
-     * Saves the current sizes using the persistentState plugin (the {@link Options#persistentState} option has to be enabled).
+     * Saves the current sizes using the persistentState plugin (the {@link Options#persistentState} option has to be
+     * enabled).
      *
      * @fires Hooks#persistentStateSave
      */
@@ -209,7 +221,8 @@ function (_BasePlugin) {
       this.hot.runHooks('persistentStateSave', PERSISTENT_STATE_KEY, this.rowHeightsMap.getValues());
     }
     /**
-     * Loads the previously saved sizes using the persistentState plugin (the {@link Options#persistentState} option has to be enabled).
+     * Loads the previously saved sizes using the persistentState plugin (the {@link Options#persistentState} option
+     * has be enabled).
      *
      * @returns {Array}
      * @fires Hooks#persistentStateLoad
@@ -225,22 +238,18 @@ function (_BasePlugin) {
     /**
      * Sets the new height for specified row index.
      *
-     * @param {Number} row Visual row index.
-     * @param {Number} height Row height.
-     * @returns {Number} Returns new height.
+     * @param {number} row Visual row index.
+     * @param {number} height Row height.
+     * @returns {number} Returns new height.
      */
 
   }, {
     key: "setManualSize",
     value: function setManualSize(row, height) {
       var physicalRow = this.hot.toPhysicalRow(row);
-
-      if (height < 0) {
-        height = null; // Do not change default size.
-      }
-
-      this.rowHeightsMap.setValueAtIndex(physicalRow, height);
-      return height;
+      var newHeight = Math.max(height, _src.ViewportRowsCalculator.DEFAULT_HEIGHT);
+      this.rowHeightsMap.setValueAtIndex(physicalRow, newHeight);
+      return newHeight;
     }
     /**
      * Sets the resize handle position.
@@ -255,64 +264,64 @@ function (_BasePlugin) {
       var _this3 = this;
 
       this.currentTH = TH;
-      var cellCoords = this.hot.getCoords(this.currentTH);
-      var row = cellCoords.row;
-      var headerWidth = (0, _element.outerWidth)(this.currentTH);
+      var view = this.hot.view;
+      var wt = view.wt;
+      var cellCoords = view.wt.wtTable.getCoords(this.currentTH);
+      var row = cellCoords.row; // Ignore row headers.
 
-      if (row >= 0) {
-        // if not col header
-        var box = this.currentTH.getBoundingClientRect();
-        var fixedRowTop = row < this.hot.getSettings().fixedRowsTop;
-        var fixedRowBottom = row >= this.hot.countRows() - this.hot.getSettings().fixedRowsBottom;
-        var parentOverlay = this.hot.view.wt.wtOverlays.leftOverlay;
-
-        if (fixedRowTop) {
-          parentOverlay = this.hot.view.wt.wtOverlays.topLeftCornerOverlay;
-        } else if (fixedRowBottom) {
-          parentOverlay = this.hot.view.wt.wtOverlays.bottomLeftCornerOverlay;
-        }
-
-        var relativeHeaderPosition = parentOverlay.getRelativeCellPosition(this.currentTH, cellCoords.row, cellCoords.col); // If the TH is not a child of the left/top-left/bottom-left overlay, recalculate using the top-most header
-
-        if (!relativeHeaderPosition) {
-          var topMostHeader = parentOverlay.clone.wtTable.TBODY.children[+!!this.hot.getSettings().colHeaders + row].firstChild;
-          relativeHeaderPosition = parentOverlay.getRelativeCellPosition(topMostHeader, cellCoords.row, cellCoords.col);
-        }
-
-        this.currentRow = row;
-        this.selectedRows = [];
-
-        if (this.hot.selection.isSelected() && this.hot.selection.isSelectedByRowHeader()) {
-          var _this$hot$getSelected = this.hot.getSelectedRangeLast(),
-              from = _this$hot$getSelected.from,
-              to = _this$hot$getSelected.to;
-
-          var start = from.row;
-          var end = to.row;
-
-          if (start >= end) {
-            start = to.row;
-            end = from.row;
-          }
-
-          if (this.currentRow >= start && this.currentRow <= end) {
-            (0, _number.rangeEach)(start, end, function (i) {
-              return _this3.selectedRows.push(i);
-            });
-          } else {
-            this.selectedRows.push(this.currentRow);
-          }
-        } else {
-          this.selectedRows.push(this.currentRow);
-        }
-
-        this.startOffset = relativeHeaderPosition.top - 6;
-        this.startHeight = parseInt(box.height, 10);
-        this.handle.style.top = "".concat(this.startOffset + this.startHeight, "px");
-        this.handle.style.left = "".concat(relativeHeaderPosition.left, "px");
-        this.handle.style.width = "".concat(headerWidth, "px");
-        this.hot.rootElement.appendChild(this.handle);
+      if (row < 0) {
+        return;
       }
+
+      var headerWidth = (0, _element.outerWidth)(this.currentTH);
+      var box = this.currentTH.getBoundingClientRect(); // Read "fixedRowsTop" and "fixedRowsBottom" through the Walkontable as in that context, the fixed
+      // rows are modified (reduced by the number of hidden rows) by TableView module.
+
+      var fixedRowTop = row < wt.getSetting('fixedRowsTop');
+      var fixedRowBottom = row >= view.countNotHiddenRowIndexes(0, 1) - wt.getSetting('fixedRowsBottom');
+      var relativeHeaderPosition;
+
+      if (fixedRowTop) {
+        relativeHeaderPosition = wt.wtOverlays.topLeftCornerOverlay.getRelativeCellPosition(this.currentTH, cellCoords.row, cellCoords.col);
+      } else if (fixedRowBottom) {
+        relativeHeaderPosition = wt.wtOverlays.bottomLeftCornerOverlay.getRelativeCellPosition(this.currentTH, cellCoords.row, cellCoords.col);
+      } // If the TH is not a child of the top-left/bottom-left overlay, recalculate using
+      // the left overlay - as this overlay contains the rest of the headers.
+
+
+      if (!relativeHeaderPosition) {
+        relativeHeaderPosition = wt.wtOverlays.leftOverlay.getRelativeCellPosition(this.currentTH, cellCoords.row, cellCoords.col);
+      }
+
+      this.currentRow = this.hot.rowIndexMapper.getVisualFromRenderableIndex(row);
+      this.selectedRows = [];
+      var isFullRowSelected = this.hot.selection.isSelectedByCorner() || this.hot.selection.isSelectedByRowHeader();
+
+      if (this.hot.selection.isSelected() && isFullRowSelected) {
+        var selectionRanges = this.hot.getSelectedRange();
+        (0, _array.arrayEach)(selectionRanges, function (selectionRange) {
+          var fromRow = selectionRange.getTopLeftCorner().row;
+          var toRow = selectionRange.getBottomLeftCorner().row; // Add every selected row for resize action.
+
+          (0, _number.rangeEach)(fromRow, toRow, function (rowIndex) {
+            if (!_this3.selectedRows.includes(rowIndex)) {
+              _this3.selectedRows.push(rowIndex);
+            }
+          });
+        });
+      } // Resizing element beyond the current selection (also when there is no selection).
+
+
+      if (!this.selectedRows.includes(this.currentRow)) {
+        this.selectedRows = [this.currentRow];
+      }
+
+      this.startOffset = relativeHeaderPosition.top - 6;
+      this.startHeight = parseInt(box.height, 10);
+      this.handle.style.top = "".concat(this.startOffset + this.startHeight, "px");
+      this.handle.style.left = "".concat(relativeHeaderPosition.left, "px");
+      this.handle.style.width = "".concat(headerWidth, "px");
+      this.hot.rootElement.appendChild(this.handle);
     }
     /**
      * Refresh the resize handle position.
@@ -372,7 +381,7 @@ function (_BasePlugin) {
      *
      * @private
      * @param {HTMLElement} element HTML element.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -412,10 +421,30 @@ function (_BasePlugin) {
       return null;
     }
     /**
+     * Returns the actual height for the provided row index.
+     *
+     * @private
+     * @param {number} row Visual row index.
+     * @returns {number} Actual row height.
+     */
+
+  }, {
+    key: "getActualRowHeight",
+    value: function getActualRowHeight(row) {
+      // TODO: this should utilize `this.hot.getRowHeight` after it's fixed and working properly.
+      var walkontableHeight = this.hot.view.wt.wtTable.getRowHeight(row);
+
+      if (walkontableHeight !== void 0 && this.newSize < walkontableHeight) {
+        return walkontableHeight;
+      }
+
+      return this.newSize;
+    }
+    /**
      * 'mouseover' event callback - set the handle position.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event.
      */
 
   }, {
@@ -454,7 +483,7 @@ function (_BasePlugin) {
       };
 
       var resize = function resize(row, forceRender) {
-        var hookNewSize = _this4.hot.runHooks('beforeRowResize', _this4.newSize, row, true);
+        var hookNewSize = _this4.hot.runHooks('beforeRowResize', _this4.getActualRowHeight(row), row, true);
 
         if (hookNewSize !== void 0) {
           _this4.newSize = hookNewSize;
@@ -463,7 +492,7 @@ function (_BasePlugin) {
         _this4.setManualSize(row, _this4.newSize); // double click sets auto row size
 
 
-        _this4.hot.runHooks('afterRowResize', _this4.newSize, row, true);
+        _this4.hot.runHooks('afterRowResize', _this4.getActualRowHeight(row), row, true);
 
         if (forceRender) {
           render();
@@ -492,7 +521,7 @@ function (_BasePlugin) {
      * 'mousedown' event callback.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event.
      */
 
   }, {
@@ -501,8 +530,9 @@ function (_BasePlugin) {
       var _this5 = this;
 
       if ((0, _element.hasClass)(event.target, 'manualRowResizer')) {
+        this.setupHandlePosition(this.currentTH);
         this.setupGuidePosition();
-        this.pressed = this.hot;
+        this.pressed = true;
 
         if (this.autoresizeTimeout === null) {
           this.autoresizeTimeout = setTimeout(function () {
@@ -513,7 +543,7 @@ function (_BasePlugin) {
         }
 
         this.dblclick += 1;
-        this.startY = (0, _event.pageY)(event);
+        this.startY = event.pageY;
         this.newSize = this.startHeight;
       }
     }
@@ -521,7 +551,7 @@ function (_BasePlugin) {
      * 'mousemove' event callback - refresh the handle and guide positions, cache the new row height.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {MouseEvent} event The mouse event.
      */
 
   }, {
@@ -530,7 +560,7 @@ function (_BasePlugin) {
       var _this6 = this;
 
       if (this.pressed) {
-        this.currentHeight = this.startHeight + ((0, _event.pageY)(event) - this.startY);
+        this.currentHeight = this.startHeight + (event.pageY - this.startY);
         (0, _array.arrayEach)(this.selectedRows, function (selectedRow) {
           _this6.newSize = _this6.setManualSize(selectedRow, _this6.currentHeight);
         });
@@ -562,7 +592,7 @@ function (_BasePlugin) {
       };
 
       var runHooks = function runHooks(row, forceRender) {
-        _this7.hot.runHooks('beforeRowResize', _this7.newSize, row, false);
+        _this7.hot.runHooks('beforeRowResize', _this7.getActualRowHeight(row), row, false);
 
         if (forceRender) {
           render();
@@ -570,7 +600,7 @@ function (_BasePlugin) {
 
         _this7.saveManualRowHeights();
 
-        _this7.hot.runHooks('afterRowResize', _this7.newSize, row, false);
+        _this7.hot.runHooks('afterRowResize', _this7.getActualRowHeight(row), row, false);
       };
 
       if (this.pressed) {
@@ -626,9 +656,9 @@ function (_BasePlugin) {
      * Modifies the provided row height, based on the plugin settings.
      *
      * @private
-     * @param {Number} height Row height.
-     * @param {Number} row Visual row index.
-     * @returns {Number}
+     * @param {number} height Row height.
+     * @param {number} row Visual row index.
+     * @returns {number}
      */
 
   }, {
@@ -661,7 +691,7 @@ function (_BasePlugin) {
       var priv = privatePool.get(this);
       var initialSetting = this.hot.getSettings().manualRowResize;
       var loadedManualRowHeights = this.loadManualRowHeights();
-      this.hot.executeBatchOperations(function () {
+      this.hot.batch(function () {
         if (typeof loadedManualRowHeights !== 'undefined') {
           loadedManualRowHeights.forEach(function (height, index) {
             _this9.rowHeightsMap.setValueAtIndex(index, height);
@@ -685,7 +715,7 @@ function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.rowIndexMapper.unregisterMap(ROW_HEIGHTS_MAP_NAME);
+      this.hot.rowIndexMapper.unregisterMap(this.pluginName);
 
       _get(_getPrototypeOf(ManualRowResize.prototype), "destroy", this).call(this);
     }

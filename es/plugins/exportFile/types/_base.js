@@ -13,16 +13,14 @@ import { substitute } from '../../../helpers/string';
  * @private
  */
 
-var BaseType =
-/*#__PURE__*/
-function () {
+var BaseType = /*#__PURE__*/function () {
   _createClass(BaseType, null, [{
     key: "DEFAULT_OPTIONS",
 
     /**
      * Default options.
      *
-     * @returns {Object}
+     * @returns {object}
      */
     get: function get() {
       return {
@@ -52,7 +50,7 @@ function () {
     /**
      * Format type class options.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.options = this._mergeOptions(options);
@@ -61,7 +59,8 @@ function () {
   /**
    * Merge options provided by users with defaults.
    *
-   * @return {Object} Returns new options object.
+   * @param {object} options An object with options to merge with.
+   * @returns {object} Returns new options object.
    */
 
 

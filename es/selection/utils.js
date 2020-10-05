@@ -4,8 +4,10 @@ import "core-js/modules/es.symbol.iterator";
 import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.iterator";
+import "core-js/modules/es.array.slice";
 import "core-js/modules/es.array.some";
 import "core-js/modules/es.array.sort";
+import "core-js/modules/es.function.name";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.set";
@@ -13,11 +15,15 @@ import "core-js/modules/es.string.includes";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -38,10 +44,11 @@ var childCall = Symbol('child');
  * Detect selection schema structure.
  *
  * @param {*} selectionRanges The selected range or and array of selected ranges. This type of data is produced by
- *                            `hot.getSelected()`, `hot.getSelectedLast()`, `hot.getSelectedRange()`
- *                            and `hot.getSelectedRangeLast()` methods.
- * @returns {Number} Returns a number that specifies the type of detected selection schema. If selection schema type
- *                   is unrecognized than it returns `0`.
+ * `hot.getSelected()`, `hot.getSelectedLast()`, `hot.getSelectedRange()`
+ * and `hot.getSelectedRangeLast()` methods.
+ * @param {symbol} _callSymbol The symbol object which indicates source of the helper invocation.
+ * @returns {number} Returns a number that specifies the type of detected selection schema. If selection schema type
+ * is unrecognized than it returns `0`.
  */
 
 export function detectSelectionType(selectionRanges) {
@@ -80,14 +87,14 @@ export function detectSelectionType(selectionRanges) {
 /**
  * Factory function designed for normalization data schema from different data structures of the selection ranges.
  *
- * @param {String} type Selection type which will be processed.
- * @param {Object} [options]
- * @param {Boolean} [options.keepDirection=false] If `true`, the coordinates which contain the direction of the
+ * @param {string} type Selection type which will be processed.
+ * @param {object} [options] The normalization options.
+ * @param {boolean} [options.keepDirection=false] If `true`, the coordinates which contain the direction of the
  *                                                selected cells won't be changed. Otherwise, the selection will be
  *                                                normalized to values starting from top-left to bottom-right.
  * @param {Function} [options.propToCol] Pass the converting function (usually `datamap.propToCol`) if the column
  *                                       defined as props should be normalized to the numeric values.
- * @returns {Number[]} Returns normalized data about selected range as an array (`[rowStart, columnStart, rowEnd, columnEnd]`).
+ * @returns {number[]} Returns normalized data about selected range as an array (`[rowStart, columnStart, rowEnd, columnEnd]`).
  */
 
 export function normalizeSelectionFactory(type) {
@@ -146,7 +153,7 @@ export function normalizeSelectionFactory(type) {
  * started and at index 1 distance as a count of selected columns.
  *
  * @param {Array[]|CellRange[]} selectionRanges Selection ranges produced by Handsontable.
- * @return {Array[]} Returns an array of arrays with ranges defines in that schema:
+ * @returns {Array[]} Returns an array of arrays with ranges defines in that schema:
  *                   `[[visualColumnStart, distance], [visualColumnStart, distance], ...]`.
  *                   The column distances are always created starting from the left (zero index) to the
  *                   right (the latest column index).
@@ -168,9 +175,10 @@ export function transformSelectionToColumnDistance(selectionRanges) {
         columnStart = _selectionSchemaNorma2[1],
         columnEnd = _selectionSchemaNorma2[3];
 
-    var amount = columnEnd - columnStart + 1;
+    var columnNonHeaderStart = Math.max(columnStart, 0);
+    var amount = columnEnd - columnNonHeaderStart + 1;
     arrayEach(Array.from(new Array(amount), function (_, i) {
-      return columnStart + i;
+      return columnNonHeaderStart + i;
     }), function (index) {
       if (!unorderedIndexes.has(index)) {
         unorderedIndexes.add(index);
@@ -199,7 +207,7 @@ export function transformSelectionToColumnDistance(selectionRanges) {
  * started and at index 1 distance as a count of selected columns.
  *
  * @param {Array[]|CellRange[]} selectionRanges Selection ranges produced by Handsontable.
- * @return {Array[]} Returns an array of arrays with ranges defines in that schema:
+ * @returns {Array[]} Returns an array of arrays with ranges defines in that schema:
  *                   `[[visualColumnStart, distance], [visualColumnStart, distance], ...]`.
  *                   The column distances are always created starting from the left (zero index) to the
  *                   right (the latest column index).
@@ -221,9 +229,10 @@ export function transformSelectionToRowDistance(selectionRanges) {
         rowStart = _selectionSchemaNorma4[0],
         rowEnd = _selectionSchemaNorma4[2];
 
-    var amount = rowEnd - rowStart + 1;
+    var rowNonHeaderStart = Math.max(rowStart, 0);
+    var amount = rowEnd - rowNonHeaderStart + 1;
     arrayEach(Array.from(new Array(amount), function (_, i) {
-      return rowStart + i;
+      return rowNonHeaderStart + i;
     }), function (index) {
       if (!unorderedIndexes.has(index)) {
         unorderedIndexes.add(index);
@@ -249,9 +258,9 @@ export function transformSelectionToRowDistance(selectionRanges) {
  * Check if passed value can be treated as valid cell coordinate. The second argument is
  * used to check if the value doesn't exceed the defined max table rows/columns count.
  *
- * @param {*} coord
- * @param {Number} maxTableItemsCount The value that declares the maximum coordinate that is still validatable.
- * @return {Boolean}
+ * @param {number} coord The coordinate to validate (row index or column index).
+ * @param {number} maxTableItemsCount The value that declares the maximum coordinate that is still validatable.
+ * @returns {boolean}
  */
 
 export function isValidCoord(coord) {

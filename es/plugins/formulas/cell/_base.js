@@ -11,9 +11,7 @@ import { isObject } from '../../../helpers/object';
  * @util
  */
 
-var BaseCell =
-/*#__PURE__*/
-function () {
+var BaseCell = /*#__PURE__*/function () {
   function BaseCell(row, column) {
     _classCallCheck(this, BaseCell);
 
@@ -50,8 +48,8 @@ function () {
   /**
    * Translate cell coordinates.
    *
-   * @param {Number} rowOffset Row offset to move.
-   * @param {Number} columnOffset Column offset to move.
+   * @param {number} rowOffset Row offset to move.
+   * @param {number} columnOffset Column offset to move.
    */
 
 
@@ -65,7 +63,7 @@ function () {
      * Check if cell is equal to provided one.
      *
      * @param {BaseCell} cell Cell object.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -76,7 +74,7 @@ function () {
     /**
      * Stringify object.
      *
-     * @returns {String}
+     * @returns {string}
      */
 
   }, {

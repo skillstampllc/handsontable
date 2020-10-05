@@ -7,14 +7,14 @@ exports.PARTIALLY_VISIBLE_TYPE = exports.FULLY_VISIBLE_TYPE = exports.RENDER_TYP
  * Render type calculation calculates how many DOM nodes should be created and where placed
  * based on `startRow` and `endRow` properties.
  *
- * @type {Number}
+ * @type {number}
  */
 var RENDER_TYPE = 1;
 /**
  * Fully visible type calculation calculates rows that are fully visible in the viewport.
  * This type of calculation is used in scrolling by arrow keys navigation.
  *
- * @type {Number}
+ * @type {number}
  */
 
 exports.RENDER_TYPE = RENDER_TYPE;
@@ -25,7 +25,7 @@ var FULLY_VISIBLE_TYPE = 2;
  * calculated in render calculator. If checking met the criteria slow render is
  * performed (which render calculator with new data).
  *
- * @type {Number}
+ * @type {number}
  */
 
 exports.FULLY_VISIBLE_TYPE = FULLY_VISIBLE_TYPE;

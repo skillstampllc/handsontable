@@ -103,9 +103,7 @@ describe('TableRenderer', function () {
     var _createRenderer6 = createRenderer(),
         renderer = _createRenderer6.renderer;
 
-    var rowHeadersRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var rowHeadersRenderer = new ( /*#__PURE__*/function () {
       function RowHeadersRenderer() {
         _classCallCheck(this, RowHeadersRenderer);
       }
@@ -117,9 +115,7 @@ describe('TableRenderer', function () {
 
       return RowHeadersRenderer;
     }())();
-    var columnHeadersRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var columnHeadersRenderer = new ( /*#__PURE__*/function () {
       function ColumnHeadersRenderer() {
         _classCallCheck(this, ColumnHeadersRenderer);
       }
@@ -131,9 +127,7 @@ describe('TableRenderer', function () {
 
       return ColumnHeadersRenderer;
     }())();
-    var colGroupRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var colGroupRenderer = new ( /*#__PURE__*/function () {
       function ColGroupRenderer() {
         _classCallCheck(this, ColGroupRenderer);
       }
@@ -145,9 +139,7 @@ describe('TableRenderer', function () {
 
       return ColGroupRenderer;
     }())();
-    var rowsRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var rowsRenderer = new ( /*#__PURE__*/function () {
       function RowsRenderer() {
         _classCallCheck(this, RowsRenderer);
       }
@@ -159,9 +151,7 @@ describe('TableRenderer', function () {
 
       return RowsRenderer;
     }())();
-    var cellsRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var cellsRenderer = new ( /*#__PURE__*/function () {
       function CellsRenderer() {
         _classCallCheck(this, CellsRenderer);
       }
@@ -200,9 +190,7 @@ describe('TableRenderer', function () {
     var _createRenderer7 = createRenderer(),
         renderer = _createRenderer7.renderer;
 
-    var rowFilter = new (
-    /*#__PURE__*/
-    function () {
+    var rowFilter = new ( /*#__PURE__*/function () {
       function RowFilter() {
         _classCallCheck(this, RowFilter);
       }
@@ -214,9 +202,7 @@ describe('TableRenderer', function () {
 
       return RowFilter;
     }())();
-    var columnFilter = new (
-    /*#__PURE__*/
-    function () {
+    var columnFilter = new ( /*#__PURE__*/function () {
       function ColumnFilter() {
         _classCallCheck(this, ColumnFilter);
       }
@@ -239,9 +225,7 @@ describe('TableRenderer', function () {
     var _createRenderer8 = createRenderer(),
         renderer = _createRenderer8.renderer;
 
-    var rowFilter = new (
-    /*#__PURE__*/
-    function () {
+    var rowFilter = new ( /*#__PURE__*/function () {
       function RowFilter() {
         _classCallCheck(this, RowFilter);
       }
@@ -253,9 +237,7 @@ describe('TableRenderer', function () {
 
       return RowFilter;
     }())();
-    var columnFilter = new (
-    /*#__PURE__*/
-    function () {
+    var columnFilter = new ( /*#__PURE__*/function () {
       function ColumnFilter() {
         _classCallCheck(this, ColumnFilter);
       }
@@ -278,9 +260,7 @@ describe('TableRenderer', function () {
     var _createRenderer9 = createRenderer(),
         renderer = _createRenderer9.renderer;
 
-    var rowHeadersRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var rowHeadersRenderer = new ( /*#__PURE__*/function () {
       function RowHeadersRenderer() {
         _classCallCheck(this, RowHeadersRenderer);
       }
@@ -295,9 +275,7 @@ describe('TableRenderer', function () {
 
       return RowHeadersRenderer;
     }())();
-    var columnHeadersRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var columnHeadersRenderer = new ( /*#__PURE__*/function () {
       function ColumnHeadersRenderer() {
         _classCallCheck(this, ColumnHeadersRenderer);
       }
@@ -312,9 +290,7 @@ describe('TableRenderer', function () {
 
       return ColumnHeadersRenderer;
     }())();
-    var colGroupRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var colGroupRenderer = new ( /*#__PURE__*/function () {
       function ColGroupRenderer() {
         _classCallCheck(this, ColGroupRenderer);
       }
@@ -329,9 +305,7 @@ describe('TableRenderer', function () {
 
       return ColGroupRenderer;
     }())();
-    var rowsRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var rowsRenderer = new ( /*#__PURE__*/function () {
       function RowsRenderer() {
         _classCallCheck(this, RowsRenderer);
       }
@@ -346,9 +320,7 @@ describe('TableRenderer', function () {
 
       return RowsRenderer;
     }())();
-    var cellsRenderer = new (
-    /*#__PURE__*/
-    function () {
+    var cellsRenderer = new ( /*#__PURE__*/function () {
       function CellsRenderer() {
         _classCallCheck(this, CellsRenderer);
       }
@@ -363,9 +335,7 @@ describe('TableRenderer', function () {
 
       return CellsRenderer;
     }())();
-    var columnUtils = new (
-    /*#__PURE__*/
-    function () {
+    var columnUtils = new ( /*#__PURE__*/function () {
       function ColumnUtils() {
         _classCallCheck(this, ColumnUtils);
       }

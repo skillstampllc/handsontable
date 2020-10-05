@@ -10,6 +10,8 @@ require("core-js/modules/es.symbol.iterator");
 
 require("core-js/modules/es.array.concat");
 
+require("core-js/modules/es.array.for-each");
+
 require("core-js/modules/es.array.from");
 
 require("core-js/modules/es.array.includes");
@@ -19,6 +21,8 @@ require("core-js/modules/es.array.iterator");
 require("core-js/modules/es.array.slice");
 
 require("core-js/modules/es.array.some");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.number.constructor");
 
@@ -35,6 +39,8 @@ require("core-js/modules/es.set");
 require("core-js/modules/es.string.includes");
 
 require("core-js/modules/es.string.iterator");
+
+require("core-js/modules/web.dom-collections.for-each");
 
 require("core-js/modules/web.dom-collections.iterator");
 
@@ -69,16 +75,20 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["Unsupported format of the selection ranges was passed. To select cells pass \n        the coordinates as an array of arrays ([[rowStart, columnStart/columnPropStart, rowEnd, columnEnd/columnPropEnd]]) \n        or as an array of CellRange objects."]);
+  var data = _taggedTemplateLiteral(["Unsupported format of the selection ranges was passed. To select cells pass \n        the coordinates as an array of arrays ([[rowStart, columnStart/columnPropStart, rowEnd, \n        columnEnd/columnPropEnd]]) or as an array of CellRange objects."], ["Unsupported format of the selection ranges was passed. To select cells pass\\x20\n        the coordinates as an array of arrays ([[rowStart, columnStart/columnPropStart, rowEnd,\\x20\n        columnEnd/columnPropEnd]]) or as an array of CellRange objects."]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -99,9 +109,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class Selection
  * @util
  */
-var Selection =
-/*#__PURE__*/
-function () {
+var Selection = /*#__PURE__*/function () {
   function Selection(settings, tableProps) {
     var _this = this;
 
@@ -116,40 +124,42 @@ function () {
     /**
      * An additional object with dynamically defined properties which describes table state.
      *
-     * @type {Object}
+     * @type {object}
      */
 
     this.tableProps = tableProps;
     /**
      * The flag which determines if the selection is in progress.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.inProgress = false;
     /**
      * The flag indicates that selection was performed by clicking the corner overlay.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
 
     this.selectedByCorner = false;
     /**
-     * The collection of the selection layer levels where the whole row was selected using the row header.
+     * The collection of the selection layer levels where the whole row was selected using the row header or
+     * the corner header.
      *
-     * @type {Set.<Number>}
+     * @type {Set.<number>}
      */
 
     this.selectedByRowHeader = new Set();
     /**
-     * The collection of the selection layer levels where the whole column was selected using the column header.
+     * The collection of the selection layer levels where the whole column was selected using the column header or
+     * the corner header.
      *
-     * @type {Set.<Number>}
+     * @type {Set.<number>}
      */
 
     this.selectedByColumnHeader = new Set();
     /**
-     * Selection data layer.
+     * Selection data layer (handle visual coordinates).
      *
      * @type {SelectionRange}
      */
@@ -172,6 +182,12 @@ function () {
       },
       areaCornerVisible: function areaCornerVisible() {
         return _this.isAreaCornerVisible.apply(_this, arguments);
+      },
+      visualToRenderableCoords: function visualToRenderableCoords(coords) {
+        return _this.tableProps.visualToRenderableCoords(coords);
+      },
+      renderableToVisualCoords: function renderableToVisualCoords(coords) {
+        return _this.tableProps.renderableToVisualCoords(coords);
       }
     });
     /**
@@ -182,10 +198,16 @@ function () {
 
     this.transformation = new _transformation.default(this.selectedRange, {
       countRows: function countRows() {
-        return _this.tableProps.countRows();
+        return _this.tableProps.countRowsTranslated();
       },
       countCols: function countCols() {
-        return _this.tableProps.countCols();
+        return _this.tableProps.countColsTranslated();
+      },
+      visualToRenderableCoords: function visualToRenderableCoords(coords) {
+        return _this.tableProps.visualToRenderableCoords(coords);
+      },
+      renderableToVisualCoords: function renderableToVisualCoords(coords) {
+        return _this.tableProps.renderableToVisualCoords(coords);
       },
       fixedRowsBottom: function fixedRowsBottom() {
         return settings.fixedRowsBottom;
@@ -249,7 +271,7 @@ function () {
   /**
    * Get data layer for current selection.
    *
-   * @return {SelectionRange}
+   * @returns {SelectionRange}
    */
 
 
@@ -280,7 +302,7 @@ function () {
     /**
      * Check if the process of selecting the cell/cells is in progress.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -292,10 +314,10 @@ function () {
      * Starts selection range on given coordinate object.
      *
      * @param {CellCoords} coords Visual coords.
-     * @param {Boolean} [multipleSelection] If `true`, selection will be worked in 'multiple' mode. This option works
+     * @param {boolean} [multipleSelection] If `true`, selection will be worked in 'multiple' mode. This option works
      *                                      only when 'selectionMode' is set as 'multiple'. If the argument is not defined
      *                                      the default trigger will be used (isPressedCtrlKey() helper).
-     * @param {Boolean} [fragment=false] If `true`, the selection will be treated as a partial selection where the
+     * @param {boolean} [fragment=false] If `true`, the selection will be treated as a partial selection where the
      *                                   `setRangeEnd` method won't be called on every `setRangeStart` call.
      */
 
@@ -308,15 +330,6 @@ function () {
       var isRowNegative = coords.row < 0;
       var isColumnNegative = coords.col < 0;
       var selectedByCorner = isRowNegative && isColumnNegative;
-
-      if (isRowNegative) {
-        coords.row = 0;
-      }
-
-      if (isColumnNegative) {
-        coords.col = 0;
-      }
-
       this.selectedByCorner = selectedByCorner;
       this.runLocalHooks("beforeSetRangeStart".concat(fragment ? 'Only' : ''), coords);
 
@@ -347,7 +360,7 @@ function () {
      * Starts selection range on given coordinate object.
      *
      * @param {CellCoords} coords Visual coords.
-     * @param {Boolean} [multipleSelection] If `true`, selection will be worked in 'multiple' mode. This option works
+     * @param {boolean} [multipleSelection] If `true`, selection will be worked in 'multiple' mode. This option works
      *                                      only when 'selectionMode' is set as 'multiple'. If the argument is not defined
      *                                      the default trigger will be used (isPressedCtrlKey() helper).
      */
@@ -382,7 +395,7 @@ function () {
       this.highlight.getCell().clear();
 
       if (this.highlight.isEnabledFor(_highlight.CELL_TYPE)) {
-        this.highlight.getCell().add(this.selectedRange.current().highlight);
+        this.highlight.getCell().add(this.selectedRange.current().highlight).commit().adjustCoordinates(cellRange);
       }
 
       var layerLevel = this.getLayerLevel(); // If the next layer level is lower than previous then clear all area and header highlights. This is the
@@ -409,38 +422,64 @@ function () {
       activeHeaderHighlight.clear();
 
       if (this.highlight.isEnabledFor(_highlight.AREA_TYPE) && (this.isMultiple() || layerLevel >= 1)) {
-        areaHighlight.add(cellRange.from).add(cellRange.to);
+        areaHighlight.add(cellRange.from).add(cellRange.to).commit();
 
         if (layerLevel === 1) {
           // For single cell selection in the same layer, we do not create area selection to prevent blue background.
           // When non-consecutive selection is performed we have to add that missing area selection to the previous layer
           // based on previous coordinates. It only occurs when the previous selection wasn't select multiple cells.
-          this.highlight.useLayerLevel(layerLevel - 1).createOrGetArea().add(this.selectedRange.previous().from);
+          var previousRange = this.selectedRange.previous();
+          this.highlight.useLayerLevel(layerLevel - 1).createOrGetArea().add(previousRange.from).commit() // Range may start with hidden indexes. Commit would not found start point (as we add just the `from` coords).
+          .adjustCoordinates(previousRange);
           this.highlight.useLayerLevel(layerLevel);
         }
       }
 
       if (this.highlight.isEnabledFor(_highlight.HEADER_TYPE)) {
+        // The header selection generally contains cell selection. In a case when all rows (or columns)
+        // are hidden that visual coordinates are translated to renderable coordinates that do not exist.
+        // Hence no header highlight is generated. In that case, to make a column (or a row) header
+        // highlight, the row and column index has to point to the header (the negative value). See #7052.
+        var areAnyRowsRendered = this.tableProps.countRowsTranslated() === 0;
+        var areAnyColumnsRendered = this.tableProps.countColsTranslated() === 0;
+        var headerCellRange = cellRange;
+
+        if (areAnyRowsRendered || areAnyColumnsRendered) {
+          headerCellRange = cellRange.clone();
+        }
+
+        if (areAnyRowsRendered) {
+          headerCellRange.from.row = -1;
+        }
+
+        if (areAnyColumnsRendered) {
+          headerCellRange.from.col = -1;
+        }
+
         if (this.settings.selectionMode === 'single') {
-          headerHighlight.add(cellRange.highlight);
+          if (this.isSelectedByAnyHeader()) {
+            headerCellRange.from.normalize();
+          }
+
+          headerHighlight.add(headerCellRange.from).commit();
         } else {
-          headerHighlight.add(cellRange.from).add(cellRange.to);
+          headerHighlight.add(headerCellRange.from).add(headerCellRange.to).commit();
         }
       }
 
-      if (this.isSelectedByRowHeader()) {
+      if (this.isEntireRowSelected()) {
         var isRowSelected = this.tableProps.countCols() === cellRange.getWidth(); // Make sure that the whole row is selected (in case where selectionMode is set to 'single')
 
         if (isRowSelected) {
-          activeHeaderHighlight.add(new _src.CellCoords(cellRange.from.row, -1)).add(new _src.CellCoords(cellRange.to.row, -1));
+          activeHeaderHighlight.add(new _src.CellCoords(cellRange.from.row, -1)).add(new _src.CellCoords(cellRange.to.row, -1)).commit();
         }
       }
 
-      if (this.isSelectedByColumnHeader()) {
+      if (this.isEntireColumnSelected()) {
         var isColumnSelected = this.tableProps.countRows() === cellRange.getHeight(); // Make sure that the whole column is selected (in case where selectionMode is set to 'single')
 
         if (isColumnSelected) {
-          activeHeaderHighlight.add(new _src.CellCoords(-1, cellRange.from.col)).add(new _src.CellCoords(-1, cellRange.to.col));
+          activeHeaderHighlight.add(new _src.CellCoords(-1, cellRange.from.col)).add(new _src.CellCoords(-1, cellRange.to.col)).commit();
         }
       }
 
@@ -450,7 +489,7 @@ function () {
      * Returns information if we have a multiselection. This method check multiselection only on the latest layer of
      * the selection.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -463,9 +502,9 @@ function () {
     /**
      * Selects cell relative to the current cell (if possible).
      *
-     * @param {Number} rowDelta Rows number to move, value can be passed as negative number.
-     * @param {Number} colDelta Columns number to move, value can be passed as negative number.
-     * @param {Boolean} force If `true` the new rows/columns will be created if necessary. Otherwise, row/column will
+     * @param {number} rowDelta Rows number to move, value can be passed as negative number.
+     * @param {number} colDelta Columns number to move, value can be passed as negative number.
+     * @param {boolean} force If `true` the new rows/columns will be created if necessary. Otherwise, row/column will
      *                        be created according to `minSpareRows/minSpareCols` settings of Handsontable.
      */
 
@@ -477,8 +516,8 @@ function () {
     /**
      * Sets selection end cell relative to the current selection end cell (if possible).
      *
-     * @param {Number} rowDelta Rows number to move, value can be passed as negative number.
-     * @param {Number} colDelta Columns number to move, value can be passed as negative number.
+     * @param {number} rowDelta Rows number to move, value can be passed as negative number.
+     * @param {number} colDelta Columns number to move, value can be passed as negative number.
      */
 
   }, {
@@ -489,7 +528,7 @@ function () {
     /**
      * Returns currently used layer level.
      *
-     * @return {Number} Returns layer level starting from 0. If no selection was added to the table -1 is returned.
+     * @returns {number} Returns layer level starting from 0. If no selection was added to the table -1 is returned.
      */
 
   }, {
@@ -500,7 +539,7 @@ function () {
     /**
      * Returns `true` if currently there is a selection on the screen, `false` otherwise.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -513,13 +552,27 @@ function () {
      * argument is passed then only that layer will be checked. Otherwise, it checks if any row header
      * was clicked on any selection layer level.
      *
-     * @param {Number} [layerLevel=this.getLayerLevel()] Selection layer level to check.
-     * @return {Boolean}
+     * @param {number} [layerLevel=this.getLayerLevel()] Selection layer level to check.
+     * @returns {boolean}
      */
 
   }, {
     key: "isSelectedByRowHeader",
     value: function isSelectedByRowHeader() {
+      var layerLevel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getLayerLevel();
+      return !this.isSelectedByCorner(layerLevel) && this.isEntireRowSelected(layerLevel);
+    }
+    /**
+     * Returns `true` if the selection consists of entire rows (including their headers). If the `layerLevel`
+     * argument is passed then only that layer will be checked. Otherwise, it checks the selection for all layers.
+     *
+     * @param {number} [layerLevel=this.getLayerLevel()] Selection layer level to check.
+     * @returns {boolean}
+     */
+
+  }, {
+    key: "isEntireRowSelected",
+    value: function isEntireRowSelected() {
       var layerLevel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getLayerLevel();
       return layerLevel === -1 ? this.selectedByRowHeader.size > 0 : this.selectedByRowHeader.has(layerLevel);
     }
@@ -528,31 +581,45 @@ function () {
      * argument is passed then only that layer will be checked. Otherwise, it checks if any column header
      * was clicked on any selection layer level.
      *
-     * @param {Number} [layerLevel=this.getLayerLevel()] Selection layer level to check.
-     * @return {Boolean}
+     * @param {number} [layerLevel=this.getLayerLevel()] Selection layer level to check.
+     * @returns {boolean}
      */
 
   }, {
     key: "isSelectedByColumnHeader",
     value: function isSelectedByColumnHeader() {
       var layerLevel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getLayerLevel();
+      return !this.isSelectedByCorner() && this.isEntireColumnSelected(layerLevel);
+    }
+    /**
+     * Returns `true` if the selection consists of entire columns (including their headers). If the `layerLevel`
+     * argument is passed then only that layer will be checked. Otherwise, it checks the selection for all layers.
+     *
+     * @param {number} [layerLevel=this.getLayerLevel()] Selection layer level to check.
+     * @returns {boolean}
+     */
+
+  }, {
+    key: "isEntireColumnSelected",
+    value: function isEntireColumnSelected() {
+      var layerLevel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getLayerLevel();
       return layerLevel === -1 ? this.selectedByColumnHeader.size > 0 : this.selectedByColumnHeader.has(layerLevel);
     }
     /**
      * Returns `true` if the selection was applied by clicking on the row or column header on any layer level.
      *
-     * @return {Boolean}
+     * @returns {boolean}
      */
 
   }, {
     key: "isSelectedByAnyHeader",
     value: function isSelectedByAnyHeader() {
-      return this.isSelectedByRowHeader(-1) || this.isSelectedByColumnHeader(-1);
+      return this.isSelectedByRowHeader(-1) || this.isSelectedByColumnHeader(-1) || this.isSelectedByCorner();
     }
     /**
      * Returns `true` if the selection was applied by clicking on the left-top corner overlay.
      *
-     * @return {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -565,7 +632,7 @@ function () {
      * the coords object is within selection range.
      *
      * @param {CellCoords} coords The CellCoords instance with defined visual coordinates.
-     * @returns {Boolean}
+     * @returns {boolean}
      */
 
   }, {
@@ -577,7 +644,7 @@ function () {
      * Returns `true` if the cell corner should be visible.
      *
      * @private
-     * @return {Boolean} `true` if the corner element has to be visible, `false` otherwise.
+     * @returns {boolean} `true` if the corner element has to be visible, `false` otherwise.
      */
 
   }, {
@@ -588,8 +655,8 @@ function () {
     /**
      * Returns `true` if the area corner should be visible.
      *
-     * @param {Number} layerLevel The layer level.
-     * @return {Boolean} `true` if the corner element has to be visible, `false` otherwise.
+     * @param {number} layerLevel The layer level.
+     * @returns {boolean} `true` if the corner element has to be visible, `false` otherwise.
      */
 
   }, {
@@ -608,6 +675,7 @@ function () {
   }, {
     key: "clear",
     value: function clear() {
+      // TODO: collections selectedByColumnHeader and selectedByRowHeader should be clear too.
       this.selectedRange.clear();
       this.highlight.clear();
     }
@@ -628,16 +696,32 @@ function () {
     }
     /**
      * Select all cells.
+     *
+     * @param {boolean} [includeRowHeaders=false] `true` If the selection should include the row headers, `false`
+     * otherwise.
+     * @param {boolean} [includeColumnHeaders=false] `true` If the selection should include the column headers, `false`
+     * otherwise.
      */
 
   }, {
     key: "selectAll",
     value: function selectAll() {
+      var includeRowHeaders = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var includeColumnHeaders = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var nrOfRows = this.tableProps.countRows();
+      var nrOfColumns = this.tableProps.countCols(); // We can't select cells when there is no data.
+
+      if (!includeRowHeaders && !includeColumnHeaders && (nrOfRows === 0 || nrOfColumns === 0)) {
+        return;
+      }
+
+      var startCoords = new _src.CellCoords(includeColumnHeaders ? -1 : 0, includeRowHeaders ? -1 : 0);
       this.clear();
-      this.setRangeStart(new _src.CellCoords(-1, -1));
+      this.setRangeStartOnly(startCoords);
       this.selectedByRowHeader.add(this.getLayerLevel());
       this.selectedByColumnHeader.add(this.getLayerLevel());
-      this.setRangeEnd(new _src.CellCoords(this.tableProps.countRows() - 1, this.tableProps.countCols() - 1));
+      this.setRangeEnd(new _src.CellCoords(nrOfRows - 1, nrOfColumns - 1));
+      this.finish();
     }
     /**
      * Make multiple, non-contiguous selection specified by `row` and `column` values or a range of cells
@@ -646,7 +730,7 @@ function () {
      * If the passed ranges have another format the exception will be thrown.
      *
      * @param {Array[]|CellRange[]} selectionRanges The coordinates which define what the cells should be selected.
-     * @return {Boolean} Returns `true` if selection was successful, `false` otherwise.
+     * @returns {boolean} Returns `true` if selection was successful, `false` otherwise.
      */
 
   }, {
@@ -668,8 +752,8 @@ function () {
         },
         keepDirection: true
       });
-      var countRows = this.tableProps.countRows();
-      var countCols = this.tableProps.countCols(); // Check if every layer of the coordinates are valid.
+      var nrOfRows = this.tableProps.countRows();
+      var nrOfColumns = this.tableProps.countCols(); // Check if every layer of the coordinates are valid.
 
       var isValid = !selectionRanges.some(function (selection) {
         var _selectionSchemaNorma = selectionSchemaNormalizer(selection),
@@ -679,7 +763,7 @@ function () {
             rowEnd = _selectionSchemaNorma2[2],
             columnEnd = _selectionSchemaNorma2[3];
 
-        var _isValid = (0, _utils.isValidCoord)(rowStart, countRows) && (0, _utils.isValidCoord)(columnStart, countCols) && (0, _utils.isValidCoord)(rowEnd, countRows) && (0, _utils.isValidCoord)(columnEnd, countCols);
+        var _isValid = (0, _utils.isValidCoord)(rowStart, nrOfRows) && (0, _utils.isValidCoord)(columnStart, nrOfColumns) && (0, _utils.isValidCoord)(rowEnd, nrOfRows) && (0, _utils.isValidCoord)(columnEnd, nrOfColumns);
 
         return !_isValid;
       });
@@ -705,11 +789,12 @@ function () {
       return isValid;
     }
     /**
-     * Select column specified by `startColumn` visual index or column property or a range of columns finishing at `endColumn`.
+     * Select column specified by `startColumn` visual index or column property or a range of columns finishing at
+     * `endColumn`.
      *
-     * @param {Number|String} startColumn Visual column index or column property from which the selection starts.
-     * @param {Number|String} [endColumn] Visual column index or column property from to the selection finishes.
-     * @returns {Boolean} Returns `true` if selection was successful, `false` otherwise.
+     * @param {number|string} startColumn Visual column index or column property from which the selection starts.
+     * @param {number|string} [endColumn] Visual column index or column property from to the selection finishes.
+     * @returns {boolean} Returns `true` if selection was successful, `false` otherwise.
      */
 
   }, {
@@ -718,12 +803,13 @@ function () {
       var endColumn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : startColumn;
       var start = typeof startColumn === 'string' ? this.tableProps.propToCol(startColumn) : startColumn;
       var end = typeof endColumn === 'string' ? this.tableProps.propToCol(endColumn) : endColumn;
-      var countCols = this.tableProps.countCols();
-      var isValid = (0, _utils.isValidCoord)(start, countCols) && (0, _utils.isValidCoord)(end, countCols);
+      var nrOfColumns = this.tableProps.countCols();
+      var nrOfRows = this.tableProps.countRows();
+      var isValid = (0, _utils.isValidCoord)(start, nrOfColumns) && (0, _utils.isValidCoord)(end, nrOfColumns);
 
       if (isValid) {
         this.setRangeStartOnly(new _src.CellCoords(-1, start));
-        this.setRangeEnd(new _src.CellCoords(this.tableProps.countRows() - 1, end));
+        this.setRangeEnd(new _src.CellCoords(nrOfRows - 1, end));
         this.finish();
       }
 
@@ -732,25 +818,59 @@ function () {
     /**
      * Select row specified by `startRow` visual index or a range of rows finishing at `endRow`.
      *
-     * @param {Number} startRow Visual row index from which the selection starts.
-     * @param {Number} [endRow] Visual row index from to the selection finishes.
-     * @returns {Boolean} Returns `true` if selection was successful, `false` otherwise.
+     * @param {number} startRow Visual row index from which the selection starts.
+     * @param {number} [endRow] Visual row index from to the selection finishes.
+     * @returns {boolean} Returns `true` if selection was successful, `false` otherwise.
      */
 
   }, {
     key: "selectRows",
     value: function selectRows(startRow) {
       var endRow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : startRow;
-      var countRows = this.tableProps.countRows();
-      var isValid = (0, _utils.isValidCoord)(startRow, countRows) && (0, _utils.isValidCoord)(endRow, countRows);
+      var nrOfRows = this.tableProps.countRows();
+      var nrOfColumns = this.tableProps.countCols();
+      var isValid = (0, _utils.isValidCoord)(startRow, nrOfRows) && (0, _utils.isValidCoord)(endRow, nrOfRows);
 
       if (isValid) {
         this.setRangeStartOnly(new _src.CellCoords(startRow, -1));
-        this.setRangeEnd(new _src.CellCoords(endRow, this.tableProps.countCols() - 1));
+        this.setRangeEnd(new _src.CellCoords(endRow, nrOfColumns - 1));
         this.finish();
       }
 
       return isValid;
+    }
+    /**
+     * Rewrite the rendered state of the selection as visual selection may have a new representation in the DOM.
+     */
+
+  }, {
+    key: "refresh",
+    value: function refresh() {
+      var customSelections = this.highlight.getCustomSelections();
+      customSelections.forEach(function (customSelection) {
+        customSelection.commit();
+      });
+
+      if (!this.isSelected()) {
+        return;
+      }
+
+      var cellHighlight = this.highlight.getCell();
+      var currentLayer = this.getLayerLevel();
+      cellHighlight.commit().adjustCoordinates(this.selectedRange.current()); // Rewriting rendered ranges going through all layers.
+
+      for (var layerLevel = 0; layerLevel < this.selectedRange.size(); layerLevel += 1) {
+        this.highlight.useLayerLevel(layerLevel);
+        var areaHighlight = this.highlight.createOrGetArea();
+        var headerHighlight = this.highlight.createOrGetHeader();
+        var activeHeaderHighlight = this.highlight.createOrGetActiveHeader();
+        areaHighlight.commit();
+        headerHighlight.commit();
+        activeHeaderHighlight.commit();
+      } // Reverting starting layer for the Highlight.
+
+
+      this.highlight.useLayerLevel(currentLayer);
     }
   }]);
 
