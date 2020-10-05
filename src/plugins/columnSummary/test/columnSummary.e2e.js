@@ -1,6 +1,7 @@
 describe('ColumnSummarySpec', () => {
   const id = 'testContainer';
-  const warnMessage = 'One of the Column Summary plugins\' destination points you provided is beyond the table boundaries!';
+  const warnMessage = 'One of the Column Summary plugins\' destination points you ' +
+    'provided is beyond the table boundaries!';
   const columnSummaryFunction = function() {
     // We're assuming there are two levels, and the upper level has the summary results, while its children contain the calculation data.
     const endpoints = [];
@@ -250,6 +251,9 @@ describe('ColumnSummarySpec', () => {
               const hotInstance = this.hot;
 
               // helper function
+              /**
+               * @param rowRange
+               */
               function checkRange(rowRange) {
                 let i = rowRange[1] || rowRange[0];
                 let counter = 0;
@@ -470,6 +474,42 @@ describe('ColumnSummarySpec', () => {
       expect(getCellMeta(0, 2).readOnly).toEqual(true);
     });
 
+    describe('if range is undefined', () => {
+      it('should not throw an error if removing column', () => {
+        const hot = handsontable({
+          data: createNumericData(3, 3),
+          height: 200,
+          width: 200,
+          columnSummary: [{
+            destinationRow: 2,
+            destinationColumn: 2,
+            type: 'sum'
+          }],
+        });
+
+        expect(() => {
+          hot.alter('remove_col', 0, 1);
+        }).not.toThrow();
+      });
+
+      it('should not throw an error if removing row', () => {
+        const hot = handsontable({
+          data: createNumericData(3, 3),
+          height: 200,
+          width: 200,
+          columnSummary: [{
+            destinationRow: 2,
+            destinationColumn: 2,
+            type: 'sum'
+          }],
+        });
+
+        expect(() => {
+          hot.alter('remove_row', 0, 1);
+        }).not.toThrow();
+      });
+    });
+
     it('should modify the calculation row range when a row was moved outside the range', () => {
       const hot = handsontable({
         data: createNumericData(40, 40),
@@ -509,9 +549,13 @@ describe('ColumnSummarySpec', () => {
           }]
       });
 
-      expect(JSON.stringify(hot.getPlugin('columnSummary').endpoints.getEndpoint(0).ranges)).toEqual('[[0,6]]');
+      expect(JSON.stringify(hot.getPlugin('columnSummary').endpoints.getEndpoint(0).ranges))
+        .toEqual('[[0,6]]');
+
       hot.getPlugin('manualRowMove').moveRow(10, 3);
-      expect(JSON.stringify(hot.getPlugin('columnSummary').endpoints.getEndpoint(0).ranges)).toEqual('[[0,2],[10,10],[3,6]]');
+
+      expect(JSON.stringify(hot.getPlugin('columnSummary').endpoints.getEndpoint(0).ranges))
+        .toEqual('[[0,2],[10,10],[3,6]]');
     });
 
     it('should shift the visual calculation result position when a row was moved outside the endpoint range', function() {
@@ -588,6 +632,9 @@ describe('ColumnSummarySpec', () => {
         });
 
         const nestedRowsPlugin = hot.getPlugin('nestedRows');
+        /**
+         * @param row
+         */
         function toggle(row) {
           const rowIndex = parseInt(row, 10);
           if (isNaN(rowIndex)) {

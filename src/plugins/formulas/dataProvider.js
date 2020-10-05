@@ -23,7 +23,7 @@ class DataProvider {
      * Collected changes applied into editors or by calling public Handsontable API. This is require to provide
      * fresh data applied into spreadsheet before they will be available from the public API.
      *
-     * @type {Object}
+     * @type {object}
      */
     this.changes = {};
   }
@@ -31,8 +31,8 @@ class DataProvider {
   /**
    * Collect all data changes applied to the Handsontable to make them available later.
    *
-   * @param {Number} row Physical row index.
-   * @param {Number} column Physical column index.
+   * @param {number} row Physical row index.
+   * @param {number} column Physical column index.
    * @param {*} value Value to store.
    */
   collectChanges(row, column, value) {
@@ -49,9 +49,9 @@ class DataProvider {
   /**
    * Check if provided coordinates match to the table range data.
    *
-   * @param {Number} visualRow Visual row index.
-   * @param {Number} visualColumn Visual row index.
-   * @returns {Boolean}
+   * @param {number} visualRow Visual row index.
+   * @param {number} visualColumn Visual row index.
+   * @returns {boolean}
    */
   isInDataRange(visualRow, visualColumn) {
     return (
@@ -65,8 +65,8 @@ class DataProvider {
   /**
    * Get calculated data at specified cell.
    *
-   * @param {Number} visualRow Visual row index.
-   * @param {Number} visualColumn Visual column index.
+   * @param {number} visualRow Visual row index.
+   * @param {number} visualColumn Visual column index.
    * @returns {*}
    */
   getDataAtCell(visualRow, visualColumn) {
@@ -88,10 +88,10 @@ class DataProvider {
   /**
    * Get calculated data at specified range.
    *
-   * @param {Number} [visualRow1] Visual row index.
-   * @param {Number} [visualColumn1] Visual column index.
-   * @param {Number} [visualRow2] Visual row index.
-   * @param {Number} [visualColumn2] Visual column index.
+   * @param {number} [visualRow1] Visual row index.
+   * @param {number} [visualColumn1] Visual column index.
+   * @param {number} [visualRow2] Visual row index.
+   * @param {number} [visualColumn2] Visual column index.
    * @returns {Array}
    */
   getDataByRange(visualRow1, visualColumn1, visualRow2, visualColumn2) {
@@ -121,8 +121,8 @@ class DataProvider {
   /**
    * Get source data at specified physical cell.
    *
-   * @param {Number} physicalRow Physical row index.
-   * @param {Number} physicalColumn Physical column index.
+   * @param {number} physicalRow Physical row index.
+   * @param {number} physicalColumn Physical column index.
    * @returns {*}
    */
   getSourceDataAtCell(physicalRow, physicalColumn) {
@@ -141,10 +141,10 @@ class DataProvider {
   /**
    * Get source data at specified physical range.
    *
-   * @param {Number} [physicalRow1] Physical row index.
-   * @param {Number} [physicalColumn1] Physical column index.
-   * @param {Number} [physicalRow2] Physical row index.
-   * @param {Number} [physicalColumn2] Physical column index.
+   * @param {number} [physicalRow1] Physical row index.
+   * @param {number} [physicalColumn1] Physical column index.
+   * @param {number} [physicalRow2] Physical row index.
+   * @param {number} [physicalColumn2] Physical column index.
    * @returns {Array}
    */
   getSourceDataByRange(
@@ -164,8 +164,8 @@ class DataProvider {
   /**
    * Get source data at specified visual cell.
    *
-   * @param {Number} visualRow Visual row index.
-   * @param {Number} visualColumn Visual column index.
+   * @param {number} visualRow Visual row index.
+   * @param {number} visualColumn Visual column index.
    * @returns {*}
    */
   getRawDataAtCell(visualRow, visualColumn) {
@@ -178,10 +178,10 @@ class DataProvider {
   /**
    * Get source data at specified visual range.
    *
-   * @param {Number} [visualRow1] Visual row index.
-   * @param {Number} [visualColumn1] Visual column index.
-   * @param {Number} [visualRow2] Visual row index.
-   * @param {Number} [visualColumn2] Visual column index.
+   * @param {number} [visualRow1] Visual row index.
+   * @param {number} [visualColumn1] Visual column index.
+   * @param {number} [visualRow2] Visual row index.
+   * @param {number} [visualColumn2] Visual column index.
    * @returns {Array}
    */
   getRawDataByRange(visualRow1, visualColumn1, visualRow2, visualColumn2) {
@@ -213,8 +213,8 @@ class DataProvider {
   /**
    * Update source data.
    *
-   * @param {Number} physicalRow Physical row index.
-   * @param {Number} physicalColumn Physical row index.
+   * @param {number} physicalRow Physical row index.
+   * @param {number} physicalColumn Physical row index.
    * @param {*} value Value to update.
    */
   updateSourceData(physicalRow, physicalColumn, value) {
@@ -226,9 +226,9 @@ class DataProvider {
   /**
    * Generate cell coordinates id where the data changes will be stored.
    *
-   * @param {Number} row Row index.
-   * @param {Number} column Column index.
-   * @returns {String}
+   * @param {number} row Row index.
+   * @param {number} column Column index.
+   * @returns {string}
    * @private
    */
   _coordId(row, column) {

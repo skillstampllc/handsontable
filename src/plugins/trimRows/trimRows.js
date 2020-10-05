@@ -1,6 +1,6 @@
 import BasePlugin from '../_base';
 import { registerPlugin } from '../../plugins';
-import { SkipMap } from '../../translations';
+import { TrimmingMap } from '../../translations';
 import { arrayEach, arrayReduce } from '../../helpers/array';
 
 /**
@@ -15,7 +15,7 @@ import { arrayEach, arrayReduce } from '../../helpers/array';
  * ```js
  * const container = document.getElementById('example');
  * const hot = new Handsontable(container, {
- *   date: getData(),
+ *   data: getData(),
  *   // hide selected rows on table initialization
  *   trimRows: [1, 2, 5]
  * });
@@ -49,10 +49,10 @@ class TrimRows extends BasePlugin {
   constructor(hotInstance) {
     super(hotInstance);
     /**
-     * Map of skipped rows by plugin.
+     * Map of skipped rows by the plugin.
      *
      * @private
-     * @type {null|SkipMap}
+     * @type {null|TrimmingMap}
      */
     this.trimmedRowsMap = null;
   }
@@ -60,7 +60,7 @@ class TrimRows extends BasePlugin {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link AutoRowSize#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   isEnabled() {
     return !!this.hot.getSettings().trimRows;
@@ -74,7 +74,7 @@ class TrimRows extends BasePlugin {
       return;
     }
 
-    this.trimmedRowsMap = this.hot.rowIndexMapper.registerMap('trimRows', new SkipMap());
+    this.trimmedRowsMap = this.hot.rowIndexMapper.registerMap('trimRows', new TrimmingMap());
     this.trimmedRowsMap.addLocalHook('init', () => this.onMapInit());
 
     super.enablePlugin();
@@ -87,7 +87,7 @@ class TrimRows extends BasePlugin {
     const trimmedRows = this.hot.getSettings().trimRows;
 
     if (Array.isArray(trimmedRows)) {
-      this.hot.executeBatchOperations(() => {
+      this.hot.batch(() => {
         this.trimmedRowsMap.clear();
 
         arrayEach(trimmedRows, (physicalRow) => {
@@ -114,19 +114,13 @@ class TrimRows extends BasePlugin {
    * @returns {Array} Physical rows.
    */
   getTrimmedRows() {
-    return arrayReduce(this.trimmedRowsMap.getValues(), (indexesList, isTrimmed, physicalIndex) => {
-      if (isTrimmed) {
-        return indexesList.concat(physicalIndex);
-      }
-
-      return indexesList;
-    }, []);
+    return this.trimmedRowsMap.getTrimmedIndexes();
   }
 
   /**
    * Trims the rows provided in the array.
    *
-   * @param {Number[]} rows Array of physical row indexes.
+   * @param {number[]} rows Array of physical row indexes.
    * @fires Hooks#beforeTrimRow
    * @fires Hooks#afterTrimRow
    */
@@ -147,7 +141,7 @@ class TrimRows extends BasePlugin {
     }
 
     if (isValidConfig) {
-      this.hot.executeBatchOperations(() => {
+      this.hot.batch(() => {
         arrayEach(rows, (physicalRow) => {
           this.trimmedRowsMap.setValueAtIndex(physicalRow, true);
         });
@@ -161,7 +155,7 @@ class TrimRows extends BasePlugin {
   /**
    * Trims the row provided as physical row index (counting from 0).
    *
-   * @param {...Number} row Physical row index.
+   * @param {...number} row Physical row index.
    */
   trimRow(...row) {
     this.trimRows(row);
@@ -170,7 +164,7 @@ class TrimRows extends BasePlugin {
   /**
    * Untrims the rows provided in the array.
    *
-   * @param {Number[]} rows Array of physical row indexes.
+   * @param {number[]} rows Array of physical row indexes.
    * @fires Hooks#beforeUntrimRow
    * @fires Hooks#afterUntrimRow
    */
@@ -178,33 +172,44 @@ class TrimRows extends BasePlugin {
     const currentTrimConfig = this.getTrimmedRows();
     const isValidConfig = this.isValidConfig(rows);
     let destinationTrimConfig = currentTrimConfig;
+    const trimmingMapValues = this.trimmedRowsMap.getValues().slice();
+    const isAnyRowUntrimmed = rows.length > 0;
 
-    if (isValidConfig) {
-      destinationTrimConfig = currentTrimConfig.filter(trimmedRow => rows.includes(trimmedRow) === false);
+    if (isValidConfig && isAnyRowUntrimmed) {
+      // Preparing new values for trimming map.
+      arrayEach(rows, (physicalRow) => {
+        trimmingMapValues[physicalRow] = false;
+      });
+
+      // Preparing new trimming config.
+      destinationTrimConfig = arrayReduce(trimmingMapValues, (trimmedIndexes, isTrimmed, physicalIndex) => {
+        if (isTrimmed) {
+          trimmedIndexes.push(physicalIndex);
+        }
+
+        return trimmedIndexes;
+      }, []);
     }
 
-    const allowUntrimRow = this.hot.runHooks('beforeUntrimRow', currentTrimConfig, destinationTrimConfig, isValidConfig);
+    const allowUntrimRow = this.hot
+      .runHooks('beforeUntrimRow', currentTrimConfig, destinationTrimConfig, isValidConfig && isAnyRowUntrimmed);
 
     if (allowUntrimRow === false) {
       return;
     }
 
-    if (isValidConfig) {
-      this.hot.executeBatchOperations(() => {
-        arrayEach(rows, (physicalRow) => {
-          this.trimmedRowsMap.setValueAtIndex(physicalRow, false);
-        });
-      });
+    if (isValidConfig && isAnyRowUntrimmed) {
+      this.trimmedRowsMap.setValues(trimmingMapValues);
     }
 
-    this.hot.runHooks('afterUntrimRow', currentTrimConfig, destinationTrimConfig, isValidConfig,
+    this.hot.runHooks('afterUntrimRow', currentTrimConfig, destinationTrimConfig, isValidConfig && isAnyRowUntrimmed,
       isValidConfig && destinationTrimConfig.length < currentTrimConfig.length);
   }
 
   /**
    * Untrims the row provided as row index (counting from 0).
    *
-   * @param {...Number} row Physical row index.
+   * @param {...number} row Physical row index.
    */
   untrimRow(...row) {
     this.untrimRows(row);
@@ -213,11 +218,11 @@ class TrimRows extends BasePlugin {
   /**
    * Checks if given row is hidden.
    *
-   * @param physicalRow Physical row index.
-   * @returns {Boolean}
+   * @param {number} physicalRow Physical row index.
+   * @returns {boolean}
    */
   isTrimmed(physicalRow) {
-    return this.trimmedRowsMap.getValueAtIndex(physicalRow);
+    return this.trimmedRowsMap.getValueAtIndex(physicalRow) || false;
   }
 
   /**
@@ -228,15 +233,16 @@ class TrimRows extends BasePlugin {
   }
 
   /**
-   * Get if trim config is valid.
+   * Get if trim config is valid. Check whether all of the provided row indexes are within source data.
    *
    * @param {Array} trimmedRows List of physical row indexes.
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   isValidConfig(trimmedRows) {
     const sourceRows = this.hot.countSourceRows();
 
-    return trimmedRows.every(trimmedRow => (Number.isInteger(trimmedRow) && trimmedRow >= 0 && trimmedRow < sourceRows));
+    return trimmedRows
+      .every(trimmedRow => (Number.isInteger(trimmedRow) && trimmedRow >= 0 && trimmedRow < sourceRows));
   }
 
   /**
@@ -248,7 +254,7 @@ class TrimRows extends BasePlugin {
     const trimmedRows = this.hot.getSettings().trimRows;
 
     if (Array.isArray(trimmedRows)) {
-      this.hot.executeBatchOperations(() => {
+      this.hot.batch(() => {
         arrayEach(trimmedRows, (physicalRow) => {
           this.trimmedRowsMap.setValueAtIndex(physicalRow, true);
         });

@@ -12,12 +12,12 @@ import {
 import Sheet from "./sheet";
 import DataProvider from "./dataProvider";
 import UndoRedoSnapshot from "./undoRedoSnapshot";
+import CellValue from './cell/value';
 
 /**
  * The formulas plugin.
  *
  * @plugin Formulas
- * @experimental
  */
 class Formulas extends BasePlugin {
   constructor(hotInstance) {
@@ -53,7 +53,7 @@ class Formulas extends BasePlugin {
     /**
      * Flag which indicates if table should be re-render after sheet recalculations.
      *
-     * @type {Boolean}
+     * @type {boolean}
      * @default false
      * @private
      */
@@ -64,7 +64,7 @@ class Formulas extends BasePlugin {
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
    * hook and if it returns `true` than the {@link Formulas#enablePlugin} method is called.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   isEnabled() {
     /* eslint-disable no-unneeded-ternary */
@@ -140,8 +140,8 @@ class Formulas extends BasePlugin {
   /**
    * Returns cell value (evaluated from formula expression) at specified cell coords.
    *
-   * @param {Number} row Row index.
-   * @param {Number} column Column index.
+   * @param {number} row Row index.
+   * @param {number} column Column index.
    * @returns {*}
    */
   getCellValue(row, column) {
@@ -153,9 +153,9 @@ class Formulas extends BasePlugin {
   /**
    * Checks if there are any formula evaluations made under specific cell coords.
    *
-   * @param {Number} row Row index.
-   * @param {Number} column Column index.
-   * @returns {Boolean}
+   * @param {number} row Row index.
+   * @param {number} column Column index.
+   * @returns {boolean}
    */
   hasComputedCellValue(row, column) {
     return this.sheet.getCellAt(row, column) !== null;
@@ -185,7 +185,7 @@ class Formulas extends BasePlugin {
   /**
    * Sets predefined variable name which can be visible while parsing formula expression.
    *
-   * @param {String} name Variable name.
+   * @param {string} name Variable name.
    * @param {*} value Variable value.
    */
   setVariable(name, value) {
@@ -195,7 +195,7 @@ class Formulas extends BasePlugin {
   /**
    * Returns variable name.
    *
-   * @param {String} name Variable name.
+   * @param {string} name Variable name.
    * @returns {*}
    */
   getVariable(name) {
@@ -226,11 +226,10 @@ class Formulas extends BasePlugin {
    * On modify row data listener. It overwrites raw values into calculated ones and force upper case all formula expressions.
    *
    * @private
-   * @param {Number} row Row index.
-   * @param {Number} column Column index.
-   * @param {Object} valueHolder Value holder as an object to change value by reference.
-   * @param {String} ioMode IO operation (`get` or `set`).
-   * @returns {Array|undefined} Returns modified row data.
+   * @param {number} row Row index.
+   * @param {number} column Column index.
+   * @param {object} valueHolder Value holder as an object to change value by reference.
+   * @param {string} ioMode IO operation (`get` or `set`).
    */
   onModifyData(row, column, valueHolder, ioMode) {
     if (ioMode === "get" && this.hasComputedCellValue(row, column)) {
@@ -262,8 +261,9 @@ class Formulas extends BasePlugin {
    *
    * @private
    * @param {*} value Value to validate.
-   * @param {Number} row Row index.
-   * @param {Number} prop Column property.
+   * @param {number} row Row index.
+   * @param {number} prop Column property.
+   * @returns {*}
    */
   onBeforeValidate(value, row, prop) {
     const column = this.hot.propToCol(prop);
@@ -281,7 +281,7 @@ class Formulas extends BasePlugin {
    *
    * @private
    * @param {Array} changes Array of changes.
-   * @param {String} [source] Source of changes.
+   * @param {string} [source] Source of changes.
    */
   onAfterSetDataAtCell(changes, source) {
     if (source === "loadData") {
@@ -317,9 +317,9 @@ class Formulas extends BasePlugin {
    * On before create row listener.
    *
    * @private
-   * @param {Number} row Row index.
-   * @param {Number} amount An amount of removed rows.
-   * @param {String} source Source of method call.
+   * @param {number} row Row index.
+   * @param {number} amount An amount of removed rows.
+   * @param {string} source Source of method call.
    */
   onBeforeCreateRow(row, amount, source) {
     if (source === "UndoRedo.undo") {
@@ -331,9 +331,9 @@ class Formulas extends BasePlugin {
    * On after create row listener.
    *
    * @private
-   * @param {Number} row Row index.
-   * @param {Number} amount An amount of created rows.
-   * @param {String} source Source of method call.
+   * @param {number} row Row index.
+   * @param {number} amount An amount of created rows.
+   * @param {string} source Source of method call.
    */
   onAfterCreateRow(row, amount, source) {
     this.sheet.alterManager.triggerAlter(
@@ -348,8 +348,8 @@ class Formulas extends BasePlugin {
    * On before remove row listener.
    *
    * @private
-   * @param {Number} row Row index.
-   * @param {Number} amount An amount of removed rows.
+   * @param {number} row Row index.
+   * @param {number} amount An amount of removed rows.
    */
   onBeforeRemoveRow(row, amount) {
     this.undoRedoSnapshot.save("row", row, amount);
@@ -359,8 +359,8 @@ class Formulas extends BasePlugin {
    * On after remove row listener.
    *
    * @private
-   * @param {Number} row Row index.
-   * @param {Number} amount An amount of removed rows.
+   * @param {number} row Row index.
+   * @param {number} amount An amount of removed rows.
    */
   onAfterRemoveRow(row, amount) {
     this.sheet.alterManager.triggerAlter("remove_row", row, amount);
@@ -370,9 +370,9 @@ class Formulas extends BasePlugin {
    * On before create column listener.
    *
    * @private
-   * @param {Number} column Column index.
-   * @param {Number} amount An amount of removed columns.
-   * @param {String} source Source of method call.
+   * @param {number} column Column index.
+   * @param {number} amount An amount of removed columns.
+   * @param {string} source Source of method call.
    */
   onBeforeCreateCol(column, amount, source) {
     if (source === "UndoRedo.undo") {
@@ -384,9 +384,9 @@ class Formulas extends BasePlugin {
    * On after create column listener.
    *
    * @private
-   * @param {Number} column Column index.
-   * @param {Number} amount An amount of created columns.
-   * @param {String} source Source of method call.
+   * @param {number} column Column index.
+   * @param {number} amount An amount of created columns.
+   * @param {string} source Source of method call.
    */
   onAfterCreateCol(column, amount, source) {
     this.sheet.alterManager.triggerAlter(
@@ -401,8 +401,8 @@ class Formulas extends BasePlugin {
    * On before remove column listener.
    *
    * @private
-   * @param {Number} column Column index.
-   * @param {Number} amount An amount of removed columns.
+   * @param {number} column Column index.
+   * @param {number} amount An amount of removed columns.
    */
   onBeforeRemoveCol(column, amount) {
     this.undoRedoSnapshot.save("column", column, amount);
@@ -412,8 +412,8 @@ class Formulas extends BasePlugin {
    * On after remove column listener.
    *
    * @private
-   * @param {Number} column Column index.
-   * @param {Number} amount An amount of created columns.
+   * @param {number} column Column index.
+   * @param {number} amount An amount of created columns.
    */
   onAfterRemoveCol(column, amount) {
     this.sheet.alterManager.triggerAlter("remove_column", column, amount);
@@ -423,8 +423,8 @@ class Formulas extends BasePlugin {
    * On before column sorting listener.
    *
    * @private
-   * @param {Number} column Sorted column index.
-   * @param {Boolean} order Order type.
+   * @param {number} column Sorted column index.
+   * @param {boolean} order Order type.
    */
   onBeforeColumnSort(column, order) {
     this.sheet.alterManager.prepareAlter("column_sorting", column, order);
@@ -434,8 +434,8 @@ class Formulas extends BasePlugin {
    * On after column sorting listener.
    *
    * @private
-   * @param {Number} column Sorted column index.
-   * @param {Boolean} order Order type.
+   * @param {number} column Sorted column index.
+   * @param {boolean} order Order type.
    */
   onAfterColumnSort(column, order) {
     this.sheet.alterManager.triggerAlter("column_sorting", column, order);

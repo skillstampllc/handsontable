@@ -19,7 +19,7 @@ class CellValue extends BaseCell {
   /**
    * Out of date state indicates cells ready for recomputing.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   static get STATE_OUT_OFF_DATE() {
     return 1; // PhantomJS crashes when we want to use constant above
@@ -28,7 +28,7 @@ class CellValue extends BaseCell {
   /**
    * Computing state indicates cells under processing.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   static get STATE_COMPUTING() {
     return 2; // PhantomJS crashes when we want to use constant above
@@ -37,7 +37,7 @@ class CellValue extends BaseCell {
   /**
    * Up to date state indicates cells with fresh computed value.
    *
-   * @returns {Number}
+   * @returns {number}
    */
   static get STATE_UP_TO_DATE() {
     return 3; // PhantomJS crashes when we want to use constant above
@@ -76,13 +76,13 @@ class CellValue extends BaseCell {
     /**
      * Error name.
      *
-     * @type {String|null}
+     * @type {string|null}
      */
     this.error = null;
     /**
      * Indicates cell state.
      *
-     * @type {String}
+     * @type {string}
      */
     this.state = CellValue.STATE_UP_TO_DATE;
 
@@ -97,7 +97,7 @@ class CellValue extends BaseCell {
   /**
    * Set computed value.
    *
-   * @param {*} value
+   * @param {*} value The calculated formula value.
    */
   setValue(value) {
     this.value = value;
@@ -209,7 +209,7 @@ class CellValue extends BaseCell {
   /**
    * Set error message for this cell.
    *
-   * @param {String} error Error name.
+   * @param {string} error Error name.
    */
   setError(error) {
     this.error = error;
@@ -218,7 +218,7 @@ class CellValue extends BaseCell {
   /**
    * Get error name for this cell.
    *
-   * @returns {String|null}
+   * @returns {string|null}
    */
   getError() {
     return this.error;
@@ -227,7 +227,7 @@ class CellValue extends BaseCell {
   /**
    * Check if cell value is marked as error.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   hasError() {
     return this.error !== null;
@@ -236,7 +236,7 @@ class CellValue extends BaseCell {
   /**
    * Set cell state.
    *
-   * @param {Number} state Cell state.
+   * @param {number} state Cell state.
    */
   setState(state) {
     if (states.indexOf(state) === -1) {
@@ -248,7 +248,8 @@ class CellValue extends BaseCell {
   /**
    * Check cell state.
    *
-   * @returns {Boolean}
+   * @param {number} state The state to compare with.
+   * @returns {boolean}
    */
   isState(state) {
     return this.state === state;
@@ -302,7 +303,7 @@ class CellValue extends BaseCell {
   /**
    * Check if cell value has precedents cells.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   hasPrecedents() {
     return this.precedents.length > 0;
@@ -312,7 +313,7 @@ class CellValue extends BaseCell {
    * Check if cell reference is precedents this cell.
    *
    * @param {CellReference} cellReference Cell reference object.
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   hasPrecedent(cellReference) {
     return (

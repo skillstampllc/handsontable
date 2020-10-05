@@ -10,7 +10,8 @@ import HeadersUI from './headers';
  *
  * @class
  * @util
- * @extends BaseUI
+ * @private
+ * @augments BaseUI
  */
 class CollapsingUI extends BaseUI {
   constructor(nestedRowsPlugin, hotInstance) {
@@ -22,22 +23,25 @@ class CollapsingUI extends BaseUI {
     this.dataManager = this.plugin.dataManager;
     this.collapsedRows = [];
     this.collapsedRowsStash = {
-      stash: () => {
+      stash: (forceRender = false) => {
         this.lastCollapsedRows = this.collapsedRows.slice(0);
 
         // Workaround for wrong indexes being set in the trimRows plugin
-        this.expandMultipleChildren(this.lastCollapsedRows, false);
+        this.expandMultipleChildren(this.lastCollapsedRows, forceRender);
       },
-      shiftStash: (index, delta = 1) => {
-        const elementIndex = this.translateTrimmedRow(index);
+      shiftStash: (baseIndex, targetIndex, delta = 1) => {
+        if (targetIndex === null || targetIndex === void 0) {
+          targetIndex = Infinity;
+        }
+
         arrayEach(this.lastCollapsedRows, (elem, i) => {
-          if (elem > elementIndex - 1) {
+          if (elem >= baseIndex && elem < targetIndex) {
             this.lastCollapsedRows[i] = elem + delta;
           }
         });
       },
-      applyStash: () => {
-        this.collapseMultipleChildren(this.lastCollapsedRows, true);
+      applyStash: (forceRender = true) => {
+        this.collapseMultipleChildren(this.lastCollapsedRows, forceRender);
         this.lastCollapsedRows = void 0;
       },
       trimStash: (realElementIndex, amount) => {
@@ -54,8 +58,10 @@ class CollapsingUI extends BaseUI {
   /**
    * Collapse the children of the row passed as an argument.
    *
-   * @param {Number|Object} row The parent row.
-   * @param {Boolean} [forceRender=true] Whether to render the table after the function ends.
+   * @param {number|object} row The parent row.
+   * @param {boolean} [forceRender=true] Whether to render the table after the function ends.
+   * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
+   * @returns {Array}
    */
   collapseChildren(row, forceRender = true, doTrimming = true) {
     const rowsToCollapse = [];
@@ -97,9 +103,9 @@ class CollapsingUI extends BaseUI {
   /**
    * Collapse multiple children.
    *
-   * @param {Array} rows Rows to collapse (including their children)
-   * @param {Boolean} [forceRender = true] `true` if the table should be rendered after finishing the function.
-   * @param {Boolean} [doTrimming = true] `true` if the table should trim the provided rows.
+   * @param {Array} rows Rows to collapse (including their children).
+   * @param {boolean} [forceRender=true] `true` if the table should be rendered after finishing the function.
+   * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
    */
   collapseMultipleChildren(rows, forceRender = true, doTrimming = true) {
     const rowsToTrim = [];
@@ -120,8 +126,8 @@ class CollapsingUI extends BaseUI {
   /**
    * Collapse a single row.
    *
-   * @param {Number} rowIndex Index of the row to collapse.
-   * @param {Boolean} [recursive = true] `true` if it should collapse the row's children.
+   * @param {number} rowIndex Index of the row to collapse.
+   * @param {boolean} [recursive=true] `true` if it should collapse the row's children.
    */
   collapseRow(rowIndex, recursive = true) {
     this.collapseRows([rowIndex], recursive);
@@ -131,9 +137,9 @@ class CollapsingUI extends BaseUI {
    * Collapse multiple rows.
    *
    * @param {Array} rowIndexes Array of row indexes to collapse.
-   * @param {Boolean} [recursive = true] `true` if it should collapse the rows' children.
-   * @param {Boolean} [doTrimming = false] `true` if the provided rows should be collapsed.
-   * @returns {Array} Rows prepared for trimming (or trimmed, if doTrimming == true)
+   * @param {boolean} [recursive=true] `true` if it should collapse the rows' children.
+   * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
+   * @returns {Array} Rows prepared for trimming (or trimmed, if doTrimming == true).
    */
   collapseRows(rowIndexes, recursive = true, doTrimming = false) {
     const rowsToTrim = [];
@@ -155,10 +161,10 @@ class CollapsingUI extends BaseUI {
   /**
    * Collapse child rows of the row at the provided index.
    *
-   * @param {Number} parentIndex Index of the parent node.
-   * @param {Array} [rowsToTrim = []] Array of rows to trim. Defaults to an empty array.
-   * @param {Boolean} [recursive] `true` if the collapsing process should be recursive.
-   * @param {Boolean} [doTrimming = false] `true` if rows should be trimmed.
+   * @param {number} parentIndex Index of the parent node.
+   * @param {Array} [rowsToTrim=[]] Array of rows to trim. Defaults to an empty array.
+   * @param {boolean} [recursive] `true` if the collapsing process should be recursive.
+   * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
    */
   collapseChildRows(parentIndex, rowsToTrim = [], recursive, doTrimming = false) {
     if (this.dataManager.hasChildren(parentIndex)) {
@@ -179,8 +185,8 @@ class CollapsingUI extends BaseUI {
   /**
    * Expand a single row.
    *
-   * @param {Number} rowIndex Index of the row to expand.
-   * @param {Boolean} [recursive = true] `true` if it should expand the row's children recursively.
+   * @param {number} rowIndex Index of the row to expand.
+   * @param {boolean} [recursive=true] `true` if it should expand the row's children recursively.
    */
   expandRow(rowIndex, recursive = true) {
     this.expandRows([rowIndex], recursive);
@@ -190,8 +196,8 @@ class CollapsingUI extends BaseUI {
    * Expand multiple rows.
    *
    * @param {Array} rowIndexes Array of indexes of the rows to expand.
-   * @param {Boolean} [recursive = true] `true` if it should expand the rows' children recursively.
-   * @param {Boolean} [doTrimming = false] `true` if rows should be untrimmed.
+   * @param {boolean} [recursive=true] `true` if it should expand the rows' children recursively.
+   * @param {boolean} [doTrimming=true] I determine whether collapsing should envolve trimming rows.
    * @returns {Array} Array of row indexes to be untrimmed.
    */
   expandRows(rowIndexes, recursive = true, doTrimming = false) {
@@ -214,10 +220,10 @@ class CollapsingUI extends BaseUI {
   /**
    * Expand child rows of the provided index.
    *
-   * @param {Number} parentIndex Index of the parent row.
-   * @param {Array} [rowsToUntrim = []] Array of the rows to be untrimmed.
-   * @param {Boolean} [recursive] `true` if it should expand the rows' children recursively.
-   * @param {Boolean} [doTrimming = false] `true` if rows should be untrimmed.
+   * @param {number} parentIndex Index of the parent row.
+   * @param {Array} [rowsToUntrim=[]] Array of the rows to be untrimmed.
+   * @param {boolean} [recursive] `true` if it should expand the rows' children recursively.
+   * @param {boolean} [doTrimming=false] I determine whether collapsing should envolve trimming rows.
    */
   expandChildRows(parentIndex, rowsToUntrim = [], recursive, doTrimming = false) {
     if (this.dataManager.hasChildren(parentIndex)) {
@@ -240,9 +246,10 @@ class CollapsingUI extends BaseUI {
   /**
    * Expand the children of the row passed as an argument.
    *
-   * @param {Number|Object} row Parent row.
-   * @param {Boolean} [forceRender=true] Whether to render the table after the function ends.
-   * @param {Boolean} [doTrimming=true] If set to `true`, the trimming will be applied when the function finishes.
+   * @param {number|object} row Parent row.
+   * @param {boolean} [forceRender=true] Whether to render the table after the function ends.
+   * @param {boolean} [doTrimming=true] If set to `true`, the trimming will be applied when the function finishes.
+   * @returns {number[]}
    */
   expandChildren(row, forceRender = true, doTrimming = true) {
     const rowsToExpand = [];
@@ -285,8 +292,8 @@ class CollapsingUI extends BaseUI {
    * Expand multiple rows' children.
    *
    * @param {Array} rows Array of rows which children are about to be expanded.
-   * @param {Boolean} [forceRender = true] `true` if the table should render after finishing the function.
-   * @param {Boolean} [doTrimming = true] `true` if the rows should be untrimmed after finishing the function.
+   * @param {boolean} [forceRender=true] `true` if the table should render after finishing the function.
+   * @param {boolean} [doTrimming=true] `true` if the rows should be untrimmed after finishing the function.
    */
   expandMultipleChildren(rows, forceRender = true, doTrimming = true) {
     const rowsToUntrim = [];
@@ -308,10 +315,10 @@ class CollapsingUI extends BaseUI {
    * Collapse all collapsable rows.
    */
   collapseAll() {
-    const sourceData = this.hot.getSourceData();
+    const data = this.dataManager.getData();
     const parentsToCollapse = [];
 
-    arrayEach(sourceData, (elem) => {
+    arrayEach(data, (elem) => {
       if (this.dataManager.hasChildren(elem)) {
         parentsToCollapse.push(elem);
       }
@@ -326,10 +333,10 @@ class CollapsingUI extends BaseUI {
    * Expand all collapsable rows.
    */
   expandAll() {
-    const sourceData = this.hot.getSourceData();
+    const data = this.dataManager.getData();
     const parentsToExpand = [];
 
-    arrayEach(sourceData, (elem) => {
+    arrayEach(data, (elem) => {
       if (this.dataManager.hasChildren(elem)) {
         parentsToExpand.push(elem);
       }
@@ -346,7 +353,7 @@ class CollapsingUI extends BaseUI {
    * @param {Array} rows Physical row indexes.
    */
   trimRows(rows) {
-    this.hot.executeBatchOperations(() => {
+    this.hot.batch(() => {
       arrayEach(rows, (physicalRow) => {
         this.plugin.collapsedRowsMap.setValueAtIndex(physicalRow, true);
       });
@@ -359,7 +366,7 @@ class CollapsingUI extends BaseUI {
    * @param {Array} rows Physical row indexes.
    */
   untrimRows(rows) {
-    this.hot.executeBatchOperations(() => {
+    this.hot.batch(() => {
       arrayEach(rows, (physicalRow) => {
         this.plugin.collapsedRowsMap.setValueAtIndex(physicalRow, false);
       });
@@ -369,17 +376,20 @@ class CollapsingUI extends BaseUI {
   /**
    * Check if all child rows are collapsed.
    *
-   * @param {Number|Object} row The parent row.
    * @private
+   * @param {number|object|null} row The parent row. `null` for the top level.
+   * @returns {boolean}
    */
   areChildrenCollapsed(row) {
-    let rowObj = null;
+    let rowObj = isNaN(row) ? row : this.dataManager.getDataObject(row);
     let allCollapsed = true;
 
-    if (isNaN(row)) {
-      rowObj = row;
-    } else {
-      rowObj = this.dataManager.getDataObject(row);
+    // Checking the children of the top-level "parent"
+    if (rowObj === null) {
+      rowObj = {
+        __children: this.dataManager.data
+      };
+
     }
 
     if (this.dataManager.hasChildren(rowObj)) {
@@ -400,8 +410,8 @@ class CollapsingUI extends BaseUI {
    * Check if any of the row object parents are collapsed.
    *
    * @private
-   * @param {Object} rowObj Row object.
-   * @returns {Boolean}
+   * @param {object} rowObj Row object.
+   * @returns {boolean}
    */
   isAnyParentCollapsed(rowObj) {
     let parent = rowObj;
@@ -422,8 +432,8 @@ class CollapsingUI extends BaseUI {
    * Toggle collapsed state. Callback for the `beforeOnCellMousedown` hook.
    *
    * @private
-   * @param {MouseEvent} event `mousedown` event
-   * @param {Object} coords Coordinates of the clicked cell/header.
+   * @param {MouseEvent} event `mousedown` event.
+   * @param {object} coords Coordinates of the clicked cell/header.
    */
   toggleState(event, coords) {
     if (coords.col >= 0) {
@@ -444,14 +454,25 @@ class CollapsingUI extends BaseUI {
   }
 
   /**
-   * Translate physical row after trimming to physical base row index.
+   * Translate visual row after trimming to physical base row index.
    *
    * @private
-   * @param {Number} row Row index.
-   * @returns {Number} Base row index.
+   * @param {number} row Row index.
+   * @returns {number} Base row index.
    */
   translateTrimmedRow(row) {
     return this.hot.toPhysicalRow(row);
+  }
+
+  /**
+   * Translate physical row after trimming to visual base row index.
+   *
+   * @private
+   * @param {number} row Row index.
+   * @returns {number} Base row index.
+   */
+  untranslateTrimmedRow(row) {
+    return this.hot.toVisualRow(row);
   }
 
   /**

@@ -1266,9 +1266,11 @@ describe('ColumnSorting', () => {
       { a: 'bbbb', b: 10, c: 11 }
     ];
 
+    /**
+     * @param row
+     */
     function customIsEmptyRow(row) {
-      const data = this.getSourceData();
-      return data[row].isNew;
+      return myData[row].isNew;
     }
 
     handsontable({
@@ -1553,7 +1555,7 @@ describe('ColumnSorting', () => {
     spec().$container2.remove();
   });
 
-  it('should return updated data at specyfied row after sorted', () => {
+  it('should return updated data at specified row after sorted', () => {
     handsontable({
       data: [
         [1, 'Ted', 'Right'],
@@ -1583,7 +1585,7 @@ describe('ColumnSorting', () => {
     expect(getDataAtRow(4)).toEqual([5, 'Jane', 'Neat']);
   });
 
-  it('should return updated data at specyfied col after sorted', () => {
+  it('should return updated data at specified col after sorted', () => {
     handsontable({
       data: [
         [1, 'Ted', 'Right'],
@@ -1938,17 +1940,21 @@ describe('ColumnSorting', () => {
   it('should properly sort the table, when it\'s scrolled to the far right', () => {
     const data = [
       ['Jasmine Ferguson', 'Britney Carey', 'Kelly Decker', 'Lacey Mcleod', 'Leona Shaffer', 'Kelli Ochoa',
-        'Adele Roberson', 'Viola Snow', 'Barron Cherry', 'Calhoun Lane', 'Elvia Andrews', 'Katheryn Dale', 'Dorthy Hale',
-        'Munoz Randall', 'Fields Morse', 'Hubbard Nichols', 'Chang Yang', 'Osborn Anthony', 'Owens Warner', 'Gloria Hampton'],
-      ['Lane Hill', 'Belinda Mathews', 'York Gray', 'Celina Stone', 'Victoria Mays', 'Angelina Lott', 'Joyce Mason', 'Shawn Rodriguez',
-        'Susanna Mayo', 'Wolf Fuller', 'Long Hester', 'Dudley Doyle', 'Wilder Sutton', 'Oneal Avery', 'James Mclaughlin',
-        'Lenora Guzman', 'Mcmahon Sullivan', 'Abby Weeks', 'Beverly Joseph', 'Rosalind Church'],
-      ['Myrtle Landry', 'Hays Huff', 'Hernandez Benjamin', 'Mclaughlin Garza', 'Franklin Barton', 'Lara Buchanan', 'Ratliff Beck',
-        'Rosario Munoz', 'Isabelle Dalton', 'Smith Woodard', 'Marjorie Marshall', 'Spears Stein', 'Brianna Bowman',
-        'Marci Clay', 'Palmer Harrell', 'Ball Levy', 'Shelley Mendoza', 'Morrow Glass', 'Baker Knox', 'Adrian Holman'],
+        'Adele Roberson', 'Viola Snow', 'Barron Cherry', 'Calhoun Lane', 'Elvia Andrews', 'Katheryn Dale',
+        'Dorthy Hale', 'Munoz Randall', 'Fields Morse', 'Hubbard Nichols', 'Chang Yang', 'Osborn Anthony',
+        'Owens Warner', 'Gloria Hampton'],
+      ['Lane Hill', 'Belinda Mathews', 'York Gray', 'Celina Stone', 'Victoria Mays', 'Angelina Lott',
+        'Joyce Mason', 'Shawn Rodriguez', 'Susanna Mayo', 'Wolf Fuller', 'Long Hester', 'Dudley Doyle',
+        'Wilder Sutton', 'Oneal Avery', 'James Mclaughlin', 'Lenora Guzman', 'Mcmahon Sullivan', 'Abby Weeks',
+        'Beverly Joseph', 'Rosalind Church'],
+      ['Myrtle Landry', 'Hays Huff', 'Hernandez Benjamin', 'Mclaughlin Garza', 'Franklin Barton',
+        'Lara Buchanan', 'Ratliff Beck', 'Rosario Munoz', 'Isabelle Dalton', 'Smith Woodard',
+        'Marjorie Marshall', 'Spears Stein', 'Brianna Bowman', 'Marci Clay', 'Palmer Harrell', 'Ball Levy',
+        'Shelley Mendoza', 'Morrow Glass', 'Baker Knox', 'Adrian Holman'],
       ['Trisha Howell', 'Brooke Harrison', 'Anthony Watkins', 'Ellis Cobb', 'Sheppard Dillon', 'Mathis Bray',
-        'Foreman Burns', 'Lina Glenn', 'Giles Pollard', 'Weiss Ballard', 'Lynnette Smith', 'Flores Kline', 'Graciela Singleton',
-        'Santiago Mcclure', 'Claudette Battle', 'Nita Holloway', 'Eula Wolfe', 'Pruitt Stokes', 'Felicia Briggs', 'Melba Bradshaw']
+        'Foreman Burns', 'Lina Glenn', 'Giles Pollard', 'Weiss Ballard', 'Lynnette Smith', 'Flores Kline',
+        'Graciela Singleton', 'Santiago Mcclure', 'Claudette Battle', 'Nita Holloway', 'Eula Wolfe',
+        'Pruitt Stokes', 'Felicia Briggs', 'Melba Bradshaw']
     ];
 
     const hot = handsontable({
@@ -2644,6 +2650,20 @@ describe('ColumnSorting', () => {
       alter('insert_col', 2, 5);
 
       expect(getHtCore().find('tbody tr:eq(0) td').length).toEqual(7);
+    });
+
+    it('should not break sorting with UI after `updateSettings` call #7228', () => {
+      const onErrorSpy = spyOn(window, 'onerror');
+
+      handsontable({
+        columns: [{}, {}, {}, {}, {}, {}],
+        columnSorting: true,
+        colHeaders: true
+      });
+
+      updateSettings({});
+
+      expect(onErrorSpy).not.toHaveBeenCalled();
     });
   });
 });

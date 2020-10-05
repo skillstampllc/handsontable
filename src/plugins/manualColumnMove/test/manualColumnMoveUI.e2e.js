@@ -89,7 +89,16 @@ describe('manualColumnMove', () => {
     it('should set properly width for the backlight element when stretchH is enabled and column order was changed', () => {
       handsontable({
         data: [
-          { id: 1, flag: 'EUR', currencyCode: 'EUR', currency: 'Euro', level: 0.9033, units: 'EUR / USD', asOf: '08/19/2015', onedChng: 0.0026 },
+          {
+            id: 1,
+            flag: 'EUR',
+            currencyCode: 'EUR',
+            currency: 'Euro',
+            level: 0.9033,
+            units: 'EUR / USD',
+            asOf: '08/19/2015',
+            onedChng: 0.0026
+          },
         ],
         width: 600,
         colHeaders: true,
@@ -188,7 +197,9 @@ describe('manualColumnMove', () => {
       const $backlight = spec().$container.find('.ht__manualColumnMove--backlight')[0];
       $summaryElement.simulate('mousedown');
 
-      const displayProp = $backlight.currentStyle ? $backlight.currentStyle.display : getComputedStyle($backlight, null).display;
+      const displayProp = $backlight.currentStyle ?
+        $backlight.currentStyle.display : getComputedStyle($backlight, null).display;
+
       expect(displayProp).toEqual('none');
     });
 
@@ -210,6 +221,30 @@ describe('manualColumnMove', () => {
       const $backlight = this.$container.find('.ht__manualColumnMove--backlight');
 
       expect($backlight.length).toBe(0);
+    });
+
+    it('should draw backlight element properly when there are hidden columns', function() {
+      handsontable({
+        data: Handsontable.helper.createSpreadsheetData(5, 5),
+        manualColumnMove: true,
+        rowHeaders: true,
+        colHeaders: true,
+        hiddenColumns: {
+          columns: [2, 3],
+        }
+      });
+
+      selectColumns(1, 4);
+
+      // Mouse events on second not hidden element.
+      this.$container.find('thead tr:eq(0) th:eq(3)').simulate('mousedown');
+      this.$container.find('thead tr:eq(0) th:eq(3)').simulate('mouseup');
+      this.$container.find('thead tr:eq(0) th:eq(3)').simulate('mousedown');
+
+      const backlight = this.$container.find('.ht__manualColumnMove--backlight')[0];
+
+      expect(backlight.offsetLeft).toBe(100);
+      expect(backlight.offsetWidth).toBe(100);
     });
 
     describe('selection', () => {
@@ -234,7 +269,7 @@ describe('manualColumnMove', () => {
         });
         $columnHeader.simulate('mouseup');
 
-        expect(getSelected()).toEqual([[0, 1, 9, 3]]);
+        expect(getSelected()).toEqual([[-1, 1, 9, 3]]);
       });
 
       it('should be shown properly when moving multiple columns from the right to the left', () => {
@@ -258,7 +293,7 @@ describe('manualColumnMove', () => {
         });
         $columnHeader.simulate('mouseup');
 
-        expect(getSelected()).toEqual([[0, 1, 9, 3]]);
+        expect(getSelected()).toEqual([[-1, 1, 9, 3]]);
       });
 
       // The `ManualColumnMove` plugin doesn't cooperate with the `UndoRedo` plugin.

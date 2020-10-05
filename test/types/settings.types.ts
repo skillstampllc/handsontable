@@ -177,7 +177,6 @@ const allSettings: Required<Handsontable.GridSettings> = {
       return date.getDay() === 0 || date.getDay() === 6;
     }
   },
-  debug: true,
   defaultDate: 'foo',
   disableVisualSelection: oneOf(true, 'current', 'area', 'header', [DisableVisualSelection.current, DisableVisualSelection.area, DisableVisualSelection.header]),
   dragToScroll: false,
@@ -202,36 +201,6 @@ const allSettings: Required<Handsontable.GridSettings> = {
     }
   }),
   fragmentSelection: oneOf(true, 'cell'),
-  ganttChart: {
-    firstWeekDay: 'monday',
-    startYear: 2015,
-    weekHeaderGenerator(start, end) { return (start * end).toFixed(); },
-    allowSplitWeeks: true,
-    hideDaysBeforeFullWeeks: false,
-    hideDaysAfterFullWeeks: false,
-    dataSource: oneOf({
-      instance: new Handsontable(document.createElement('div'), {}),
-      startDateColumn: 4,
-      endDateColumn: 5,
-      additionalData: {
-        label: 0,
-        quantity: 1
-      },
-      asyncUpdates: true
-    },
-    [
-      {
-        additionalData: {label: 'Example label.', quantity: 'Four packs.'},
-        startDate: '1/5/2015',
-        endDate: '1/20/2015'
-      },
-      {
-        additionalData: {label: 'Another label.', quantity: 'One pack.'},
-        startDate: '1/11/2015',
-        endDate: '1/29/2015'
-      }
-    ])
-  },
   headerTooltips: oneOf(true, {
     rows: false,
     columns: true,
@@ -351,6 +320,7 @@ const allSettings: Required<Handsontable.GridSettings> = {
 
   // Hooks via settings object
   afterAddChild: (parent, element, index) => {},
+  afterAutofill: (start, end, data) => {},
   afterBeginEditing: (row, column) => {},
   afterCellMetaReset: () => {},
   afterChange: (changes, source) => changes && changes.forEach(change => change[0].toFixed()),
@@ -389,6 +359,7 @@ const allSettings: Required<Handsontable.GridSettings> = {
   afterListen: () => {},
   afterLoadData: (sourceData, firstTime) => {},
   afterMergeCells: (cellRange, mergeParent, auto) => {},
+  modifySourceData: (row, col, valueHolder, ioMode) => {},
   afterModifyTransformEnd: (coords, rowTransformDir, colTransformDir) => {},
   afterModifyTransformStart: (coords, rowTransformDir, colTransformDir) => {},
   afterMomentumScroll: () => {},
@@ -408,7 +379,7 @@ const allSettings: Required<Handsontable.GridSettings> = {
   afterRemoveRow: (index, amount, physicalRows = [1, 2, 3], source) => {},
   afterRender: (isForced) => {},
   afterRenderer: (TD, row, col, prop, value, cellProperties) => {},
-  afterRowMove: (startRow, endRow) => {},
+  afterRowMove: (movedRows, finalIndex, dropIndex, movePossible, orderChanged) => movedRows.forEach(row => row.toFixed(1) === finalIndex.toFixed(1)),
   afterRowResize: (newSize, row, isDoubleClick) => {},
   afterScrollHorizontally: () => {},
   afterScrollVertically: () => {},
@@ -419,6 +390,7 @@ const allSettings: Required<Handsontable.GridSettings> = {
   afterSetCellMeta: (row, col, key, value) => {},
   afterSetDataAtCell: (changes, source) => {},
   afterSetDataAtRowProp: (changes, source) => {},
+  afterSetSourceDataAtCell: (changes, source) => {},
   afterTrimRow: (rows) => {},
   afterUndo: (action) => {},
   afterUnlisten: () => {},
@@ -475,8 +447,9 @@ const allSettings: Required<Handsontable.GridSettings> = {
   beforeRemoveRow: (index, amount, physicalRows = [1, 2, 3], source) => {},
   beforeRender: (isForced, skipRender) => {},
   beforeRenderer: (TD, row, col, prop, value, cellProperties) => {},
-  beforeRowMove: (startRow, endRow) => {},
+  beforeRowMove: (movedRows, finalIndex, dropIndex, movePossible) => {},
   beforeRowResize: (newSize, row, isDoubleClick) => {},
+  beforeSetCellMeta: (row, col, key, value) => {},
   beforeSetRangeEnd: (coords) => {},
   beforeSetRangeStart: (coords) => {},
   beforeSetRangeStartOnly: (coords) => {},
@@ -491,8 +464,6 @@ const allSettings: Required<Handsontable.GridSettings> = {
   beforeValidate: (value, row, prop, source) => {},
   beforeValueRender: (value) => {},
   construct: () => {},
-  hiddenColumn: (column) => {},
-  hiddenRow: (row) => {},
   init: () => {},
   modifyAutofillRange: (startArea, entireArea) => {},
   modifyColHeader: (column) => {},
