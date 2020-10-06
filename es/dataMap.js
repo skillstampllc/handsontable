@@ -25,8 +25,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import SheetClip from './../lib/SheetClip/SheetClip';
-import { cellMethodLookupFactory, countFirstRowKeys as _countFirstRowKeys } from './helpers/data';
+import SheetClip from "./../lib/SheetClip/SheetClip";
+import { cellMethodLookupFactory, countFirstRowKeys as _countFirstRowKeys } from "./helpers/data";
 import { createObjectPropListener, deepClone, deepExtend, deepObjectSize, duckSchema, hasOwnProperty, isObject, objectEach } from "./helpers/object";
 import { extendArray, to2dArray } from "./helpers/array";
 import { rangeEach } from "./helpers/number";
@@ -142,7 +142,7 @@ var DataMap = /*#__PURE__*/function () {
         var filteredIndex = 0;
         var columnsAsFunc = false;
 
-        if (typeof columns === 'function') {
+        if (typeof columns === "function") {
           var schemaLen = deepObjectSize(schema);
           columnsLen = schemaLen > 0 ? schemaLen : this.countFirstRowKeys();
           columnsAsFunc = true;
@@ -317,7 +317,7 @@ var DataMap = /*#__PURE__*/function () {
       var numberOfCreatedRows = 0;
       var rowIndex = index;
 
-      if (typeof rowIndex !== 'number' || rowIndex >= sourceRowsCount) {
+      if (typeof rowIndex !== "number" || rowIndex >= sourceRowsCount) {
         rowIndex = sourceRowsCount;
       }
 
@@ -325,7 +325,7 @@ var DataMap = /*#__PURE__*/function () {
         physicalRowIndex = this.instance.toPhysicalRow(rowIndex);
       }
 
-      var continueProcess = this.instance.runHooks('beforeCreateRow', rowIndex, amount, source);
+      var continueProcess = this.instance.runHooks("beforeCreateRow", rowIndex, amount, source);
 
       if (continueProcess === false || physicalRowIndex === null) {
         return 0;
@@ -338,7 +338,7 @@ var DataMap = /*#__PURE__*/function () {
       var _loop = function _loop() {
         var row = null;
 
-        if (_this2.instance.dataType === 'array') {
+        if (_this2.instance.dataType === "array") {
           if (_this2.tableMeta.dataSchema) {
             // Clone template array
             row = deepClone(_this2.getSchema());
@@ -350,7 +350,7 @@ var DataMap = /*#__PURE__*/function () {
               return row.push(null);
             });
           }
-        } else if (_this2.instance.dataType === 'function') {
+        } else if (_this2.instance.dataType === "function") {
           row = _this2.tableMeta.dataSchema(rowIndex);
         } else {
           row = {};
@@ -367,7 +367,7 @@ var DataMap = /*#__PURE__*/function () {
 
       this.instance.rowIndexMapper.insertIndexes(rowIndex, numberOfCreatedRows);
       this.spliceData.apply(this, [physicalRowIndex, 0].concat(rowsToAdd));
-      this.instance.runHooks('afterCreateRow', rowIndex, numberOfCreatedRows, source);
+      this.instance.runHooks("afterCreateRow", rowIndex, numberOfCreatedRows, source);
       this.instance.forceFullRender = true; // used when data was changed
 
       return numberOfCreatedRows;
@@ -418,7 +418,7 @@ var DataMap = /*#__PURE__*/function () {
       var currentIndex = physicalColumnIndex;
 
       while (numberOfCreatedCols < amount && nrOfColumns < maxCols) {
-        if (typeof columnIndex !== 'number' || columnIndex >= nrOfColumns) {
+        if (typeof columnIndex !== "number" || columnIndex >= nrOfColumns) {
           if (numberOfSourceRows > 0) {
             for (var row = 0; row < numberOfSourceRows; row += 1) {
               if (typeof dataSource[row] === "undefined") {
@@ -469,7 +469,7 @@ var DataMap = /*#__PURE__*/function () {
       var sourceRowsLength = this.instance.countSourceRows();
       rowIndex = (sourceRowsLength + rowIndex) % sourceRowsLength; // It handle also callback from the `NestedRows` plugin. Removing parent node has effect in removing children nodes.
 
-      var actionWasNotCancelled = this.instance.runHooks('beforeRemoveRow', rowIndex, removedPhysicalIndexes.length, removedPhysicalIndexes, source);
+      var actionWasNotCancelled = this.instance.runHooks("beforeRemoveRow", rowIndex, removedPhysicalIndexes.length, removedPhysicalIndexes, source);
 
       if (actionWasNotCancelled === false) {
         return false;
@@ -495,7 +495,7 @@ var DataMap = /*#__PURE__*/function () {
         }
       }
 
-      this.instance.runHooks('afterRemoveRow', rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes, source);
+      this.instance.runHooks("afterRemoveRow", rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes, source);
       this.instance.forceFullRender = true; // used when data was changed
 
       return true;
@@ -517,8 +517,8 @@ var DataMap = /*#__PURE__*/function () {
       var amount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       var source = arguments.length > 2 ? arguments[2] : undefined;
 
-      if (this.instance.dataType === 'object' || this.tableMeta.columns) {
-        throw new Error('cannot remove column with object data source or columns option specified');
+      if (this.instance.dataType === "object" || this.tableMeta.columns) {
+        throw new Error("cannot remove column with object data source or columns option specified");
       }
 
       var columnIndex = typeof index !== "number" ? -amount : index;
@@ -651,7 +651,7 @@ var DataMap = /*#__PURE__*/function () {
         elements[_key3 - 2] = arguments[_key3];
       }
 
-      var continueSplicing = this.instance.runHooks('beforeDataSplice', index, amount, elements);
+      var continueSplicing = this.instance.runHooks("beforeDataSplice", index, amount, elements);
 
       if (continueSplicing !== false) {
         var _this$dataSource;
@@ -671,7 +671,7 @@ var DataMap = /*#__PURE__*/function () {
   }, {
     key: "filterData",
     value: function filterData(index, amount, physicalRows) {
-      var continueSplicing = this.instance.runHooks('beforeDataFilter', index, amount, physicalRows);
+      var continueSplicing = this.instance.runHooks("beforeDataFilter", index, amount, physicalRows);
 
       if (continueSplicing !== false) {
         var newData = this.dataSource.filter(function (row, rowIndex) {
@@ -952,8 +952,8 @@ var DataMap = /*#__PURE__*/function () {
       var r;
       var c;
       var row;
-      var maxRows = this.tableMeta.maxRows;
-      var maxCols = this.tableMeta.maxCols;
+      var maxRows = this.instance.countPhysicalRows();
+      var maxCols = this.instance.countPhysicalCols();
 
       if (maxRows === 0 || maxCols === 0) {
         return [];

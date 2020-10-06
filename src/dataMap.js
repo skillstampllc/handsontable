@@ -1,8 +1,5 @@
-import SheetClip from './../lib/SheetClip/SheetClip';
-import {
-  cellMethodLookupFactory,
-  countFirstRowKeys
-} from './helpers/data';
+import SheetClip from "./../lib/SheetClip/SheetClip";
+import { cellMethodLookupFactory, countFirstRowKeys } from "./helpers/data";
 import {
   createObjectPropListener,
   deepClone,
@@ -118,12 +115,11 @@ class DataMap {
       let filteredIndex = 0;
       let columnsAsFunc = false;
 
-      if (typeof columns === 'function') {
+      if (typeof columns === "function") {
         const schemaLen = deepObjectSize(schema);
 
         columnsLen = schemaLen > 0 ? schemaLen : this.countFirstRowKeys();
         columnsAsFunc = true;
-
       } else {
         const maxCols = this.tableMeta.maxCols;
 
@@ -275,7 +271,7 @@ class DataMap {
     let numberOfCreatedRows = 0;
     let rowIndex = index;
 
-    if (typeof rowIndex !== 'number' || rowIndex >= sourceRowsCount) {
+    if (typeof rowIndex !== "number" || rowIndex >= sourceRowsCount) {
       rowIndex = sourceRowsCount;
     }
 
@@ -283,7 +279,12 @@ class DataMap {
       physicalRowIndex = this.instance.toPhysicalRow(rowIndex);
     }
 
-    const continueProcess = this.instance.runHooks('beforeCreateRow', rowIndex, amount, source);
+    const continueProcess = this.instance.runHooks(
+      "beforeCreateRow",
+      rowIndex,
+      amount,
+      source
+    );
 
     if (continueProcess === false || physicalRowIndex === null) {
       return 0;
@@ -293,10 +294,13 @@ class DataMap {
     const columnCount = this.instance.countCols();
     const rowsToAdd = [];
 
-    while (numberOfCreatedRows < amount && sourceRowsCount + numberOfCreatedRows < maxRows) {
+    while (
+      numberOfCreatedRows < amount &&
+      sourceRowsCount + numberOfCreatedRows < maxRows
+    ) {
       let row = null;
 
-      if (this.instance.dataType === 'array') {
+      if (this.instance.dataType === "array") {
         if (this.tableMeta.dataSchema) {
           // Clone template array
           row = deepClone(this.getSchema());
@@ -305,10 +309,8 @@ class DataMap {
           /* eslint-disable no-loop-func */
           rangeEach(columnCount - 1, () => row.push(null));
         }
-
-      } else if (this.instance.dataType === 'function') {
+      } else if (this.instance.dataType === "function") {
         row = this.tableMeta.dataSchema(rowIndex);
-
       } else {
         row = {};
         deepExtend(row, this.getSchema());
@@ -323,7 +325,12 @@ class DataMap {
 
     this.spliceData(physicalRowIndex, 0, ...rowsToAdd);
 
-    this.instance.runHooks('afterCreateRow', rowIndex, numberOfCreatedRows, source);
+    this.instance.runHooks(
+      "afterCreateRow",
+      rowIndex,
+      numberOfCreatedRows,
+      source
+    );
     this.instance.forceFullRender = true; // used when data was changed
 
     return numberOfCreatedRows;
@@ -381,7 +388,7 @@ class DataMap {
     let currentIndex = physicalColumnIndex;
 
     while (numberOfCreatedCols < amount && nrOfColumns < maxCols) {
-      if (typeof columnIndex !== 'number' || columnIndex >= nrOfColumns) {
+      if (typeof columnIndex !== "number" || columnIndex >= nrOfColumns) {
         if (numberOfSourceRows > 0) {
           for (let row = 0; row < numberOfSourceRows; row += 1) {
             if (typeof dataSource[row] === "undefined") {
@@ -393,7 +400,6 @@ class DataMap {
         } else {
           dataSource.push([null]);
         }
-
       } else {
         for (let row = 0; row < numberOfSourceRows; row++) {
           dataSource[row].splice(currentIndex, 0, null);
@@ -440,7 +446,11 @@ class DataMap {
 
     // It handle also callback from the `NestedRows` plugin. Removing parent node has effect in removing children nodes.
     const actionWasNotCancelled = this.instance.runHooks(
-      'beforeRemoveRow', rowIndex, removedPhysicalIndexes.length, removedPhysicalIndexes, source
+      "beforeRemoveRow",
+      rowIndex,
+      removedPhysicalIndexes.length,
+      removedPhysicalIndexes,
+      source
     );
 
     if (actionWasNotCancelled === false) {
@@ -450,7 +460,11 @@ class DataMap {
     const data = this.dataSource;
     // List of removed indexes might be changed in the `beforeRemoveRow` hook. There may be new values.
     const numberOfRemovedIndexes = removedPhysicalIndexes.length;
-    const newData = this.filterData(rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes);
+    const newData = this.filterData(
+      rowIndex,
+      numberOfRemovedIndexes,
+      removedPhysicalIndexes
+    );
 
     if (newData) {
       data.length = 0;
@@ -461,15 +475,26 @@ class DataMap {
     if (rowIndex < this.instance.countRows()) {
       this.instance.rowIndexMapper.removeIndexes(removedPhysicalIndexes);
 
-      const customDefinedColumns = isDefined(this.tableMeta.columns) || isDefined(this.tableMeta.dataSchema);
+      const customDefinedColumns =
+        isDefined(this.tableMeta.columns) ||
+        isDefined(this.tableMeta.dataSchema);
 
       // All rows have been removed. There shouldn't be any columns.
-      if (this.instance.rowIndexMapper.getNotTrimmedIndexesLength() === 0 && customDefinedColumns === false) {
+      if (
+        this.instance.rowIndexMapper.getNotTrimmedIndexesLength() === 0 &&
+        customDefinedColumns === false
+      ) {
         this.instance.columnIndexMapper.setIndexesSequence([]);
       }
     }
 
-    this.instance.runHooks('afterRemoveRow', rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes, source);
+    this.instance.runHooks(
+      "afterRemoveRow",
+      rowIndex,
+      numberOfRemovedIndexes,
+      removedPhysicalIndexes,
+      source
+    );
 
     this.instance.forceFullRender = true; // used when data was changed
 
@@ -487,8 +512,10 @@ class DataMap {
    * @returns {boolean} Returns `false` when action was cancelled, otherwise `true`.
    */
   removeCol(index, amount = 1, source) {
-    if (this.instance.dataType === 'object' || this.tableMeta.columns) {
-      throw new Error('cannot remove column with object data source or columns option specified');
+    if (this.instance.dataType === "object" || this.tableMeta.columns) {
+      throw new Error(
+        "cannot remove column with object data source or columns option specified"
+      );
     }
     let columnIndex = typeof index !== "number" ? -amount : index;
 
@@ -627,7 +654,12 @@ class DataMap {
    * @param {...object} elements Row elements to be added.
    */
   spliceData(index, amount, ...elements) {
-    const continueSplicing = this.instance.runHooks('beforeDataSplice', index, amount, elements);
+    const continueSplicing = this.instance.runHooks(
+      "beforeDataSplice",
+      index,
+      amount,
+      elements
+    );
 
     if (continueSplicing !== false) {
       this.dataSource.splice(index, amount, ...elements);
@@ -643,7 +675,12 @@ class DataMap {
    * @returns {Array}
    */
   filterData(index, amount, physicalRows) {
-    const continueSplicing = this.instance.runHooks('beforeDataFilter', index, amount, physicalRows);
+    const continueSplicing = this.instance.runHooks(
+      "beforeDataFilter",
+      index,
+      amount,
+      physicalRows
+    );
 
     if (continueSplicing !== false) {
       const newData = this.dataSource.filter(
@@ -933,8 +970,8 @@ class DataMap {
     let c;
     let row;
 
-    const maxRows = this.tableMeta.maxRows;
-    const maxCols = this.tableMeta.maxCols;
+    const maxRows = this.instance.countPhysicalRows();
+    const maxCols = this.instance.countPhysicalCols();
 
     if (maxRows === 0 || maxCols === 0) {
       return [];
