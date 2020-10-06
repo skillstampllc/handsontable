@@ -71,6 +71,7 @@ import { warnUserAboutLanguageRegistration, getValidLanguageCode, normalizeLangu
 import { startObserving as keyStateStartObserving, stopObserving as keyStateStopObserving } from "./utils/keyStateObserver";
 import { Selection } from "./selection";
 import { MetaManager, DataMap } from "./dataMap/index";
+import { isFloat, isInt } from "./utils/parseNumber";
 var activeGuid = null;
 /**
  * Handsontable constructor.
@@ -3489,6 +3490,20 @@ export default function Core(rootElement, userSettings) {
     var maxCols = tableMeta.maxCols;
     var dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
     return Math.min(maxCols, dataLen);
+  };
+  /**
+   * Returns the total number of physical columns in the table.
+   *
+   * @memberof Core#
+   * @function countCols
+   * @returns {number} Total number of columns.
+   */
+
+
+  this.countPhysicalCols = function () {
+    var maxCols = tableMeta.maxCols;
+    var dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
+    return Math.max(maxCols, dataLen);
   };
   /**
    * Returns the number of rendered rows (including rows partially or fully rendered outside viewport).

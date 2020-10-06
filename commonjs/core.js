@@ -103,6 +103,8 @@ var _selection = require("./selection");
 
 var _index = require("./dataMap/index");
 
+var _parseNumber = require("./utils/parseNumber");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1492,9 +1494,9 @@ function Core(rootElement, userSettings) {
       var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
       var newV = input[i][2];
 
-      if (newV && typeof newV === "string" && isFloat(newV)) {
+      if (newV && typeof newV === "string" && (0, _parseNumber.isFloat)(newV)) {
         newV = parseFloat(newV);
-      } else if (newV && typeof newV === "string" && isInt(newV)) {
+      } else if (newV && typeof newV === "string" && (0, _parseNumber.isInt)(newV)) {
         newV = parseInt(newV);
       }
 
@@ -3545,6 +3547,20 @@ function Core(rootElement, userSettings) {
     var maxCols = tableMeta.maxCols;
     var dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
     return Math.min(maxCols, dataLen);
+  };
+  /**
+   * Returns the total number of physical columns in the table.
+   *
+   * @memberof Core#
+   * @function countCols
+   * @returns {number} Total number of columns.
+   */
+
+
+  this.countPhysicalCols = function () {
+    var maxCols = tableMeta.maxCols;
+    var dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
+    return Math.max(maxCols, dataLen);
   };
   /**
    * Returns the number of rendered rows (including rows partially or fully rendered outside viewport).
