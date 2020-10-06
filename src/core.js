@@ -69,6 +69,7 @@ import {
 } from "./utils/keyStateObserver";
 import { Selection } from "./selection";
 import { MetaManager, DataMap } from "./dataMap/index";
+import { isFloat, isInt } from "./utils/parseNumber";
 
 let activeGuid = null;
 
@@ -3737,6 +3738,20 @@ export default function Core(
     const dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
 
     return Math.min(maxCols, dataLen);
+  };
+
+  /**
+   * Returns the total number of physical columns in the table.
+   *
+   * @memberof Core#
+   * @function countCols
+   * @returns {number} Total number of columns.
+   */
+  this.countPhysicalCols = function () {
+    const maxCols = tableMeta.maxCols;
+    const dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
+
+    return Math.max(maxCols, dataLen);
   };
 
   /**
