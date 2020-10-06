@@ -1409,7 +1409,7 @@ export default function Core(
       }
 
       if (tableMeta.allowInsertRow) {
-        while (changes[i][0] > instance.countRows() - 1) {
+        while (changes[i][0] > instance.countPhysicalRows() - 1) {
           const numberOfCreatedRows = datamap.createRow(void 0, void 0, source);
 
           if (numberOfCreatedRows >= 1) {
@@ -1426,7 +1426,10 @@ export default function Core(
         (!tableMeta.columns || tableMeta.columns.length === 0) &&
         tableMeta.allowInsertColumn
       ) {
-        while (datamap.propToCol(changes[i][1]) > instance.countCols() - 1) {
+        while (
+          datamap.propToCol(changes[i][1]) >
+          instance.countPhysicalCols() - 1
+        ) {
           const numberOfCreatedColumns = datamap.createCol(
             void 0,
             void 0,

@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.1.0
- * Release date: 01/10/2020 (built at 06/10/2020 15:13:51)
+ * Release date: 01/10/2020 (built at 06/10/2020 15:47:49)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -57836,7 +57836,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (tableMeta.allowInsertRow) {
-        while (changes[i][0] > instance.countRows() - 1) {
+        while (changes[i][0] > instance.countPhysicalRows() - 1) {
           var numberOfCreatedRows = datamap.createRow(void 0, void 0, source);
 
           if (numberOfCreatedRows >= 1) {
@@ -57849,7 +57849,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (instance.dataType === "array" && (!tableMeta.columns || tableMeta.columns.length === 0) && tableMeta.allowInsertColumn) {
-        while (datamap.propToCol(changes[i][1]) > instance.countCols() - 1) {
+        while (datamap.propToCol(changes[i][1]) > instance.countPhysicalCols() - 1) {
           var numberOfCreatedColumns = datamap.createCol(void 0, void 0, source);
 
           if (numberOfCreatedColumns >= 1) {
@@ -69776,7 +69776,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "06/10/2020 15:13:51";
+Handsontable.buildDate = "06/10/2020 15:47:49";
 Handsontable.version = "8.1.0"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module

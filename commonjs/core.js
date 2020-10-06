@@ -1316,7 +1316,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (tableMeta.allowInsertRow) {
-        while (changes[i][0] > instance.countRows() - 1) {
+        while (changes[i][0] > instance.countPhysicalRows() - 1) {
           var numberOfCreatedRows = datamap.createRow(void 0, void 0, source);
 
           if (numberOfCreatedRows >= 1) {
@@ -1329,7 +1329,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (instance.dataType === "array" && (!tableMeta.columns || tableMeta.columns.length === 0) && tableMeta.allowInsertColumn) {
-        while (datamap.propToCol(changes[i][1]) > instance.countCols() - 1) {
+        while (datamap.propToCol(changes[i][1]) > instance.countPhysicalCols() - 1) {
           var numberOfCreatedColumns = datamap.createCol(void 0, void 0, source);
 
           if (numberOfCreatedColumns >= 1) {
