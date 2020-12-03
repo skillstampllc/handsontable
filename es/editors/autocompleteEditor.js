@@ -583,13 +583,13 @@ var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
 
 AutocompleteEditor.sortByRelevance = function (value, choices, caseSensitive) {
   var choicesRelevance = [];
-  var currentItem;
-  var valueLength = value.length;
-  var valueIndex;
-  var charsLeft;
   var result = [];
-  var i;
+  var valueLength = value.length;
   var choicesCount = choices.length;
+  var charsLeft;
+  var currentItem;
+  var i;
+  var valueIndex;
 
   if (valueLength === 0) {
     for (i = 0; i < choicesCount; i++) {

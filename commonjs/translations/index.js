@@ -10,6 +10,10 @@ var _physicalIndexToValueMap = _interopRequireDefault(require("./maps/physicalIn
 
 exports.PhysicalIndexToValueMap = _physicalIndexToValueMap.default;
 
+var _linkedPhysicalIndexToValueMap = _interopRequireDefault(require("./maps/linkedPhysicalIndexToValueMap"));
+
+exports.LinkedPhysicalIndexToValueMap = _linkedPhysicalIndexToValueMap.default;
+
 var _indexesSequence = _interopRequireDefault(require("./maps/indexesSequence"));
 
 exports.IndexesSequence = _indexesSequence.default;

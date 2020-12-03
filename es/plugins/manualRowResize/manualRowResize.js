@@ -45,7 +45,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import BasePlugin from './../_base';
-import { addClass, hasClass, removeClass, outerWidth } from './../../helpers/dom/element';
+import { addClass, closest, hasClass, removeClass, outerWidth, isDetached } from './../../helpers/dom/element';
 import EventManager from './../../eventManager';
 import { arrayEach } from './../../helpers/array';
 import { rangeEach } from './../../helpers/number';
@@ -354,17 +354,10 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "checkIfRowHeader",
     value: function checkIfRowHeader(element) {
-      if (element !== this.hot.rootElement) {
-        var parent = element.parentNode;
+      var _element$parentNode, _element$parentNode$p;
 
-        if (parent.tagName === 'TBODY') {
-          return true;
-        }
-
-        return this.checkIfRowHeader(parent);
-      }
-
-      return false;
+      var thElement = closest(element, ['TH'], this.hot.rootElement);
+      return thElement && ((_element$parentNode = element.parentNode) === null || _element$parentNode === void 0 ? void 0 : (_element$parentNode$p = _element$parentNode.parentNode) === null || _element$parentNode$p === void 0 ? void 0 : _element$parentNode$p.tagName) === 'TBODY';
     }
     /**
      * Gets the TH element from the provided element.
@@ -375,14 +368,14 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
      */
 
   }, {
-    key: "getTHFromTargetElement",
-    value: function getTHFromTargetElement(element) {
+    key: "getClosestTHParent",
+    value: function getClosestTHParent(element) {
       if (element.tagName !== 'TABLE') {
         if (element.tagName === 'TH') {
           return element;
         }
 
-        return this.getTHFromTargetElement(element.parentNode);
+        return this.getClosestTHParent(element.parentNode);
       }
 
       return null;
@@ -417,8 +410,14 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onMouseOver",
     value: function onMouseOver(event) {
+      // Workaround for #6926 - if the `event.target` is temporarily detached, we can skip this callback and wait for
+      // the next `onmouseover`.
+      if (isDetached(event.target)) {
+        return;
+      }
+
       if (this.checkIfRowHeader(event.target)) {
-        var th = this.getTHFromTargetElement(event.target);
+        var th = this.getClosestTHParent(event.target);
 
         if (th) {
           if (!this.pressed) {

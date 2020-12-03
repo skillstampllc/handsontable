@@ -68,7 +68,7 @@ var IndexMap = /*#__PURE__*/function () {
   }, {
     key: "getValueAtIndex",
     value: function getValueAtIndex(index) {
-      var values = this.getValues();
+      var values = this.indexedValues;
 
       if (index < values.length) {
         return values[index];
@@ -104,7 +104,7 @@ var IndexMap = /*#__PURE__*/function () {
   }, {
     key: "setValueAtIndex",
     value: function setValueAtIndex(index, value) {
-      if (index < this.getLength()) {
+      if (index < this.indexedValues.length) {
         this.indexedValues[index] = value;
         this.runLocalHooks('change');
         return true;
@@ -122,7 +122,7 @@ var IndexMap = /*#__PURE__*/function () {
       this.setDefaultValues();
     }
     /**
-     * Get length of index map.
+     * Get length of the index map.
      *
      * @returns {number}
      */
@@ -166,7 +166,7 @@ var IndexMap = /*#__PURE__*/function () {
      *
      * @private
      * @param {number} length New length of indexed list.
-     * @returns {Array}
+     * @returns {IndexMap}
      */
 
   }, {

@@ -28,13 +28,12 @@ function getDecreasedIndexes(indexedValues, removedIndexes) {
  *
  * @private
  * @param {Array} indexedValues List of values for particular indexes.
- * @param {number} insertionIndex Position inside the actual list.
  * @param {Array} insertedIndexes List of inserted indexes.
  * @returns {Array} List with increased indexes.
  */
 
 
-function getIncreasedIndexes(indexedValues, insertionIndex, insertedIndexes) {
+function getIncreasedIndexes(indexedValues, insertedIndexes) {
   var firstInsertedIndex = insertedIndexes[0];
   var amountOfIndexes = insertedIndexes.length;
   return (0, _array.arrayMap)(indexedValues, function (index) {

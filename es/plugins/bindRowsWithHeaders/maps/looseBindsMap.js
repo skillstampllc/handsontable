@@ -72,7 +72,7 @@ var LooseBindsMap = /*#__PURE__*/function (_IndexMap) {
   _createClass(LooseBindsMap, [{
     key: "insert",
     value: function insert(insertionIndex, insertedIndexes) {
-      var listAfterUpdate = getIncreasedIndexes(this.indexedValues, insertionIndex, insertedIndexes);
+      var listAfterUpdate = getIncreasedIndexes(this.indexedValues, insertedIndexes);
       this.indexedValues = getListWithInsertedItems(listAfterUpdate, insertionIndex, insertedIndexes, this.initValueOrFn);
 
       _get(_getPrototypeOf(LooseBindsMap.prototype), "insert", this).call(this, insertionIndex, insertedIndexes);

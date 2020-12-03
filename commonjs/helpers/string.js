@@ -17,6 +17,9 @@ exports.randomString = randomString;
 exports.isPercentValue = isPercentValue;
 exports.substitute = substitute;
 exports.stripTags = stripTags;
+exports.sanitize = sanitize;
+
+var _dompurify = require("dompurify");
 
 var _mixed = require("./mixed");
 
@@ -105,15 +108,28 @@ function substitute(template) {
     return variables[name] === void 0 ? '' : variables[name];
   });
 }
-
-var STRIP_TAGS_REGEX = /<\/?\w+\/?>|<\w+[\s|/][^>]*>/gi;
 /**
  * Strip any HTML tag from the string.
  *
- * @param  {string} string String to cut HTML from.
+ * @param {string} string String to cut HTML from.
  * @returns {string}
  */
 
+
 function stripTags(string) {
-  return "".concat(string).replace(STRIP_TAGS_REGEX, '');
+  return sanitize("".concat(string), {
+    ALLOWED_TAGS: []
+  });
+}
+/**
+ * Sanitizes string from potential security vulnerabilities.
+ *
+ * @param {string} string String to sanitize.
+ * @param {object} [options] DOMPurify's configuration object.
+ * @returns {string}
+ */
+
+
+function sanitize(string, options) {
+  return (0, _dompurify.sanitize)(string, options);
 }

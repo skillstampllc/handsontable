@@ -320,7 +320,12 @@ var BaseEditor = /*#__PURE__*/function () {
         return;
       }
 
-      this.hot.view.scrollViewport(new CellCoords(this.row, this.col));
+      var hotInstance = this.hot; // We have to convert visual indexes into renderable indexes
+      // due to hidden columns don't participate in the rendering process
+
+      var renderableRowIndex = hotInstance.rowIndexMapper.getRenderableFromVisualIndex(this.row);
+      var renderableColumnIndex = hotInstance.columnIndexMapper.getRenderableFromVisualIndex(this.col);
+      hotInstance.view.scrollViewport(new CellCoords(renderableRowIndex, renderableColumnIndex));
       this.state = EditorState.EDITING; // Set the editor value only in the full edit mode. In other mode the focusable element has to be empty,
       // otherwise IME (editor for Asia users) doesn't work.
 
@@ -333,8 +338,8 @@ var BaseEditor = /*#__PURE__*/function () {
       this._opened = true;
       this.focus(); // only rerender the selections (FillHandle should disappear when beginediting is triggered)
 
-      this.hot.view.render();
-      this.hot.runHooks('afterBeginEditing', this.row, this.col);
+      hotInstance.view.render();
+      hotInstance.runHooks('afterBeginEditing', this.row, this.col);
     }
     /**
      * Finishes editing and start saving or restoring process for editing cell or last selected range.

@@ -64,7 +64,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 /**
- * Map for storing mappings from an visual index to an physical index.
+ * Map for storing mappings from an index to a physical index.
  *
  * It also updates the physical indexes (remaining in the map) on remove/add row or column action.
  */
@@ -93,7 +93,7 @@ var IndexesSequence = /*#__PURE__*/function (_IndexMap) {
   _createClass(IndexesSequence, [{
     key: "insert",
     value: function insert(insertionIndex, insertedIndexes) {
-      var listAfterUpdate = (0, _utils.getIncreasedIndexes)(this.indexedValues, insertionIndex, insertedIndexes);
+      var listAfterUpdate = (0, _utils.getIncreasedIndexes)(this.indexedValues, insertedIndexes);
       this.indexedValues = (0, _indexesSequence.getListWithInsertedItems)(listAfterUpdate, insertionIndex, insertedIndexes);
 
       _get(_getPrototypeOf(IndexesSequence.prototype), "insert", this).call(this, insertionIndex, insertedIndexes);

@@ -57,8 +57,6 @@ exports.instanceToHTML = instanceToHTML;
 exports._dataToHTML = _dataToHTML;
 exports.htmlToGridSettings = htmlToGridSettings;
 
-var _element = require("./../helpers/dom/element");
-
 var _mixed = require("./../helpers/mixed");
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -239,21 +237,10 @@ function htmlToGridSettings(element) {
     return;
   }
 
-  var styleElem = tempElem.querySelector('style');
-  var styleSheet = null;
-  var styleSheetArr = [];
-
-  if (styleElem) {
-    rootDocument.body.appendChild(styleElem);
-    styleElem.disabled = true;
-    styleSheet = styleElem.sheet;
-    styleSheetArr = styleSheet ? Array.from(styleSheet.cssRules) : [];
-    rootDocument.body.removeChild(styleElem);
-  }
-
   var generator = tempElem.querySelector('meta[name$="enerator"]');
   var hasRowHeaders = checkElement.querySelector('tbody th') !== null;
-  var countCols = Array.from(checkElement.querySelector('tr').cells).reduce(function (cols, cell) {
+  var trElement = checkElement.querySelector('tr');
+  var countCols = !trElement ? 0 : Array.from(trElement.cells).reduce(function (cols, cell) {
     return cols + cell.colSpan;
   }, 0) - (hasRowHeaders ? 1 : 0);
   var fixedRowsBottom = checkElement.tFoot && Array.from(checkElement.tFoot.rows) || [];
@@ -333,7 +320,7 @@ function htmlToGridSettings(element) {
     var cells = Array.from(tr.cells);
     var cellsLen = cells.length;
 
-    var _loop = function _loop(cellId) {
+    for (var cellId = 0; cellId < cellsLen; cellId++) {
       var cell = cells[cellId];
       var nodeName = cell.nodeName,
           innerHTML = cell.innerHTML,
@@ -366,22 +353,9 @@ function htmlToGridSettings(element) {
           }
         }
 
-        var cellStyle = styleSheetArr.reduce(function (settings, cssRule) {
-          if ((0, _element.matchesCSSRules)(cell, cssRule)) {
-            var whiteSpace = cssRule.style.whiteSpace;
-
-            if (whiteSpace) {
-              settings.whiteSpace = whiteSpace;
-            }
-          }
-
-          return settings;
-        }, {});
         var cellValue = '';
 
-        if (cellStyle.whiteSpace === 'nowrap') {
-          cellValue = innerHTML.replace(/[\r\n][\x20]{0,2}/gim, '\x20').replace(/<br(\s*|\/)>/gim, '\r\n');
-        } else if (generator && /excel/gi.test(generator.content)) {
+        if (generator && /excel/gi.test(generator.content)) {
           cellValue = innerHTML.replace(/[\r\n][\x20]{0,2}/g, '\x20').replace(/<br(\s*|\/)>[\r\n]?[\x20]{0,3}/gim, '\r\n');
         } else {
           cellValue = innerHTML.replace(/<br(\s*|\/)>[\r\n]?/gim, '\r\n');
@@ -393,10 +367,6 @@ function htmlToGridSettings(element) {
       } else {
         rowHeaders.push(innerHTML);
       }
-    };
-
-    for (var cellId = 0; cellId < cellsLen; cellId++) {
-      _loop(cellId);
     }
   }
 

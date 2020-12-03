@@ -36,6 +36,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 import { hasCaptionProblem, isClassListSupported, isTextContentSupported, isGetComputedStyleSupported } from '../feature';
 import { isSafari, isIE9 } from '../browser';
+import { sanitize } from '../string';
 /**
  * Get the parent of the specified node in the DOM tree.
  *
@@ -300,6 +301,7 @@ if (isClassListSupported()) {
   };
 
   _removeClass = function _removeClass(element, classes) {
+    var rootDocument = element.ownerDocument;
     var className = classes;
 
     if (typeof className === 'string') {
@@ -309,7 +311,7 @@ if (isClassListSupported()) {
     className = filterEmptyClassNames(className);
 
     if (className.length > 0) {
-      if (isSupportMultipleClassesArg) {
+      if (isSupportMultipleClassesArg(rootDocument)) {
         var _element$classList2;
 
         (_element$classList2 = element.classList).remove.apply(_element$classList2, _toConsumableArray(className));
@@ -448,11 +450,14 @@ export var HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
  *
  * @param {HTMLElement} element An element to write into.
  * @param {string} content The text to write.
+ * @param {boolean} [sanitizeContent=true] If `true`, the content will be sanitized before writing to the element.
  */
 
 export function fastInnerHTML(element, content) {
+  var sanitizeContent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
   if (HTML_CHARACTERS.test(content)) {
-    element.innerHTML = content;
+    element.innerHTML = sanitizeContent ? sanitize(content) : content;
   } else {
     fastInnerText(element, content);
   }
@@ -1167,4 +1172,14 @@ export function selectElementIfAllowed(element) {
   if (!isOutsideInput(activeElement)) {
     element.select();
   }
+}
+/**
+ * Check if the provided element is detached from DOM.
+ *
+ * @param {HTMLElement} element HTML element to be checked.
+ * @returns {boolean} `true` if the element is detached, `false` otherwise.
+ */
+
+export function isDetached(element) {
+  return !element.parentNode;
 }

@@ -19,7 +19,7 @@ var _index = require("./index");
  */
 function htmlRenderer(instance, TD, row, col, prop, value, cellProperties) {
   (0, _index.getRenderer)('base').apply(this, [instance, TD, row, col, prop, value, cellProperties]);
-  (0, _element.fastInnerHTML)(TD, value === null || value === void 0 ? '' : value);
+  (0, _element.fastInnerHTML)(TD, value === null || value === void 0 ? '' : value, false);
 }
 
 var _default = htmlRenderer;

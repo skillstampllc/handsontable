@@ -387,17 +387,10 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "checkIfRowHeader",
     value: function checkIfRowHeader(element) {
-      if (element !== this.hot.rootElement) {
-        var parent = element.parentNode;
+      var _element$parentNode, _element$parentNode$p;
 
-        if (parent.tagName === 'TBODY') {
-          return true;
-        }
-
-        return this.checkIfRowHeader(parent);
-      }
-
-      return false;
+      var thElement = (0, _element.closest)(element, ['TH'], this.hot.rootElement);
+      return thElement && ((_element$parentNode = element.parentNode) === null || _element$parentNode === void 0 ? void 0 : (_element$parentNode$p = _element$parentNode.parentNode) === null || _element$parentNode$p === void 0 ? void 0 : _element$parentNode$p.tagName) === 'TBODY';
     }
     /**
      * Gets the TH element from the provided element.
@@ -408,14 +401,14 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
      */
 
   }, {
-    key: "getTHFromTargetElement",
-    value: function getTHFromTargetElement(element) {
+    key: "getClosestTHParent",
+    value: function getClosestTHParent(element) {
       if (element.tagName !== 'TABLE') {
         if (element.tagName === 'TH') {
           return element;
         }
 
-        return this.getTHFromTargetElement(element.parentNode);
+        return this.getClosestTHParent(element.parentNode);
       }
 
       return null;
@@ -450,8 +443,14 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onMouseOver",
     value: function onMouseOver(event) {
+      // Workaround for #6926 - if the `event.target` is temporarily detached, we can skip this callback and wait for
+      // the next `onmouseover`.
+      if ((0, _element.isDetached)(event.target)) {
+        return;
+      }
+
       if (this.checkIfRowHeader(event.target)) {
-        var th = this.getTHFromTargetElement(event.target);
+        var th = this.getClosestTHParent(event.target);
 
         if (th) {
           if (!this.pressed) {

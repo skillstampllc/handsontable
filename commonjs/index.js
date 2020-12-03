@@ -100,8 +100,8 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "06/10/2020 15:46:27";
-Handsontable.version = "8.1.0"; // Export Hooks singleton
+Handsontable.buildDate = "03/12/2020 15:37:47";
+Handsontable.version = "8.2.0"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
 

@@ -1,7 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.every");
-
 require("core-js/modules/es.array.from");
 
 require("core-js/modules/es.array.includes");
@@ -11,6 +9,8 @@ require("core-js/modules/es.array.index-of");
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.array.map");
+
+require("core-js/modules/es.array.some");
 
 require("core-js/modules/es.number.constructor");
 
@@ -32,8 +32,6 @@ exports.isFirstLevelColumnHeader = isFirstLevelColumnHeader;
 exports.wasHeaderClickedProperly = wasHeaderClickedProperly;
 exports.HEADER_SPAN_CLASS = exports.DESC_SORT_STATE = exports.ASC_SORT_STATE = void 0;
 
-var _mixed = require("../../helpers/mixed");
-
 var _object = require("../../helpers/object");
 
 var _event = require("../../helpers/dom/event");
@@ -53,7 +51,7 @@ var HEADER_SPAN_CLASS = 'colHeader';
 exports.HEADER_SPAN_CLASS = HEADER_SPAN_CLASS;
 
 function isValidColumnState(columnState) {
-  if ((0, _mixed.isUndefined)(columnState)) {
+  if ((0, _object.isObject)(columnState) === false) {
     return false;
   }
 
@@ -70,18 +68,18 @@ function isValidColumnState(columnState) {
 
 
 function areValidSortStates(sortStates) {
-  if (Array.isArray(sortStates) === false || sortStates.every(function (columnState) {
-    return (0, _object.isObject)(columnState);
-  }) === false) {
+  if (sortStates.some(function (columnState) {
+    return isValidColumnState(columnState) === false;
+  })) {
     return false;
   }
 
   var sortedColumns = sortStates.map(function (_ref) {
     var column = _ref.column;
     return column;
-  });
-  var indexOccursOnlyOnce = new Set(sortedColumns).size === sortedColumns.length;
-  return indexOccursOnlyOnce && sortStates.every(isValidColumnState);
+  }); // Indexes occurs only once.
+
+  return new Set(sortedColumns).size === sortedColumns.length;
 }
 /**
  * Get next sort order for particular column. The order sequence looks as follows: 'asc' -> 'desc' -> undefined -> 'asc'.

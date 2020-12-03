@@ -19,33 +19,33 @@ require("core-js/modules/es.string.replace");
 exports.__esModule = true;
 exports.default = void 0;
 
-var _core = _interopRequireDefault(require("./../../core"));
-
-var _element = require("./../../helpers/dom/element");
-
-var _array = require("./../../helpers/array");
-
 var _cursor = _interopRequireDefault(require("./cursor"));
+
+var _predefinedItems = require("./predefinedItems");
+
+var _utils = require("./utils");
+
+var _core = _interopRequireDefault(require("./../../core"));
 
 var _eventManager = _interopRequireDefault(require("./../../eventManager"));
 
-var _object = require("./../../helpers/object");
+var _array = require("./../../helpers/array");
 
-var _mixed = require("./../../helpers/mixed");
+var _browser = require("./../../helpers/browser");
+
+var _element = require("./../../helpers/dom/element");
+
+var _event = require("./../../helpers/dom/event");
 
 var _function = require("./../../helpers/function");
 
-var _utils = require("./utils");
+var _mixed = require("./../../helpers/mixed");
+
+var _object = require("./../../helpers/object");
 
 var _unicode = require("./../../helpers/unicode");
 
 var _localHooks = _interopRequireDefault(require("./../../mixins/localHooks"));
-
-var _predefinedItems = require("./predefinedItems");
-
-var _event = require("./../../helpers/dom/event");
-
-var _browser = require("./../../helpers/browser");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

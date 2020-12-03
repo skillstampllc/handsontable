@@ -18,9 +18,10 @@ exports.__esModule = true;
 exports.getClassesToAdd = getClassesToAdd;
 exports.getClassedToRemove = getClassedToRemove;
 
+var _mixed = require("../../helpers/mixed");
+
 var _utils = require("./utils");
 
-/* eslint-disable import/prefer-default-export */
 var HEADER_CLASS_ASC_SORT = 'ascending';
 var HEADER_CLASS_DESC_SORT = 'descending';
 var HEADER_CLASS_INDICATOR_DISABLED = 'indicatorDisabled';
@@ -31,7 +32,7 @@ var orderToCssClass = new Map([[_utils.ASC_SORT_STATE, HEADER_CLASS_ASC_SORT], [
  * Get CSS classes which should be added to particular column header.
  *
  * @param {object} columnStatesManager Instance of column state manager.
- * @param {number} column Physical column index.
+ * @param {number} column Visual column index.
  * @param {boolean} showSortIndicator Indicates if indicator should be shown for the particular column.
  * @param {boolean} headerAction Indicates if header click to sort should be possible.
  * @returns {Array} Array of CSS classes.
@@ -46,8 +47,12 @@ function getClassesToAdd(columnStatesManager, column, showSortIndicator, headerA
 
   if (showSortIndicator === false) {
     cssClasses.push(HEADER_CLASS_INDICATOR_DISABLED);
-  } else if (columnStatesManager.isColumnSorted(column)) {
-    var columnOrder = columnStatesManager.getSortOrderOfColumn(column);
+    return cssClasses;
+  }
+
+  var columnOrder = columnStatesManager.getSortOrderOfColumn(column);
+
+  if ((0, _mixed.isDefined)(columnOrder)) {
     cssClasses.push(orderToCssClass.get(columnOrder));
   }
 

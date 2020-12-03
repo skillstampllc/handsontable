@@ -51,6 +51,8 @@ var _array = require("./../../helpers/array");
 
 var _number = require("./../../helpers/number");
 
+var _string = require("./../../helpers/string");
+
 var _element = require("./../../helpers/dom/element");
 
 var _plugins = require("./../../plugins");
@@ -688,7 +690,11 @@ var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       var pastedData;
 
       if (event && typeof event.clipboardData !== 'undefined') {
-        var textHTML = event.clipboardData.getData('text/html');
+        var textHTML = (0, _string.sanitize)(event.clipboardData.getData('text/html'), {
+          ADD_TAGS: ['meta'],
+          ADD_ATTR: ['content'],
+          FORCE_BODY: true
+        });
 
         if (textHTML && /(<table)|(<TABLE)/g.test(textHTML)) {
           var parsedConfig = (0, _parseTable.htmlToGridSettings)(textHTML, this.hot.rootDocument);

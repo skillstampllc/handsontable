@@ -248,10 +248,6 @@ var TopOverlay = /*#__PURE__*/function (_Overlay) {
       if (this.needFullRender || force) {
         this.adjustRootElementSize();
         this.adjustRootChildrenSize();
-
-        if (!force) {
-          this.areElementSizesAdjusted = true;
-        }
       }
     }
     /**
@@ -318,10 +314,6 @@ var TopOverlay = /*#__PURE__*/function (_Overlay) {
     key: "applyToDOM",
     value: function applyToDOM() {
       var total = this.wot.getSetting('totalRows');
-
-      if (!this.areElementSizesAdjusted) {
-        this.adjustElementsSize();
-      }
 
       if (typeof this.wot.wtViewport.rowsRenderCalculator.startPosition === 'number') {
         this.spreader.style.top = "".concat(this.wot.wtViewport.rowsRenderCalculator.startPosition, "px");

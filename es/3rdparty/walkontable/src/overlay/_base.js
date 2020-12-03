@@ -163,7 +163,6 @@ var Overlay = /*#__PURE__*/function () {
     this.holder = holder;
     this.wtRootElement = wtRootElement;
     this.trimmingContainer = getTrimmingContainer(this.hider.parentNode.parentNode);
-    this.areElementSizesAdjusted = false;
     this.updateStateOfRendering();
   }
   /**

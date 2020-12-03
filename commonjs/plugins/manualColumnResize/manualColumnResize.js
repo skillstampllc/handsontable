@@ -437,17 +437,7 @@ var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "checkIfColumnHeader",
     value: function checkIfColumnHeader(element) {
-      if (element !== this.hot.rootElement) {
-        var parent = element.parentNode;
-
-        if (parent.tagName === 'THEAD') {
-          return true;
-        }
-
-        return this.checkIfColumnHeader(parent);
-      }
-
-      return false;
+      return !!(0, _element.closest)(element, ['THEAD'], this.hot.rootElement);
     }
     /**
      * Gets the TH element from the provided element.
@@ -458,14 +448,14 @@ var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
      */
 
   }, {
-    key: "getTHFromTargetElement",
-    value: function getTHFromTargetElement(element) {
+    key: "getClosestTHParent",
+    value: function getClosestTHParent(element) {
       if (element.tagName !== 'TABLE') {
         if (element.tagName === 'TH') {
           return element;
         }
 
-        return this.getTHFromTargetElement(element.parentNode);
+        return this.getClosestTHParent(element.parentNode);
       }
 
       return null;
@@ -480,8 +470,14 @@ var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onMouseOver",
     value: function onMouseOver(event) {
+      // Workaround for #6926 - if the `event.target` is temporarily detached, we can skip this callback and wait for
+      // the next `onmouseover`.
+      if ((0, _element.isDetached)(event.target)) {
+        return;
+      }
+
       if (this.checkIfColumnHeader(event.target)) {
-        var th = this.getTHFromTargetElement(event.target);
+        var th = this.getClosestTHParent(event.target);
 
         if (!th) {
           return;

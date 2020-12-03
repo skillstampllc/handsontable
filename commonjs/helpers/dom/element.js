@@ -94,11 +94,14 @@ exports.resetCssTransform = resetCssTransform;
 exports.isInput = isInput;
 exports.isOutsideInput = isOutsideInput;
 exports.selectElementIfAllowed = selectElementIfAllowed;
+exports.isDetached = isDetached;
 exports.HTML_CHARACTERS = void 0;
 
 var _feature = require("../feature");
 
 var _browser = require("../browser");
+
+var _string = require("../string");
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -383,6 +386,7 @@ if ((0, _feature.isClassListSupported)()) {
   };
 
   _removeClass = function _removeClass(element, classes) {
+    var rootDocument = element.ownerDocument;
     var className = classes;
 
     if (typeof className === 'string') {
@@ -392,7 +396,7 @@ if ((0, _feature.isClassListSupported)()) {
     className = filterEmptyClassNames(className);
 
     if (className.length > 0) {
-      if (isSupportMultipleClassesArg) {
+      if (isSupportMultipleClassesArg(rootDocument)) {
         var _element$classList2;
 
         (_element$classList2 = element.classList).remove.apply(_element$classList2, _toConsumableArray(className));
@@ -536,13 +540,16 @@ var HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
  *
  * @param {HTMLElement} element An element to write into.
  * @param {string} content The text to write.
+ * @param {boolean} [sanitizeContent=true] If `true`, the content will be sanitized before writing to the element.
  */
 
 exports.HTML_CHARACTERS = HTML_CHARACTERS;
 
 function fastInnerHTML(element, content) {
+  var sanitizeContent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
   if (HTML_CHARACTERS.test(content)) {
-    element.innerHTML = content;
+    element.innerHTML = sanitizeContent ? (0, _string.sanitize)(content) : content;
   } else {
     fastInnerText(element, content);
   }
@@ -1289,4 +1296,15 @@ function selectElementIfAllowed(element) {
   if (!isOutsideInput(activeElement)) {
     element.select();
   }
+}
+/**
+ * Check if the provided element is detached from DOM.
+ *
+ * @param {HTMLElement} element HTML element to be checked.
+ * @returns {boolean} `true` if the element is detached, `false` otherwise.
+ */
+
+
+function isDetached(element) {
+  return !element.parentNode;
 }

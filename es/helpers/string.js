@@ -3,6 +3,7 @@ import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/es.string.replace";
+import { sanitize as purifySanitize } from 'dompurify';
 import { stringify } from './mixed';
 /**
  * Convert string to upper case first letter.
@@ -86,14 +87,26 @@ export function substitute(template) {
     return variables[name] === void 0 ? '' : variables[name];
   });
 }
-var STRIP_TAGS_REGEX = /<\/?\w+\/?>|<\w+[\s|/][^>]*>/gi;
 /**
  * Strip any HTML tag from the string.
  *
- * @param  {string} string String to cut HTML from.
+ * @param {string} string String to cut HTML from.
  * @returns {string}
  */
 
 export function stripTags(string) {
-  return "".concat(string).replace(STRIP_TAGS_REGEX, '');
+  return sanitize("".concat(string), {
+    ALLOWED_TAGS: []
+  });
+}
+/**
+ * Sanitizes string from potential security vulnerabilities.
+ *
+ * @param {string} string String to sanitize.
+ * @param {object} [options] DOMPurify's configuration object.
+ * @returns {string}
+ */
+
+export function sanitize(string, options) {
+  return purifySanitize(string, options);
 }

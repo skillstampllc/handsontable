@@ -1340,8 +1340,10 @@ export default function Core(rootElement, userSettings) {
       var row = cellProperties.visualRow;
       var td = instance.getCell(row, col, true);
 
-      if (td && td.nodeName !== "TH") {
-        instance.view.wt.wtSettings.settings.cellRenderer(row, col, td);
+      if (td && td.nodeName !== 'TH') {
+        var renderableRow = instance.rowIndexMapper.getRenderableFromVisualIndex(row);
+        var renderableColumn = instance.columnIndexMapper.getRenderableFromVisualIndex(col);
+        instance.view.wt.wtSettings.settings.cellRenderer(renderableRow, renderableColumn, td);
       }
 
       callback(valid);
@@ -1407,7 +1409,7 @@ export default function Core(rootElement, userSettings) {
    * @param {number|Array} row Visual row index or array of changes in format `[[row, col, value],...]`.
    * @param {number} [column] Visual column index.
    * @param {string} [value] New value.
-   * @param {string} [source] String that identifies how this change will be described in the changes array (useful in onAfterChange or onBeforeChange callback).
+   * @param {string} [source] String that identifies how this change will be described in the changes array (useful in afterChange or beforeChange callback). Set to 'edit' if left empty.
    */
 
 
@@ -1713,7 +1715,7 @@ export default function Core(rootElement, userSettings) {
    *
    * @memberof Core#
    * @function emptySelectedCells
-   * @param {string} [source] String that identifies how this change will be described in the changes array (useful in onAfterChange or onBeforeChange callback).
+   * @param {string} [source] String that identifies how this change will be described in the changes array (useful in afterChange or beforeChange callback). Set to 'edit' if left empty.
    * @since 0.36.0
    */
 

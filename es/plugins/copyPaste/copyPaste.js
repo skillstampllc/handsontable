@@ -61,6 +61,7 @@ import Hooks from './../../pluginHooks';
 import SheetClip from './../../../lib/SheetClip/SheetClip';
 import { arrayEach } from './../../helpers/array';
 import { rangeEach } from './../../helpers/number';
+import { sanitize } from './../../helpers/string';
 import { getSelectionText } from './../../helpers/dom/element';
 import { registerPlugin } from './../../plugins';
 import copyItem from './contextMenuItem/copy';
@@ -645,7 +646,11 @@ var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       var pastedData;
 
       if (event && typeof event.clipboardData !== 'undefined') {
-        var textHTML = event.clipboardData.getData('text/html');
+        var textHTML = sanitize(event.clipboardData.getData('text/html'), {
+          ADD_TAGS: ['meta'],
+          ADD_ATTR: ['content'],
+          FORCE_BODY: true
+        });
 
         if (textHTML && /(<table)|(<TABLE)/g.test(textHTML)) {
           var parsedConfig = htmlToGridSettings(textHTML, this.hot.rootDocument);

@@ -40,14 +40,14 @@ import { arrayFilter } from '../../../helpers/array';
  */
 
 export function getListWithInsertedItems(indexedValues, insertionIndex, insertedIndexes, insertedValuesMapping) {
-  var firstInsertedIndex = insertedIndexes[0];
+  var firstInsertedIndex = insertedIndexes.length ? insertedIndexes[0] : void 0;
   return [].concat(_toConsumableArray(indexedValues.slice(0, firstInsertedIndex)), _toConsumableArray(insertedIndexes.map(function (insertedIndex, ordinalNumber) {
     if (isFunction(insertedValuesMapping)) {
       return insertedValuesMapping(insertedIndex, ordinalNumber);
     }
 
     return insertedValuesMapping;
-  })), _toConsumableArray(indexedValues.slice(firstInsertedIndex)));
+  })), _toConsumableArray(firstInsertedIndex === void 0 ? [] : indexedValues.slice(firstInsertedIndex)));
 }
 /**
  * Filter items from the list.

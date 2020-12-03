@@ -13,20 +13,20 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import Core from './../../core';
-import { addClass, empty, fastInnerHTML, getScrollbarWidth, isChildOf, isInput, removeClass, getParentWindow, hasClass } from './../../helpers/dom/element';
-import { arrayEach, arrayFilter, arrayReduce } from './../../helpers/array';
 import Cursor from './cursor';
-import EventManager from './../../eventManager';
-import { mixin, hasOwnProperty } from './../../helpers/object';
-import { isUndefined, isDefined } from './../../helpers/mixed';
-import { debounce, isFunction } from './../../helpers/function';
+import { SEPARATOR, NO_ITEMS, predefinedItems } from './predefinedItems';
 import { filterSeparators, hasSubMenu, isDisabled, isItemHidden, isSeparator, isSelectionDisabled, normalizeSelection } from './utils';
+import Core from './../../core';
+import EventManager from './../../eventManager';
+import { arrayEach, arrayFilter, arrayReduce } from './../../helpers/array';
+import { isWindowsOS } from './../../helpers/browser';
+import { addClass, empty, fastInnerHTML, getScrollbarWidth, isChildOf, isInput, removeClass, getParentWindow, hasClass } from './../../helpers/dom/element';
+import { stopImmediatePropagation, isRightClick } from './../../helpers/dom/event';
+import { debounce, isFunction } from './../../helpers/function';
+import { isUndefined, isDefined } from './../../helpers/mixed';
+import { mixin, hasOwnProperty } from './../../helpers/object';
 import { KEY_CODES } from './../../helpers/unicode';
 import localHooks from './../../mixins/localHooks';
-import { SEPARATOR, NO_ITEMS, predefinedItems } from './predefinedItems';
-import { stopImmediatePropagation, isRightClick } from './../../helpers/dom/event';
-import { isWindowsOS } from './../../helpers/browser';
 var MIN_WIDTH = 215;
 /**
  * @class Menu

@@ -512,17 +512,14 @@ var Overlays = /*#__PURE__*/function () {
     key: "refresh",
     value: function refresh() {
       var fastDraw = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var spreader = this.wot.wtTable.spreader;
+      var width = spreader.clientWidth;
+      var height = spreader.clientHeight;
 
-      if (this.topOverlay.areElementSizesAdjusted && this.leftOverlay.areElementSizesAdjusted) {
-        var container = this.wot.wtTable.wtRootElement.parentNode || this.wot.wtTable.wtRootElement;
-        var width = container.clientWidth;
-        var height = container.clientHeight;
-
-        if (width !== this.spreaderLastSize.width || height !== this.spreaderLastSize.height) {
-          this.spreaderLastSize.width = width;
-          this.spreaderLastSize.height = height;
-          this.adjustElementsSize();
-        }
+      if (width !== this.spreaderLastSize.width || height !== this.spreaderLastSize.height) {
+        this.spreaderLastSize.width = width;
+        this.spreaderLastSize.height = height;
+        this.adjustElementsSize();
       }
 
       if (this.bottomOverlay.clone) {
@@ -593,10 +590,6 @@ var Overlays = /*#__PURE__*/function () {
 
       if (!wtTable.isVisible()) {
         return;
-      }
-
-      if (!this.topOverlay.areElementSizesAdjusted || !this.leftOverlay.areElementSizesAdjusted) {
-        this.adjustElementsSize();
       }
 
       this.topOverlay.applyToDOM();

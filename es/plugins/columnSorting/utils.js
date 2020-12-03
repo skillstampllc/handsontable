@@ -1,16 +1,15 @@
-import "core-js/modules/es.array.every";
 import "core-js/modules/es.array.from";
 import "core-js/modules/es.array.includes";
 import "core-js/modules/es.array.index-of";
 import "core-js/modules/es.array.iterator";
 import "core-js/modules/es.array.map";
+import "core-js/modules/es.array.some";
 import "core-js/modules/es.number.constructor";
 import "core-js/modules/es.number.is-integer";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.set";
 import "core-js/modules/es.string.iterator";
 import "core-js/modules/web.dom-collections.iterator";
-import { isUndefined } from '../../helpers/mixed';
 import { isObject } from '../../helpers/object';
 import { isRightClick } from '../../helpers/dom/event';
 export var ASC_SORT_STATE = 'asc';
@@ -24,7 +23,7 @@ export var HEADER_SPAN_CLASS = 'colHeader';
  */
 
 function isValidColumnState(columnState) {
-  if (isUndefined(columnState)) {
+  if (isObject(columnState) === false) {
     return false;
   }
 
@@ -41,18 +40,18 @@ function isValidColumnState(columnState) {
 
 
 export function areValidSortStates(sortStates) {
-  if (Array.isArray(sortStates) === false || sortStates.every(function (columnState) {
-    return isObject(columnState);
-  }) === false) {
+  if (sortStates.some(function (columnState) {
+    return isValidColumnState(columnState) === false;
+  })) {
     return false;
   }
 
   var sortedColumns = sortStates.map(function (_ref) {
     var column = _ref.column;
     return column;
-  });
-  var indexOccursOnlyOnce = new Set(sortedColumns).size === sortedColumns.length;
-  return indexOccursOnlyOnce && sortStates.every(isValidColumnState);
+  }); // Indexes occurs only once.
+
+  return new Set(sortedColumns).size === sortedColumns.length;
 }
 /**
  * Get next sort order for particular column. The order sequence looks as follows: 'asc' -> 'desc' -> undefined -> 'asc'.
