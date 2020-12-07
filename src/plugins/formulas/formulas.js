@@ -12,7 +12,7 @@ import {
 import Sheet from "./sheet";
 import DataProvider from "./dataProvider";
 import UndoRedoSnapshot from "./undoRedoSnapshot";
-import CellValue from './cell/value';
+import CellValue from "./cell/value";
 
 /**
  * The formulas plugin.
@@ -336,6 +336,9 @@ class Formulas extends BasePlugin {
    * @param {string} source Source of method call.
    */
   onAfterCreateRow(row, amount, source) {
+    if (source === "auto") {
+      return;
+    }
     this.sheet.alterManager.triggerAlter(
       "insert_row",
       row,
@@ -389,6 +392,9 @@ class Formulas extends BasePlugin {
    * @param {string} source Source of method call.
    */
   onAfterCreateCol(column, amount, source) {
+    if (source === "auto") {
+      return;
+    }
     this.sheet.alterManager.triggerAlter(
       "insert_column",
       column,

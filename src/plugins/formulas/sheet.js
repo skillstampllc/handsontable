@@ -166,6 +166,11 @@ class Sheet {
   recalculateOptimized() {
     let cells = this.matrix.getOutOfDateCells();
     cells = this.sortCellsByUsed(cells);
+    if (!cells.length) {
+      this._state = STATE_UP_TO_DATE;
+      return;
+    }
+
     let promisses = [];
     this._parsedCells = {};
     this.matrix.data.forEach((cell) => {
