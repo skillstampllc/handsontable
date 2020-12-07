@@ -365,6 +365,12 @@ var Sheet = /*#__PURE__*/function () {
 
       var cells = this.matrix.getOutOfDateCells();
       cells = this.sortCellsByUsed(cells);
+
+      if (!cells.length) {
+        this._state = STATE_UP_TO_DATE;
+        return;
+      }
+
       var promisses = [];
       this._parsedCells = {};
       this.matrix.data.forEach(function (cell) {

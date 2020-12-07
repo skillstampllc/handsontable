@@ -62,7 +62,7 @@ import { isFormulaExpression, toUpperCaseFormula, isFormulaExpressionEscaped, un
 import Sheet from "./sheet";
 import DataProvider from "./dataProvider";
 import UndoRedoSnapshot from "./undoRedoSnapshot";
-import CellValue from './cell/value';
+import CellValue from "./cell/value";
 /**
  * The formulas plugin.
  *
@@ -459,6 +459,10 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterCreateRow",
     value: function onAfterCreateRow(row, amount, source) {
+      if (source === "auto") {
+        return;
+      }
+
       this.sheet.alterManager.triggerAlter("insert_row", row, amount, source !== "UndoRedo.undo");
     }
     /**
@@ -515,6 +519,10 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterCreateCol",
     value: function onAfterCreateCol(column, amount, source) {
+      if (source === "auto") {
+        return;
+      }
+
       this.sheet.alterManager.triggerAlter("insert_column", column, amount, source !== "UndoRedo.undo");
     }
     /**

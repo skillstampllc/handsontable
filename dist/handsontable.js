@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.2.0
- * Release date: 12/11/2020 (built at 03/12/2020 15:38:37)
+ * Release date: 12/11/2020 (built at 07/12/2020 11:33:58)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -43973,7 +43973,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "03/12/2020 15:38:37";
+Handsontable.buildDate = "07/12/2020 11:33:58";
 Handsontable.version = "8.2.0"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -86711,6 +86711,10 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterCreateRow",
     value: function onAfterCreateRow(row, amount, source) {
+      if (source === "auto") {
+        return;
+      }
+
       this.sheet.alterManager.triggerAlter("insert_row", row, amount, source !== "UndoRedo.undo");
     }
     /**
@@ -86767,6 +86771,10 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterCreateCol",
     value: function onAfterCreateCol(column, amount, source) {
+      if (source === "auto") {
+        return;
+      }
+
       this.sheet.alterManager.triggerAlter("insert_column", column, amount, source !== "UndoRedo.undo");
     }
     /**
@@ -87260,6 +87268,12 @@ var Sheet = /*#__PURE__*/function () {
 
       var cells = this.matrix.getOutOfDateCells();
       cells = this.sortCellsByUsed(cells);
+
+      if (!cells.length) {
+        this._state = STATE_UP_TO_DATE;
+        return;
+      }
+
       var promisses = [];
       this._parsedCells = {};
       this.matrix.data.forEach(function (cell) {
