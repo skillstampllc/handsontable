@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.2.0
- * Release date: 12/11/2020 (built at 07/12/2020 11:33:58)
+ * Release date: 12/11/2020 (built at 23/12/2020 12:16:17)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -43973,7 +43973,7 @@ Handsontable._getListenersCounter = _eventManager.getListenersCounter; // For Me
 Handsontable._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "07/12/2020 11:33:58";
+Handsontable.buildDate = "23/12/2020 12:16:17";
 Handsontable.version = "8.2.0"; // Export Hooks singleton
 
 Handsontable.hooks = _pluginHooks.default.getSingleton(); // TODO: Remove this exports after rewrite tests about this module
@@ -87555,8 +87555,9 @@ var Sheet = /*#__PURE__*/function () {
         this._parsedCells[arguments[0].label] = result;
         done(result);
       } else {
-        this._parsedCells[arguments[0].label] = (0, _number.toNumber)(cellValue);
-        done((0, _number.toNumber)(cellValue));
+        var number = !isNaN((0, _number.toNumber)(cellValue)) ? (0, _number.toNumber)(cellValue) : cellValue;
+        this._parsedCells[arguments[0].label] = cellValue;
+        done(cellValue);
       }
     }
     /**
