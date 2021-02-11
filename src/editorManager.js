@@ -1,9 +1,9 @@
 import { CellCoords } from './3rdparty/walkontable/src';
 import { KEY_CODES, isMetaKey, isCtrlMetaKey } from './helpers/unicode';
 import { stopImmediatePropagation, isImmediatePropagationStopped } from './helpers/dom/event';
-import { getEditorInstance } from './editors';
+import { getEditorInstance } from './editors/registry';
 import EventManager from './eventManager';
-import { EditorState } from './editors/_baseEditor';
+import { EDITOR_STATE } from './editors/baseEditor';
 import { getParentWindow } from './helpers/dom/element';
 
 class EditorManager {
@@ -500,10 +500,8 @@ class EditorManager {
       case KEY_CODES.ENTER:
         /* return/enter */
         if (this.isEditorOpened()) {
-          if (
-            this.activeEditor &&
-            this.activeEditor.state !== EditorState.WAITING
-          ) {
+
+          if (this.activeEditor && this.activeEditor.state !== EDITOR_STATE.WAITING) {
             this.closeEditorAndSaveChanges(isCtrlPressed);
           }
           this.moveSelectionAfterEnter(isShiftPressed);
