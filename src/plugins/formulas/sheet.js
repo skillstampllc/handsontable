@@ -1,5 +1,4 @@
 import { Parser, ERROR_REF, error as isFormulaError } from "hot-formula-parser";
-import { toNumber } from "hot-formula-parser/es/helper/number";
 
 import { arrayEach, arrayMap } from "../../helpers/array";
 import localHooks from "../../mixins/localHooks";
@@ -13,6 +12,37 @@ import AlterManager from "./alterManager";
 const STATE_UP_TO_DATE = 1;
 const STATE_NEED_REBUILD = 2;
 const STATE_NEED_FULL_REBUILD = 3;
+
+/**
+ * Convert value into number.
+ *
+ * @param {String|Number} number
+ * @returns {*}
+ */
+const toNumber = (number) => {
+  let result;
+
+  if (typeof number === "boolean") {
+    result = number ? 1 : 0;
+  } else if (typeof number === "number") {
+    result = number;
+  } else if (typeof number === "string") {
+    if (number.toLowerCase() === "true") {
+      result = 1;
+    } else if (number.toLowerCase() === "false") {
+      result = 0;
+    } else if (number.trim() === "") {
+      result = 0;
+    } else {
+      result =
+        number.indexOf(".") > -1 ? parseFloat(number) : parseInt(number, 10);
+    }
+  } else if (number === null || number === undefined) {
+    result = 0;
+  }
+
+  return result;
+};
 
 /**
  * Sheet component responsible for whole spreadsheet calculations.
@@ -424,7 +454,9 @@ class Sheet {
       this._parsedCells[arguments[0].label] = result;
       done(result);
     } else {
-      let number = !isNaN(toNumber(cellValue)) ? toNumber(cellValue) : cellValue;
+      let number = !isNaN(toNumber(cellValue))
+        ? toNumber(cellValue)
+        : cellValue;
       this._parsedCells[arguments[0].label] = cellValue;
       done(cellValue);
     }

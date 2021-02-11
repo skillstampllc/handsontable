@@ -23,24 +23,8 @@ import {
   deepObjectSize,
   hasOwnProperty,
   createObjectPropListener,
-  objectEach
-} from './helpers/object';
-import { arrayMap, arrayEach, arrayReduce, getDifferenceOfArrays, stringToArray } from './helpers/array';
-import { instanceToHTML } from './utils/parseTable';
-import { getPlugin, getPluginsNames } from './plugins/registry';
-import { getRenderer } from './renderers/registry';
-import { getValidator } from './validators/registry';
-import { randomString, toUpperCaseFirst } from './helpers/string';
-import { rangeEach, rangeEachReverse } from './helpers/number';
-import TableView from './tableView';
-import DataSource from './dataSource';
-import { translateRowsToColumns, cellMethodLookupFactory, spreadsheetColumnLabel } from './helpers/data';
-import { IndexMapper } from './translations';
-import { registerAsRootInstance, hasValidParameter, isRootInstance } from './utils/rootInstance';
-import { CellCoords, ViewportColumnsCalculator } from './3rdparty/walkontable/src';
-import Hooks from './pluginHooks';
-import { hasLanguageDictionary, getValidLanguageCode, getTranslatedPhrase } from './i18n/registry';
-import { warnUserAboutLanguageRegistration, normalizeLanguageCode } from './i18n/utils';
+  objectEach,
+} from "./helpers/object";
 import {
   arrayMap,
   arrayEach,
@@ -49,10 +33,10 @@ import {
   stringToArray,
 } from "./helpers/array";
 import { instanceToHTML } from "./utils/parseTable";
-import { getPlugin } from "./plugins";
-import { getRenderer } from "./renderers";
-import { getValidator } from "./validators";
-import { randomString } from "./helpers/string";
+import { getPlugin, getPluginsNames } from "./plugins/registry";
+import { getRenderer } from "./renderers/registry";
+import { getValidator } from "./validators/registry";
+import { randomString, toUpperCaseFirst } from "./helpers/string";
 import { rangeEach, rangeEachReverse } from "./helpers/number";
 import TableView from "./tableView";
 import DataSource from "./dataSource";
@@ -72,20 +56,22 @@ import {
   ViewportColumnsCalculator,
 } from "./3rdparty/walkontable/src";
 import Hooks from "./pluginHooks";
-import { getTranslatedPhrase } from "./i18n";
-import { hasLanguageDictionary } from "./i18n/dictionariesManager";
+import {
+  hasLanguageDictionary,
+  getValidLanguageCode,
+  getTranslatedPhrase,
+} from "./i18n/registry";
 import {
   warnUserAboutLanguageRegistration,
-  getValidLanguageCode,
   normalizeLanguageCode,
 } from "./i18n/utils";
 import {
   startObserving as keyStateStartObserving,
-  stopObserving as keyStateStopObserving
-} from './utils/keyStateObserver';
-import { Selection } from './selection';
-import { MetaManager, DataMap } from './dataMap/index';
-import { createUniqueMap } from './utils/dataStructures/uniqueMap';
+  stopObserving as keyStateStopObserving,
+} from "./utils/keyStateObserver";
+import { Selection } from "./selection";
+import { MetaManager, DataMap } from "./dataMap/index";
+import { createUniqueMap } from "./utils/dataStructures/uniqueMap";
 
 let activeGuid = null;
 
@@ -200,7 +186,7 @@ export default function Core(
 
   keyStateStartObserving(this.rootDocument);
 
-  this.container = this.rootDocument.createElement('div');
+  this.container = this.rootDocument.createElement("div");
   this.renderCall = false;
 
   rootElement.insertBefore(this.container, rootElement.firstChild);
@@ -793,7 +779,7 @@ export default function Core(
         if (nrOfRows < minRows) {
           // The synchronization with cell meta is not desired here. For `minRows` option,
           // we don't want to touch/shift cell meta objects.
-          datamap.createRow(nrOfRows, minRows - nrOfRows, 'auto');
+          datamap.createRow(nrOfRows, minRows - nrOfRows, "auto");
         }
       }
       if (minSpareRows) {
@@ -802,11 +788,14 @@ export default function Core(
         // should I add empty rows to meet minSpareRows?
         if (emptyRows < minSpareRows) {
           const emptyRowsMissing = minSpareRows - emptyRows;
-          const rowsToCreate = Math.min(emptyRowsMissing, tableMeta.maxRows - instance.countSourceRows());
+          const rowsToCreate = Math.min(
+            emptyRowsMissing,
+            tableMeta.maxRows - instance.countSourceRows()
+          );
 
           // The synchronization with cell meta is not desired here. For `minSpareRows` option,
           // we don't want to touch/shift cell meta objects.
-          datamap.createRow(instance.countRows(), rowsToCreate, 'auto');
+          datamap.createRow(instance.countRows(), rowsToCreate, "auto");
         }
       }
       {
@@ -827,18 +816,25 @@ export default function Core(
 
           emptyCols += colsToCreate;
 
-          datamap.createCol(nrOfColumns, colsToCreate, 'auto');
+          datamap.createCol(nrOfColumns, colsToCreate, "auto");
         }
         // should I add empty cols to meet minSpareCols?
-        if (minSpareCols && !tableMeta.columns && instance.dataType === 'array' &&
-          emptyCols < minSpareCols) {
+        if (
+          minSpareCols &&
+          !tableMeta.columns &&
+          instance.dataType === "array" &&
+          emptyCols < minSpareCols
+        ) {
           nrOfColumns = instance.countCols();
           const emptyColsMissing = minSpareCols - emptyCols;
-          const colsToCreate = Math.min(emptyColsMissing, tableMeta.maxCols - nrOfColumns);
+          const colsToCreate = Math.min(
+            emptyColsMissing,
+            tableMeta.maxCols - nrOfColumns
+          );
 
           // The synchronization with cell meta is not desired here. For `minSpareRows` option,
           // we don't want to touch/shift cell meta objects.
-          datamap.createCol(nrOfColumns, colsToCreate, 'auto');
+          datamap.createCol(nrOfColumns, colsToCreate, "auto");
         }
       }
       const rowCount = instance.countRows();
@@ -1216,7 +1212,7 @@ export default function Core(
     globalMeta[className] = classSettings;
   }
 
-  this.init = function() {
+  this.init = function () {
     dataSource.setData(tableMeta.data);
 
     instance.runHooks("beforeInit");
@@ -1475,7 +1471,7 @@ export default function Core(
     instance._refreshBorders(null);
     editorManager.unlockEditor();
     instance.view.adjustElementsSize();
-    instance.runHooks('afterChange', changes, source || 'edit');
+    instance.runHooks("afterChange", changes, source || "edit");
 
     const activeEditor = instance.getActiveEditor();
 
@@ -1511,11 +1507,19 @@ export default function Core(
       const row = cellProperties.visualRow;
       const td = instance.getCell(row, col, true);
 
-      if (td && td.nodeName !== 'TH') {
-        const renderableRow = instance.rowIndexMapper.getRenderableFromVisualIndex(row);
-        const renderableColumn = instance.columnIndexMapper.getRenderableFromVisualIndex(col);
+      if (td && td.nodeName !== "TH") {
+        const renderableRow = instance.rowIndexMapper.getRenderableFromVisualIndex(
+          row
+        );
+        const renderableColumn = instance.columnIndexMapper.getRenderableFromVisualIndex(
+          col
+        );
 
-        instance.view.wt.wtSettings.settings.cellRenderer(renderableRow, renderableColumn, td);
+        instance.view.wt.wtSettings.settings.cellRenderer(
+          renderableRow,
+          renderableColumn,
+          td
+        );
       }
 
       callback(valid);
@@ -1957,7 +1961,7 @@ export default function Core(
    * @since 8.3.0
    * @returns {boolean}
    */
-  this.isRenderSuspended = function() {
+  this.isRenderSuspended = function () {
     return this.renderSuspendedCounter > 0;
   };
 
@@ -1992,7 +1996,7 @@ export default function Core(
    * hot.resumeRender(); // It re-renders the table internally
    * ```
    */
-  this.suspendRender = function() {
+  this.suspendRender = function () {
     this.renderSuspendedCounter += 1;
   };
 
@@ -2023,12 +2027,15 @@ export default function Core(
    * hot.resumeRender(); // It re-renders the table internally
    * ```
    */
-  this.resumeRender = function() {
+  this.resumeRender = function () {
     const nextValue = this.renderSuspendedCounter - 1;
 
     this.renderSuspendedCounter = Math.max(nextValue, 0);
 
-    if (!this.isRenderSuspended() && nextValue === this.renderSuspendedCounter) {
+    if (
+      !this.isRenderSuspended() &&
+      nextValue === this.renderSuspendedCounter
+    ) {
       if (this.renderCall) {
         this.render();
       } else {
@@ -2047,7 +2054,7 @@ export default function Core(
    * @memberof Core#
    * @function render
    */
-  this.render = function() {
+  this.render = function () {
     if (this.view) {
       this.renderCall = true;
       this.forceFullRender = true; // used when data was changed
@@ -2086,7 +2093,7 @@ export default function Core(
    * });
    * ```
    */
-  this.batchRender = function(wrappedOperations) {
+  this.batchRender = function (wrappedOperations) {
     this.suspendRender();
 
     const result = wrappedOperations();
@@ -2105,7 +2112,7 @@ export default function Core(
    * @since 8.3.0
    * @returns {boolean}
    */
-  this.isExecutionSuspended = function() {
+  this.isExecutionSuspended = function () {
     return this.executionSuspendedCounter > 0;
   };
 
@@ -2131,7 +2138,7 @@ export default function Core(
    * hot.resumeExecution(); // It updates the cache internally
    * ```
    */
-  this.suspendExecution = function() {
+  this.suspendExecution = function () {
     this.executionSuspendedCounter += 1;
     this.columnIndexMapper.suspendOperations();
     this.rowIndexMapper.suspendOperations();
@@ -2163,12 +2170,16 @@ export default function Core(
    * hot.resumeExecution(); // It updates the cache internally
    * ```
    */
-  this.resumeExecution = function(forceFlushChanges = false) {
+  this.resumeExecution = function (forceFlushChanges = false) {
     const nextValue = this.executionSuspendedCounter - 1;
 
     this.executionSuspendedCounter = Math.max(nextValue, 0);
 
-    if ((!this.isExecutionSuspended() && nextValue === this.executionSuspendedCounter) || forceFlushChanges) {
+    if (
+      (!this.isExecutionSuspended() &&
+        nextValue === this.executionSuspendedCounter) ||
+      forceFlushChanges
+    ) {
       this.columnIndexMapper.resumeOperations();
       this.rowIndexMapper.resumeOperations();
     }
@@ -2200,7 +2211,10 @@ export default function Core(
    * });
    * ```
    */
-  this.batchExecution = function(wrappedOperations, forceFlushChanges = false) {
+  this.batchExecution = function (
+    wrappedOperations,
+    forceFlushChanges = false
+  ) {
     this.suspendExecution();
 
     const result = wrappedOperations();
@@ -2244,7 +2258,7 @@ export default function Core(
    * });
    * ```
    */
-  this.batch = function(wrappedOperations) {
+  this.batch = function (wrappedOperations) {
     this.suspendRender();
     this.suspendExecution();
 
@@ -3147,7 +3161,7 @@ export default function Core(
    * @param {string} [source] Source of the change as a string.
    */
   /* eslint-enable jsdoc/require-param */
-  this.setSourceDataAtCell = function(row, column, value, source) {
+  this.setSourceDataAtCell = function (row, column, value, source) {
     const input = setDataInputToArray(row, column, value);
     const isThereAnySetSourceListener = this.hasHook(
       "afterSetSourceDataAtCell"
@@ -4495,13 +4509,11 @@ export default function Core(
     // The plugin's `destroy` method is called as a consequence and it should handle
     // unregistration of plugin's maps. Some unregistered maps reset the cache.
     instance.batchExecution(() => {
-      pluginsRegistry
-        .getItems()
-        .forEach(([, plugin]) => {
-          plugin.destroy();
-        });
+      pluginsRegistry.getItems().forEach(([, plugin]) => {
+        plugin.destroy();
+      });
       pluginsRegistry.clear();
-      instance.runHooks('afterDestroy');
+      instance.runHooks("afterDestroy");
     }, true);
 
     Hooks.getSingleton().destroy(instance);
@@ -4568,11 +4580,11 @@ export default function Core(
    * @param {string} pluginName The plugin name.
    * @returns {BasePlugin|undefined} The plugin instance or undefined if there is no plugin.
    */
-  this.getPlugin = function(pluginName) {
+  this.getPlugin = function (pluginName) {
     const unifiedPluginName = toUpperCaseFirst(pluginName);
 
     // Workaround for the UndoRedo plugin which, currently doesn't follow the plugin architecture.
-    if (unifiedPluginName === 'UndoRedo') {
+    if (unifiedPluginName === "UndoRedo") {
       return this.undoRedo;
     }
 
@@ -4587,7 +4599,7 @@ export default function Core(
    * @param {BasePlugin} plugin The plugin instance.
    * @returns {string}
    */
-  this.getPluginName = function(plugin) {
+  this.getPluginName = function (plugin) {
     // Workaround for the UndoRedo plugin which, currently doesn't follow the plugin architecture.
     if (plugin === this.undoRedo) {
       return this.undoRedo.constructor.PLUGIN_KEY;
@@ -4828,5 +4840,5 @@ export default function Core(
     pluginsRegistry.addItem(pluginName, new PluginClass(this));
   });
 
-  Hooks.getSingleton().run(instance, 'construct');
+  Hooks.getSingleton().run(instance, "construct");
 }

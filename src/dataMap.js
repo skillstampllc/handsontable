@@ -1,5 +1,4 @@
-import { stringify } from './3rdparty/SheetClip';
-import SheetClip from "./../lib/SheetClip/SheetClip";
+import { stringify } from "./3rdparty/SheetClip";
 import { cellMethodLookupFactory, countFirstRowKeys } from "./helpers/data";
 import {
   createObjectPropListener,
@@ -310,10 +309,8 @@ class DataMap {
           /* eslint-disable no-loop-func */
           rangeEach(columnCount - 1, () => row.push(null));
         }
-
-      } else if (this.instance.dataType === 'function') {
+      } else if (this.instance.dataType === "function") {
         row = this.tableMeta.dataSchema(rowIndex + numberOfCreatedRows);
-
       } else {
         row = {};
         deepExtend(row, this.getSchema());
@@ -1032,7 +1029,9 @@ class DataMap {
    * @returns {string}
    */
   getCopyableText(start, end) {
-    return stringify(this.getRange(start, end, DataMap.DESTINATION_CLIPBOARD_GENERATOR));
+    return stringify(
+      this.getRange(start, end, DataMap.DESTINATION_CLIPBOARD_GENERATOR)
+    );
   }
 
   /**
