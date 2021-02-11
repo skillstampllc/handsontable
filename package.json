@@ -19,10 +19,6 @@
     "./languages/*"
   ],
   "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.js"
-    },
     "./base": {
       "import": "./base.mjs",
       "require": "./base.js"
