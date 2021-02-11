@@ -69,7 +69,7 @@ var ExpressionModifier = /*#__PURE__*/function () {
      *
      * @type {string}
      */
-    this.expression = '';
+    this.expression = "";
     /**
      * Extracted cells and cells ranges.
      *
@@ -85,7 +85,7 @@ var ExpressionModifier = /*#__PURE__*/function () {
 
     this.customModifier = null;
 
-    if (typeof expression === 'string') {
+    if (typeof expression === "string") {
       this.setExpression(expression);
     }
   }
@@ -152,11 +152,11 @@ var ExpressionModifier = /*#__PURE__*/function () {
       var startFrom = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       (0, _array.arrayEach)(this.cells, function (cell) {
         if (deltaRow !== null && deltaRow !== void 0) {
-          _this._translateCell(cell, 'row', deltaRow, startFrom.row);
+          _this._translateCell(cell, "row", deltaRow, startFrom.row);
         }
 
         if (deltaColumn !== null && deltaColumn !== void 0) {
-          _this._translateCell(cell, 'column', deltaColumn, startFrom.column);
+          _this._translateCell(cell, "column", deltaColumn, startFrom.column);
         }
       });
       return this;
@@ -173,7 +173,7 @@ var ExpressionModifier = /*#__PURE__*/function () {
       var _this2 = this;
 
       var expression = this.expression.replace(CELL_AND_RANGE_REGEX, function (match, p1, p2) {
-        var isSingleCell = match.indexOf(':') === -1;
+        var isSingleCell = match.indexOf(":") === -1;
         var result = match;
         var cellLabel = match;
         var translatedCellLabel = null;
@@ -197,7 +197,7 @@ var ExpressionModifier = /*#__PURE__*/function () {
         return result;
       });
 
-      if (!expression.startsWith('=')) {
+      if (!expression.startsWith("=")) {
         expression = "=".concat(expression);
       }
 
@@ -319,7 +319,7 @@ var ExpressionModifier = /*#__PURE__*/function () {
       }
 
       (0, _array.arrayEach)(matches, function (match) {
-        var _match$split = match.split(':'),
+        var _match$split = match.split(":"),
             _match$split2 = _slicedToArray(_match$split, 2),
             start = _match$split2[0],
             end = _match$split2[1];
@@ -382,12 +382,12 @@ var ExpressionModifier = /*#__PURE__*/function () {
         start: start,
         end: end,
         origLabel: label,
-        type: label.indexOf(':') === -1 ? 'cell' : 'range',
+        type: label.indexOf(":") === -1 ? "cell" : "range",
         refError: false,
         toLabel: function toLabel() {
           var newLabel = (0, _hotFormulaParser.toLabel)(this.start.row, this.start.column);
 
-          if (this.type === 'range') {
+          if (this.type === "range") {
             newLabel += ":".concat((0, _hotFormulaParser.toLabel)(this.end.row, this.end.column));
           }
 

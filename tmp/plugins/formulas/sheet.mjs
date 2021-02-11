@@ -5,7 +5,6 @@ import "core-js/modules/es.array.splice.js";
 import "core-js/modules/es.object.keys.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.promise.js";
-import "core-js/modules/es.string.trim.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 import "core-js/modules/web.timers.js";
 import "regenerator-runtime/runtime.js";
@@ -27,6 +26,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import { Parser, ERROR_REF, error as isFormulaError } from "hot-formula-parser";
+import { toNumber } from "hot-formula-parser/es/helper/number";
 import { arrayEach, arrayMap } from "../../helpers/array.mjs";
 import localHooks from "../../mixins/localHooks.mjs";
 import { mixin } from "../../helpers/object.mjs";
@@ -39,42 +39,11 @@ var STATE_UP_TO_DATE = 1;
 var STATE_NEED_REBUILD = 2;
 var STATE_NEED_FULL_REBUILD = 3;
 /**
- * Convert value into number.
- *
- * @param {String|Number} number
- * @returns {*}
- */
-
-var toNumber = function toNumber(number) {
-  var result;
-
-  if (typeof number === "boolean") {
-    result = number ? 1 : 0;
-  } else if (typeof number === "number") {
-    result = number;
-  } else if (typeof number === "string") {
-    if (number.toLowerCase() === "true") {
-      result = 1;
-    } else if (number.toLowerCase() === "false") {
-      result = 0;
-    } else if (number.trim() === "") {
-      result = 0;
-    } else {
-      result = number.indexOf(".") > -1 ? parseFloat(number) : parseInt(number, 10);
-    }
-  } else if (number === null || number === undefined) {
-    result = 0;
-  }
-
-  return result;
-};
-/**
  * Sheet component responsible for whole spreadsheet calculations.
  *
  * @class Sheet
  * @util
  */
-
 
 var Sheet = /*#__PURE__*/function () {
   function Sheet(hot, dataProvider) {

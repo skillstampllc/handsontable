@@ -1,8 +1,8 @@
-import { toLabel, extractLabel, error, ERROR_REF } from 'hot-formula-parser';
-import { arrayEach, arrayFilter } from '../../helpers/array';
-import { mixin } from '../../helpers/object';
-import localHooks from '../../mixins/localHooks';
-import { toUpperCaseFormula } from './utils';
+import { toLabel, extractLabel, error, ERROR_REF } from "hot-formula-parser";
+import { arrayEach, arrayFilter } from "../../helpers/array";
+import { mixin } from "../../helpers/object";
+import localHooks from "../../mixins/localHooks";
+import { toUpperCaseFormula } from "./utils";
 
 const BARE_CELL_STRICT_REGEX = /^\$?[A-Z]+\$?\d+$/;
 const BARE_CELL_REGEX = /\$?[A-Z]+\$?\d+/;
@@ -25,7 +25,7 @@ class ExpressionModifier {
      *
      * @type {string}
      */
-    this.expression = '';
+    this.expression = "";
     /**
      * Extracted cells and cells ranges.
      *
@@ -39,7 +39,7 @@ class ExpressionModifier {
      */
     this.customModifier = null;
 
-    if (typeof expression === 'string') {
+    if (typeof expression === "string") {
       this.setExpression(expression);
     }
   }
@@ -93,10 +93,10 @@ class ExpressionModifier {
   translate({ row: deltaRow, column: deltaColumn }, startFrom = {}) {
     arrayEach(this.cells, (cell) => {
       if (deltaRow !== null && deltaRow !== void 0) {
-        this._translateCell(cell, 'row', deltaRow, startFrom.row);
+        this._translateCell(cell, "row", deltaRow, startFrom.row);
       }
       if (deltaColumn !== null && deltaColumn !== void 0) {
-        this._translateCell(cell, 'column', deltaColumn, startFrom.column);
+        this._translateCell(cell, "column", deltaColumn, startFrom.column);
       }
     });
 
@@ -109,31 +109,36 @@ class ExpressionModifier {
    * @returns {string}
    */
   toString() {
-    let expression = this.expression.replace(CELL_AND_RANGE_REGEX, (match, p1, p2) => {
-      const isSingleCell = match.indexOf(':') === -1;
-      let result = match;
-      let cellLabel = match;
-      let translatedCellLabel = null;
-
-      if (isSingleCell) {
-        cellLabel = BARE_CELL_STRICT_REGEX.test(p1) ? p1 : p2;
-      }
-      const cell = this._searchCell(cellLabel);
-
-      if (cell) {
-        translatedCellLabel = cell.refError ? error(ERROR_REF) : cell.toLabel();
+    let expression = this.expression.replace(
+      CELL_AND_RANGE_REGEX,
+      (match, p1, p2) => {
+        const isSingleCell = match.indexOf(":") === -1;
+        let result = match;
+        let cellLabel = match;
+        let translatedCellLabel = null;
 
         if (isSingleCell) {
-          result = match.replace(cellLabel, translatedCellLabel);
-        } else {
-          result = translatedCellLabel;
+          cellLabel = BARE_CELL_STRICT_REGEX.test(p1) ? p1 : p2;
         }
+        const cell = this._searchCell(cellLabel);
+
+        if (cell) {
+          translatedCellLabel = cell.refError
+            ? error(ERROR_REF)
+            : cell.toLabel();
+
+          if (isSingleCell) {
+            result = match.replace(cellLabel, translatedCellLabel);
+          } else {
+            result = translatedCellLabel;
+          }
+        }
+
+        return result;
       }
+    );
 
-      return result;
-    });
-
-    if (!expression.startsWith('=')) {
+    if (!expression.startsWith("=")) {
       expression = `=${expression}`;
     }
 
@@ -159,7 +164,12 @@ class ExpressionModifier {
     let refError = false;
 
     if (this.customModifier) {
-      [deltaStart, deltaEnd, refError] = this.customModifier(cell, axis, delta, startFromIndex);
+      [deltaStart, deltaEnd, refError] = this.customModifier(
+        cell,
+        axis,
+        delta,
+        startFromIndex
+      );
     } else {
       // By default only relative cells are translated, if meets absolute reset deltas to 0
       if (start[axis].isAbsolute) {
@@ -206,7 +216,9 @@ class ExpressionModifier {
       }
       const [row, column] = extractLabel(cellCoords[0]);
 
-      this.cells.push(this._createCell({ row, column }, { row, column }, cellCoords[0]));
+      this.cells.push(
+        this._createCell({ row, column }, { row, column }, cellCoords[0])
+      );
     });
   }
 
@@ -222,7 +234,7 @@ class ExpressionModifier {
       return;
     }
     arrayEach(matches, (match) => {
-      const [start, end] = match.split(':');
+      const [start, end] = match.split(":");
       const [startRow, startColumn] = extractLabel(start);
       const [endRow, endColumn] = extractLabel(end);
       const startCell = {
@@ -246,7 +258,10 @@ class ExpressionModifier {
    * @private
    */
   _searchCell(label) {
-    const [cell] = arrayFilter(this.cells, cellMeta => cellMeta.origLabel === label);
+    const [cell] = arrayFilter(
+      this.cells,
+      (cellMeta) => cellMeta.origLabel === label
+    );
 
     return cell || null;
   }
@@ -265,17 +280,17 @@ class ExpressionModifier {
       start,
       end,
       origLabel: label,
-      type: label.indexOf(':') === -1 ? 'cell' : 'range',
+      type: label.indexOf(":") === -1 ? "cell" : "range",
       refError: false,
       toLabel() {
         let newLabel = toLabel(this.start.row, this.start.column);
 
-        if (this.type === 'range') {
+        if (this.type === "range") {
           newLabel += `:${toLabel(this.end.row, this.end.column)}`;
         }
 
         return newLabel;
-      }
+      },
     };
   }
 }
