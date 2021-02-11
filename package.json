@@ -11,9 +11,9 @@
   },
   "author": "Handsoncode <hello@handsontable.com>",
   "version": "8.3.1",
-  "main": "index",
-  "module": "index.mjs",
-  "jsnext:main": "index.mjs",
+  "main": "commonjs/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
   "sideEffects": [
     "**/*.css",
     "./languages/*"
