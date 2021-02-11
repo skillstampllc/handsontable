@@ -72,6 +72,7 @@ import {
 import { Selection } from "./selection";
 import { MetaManager, DataMap } from "./dataMap/index";
 import { createUniqueMap } from "./utils/dataStructures/uniqueMap";
+import { isFloat, isInt } from "./utils/parseNumber";
 
 let activeGuid = null;
 
@@ -1642,7 +1643,7 @@ export default function Core(
 
       if (newV && typeof newV === "string" && isFloat(newV)) {
         newV = parseFloat(newV);
-      } else if (newV && typeof newV === "string" && isInt(newV)) {
+      } else if (newV && typeof newV === "string" && Number.isInteger(newV)) {
         newV = parseInt(newV);
       }
 

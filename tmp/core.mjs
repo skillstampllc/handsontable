@@ -64,6 +64,7 @@ import { startObserving as keyStateStartObserving, stopObserving as keyStateStop
 import { Selection } from "./selection/index.mjs";
 import { MetaManager, DataMap } from "./dataMap/index.mjs";
 import { createUniqueMap } from "./utils/dataStructures/uniqueMap.mjs";
+import { isFloat, isInt } from "./utils/parseNumber.mjs";
 var activeGuid = null;
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -1454,7 +1455,7 @@ export default function Core(rootElement, userSettings) {
 
       if (newV && typeof newV === "string" && isFloat(newV)) {
         newV = parseFloat(newV);
-      } else if (newV && typeof newV === "string" && isInt(newV)) {
+      } else if (newV && typeof newV === "string" && Number.isInteger(newV)) {
         newV = parseInt(newV);
       }
 

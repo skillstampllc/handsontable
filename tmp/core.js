@@ -89,6 +89,8 @@ var _index = require("./dataMap/index");
 
 var _uniqueMap = require("./utils/dataStructures/uniqueMap");
 
+var _parseNumber = require("./utils/parseNumber");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1501,9 +1503,9 @@ function Core(rootElement, userSettings) {
       var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
       var newV = input[i][2];
 
-      if (newV && typeof newV === "string" && isFloat(newV)) {
+      if (newV && typeof newV === "string" && (0, _parseNumber.isFloat)(newV)) {
         newV = parseFloat(newV);
-      } else if (newV && typeof newV === "string" && isInt(newV)) {
+      } else if (newV && typeof newV === "string" && Number.isInteger(newV)) {
         newV = parseInt(newV);
       }
 
