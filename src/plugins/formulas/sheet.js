@@ -426,8 +426,8 @@ class Sheet {
       let number = !isNaN(toNumber(cellValue))
         ? toNumber(cellValue)
         : cellValue;
-      this._parsedCells[arguments[0].label] = cellValue;
-      done(cellValue);
+      this._parsedCells[arguments[0].label] = number;
+      done(number);
     }
   }
 
