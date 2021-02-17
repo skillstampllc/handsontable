@@ -177,15 +177,17 @@ class CellValue extends BaseCell {
               j <= parseInt(endCell[2]);
               j++
             ) {
-              let newCell = `${this.stringifyCol(i)}${j}`;
+              let newCell = `${this.stringifyCol(i)}${j}`.replace(/\$/g, "");
               if (!precedents[newCell]) {
                 precedents[newCell] = newCell;
               }
             }
           }
         } else {
-          if (!precedents[cell]) {
-            precedents[cell] = cell;
+          let newCell = cell.replace(/\$/g, "");
+
+          if (!precedents[newCell]) {
+            precedents[newCell] = newCell;
           }
         }
       });
