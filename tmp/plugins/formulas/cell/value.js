@@ -20,6 +20,8 @@ require("core-js/modules/es.regexp.exec.js");
 
 require("core-js/modules/es.string.match.js");
 
+require("core-js/modules/es.string.replace.js");
+
 require("core-js/modules/es.string.split.js");
 
 require("core-js/modules/web.dom-collections.for-each.js");
@@ -234,7 +236,7 @@ var CellValue = /*#__PURE__*/function (_BaseCell) {
 
             for (var i = _this2.parseCol(startCell[1]); i <= _this2.parseCol(endCell[1]); i++) {
               for (var j = parseInt(startCell[2]); j <= parseInt(endCell[2]); j++) {
-                var newCell = "".concat(_this2.stringifyCol(i)).concat(j);
+                var newCell = "".concat(_this2.stringifyCol(i)).concat(j).replace(/\$/g, "");
 
                 if (!precedents[newCell]) {
                   precedents[newCell] = newCell;
@@ -242,8 +244,10 @@ var CellValue = /*#__PURE__*/function (_BaseCell) {
               }
             }
           } else {
-            if (!precedents[cell]) {
-              precedents[cell] = cell;
+            var _newCell = cell.replace(/\$/g, "");
+
+            if (!precedents[_newCell]) {
+              precedents[_newCell] = _newCell;
             }
           }
         });
