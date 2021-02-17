@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 17/02/2021 10:44:17)
+ * Release date: 10/02/2021 (built at 17/02/2021 11:58:24)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -40922,7 +40922,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "17/02/2021 10:44:17";
+Handsontable.buildDate = "17/02/2021 11:58:24";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -89375,8 +89375,8 @@ var Sheet = /*#__PURE__*/function () {
         done(result);
       } else {
         var number = !isNaN((0, _number.toNumber)(cellValue)) ? (0, _number.toNumber)(cellValue) : cellValue;
-        this._parsedCells[arguments[0].label] = cellValue;
-        done(cellValue);
+        this._parsedCells[arguments[0].label] = number;
+        done(number);
       }
     }
     /**

@@ -669,8 +669,8 @@ var Sheet = /*#__PURE__*/function () {
         done(result);
       } else {
         var number = !isNaN((0, _number.toNumber)(cellValue)) ? (0, _number.toNumber)(cellValue) : cellValue;
-        this._parsedCells[arguments[0].label] = cellValue;
-        done(cellValue);
+        this._parsedCells[arguments[0].label] = number;
+        done(number);
       }
     }
     /**

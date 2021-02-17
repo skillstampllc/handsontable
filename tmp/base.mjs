@@ -22,7 +22,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "17/02/2021 10:43:57";
+Handsontable.buildDate = "17/02/2021 11:58:07";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: dictionaryKeys,
