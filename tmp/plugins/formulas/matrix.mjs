@@ -231,12 +231,14 @@ var Matrix = /*#__PURE__*/function () {
         }
       });
       result.forEach(function (parentCell) {
-        result.push.apply(result, _toConsumableArray(_this2.getDependenciesCustom([parentCell.row, parentCell.column])));
+        if (parentCell.row != cellCoord[0] || parentCell.column != cellCoord[1]) {
+          result.push.apply(result, _toConsumableArray(_this2.getDependenciesCustom([parentCell.row, parentCell.column])));
+        }
       });
       return distinctFilter(result);
     }
     /**
-     * 
+     *
      */
 
   }, {
@@ -253,11 +255,11 @@ var Matrix = /*#__PURE__*/function () {
   }, {
     key: "stringifyCol",
     value: function stringifyCol(value) {
-      if (typeof value === 'string') {
+      if (typeof value === "string") {
         return value;
       }
 
-      var col = '';
+      var col = "";
 
       while (value >= 0) {
         if (value / 26 >= 1) {

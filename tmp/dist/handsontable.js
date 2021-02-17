@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 11/02/2021 16:54:27)
+ * Release date: 10/02/2021 (built at 17/02/2021 10:44:17)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -40922,7 +40922,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "11/02/2021 16:54:27";
+Handsontable.buildDate = "17/02/2021 10:44:17";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -90429,12 +90429,14 @@ var Matrix = /*#__PURE__*/function () {
         }
       });
       result.forEach(function (parentCell) {
-        result.push.apply(result, (0, _toConsumableArray2.default)(_this2.getDependenciesCustom([parentCell.row, parentCell.column])));
+        if (parentCell.row != cellCoord[0] || parentCell.column != cellCoord[1]) {
+          result.push.apply(result, (0, _toConsumableArray2.default)(_this2.getDependenciesCustom([parentCell.row, parentCell.column])));
+        }
       });
       return distinctFilter(result);
     }
     /**
-     * 
+     *
      */
 
   }, {
@@ -90451,11 +90453,11 @@ var Matrix = /*#__PURE__*/function () {
   }, {
     key: "stringifyCol",
     value: function stringifyCol(value) {
-      if (typeof value === 'string') {
+      if (typeof value === "string") {
         return value;
       }
 
-      var col = '';
+      var col = "";
 
       while (value >= 0) {
         if (value / 26 >= 1) {
