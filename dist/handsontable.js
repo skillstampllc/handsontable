@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 26/02/2021 14:28:41)
+ * Release date: 10/02/2021 (built at 26/02/2021 15:13:15)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -40926,7 +40926,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "26/02/2021 14:28:41";
+Handsontable.buildDate = "26/02/2021 15:13:15";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -90077,7 +90077,7 @@ module.exports = _asyncToGenerator;
 
 /***/ }),
 /* 642 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -90090,7 +90090,7 @@ __webpack_require__.r(__webpack_exports__);
  * @returns {*}
  */
 function toNumber(number) {
-  var result = void 0;
+  var result;
 
   if (typeof number === 'boolean') {
     result = number ? 1 : 0;
@@ -90112,13 +90112,13 @@ function toNumber(number) {
 
   return result;
 }
-
 /**
  * Invert provided number.
  *
  * @param {Number} number
  * @returns {Number} Returns inverted number.
  */
+
 function invertNumber(number) {
   return -1 * toNumber(number);
 }
