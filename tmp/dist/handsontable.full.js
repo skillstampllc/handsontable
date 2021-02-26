@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 26/02/2021 15:43:36)
+ * Release date: 10/02/2021 (built at 26/02/2021 16:04:54)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -56928,7 +56928,7 @@ var Parser = /*#__PURE__*/function (_Emitter) {
           var match = expression.match(new RegExp(/IF\((.*),(.*),(.*)\)/));
 
           for (var _i = 0, _arr = [1, 2, 3]; _i < _arr.length; _i++) {
-            i = _arr[_i];
+            var i = _arr[_i];
             expression = expression.replace(match[i], "\"".concat(match[i].replaceAll('"', "'"), "\""));
           }
 
@@ -64416,7 +64416,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "26/02/2021 15:43:36";
+Handsontable.buildDate = "26/02/2021 16:04:54";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
