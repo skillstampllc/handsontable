@@ -1,5 +1,6 @@
-import { arrayEach, arrayFilter, arrayReduce } from "../../helpers/array";
+import { arrayEach, arrayFilter, arrayReduce, dynamicSort, dynamicSortMultiple, binarySearch } from "../../helpers/array";
 import CellValue from "./cell/value";
+
 
 /**
  * This component is responsible for storing all calculated cells which contain formula expressions (CellValue) and
@@ -47,13 +48,16 @@ class Matrix {
   getCellAt(row, column) {
     let result = null;
 
-    arrayEach(this.data, (cell) => {
-      if (cell.row === row && cell.column === column) {
-        result = cell;
-
-        return false;
-      }
-    });
+    if(window.binary) {
+      result = binarySearch(this.data, row, column);
+    } else {
+      arrayEach(this.data, function (cell) {
+        if (cell.row === row && cell.column === column) {
+          result = cell;
+          return false;
+        }
+      });
+    }
 
     return result;
   }
@@ -78,6 +82,14 @@ class Matrix {
     if (!arrayFilter(this.data, (cell) => cell.isEqual(cellValue)).length) {
       this.data.push(cellValue);
     }
+  }
+
+  /**
+   * Sort data array.
+   *
+   */
+   sort() {
+    this.data.sort(dynamicSortMultiple("row", "col"));
   }
 
   /**

@@ -194,7 +194,7 @@ export function arrayEach(array, iteratee) {
  * @returns {number} Returns calculated sum value.
  */
 export function arraySum(array) {
-  return arrayReduce(array, (a, b) => (a + b), 0);
+  return arrayReduce(array, (a, b) => a + b, 0);
 }
 
 /**
@@ -205,7 +205,11 @@ export function arraySum(array) {
  * @returns {number} Returns the highest value from an array.
  */
 export function arrayMax(array) {
-  return arrayReduce(array, (a, b) => (a > b ? a : b), Array.isArray(array) ? array[0] : void 0);
+  return arrayReduce(
+    array,
+    (a, b) => (a > b ? a : b),
+    Array.isArray(array) ? array[0] : void 0
+  );
 }
 
 /**
@@ -216,7 +220,11 @@ export function arrayMax(array) {
  * @returns {number} Returns the lowest value from an array.
  */
 export function arrayMin(array) {
-  return arrayReduce(array, (a, b) => (a < b ? a : b), Array.isArray(array) ? array[0] : void 0);
+  return arrayReduce(
+    array,
+    (a, b) => (a < b ? a : b),
+    Array.isArray(array) ? array[0] : void 0
+  );
 }
 
 /**
@@ -240,7 +248,12 @@ export function arrayAvg(array) {
  * @returns {Array}
  */
 export function arrayFlatten(array) {
-  return arrayReduce(array, (initial, value) => initial.concat(Array.isArray(value) ? arrayFlatten(value) : value), []);
+  return arrayReduce(
+    array,
+    (initial, value) =>
+      initial.concat(Array.isArray(value) ? arrayFlatten(value) : value),
+    []
+  );
 }
 
 /**
@@ -272,7 +285,9 @@ export function getDifferenceOfArrays(...arrays) {
   let filteredFirstArray = first;
 
   arrayEach(rest, (array) => {
-    filteredFirstArray = filteredFirstArray.filter(value => !array.includes(value));
+    filteredFirstArray = filteredFirstArray.filter(
+      (value) => !array.includes(value)
+    );
   });
 
   return filteredFirstArray;
@@ -289,7 +304,9 @@ export function getIntersectionOfArrays(...arrays) {
   let filteredFirstArray = first;
 
   arrayEach(rest, (array) => {
-    filteredFirstArray = filteredFirstArray.filter(value => array.includes(value));
+    filteredFirstArray = filteredFirstArray.filter((value) =>
+      array.includes(value)
+    );
   });
 
   return filteredFirstArray;
@@ -323,6 +340,63 @@ export function getUnionOfArrays(...arrays) {
  * @param {string|RegExp} delimiter The pattern describing where each split should occur.
  * @returns {string[]} Returns array of string or empty array.
  */
-export function stringToArray(value, delimiter = ' ') {
+export function stringToArray(value, delimiter = " ") {
   return value.split(delimiter);
+}
+
+export function dynamicSort(property) {
+  return function (obj1, obj2) {
+    return obj1[property] > obj2[property]
+      ? 1
+      : obj1[property] < obj2[property]
+      ? -1
+      : 0;
+  };
+}
+
+export function dynamicSortMultiple() {
+  /*
+   * save the arguments object as it will be overwritten
+   * note that arguments object is an array-like object
+   * consisting of the names of the properties to sort by
+   */
+  var props = arguments;
+  return function (obj1, obj2) {
+    var i = 0,
+      result = 0,
+      numberOfProperties = props.length;
+    /* try getting a different result from 0 (equal)
+     * as long as we have extra properties to compare
+     */
+    while (result === 0 && i < numberOfProperties) {
+      result = dynamicSort(props[i])(obj1, obj2);
+      i++;
+    }
+    return result;
+  };
+}
+
+export function binarySearch(sortedArray, row, col) {
+  let start = 0;
+  let end = sortedArray.length - 1;
+
+  while (start <= end) {
+    let middle = Math.floor((start + end) / 2);
+
+    if (sortedArray[middle].row === row && sortedArray[middle].column === col) {
+      // found the key
+      return sortedArray[middle];
+    } else if (
+      sortedArray[middle].row < row ||
+      (sortedArray[middle].row === row && sortedArray[middle].column < col)
+    ) {
+      // continue searching to the right
+      start = middle + 1;
+    } else {
+      // search searching to the left
+      end = middle - 1;
+    }
+  }
+  // key wasn't found
+  return null;
 }
