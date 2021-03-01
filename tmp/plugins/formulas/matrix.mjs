@@ -3,6 +3,7 @@ import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.array.for-each.js";
 import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.array.reverse.js";
+import "core-js/modules/es.array.sort.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -23,7 +24,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { arrayEach, arrayFilter, arrayReduce } from "../../helpers/array.mjs";
+import { arrayEach, arrayFilter, arrayReduce, dynamicSort, dynamicSortMultiple, binarySearch } from "../../helpers/array.mjs";
 import CellValue from "./cell/value.mjs";
 /**
  * This component is responsible for storing all calculated cells which contain formula expressions (CellValue) and
@@ -78,12 +79,18 @@ var Matrix = /*#__PURE__*/function () {
     key: "getCellAt",
     value: function getCellAt(row, column) {
       var result = null;
-      arrayEach(this.data, function (cell) {
-        if (cell.row === row && cell.column === column) {
-          result = cell;
-          return false;
-        }
-      });
+
+      if (window.binary) {
+        result = binarySearch(this.data, row, column);
+      } else {
+        arrayEach(this.data, function (cell) {
+          if (cell.row === row && cell.column === column) {
+            result = cell;
+            return false;
+          }
+        });
+      }
+
       return result;
     }
     /**
@@ -113,6 +120,16 @@ var Matrix = /*#__PURE__*/function () {
       }).length) {
         this.data.push(cellValue);
       }
+    }
+    /**
+     * Sort data array.
+     *
+     */
+
+  }, {
+    key: "sort",
+    value: function sort() {
+      this.data.sort(dynamicSortMultiple("row", "col"));
     }
     /**
      * Remove cell value from the collection.

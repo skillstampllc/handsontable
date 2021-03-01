@@ -364,6 +364,56 @@ export function getUnionOfArrays() {
  */
 
 export function stringToArray(value) {
-  var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
+  var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : " ";
   return value.split(delimiter);
+}
+export function dynamicSort(property) {
+  return function (obj1, obj2) {
+    return obj1[property] > obj2[property] ? 1 : obj1[property] < obj2[property] ? -1 : 0;
+  };
+}
+export function dynamicSortMultiple() {
+  /*
+   * save the arguments object as it will be overwritten
+   * note that arguments object is an array-like object
+   * consisting of the names of the properties to sort by
+   */
+  var props = arguments;
+  return function (obj1, obj2) {
+    var i = 0,
+        result = 0,
+        numberOfProperties = props.length;
+    /* try getting a different result from 0 (equal)
+     * as long as we have extra properties to compare
+     */
+
+    while (result === 0 && i < numberOfProperties) {
+      result = dynamicSort(props[i])(obj1, obj2);
+      i++;
+    }
+
+    return result;
+  };
+}
+export function binarySearch(sortedArray, row, col) {
+  var start = 0;
+  var end = sortedArray.length - 1;
+
+  while (start <= end) {
+    var middle = Math.floor((start + end) / 2);
+
+    if (sortedArray[middle].row === row && sortedArray[middle].column === col) {
+      // found the key
+      return sortedArray[middle];
+    } else if (sortedArray[middle].row < row || sortedArray[middle].row === row && sortedArray[middle].column < col) {
+      // continue searching to the right
+      start = middle + 1;
+    } else {
+      // search searching to the left
+      end = middle - 1;
+    }
+  } // key wasn't found
+
+
+  return null;
 }

@@ -10,6 +10,8 @@ require("core-js/modules/es.array.index-of.js");
 
 require("core-js/modules/es.array.reverse.js");
 
+require("core-js/modules/es.array.sort.js");
+
 require("core-js/modules/web.dom-collections.for-each.js");
 
 exports.__esModule = true;
@@ -91,12 +93,18 @@ var Matrix = /*#__PURE__*/function () {
     key: "getCellAt",
     value: function getCellAt(row, column) {
       var result = null;
-      (0, _array.arrayEach)(this.data, function (cell) {
-        if (cell.row === row && cell.column === column) {
-          result = cell;
-          return false;
-        }
-      });
+
+      if (window.binary) {
+        result = (0, _array.binarySearch)(this.data, row, column);
+      } else {
+        (0, _array.arrayEach)(this.data, function (cell) {
+          if (cell.row === row && cell.column === column) {
+            result = cell;
+            return false;
+          }
+        });
+      }
+
       return result;
     }
     /**
@@ -126,6 +134,16 @@ var Matrix = /*#__PURE__*/function () {
       }).length) {
         this.data.push(cellValue);
       }
+    }
+    /**
+     * Sort data array.
+     *
+     */
+
+  }, {
+    key: "sort",
+    value: function sort() {
+      this.data.sort((0, _array.dynamicSortMultiple)("row", "col"));
     }
     /**
      * Remove cell value from the collection.
