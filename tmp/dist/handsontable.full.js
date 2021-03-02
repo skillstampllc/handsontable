@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 01/03/2021 16:03:18)
+ * Release date: 10/02/2021 (built at 02/03/2021 11:01:47)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -56973,8 +56973,10 @@ var Parser = /*#__PURE__*/function (_Emitter) {
 
           for (var _i = 0, _arr = [1, 2]; _i < _arr.length; _i++) {
             var i = _arr[_i];
-            expression = expression.replace(match[i], '"'.concat(match[i].replaceAll('"', "'"), '"'));
+            match[i] = "\"".concat(match[i].replaceAll('"', "'"), "\"");
           }
+
+          expression = "IFERROR(".concat(match[1], ",").concat(match[2], ")");
 
           try {
             result = this.parser.parse(expression);
@@ -56990,8 +56992,10 @@ var Parser = /*#__PURE__*/function (_Emitter) {
 
           for (var _i2 = 0, _arr2 = [1, 2, 3]; _i2 < _arr2.length; _i2++) {
             var _i3 = _arr2[_i2];
-            expression = expression.replace(_match[_i3], "\"".concat(_match[_i3].replaceAll('"', "'"), "\""));
+            _match[_i3] = "\"".concat(_match[_i3].replaceAll('"', "'"), "\"");
           }
+
+          expression = "IF(".concat(_match[1], ",").concat(_match[2], ", ").concat(_match[1], ")");
 
           try {
             result = this.parser.parse(expression);
@@ -64477,7 +64481,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "01/03/2021 16:03:18";
+Handsontable.buildDate = "02/03/2021 11:01:47";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
