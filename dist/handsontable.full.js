@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 02/03/2021 11:01:47)
+ * Release date: 10/02/2021 (built at 02/03/2021 14:14:48)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -64481,7 +64481,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "02/03/2021 11:01:47";
+Handsontable.buildDate = "02/03/2021 14:14:48";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -114342,11 +114342,12 @@ var Sheet = /*#__PURE__*/function () {
       this.matrix.remove({
         row: row,
         column: column
-      }); // TODO: Move this to recalculate()
+      });
+      var newCell = new _value.default(row, column); // TODO: Move this to recalculate()
 
       if ((0, _utils.isFormulaExpression)(newValue)) {
         // ...and create new for new changed formula expression
-        this.parseExpression(new _value.default(row, column), newValue.substr(1));
+        this.parseExpression(newCell, newValue.substr(1));
       }
 
       var deps = [];
@@ -114356,6 +114357,7 @@ var Sheet = /*#__PURE__*/function () {
         deps = this.getCellDependencies(this.hot.toVisualRow(row), this.hot.toVisualColumn(column));
       }
 
+      newCell.setState(_value.default.STATE_OUT_OFF_DATE);
       (0, _array.arrayEach)(deps, function (cellValue) {
         cellValue.setState(_value.default.STATE_OUT_OFF_DATE);
       });

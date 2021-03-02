@@ -292,11 +292,11 @@ class Sheet {
     // Remove formula description for old expression
     // TODO: Move this to recalculate()
     this.matrix.remove({ row, column });
-
+    let newCell = new CellValue(row, column);
     // TODO: Move this to recalculate()
     if (isFormulaExpression(newValue)) {
       // ...and create new for new changed formula expression
-      this.parseExpression(new CellValue(row, column), newValue.substr(1));
+      this.parseExpression(newCell, newValue.substr(1));
     }
 
     var deps = [];
@@ -312,6 +312,7 @@ class Sheet {
       );
     }
 
+    newCell.setState(CellValue.STATE_OUT_OFF_DATE);
     arrayEach(deps, (cellValue) => {
       cellValue.setState(CellValue.STATE_OUT_OFF_DATE);
     });

@@ -534,11 +534,12 @@ var Sheet = /*#__PURE__*/function () {
       this.matrix.remove({
         row: row,
         column: column
-      }); // TODO: Move this to recalculate()
+      });
+      var newCell = new _value.default(row, column); // TODO: Move this to recalculate()
 
       if ((0, _utils.isFormulaExpression)(newValue)) {
         // ...and create new for new changed formula expression
-        this.parseExpression(new _value.default(row, column), newValue.substr(1));
+        this.parseExpression(newCell, newValue.substr(1));
       }
 
       var deps = [];
@@ -548,6 +549,7 @@ var Sheet = /*#__PURE__*/function () {
         deps = this.getCellDependencies(this.hot.toVisualRow(row), this.hot.toVisualColumn(column));
       }
 
+      newCell.setState(_value.default.STATE_OUT_OFF_DATE);
       (0, _array.arrayEach)(deps, function (cellValue) {
         cellValue.setState(_value.default.STATE_OUT_OFF_DATE);
       });
