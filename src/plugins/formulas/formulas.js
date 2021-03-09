@@ -1,7 +1,7 @@
-import { BasePlugin } from '../base';
-import { arrayEach } from '../../helpers/array';
-import { isObject, objectEach } from '../../helpers/object';
-import EventManager from '../../eventManager';
+import { BasePlugin } from "../base";
+import { arrayEach } from "../../helpers/array";
+import { isObject, objectEach } from "../../helpers/object";
+import EventManager from "../../eventManager";
 import {
   isFormulaExpression,
   toUpperCaseFormula,
@@ -13,7 +13,7 @@ import DataProvider from "./dataProvider";
 import UndoRedoSnapshot from "./undoRedoSnapshot";
 import CellValue from "./cell/value";
 
-export const PLUGIN_KEY = 'formulas';
+export const PLUGIN_KEY = "formulas";
 export const PLUGIN_PRIORITY = 260;
 
 /**

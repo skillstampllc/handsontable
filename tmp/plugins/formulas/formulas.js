@@ -65,7 +65,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var PLUGIN_KEY = 'formulas';
+var PLUGIN_KEY = "formulas";
 exports.PLUGIN_KEY = PLUGIN_KEY;
 var PLUGIN_PRIORITY = 260;
 /**

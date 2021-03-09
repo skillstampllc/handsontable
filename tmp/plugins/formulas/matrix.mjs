@@ -79,6 +79,7 @@ var Matrix = /*#__PURE__*/function () {
     key: "getCellAt",
     value: function getCellAt(row, column) {
       var result = null;
+      window.binary = true;
 
       if (window.binary) {
         result = binarySearch(this.data, row, column);

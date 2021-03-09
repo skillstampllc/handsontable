@@ -45,7 +45,7 @@ import Sheet from "./sheet.mjs";
 import DataProvider from "./dataProvider.mjs";
 import UndoRedoSnapshot from "./undoRedoSnapshot.mjs";
 import CellValue from "./cell/value.mjs";
-export var PLUGIN_KEY = 'formulas';
+export var PLUGIN_KEY = "formulas";
 export var PLUGIN_PRIORITY = 260;
 /**
  * The formulas plugin.

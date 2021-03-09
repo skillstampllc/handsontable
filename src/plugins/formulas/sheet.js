@@ -213,6 +213,7 @@ class Sheet {
               this.hot.render();
               this._state = STATE_UP_TO_DATE;
               this._parsedCells = {};
+              this.matrix.sort();
               this.runLocalHooks("afterRecalculate", cells, "optimized");
               resolve();
             }, 10);
@@ -222,6 +223,7 @@ class Sheet {
     } else {
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
+      this.matrix.sort();
       this.runLocalHooks("afterRecalculate", cells, "optimized");
     }
   }
@@ -258,6 +260,8 @@ class Sheet {
 
     this._state = STATE_UP_TO_DATE;
     this._parsedCells = {};
+
+    this.matrix.sort();
     this.runLocalHooks("afterRecalculate", cells, "full");
   }
 

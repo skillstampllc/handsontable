@@ -1,6 +1,12 @@
-import { arrayEach, arrayFilter, arrayReduce, dynamicSort, dynamicSortMultiple, binarySearch } from "../../helpers/array";
+import {
+  arrayEach,
+  arrayFilter,
+  arrayReduce,
+  dynamicSort,
+  dynamicSortMultiple,
+  binarySearch,
+} from "../../helpers/array";
 import CellValue from "./cell/value";
-
 
 /**
  * This component is responsible for storing all calculated cells which contain formula expressions (CellValue) and
@@ -48,7 +54,8 @@ class Matrix {
   getCellAt(row, column) {
     let result = null;
 
-    if(window.binary) {
+    window.binary = true;
+    if (window.binary) {
       result = binarySearch(this.data, row, column);
     } else {
       arrayEach(this.data, function (cell) {
@@ -88,7 +95,7 @@ class Matrix {
    * Sort data array.
    *
    */
-   sort() {
+  sort() {
     this.data.sort(dynamicSortMultiple("row", "col"));
   }
 

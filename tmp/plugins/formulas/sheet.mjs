@@ -1,6 +1,7 @@
 import "core-js/modules/es.array.find-index.js";
 import "core-js/modules/es.array.for-each.js";
 import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.sort.js";
 import "core-js/modules/es.array.splice.js";
 import "core-js/modules/es.object.keys.js";
 import "core-js/modules/es.object.to-string.js";
@@ -416,6 +417,8 @@ var Sheet = /*#__PURE__*/function () {
                       _this2._state = STATE_UP_TO_DATE;
                       _this2._parsedCells = {};
 
+                      _this2.matrix.sort();
+
                       _this2.runLocalHooks("afterRecalculate", cells, "optimized");
 
                       resolve();
@@ -433,6 +436,7 @@ var Sheet = /*#__PURE__*/function () {
       } else {
         this._state = STATE_UP_TO_DATE;
         this._parsedCells = {};
+        this.matrix.sort();
         this.runLocalHooks("afterRecalculate", cells, "optimized");
       }
     }
@@ -466,6 +470,7 @@ var Sheet = /*#__PURE__*/function () {
       });
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
+      this.matrix.sort();
       this.runLocalHooks("afterRecalculate", cells, "full");
     }
     /**
