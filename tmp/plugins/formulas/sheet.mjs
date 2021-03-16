@@ -26,8 +26,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { Parser, ERROR_REF, error as isFormulaError } from "hot-formula-parser";
-import { toNumber } from "hot-formula-parser/es/helper/number";
+/* eslint-disable */
+import { Parser, ERROR_REF, error as isFormulaError } from 'hot-formula-parser';
+import { toNumber } from 'hot-formula-parser/es/helper/number';
 import { arrayEach, arrayMap } from "../../helpers/array.mjs";
 import localHooks from "../../mixins/localHooks.mjs";
 import { mixin } from "../../helpers/object.mjs";
@@ -116,13 +117,13 @@ var Sheet = /*#__PURE__*/function () {
      */
 
     this._state = STATE_NEED_FULL_REBUILD;
-    this.parser.on("callCellValue", function () {
+    this.parser.on('callCellValue', function () {
       return _this._onCallCellValue.apply(_this, arguments);
     });
-    this.parser.on("callRangeValue", function () {
+    this.parser.on('callRangeValue', function () {
       return _this._onCallRangeValue.apply(_this, arguments);
     });
-    this.alterManager.addLocalHook("afterAlter", function () {
+    this.alterManager.addLocalHook('afterAlter', function () {
       return _this._onAfterAlter.apply(_this, arguments);
     });
   }
@@ -149,6 +150,8 @@ var Sheet = /*#__PURE__*/function () {
     }
     /**
      * AsyncPromises.
+     *
+     * @param PromisesList
      */
 
   }, {
@@ -258,14 +261,16 @@ var Sheet = /*#__PURE__*/function () {
       }());
     }
     /**
-     * sortCellsByUsed.
+     * SortCellsByUsed.
+     *
+     * @param cells
      */
 
   }, {
     key: "sortCellsByUsed",
     value: function sortCellsByUsed(cells) {
       var result = [];
-      var used = "";
+      var used = '';
       cells.forEach(function (cell) {
         if (used.indexOf(cell.key) > -1) {
           var index = result.findIndex(function (resultCell) {
@@ -276,7 +281,7 @@ var Sheet = /*#__PURE__*/function () {
           result.push(cell);
         }
 
-        used += "__" + cell.precedentsListString;
+        used += "__".concat(cell.precedentsListString);
       });
       return result;
     }
@@ -359,6 +364,7 @@ var Sheet = /*#__PURE__*/function () {
 
       if (!cells.length) {
         this._state = STATE_UP_TO_DATE;
+        this.hot.render();
         return;
       }
 
@@ -419,7 +425,7 @@ var Sheet = /*#__PURE__*/function () {
 
                       _this2.matrix.sort();
 
-                      _this2.runLocalHooks("afterRecalculate", cells, "optimized");
+                      _this2.runLocalHooks('afterRecalculate', cells, 'optimized');
 
                       resolve();
                     }, 10);
@@ -437,7 +443,7 @@ var Sheet = /*#__PURE__*/function () {
         this._state = STATE_UP_TO_DATE;
         this._parsedCells = {};
         this.matrix.sort();
-        this.runLocalHooks("afterRecalculate", cells, "optimized");
+        this.runLocalHooks('afterRecalculate', cells, 'optimized');
       }
     }
     /**
@@ -471,7 +477,7 @@ var Sheet = /*#__PURE__*/function () {
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
       this.matrix.sort();
-      this.runLocalHooks("afterRecalculate", cells, "full");
+      this.runLocalHooks('afterRecalculate', cells, 'full');
     }
     /**
      * Set predefined variable name which can be visible while parsing formula expression.
@@ -563,7 +569,7 @@ var Sheet = /*#__PURE__*/function () {
         cellValue.setState(CellValue.STATE_UP_TO_DATE);
       }
 
-      cellValue.setPrecedents("=" + toUpperCaseFormula(formula));
+      cellValue.setPrecedents("=".concat(toUpperCaseFormula(formula)));
       this.matrix.add(cellValue);
       this._processingCell = null;
       return result;

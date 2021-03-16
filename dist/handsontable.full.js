@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 16/03/2021 13:13:36)
+ * Release date: 10/02/2021 (built at 16/03/2021 14:58:52)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -64481,7 +64481,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "16/03/2021 13:13:36";
+Handsontable.buildDate = "16/03/2021 14:58:52";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -113951,13 +113951,13 @@ var Sheet = /*#__PURE__*/function () {
      */
 
     this._state = STATE_NEED_FULL_REBUILD;
-    this.parser.on("callCellValue", function () {
+    this.parser.on('callCellValue', function () {
       return _this._onCallCellValue.apply(_this, arguments);
     });
-    this.parser.on("callRangeValue", function () {
+    this.parser.on('callRangeValue', function () {
       return _this._onCallRangeValue.apply(_this, arguments);
     });
-    this.alterManager.addLocalHook("afterAlter", function () {
+    this.alterManager.addLocalHook('afterAlter', function () {
       return _this._onAfterAlter.apply(_this, arguments);
     });
   }
@@ -113984,6 +113984,8 @@ var Sheet = /*#__PURE__*/function () {
     }
     /**
      * AsyncPromises.
+     *
+     * @param PromisesList
      */
 
   }, {
@@ -114093,14 +114095,16 @@ var Sheet = /*#__PURE__*/function () {
       }());
     }
     /**
-     * sortCellsByUsed.
+     * SortCellsByUsed.
+     *
+     * @param cells
      */
 
   }, {
     key: "sortCellsByUsed",
     value: function sortCellsByUsed(cells) {
       var result = [];
-      var used = "";
+      var used = '';
       cells.forEach(function (cell) {
         if (used.indexOf(cell.key) > -1) {
           var index = result.findIndex(function (resultCell) {
@@ -114111,7 +114115,7 @@ var Sheet = /*#__PURE__*/function () {
           result.push(cell);
         }
 
-        used += "__" + cell.precedentsListString;
+        used += "__".concat(cell.precedentsListString);
       });
       return result;
     }
@@ -114194,6 +114198,7 @@ var Sheet = /*#__PURE__*/function () {
 
       if (!cells.length) {
         this._state = STATE_UP_TO_DATE;
+        this.hot.render();
         return;
       }
 
@@ -114254,7 +114259,7 @@ var Sheet = /*#__PURE__*/function () {
 
                       _this2.matrix.sort();
 
-                      _this2.runLocalHooks("afterRecalculate", cells, "optimized");
+                      _this2.runLocalHooks('afterRecalculate', cells, 'optimized');
 
                       resolve();
                     }, 10);
@@ -114272,7 +114277,7 @@ var Sheet = /*#__PURE__*/function () {
         this._state = STATE_UP_TO_DATE;
         this._parsedCells = {};
         this.matrix.sort();
-        this.runLocalHooks("afterRecalculate", cells, "optimized");
+        this.runLocalHooks('afterRecalculate', cells, 'optimized');
       }
     }
     /**
@@ -114306,7 +114311,7 @@ var Sheet = /*#__PURE__*/function () {
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
       this.matrix.sort();
-      this.runLocalHooks("afterRecalculate", cells, "full");
+      this.runLocalHooks('afterRecalculate', cells, 'full');
     }
     /**
      * Set predefined variable name which can be visible while parsing formula expression.
@@ -114398,7 +114403,7 @@ var Sheet = /*#__PURE__*/function () {
         cellValue.setState(_value.default.STATE_UP_TO_DATE);
       }
 
-      cellValue.setPrecedents("=" + (0, _utils.toUpperCaseFormula)(formula));
+      cellValue.setPrecedents("=".concat((0, _utils.toUpperCaseFormula)(formula)));
       this.matrix.add(cellValue);
       this._processingCell = null;
       return result;

@@ -1,13 +1,14 @@
-import { Parser, ERROR_REF, error as isFormulaError } from "hot-formula-parser";
-import { toNumber } from "hot-formula-parser/es/helper/number";
-import { arrayEach, arrayMap } from "../../helpers/array";
-import localHooks from "../../mixins/localHooks";
-import { mixin } from "../../helpers/object";
-import CellValue from "./cell/value";
-import CellReference from "./cell/reference";
-import { isFormulaExpression, toUpperCaseFormula } from "./utils";
-import Matrix from "./matrix";
-import AlterManager from "./alterManager";
+/* eslint-disable */
+import { Parser, ERROR_REF, error as isFormulaError } from 'hot-formula-parser';
+import { toNumber } from 'hot-formula-parser/es/helper/number';
+import { arrayEach, arrayMap } from '../../helpers/array';
+import localHooks from '../../mixins/localHooks';
+import { mixin } from '../../helpers/object';
+import CellValue from './cell/value';
+import CellReference from './cell/reference';
+import { isFormulaExpression, toUpperCaseFormula } from './utils';
+import Matrix from './matrix';
+import AlterManager from './alterManager';
 
 const STATE_UP_TO_DATE = 1;
 const STATE_NEED_REBUILD = 2;
@@ -83,13 +84,13 @@ class Sheet {
      */
     this._state = STATE_NEED_FULL_REBUILD;
 
-    this.parser.on("callCellValue", (...args) =>
+    this.parser.on('callCellValue', (...args) =>
       this._onCallCellValue(...args)
     );
-    this.parser.on("callRangeValue", (...args) =>
+    this.parser.on('callRangeValue', (...args) =>
       this._onCallRangeValue(...args)
     );
-    this.alterManager.addLocalHook("afterAlter", (...args) =>
+    this.alterManager.addLocalHook('afterAlter', (...args) =>
       this._onAfterAlter(...args)
     );
   }
@@ -112,11 +113,13 @@ class Sheet {
 
   /**
    * AsyncPromises.
+   *
+   * @param PromisesList
    */
   allPromiseAsync(...PromisesList) {
-    return new Promise(async (resolve) => {
-      let output = [];
-      for (let promise of PromisesList) {
+    return new Promise(async(resolve) => {
+      const output = [];
+      for (const promise of PromisesList) {
         try {
           output.push(
             await promise.then(async (resolvedData) => await resolvedData)
@@ -130,22 +133,24 @@ class Sheet {
   }
 
   /**
-   * sortCellsByUsed.
+   * SortCellsByUsed.
+   *
+   * @param cells
    */
   sortCellsByUsed(cells) {
-    let result = [];
-    let used = "";
+    const result = [];
+    let used = '';
     cells.forEach((cell) => {
       if (used.indexOf(cell.key) > -1) {
-        let index = result.findIndex(
-          (resultCell) => resultCell.precedentsListString.indexOf(cell.key) > -1
+        const index = result.findIndex(
+          resultCell => resultCell.precedentsListString.indexOf(cell.key) > -1
         );
         result.splice(index, 0, cell);
       } else {
         result.push(cell);
       }
 
-      used += "__" + cell.precedentsListString;
+      used += `__${cell.precedentsListString}`;
     });
     return result;
   }
@@ -167,10 +172,11 @@ class Sheet {
     cells = this.sortCellsByUsed(cells);
     if (!cells.length) {
       this._state = STATE_UP_TO_DATE;
+      this.hot.render();
       return;
     }
 
-    let promisses = [];
+    const promisses = [];
     this._parsedCells = {};
     this.matrix.data.forEach((cell) => {
       if (cell.state === 3 && Object.keys(cell.precedentsList).length > 0) {
@@ -189,12 +195,12 @@ class Sheet {
           this.parseExpression(cellValue, value.substr(1));
         } else {
           promisses.push(
-            async () =>
+            async() =>
               new Promise((resolve) => {
                 this.parseExpression(cellValue, value.substr(1));
 
                 if (!(index % 10)) {
-                  setTimeout(function () {
+                  setTimeout(() => {
                     resolve();
                   }, 0);
                 } else {
@@ -207,14 +213,14 @@ class Sheet {
     });
     if (this.useCustomGetCellDependencies) {
       promisses.push(
-        async () =>
+        async() =>
           new Promise((resolve) => {
             setTimeout(() => {
               this.hot.render();
               this._state = STATE_UP_TO_DATE;
               this._parsedCells = {};
               this.matrix.sort();
-              this.runLocalHooks("afterRecalculate", cells, "optimized");
+              this.runLocalHooks('afterRecalculate', cells, 'optimized');
               resolve();
             }, 10);
           })
@@ -224,7 +230,7 @@ class Sheet {
       this._state = STATE_UP_TO_DATE;
       this._parsedCells = {};
       this.matrix.sort();
-      this.runLocalHooks("afterRecalculate", cells, "optimized");
+      this.runLocalHooks('afterRecalculate', cells, 'optimized');
     }
   }
 
@@ -238,10 +244,10 @@ class Sheet {
     this._parsedCells = {};
 
     let cellsWithFormula = [];
-    arrayEach(cells, function (rowData, row) {
-      arrayEach(rowData, function (value, column) {
+    arrayEach(cells, (rowData, row) => {
+      arrayEach(rowData, (value, column) => {
         if (isFormulaExpression(value)) {
-          let cell = new CellValue(row, column);
+          const cell = new CellValue(row, column);
           cell.setPrecedents(value);
           cellsWithFormula.push(cell);
         }
@@ -250,19 +256,19 @@ class Sheet {
     cellsWithFormula = this.sortCellsByUsed(cellsWithFormula);
 
     arrayEach(cellsWithFormula, (cellValue) => {
-      var value = this.dataProvider.getSourceDataAtCell(
+      const value = this.dataProvider.getSourceDataAtCell(
         cellValue.row,
         cellValue.column
       );
 
-      let result = this.parseExpression(cellValue, value.substr(1));
+      const result = this.parseExpression(cellValue, value.substr(1));
     });
 
     this._state = STATE_UP_TO_DATE;
     this._parsedCells = {};
 
     this.matrix.sort();
-    this.runLocalHooks("afterRecalculate", cells, "full");
+    this.runLocalHooks('afterRecalculate', cells, 'full');
   }
 
   /**
@@ -296,15 +302,15 @@ class Sheet {
     // Remove formula description for old expression
     // TODO: Move this to recalculate()
     this.matrix.remove({ row, column });
-    let newCell = new CellValue(row, column);
+    const newCell = new CellValue(row, column);
     // TODO: Move this to recalculate()
     if (isFormulaExpression(newValue)) {
       // ...and create new for new changed formula expression
       this.parseExpression(newCell, newValue.substr(1));
     }
 
-    var deps = [];
-    var maxDependenciesDeep =
+    let deps = [];
+    const maxDependenciesDeep =
       this.hot && this.hot.getSettings().maxDependenciesDeep > -1
         ? this.hot.getSettings().maxDependenciesDeep
         : -1;
@@ -347,7 +353,7 @@ class Sheet {
       cellValue.setState(CellValue.STATE_UP_TO_DATE);
     }
 
-    cellValue.setPrecedents("=" + toUpperCaseFormula(formula));
+    cellValue.setPrecedents(`=${toUpperCaseFormula(formula)}`);
 
     this.matrix.add(cellValue);
     this._processingCell = null;
@@ -376,13 +382,13 @@ class Sheet {
   getCellDependencies(row, column) {
     return this.useCustomGetCellDependencies
       ? this.matrix.getDependenciesCustom({
-          row,
-          column,
-        })
+        row,
+        column,
+      })
       : this.matrix.getDependencies({
-          row,
-          column,
-        });
+        row,
+        column,
+      });
   }
 
   /**
@@ -428,7 +434,7 @@ class Sheet {
       this._parsedCells[arguments[0].label] = result;
       done(result);
     } else {
-      let number = !isNaN(toNumber(cellValue))
+      const number = !isNaN(toNumber(cellValue))
         ? toNumber(cellValue)
         : cellValue;
       this._parsedCells[arguments[0].label] = number;
@@ -461,7 +467,7 @@ class Sheet {
         const rowCellCoord = startRow.index + rowIndex;
         const columnCellCoord = startColumn.index + columnIndex;
         const cell = new CellReference(rowCellCoord, columnCellCoord);
-        let cellDataValue = new CellValue(rowCellCoord, columnCellCoord);
+        const cellDataValue = new CellValue(rowCellCoord, columnCellCoord);
 
         if (!this.dataProvider.isInDataRange(cell.row, cell.column)) {
           throw Error(ERROR_REF);
