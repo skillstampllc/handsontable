@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 09/03/2021 14:31:35)
+ * Release date: 10/02/2021 (built at 16/03/2021 13:13:36)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -21802,7 +21802,7 @@ function Core(rootElement, userSettings) {
 
   this.executionSuspendedCounter = 0;
   (0, _keyStateObserver.startObserving)(this.rootDocument);
-  this.container = this.rootDocument.createElement("div");
+  this.container = this.rootDocument.createElement('div');
   this.renderCall = false;
   rootElement.insertBefore(this.container, rootElement.firstChild);
 
@@ -21832,7 +21832,7 @@ function Core(rootElement, userSettings) {
   this.rowIndexMapper = new _translations.IndexMapper();
   dataSource = new _dataSource.default(instance);
 
-  if (!this.rootElement.id || this.rootElement.id.substring(0, 3) === "ht_") {
+  if (!this.rootElement.id || this.rootElement.id.substring(0, 3) === 'ht_') {
     this.rootElement.id = this.guid; // if root element does not have an id, assign a random id
   }
 
@@ -21881,16 +21881,16 @@ function Core(rootElement, userSettings) {
     }
   };
 
-  this.columnIndexMapper.addLocalHook("cacheUpdated", onIndexMapperCacheUpdate);
-  this.rowIndexMapper.addLocalHook("cacheUpdated", onIndexMapperCacheUpdate);
-  this.selection.addLocalHook("beforeSetRangeStart", function (cellCoords) {
-    _this.runHooks("beforeSetRangeStart", cellCoords);
+  this.columnIndexMapper.addLocalHook('cacheUpdated', onIndexMapperCacheUpdate);
+  this.rowIndexMapper.addLocalHook('cacheUpdated', onIndexMapperCacheUpdate);
+  this.selection.addLocalHook('beforeSetRangeStart', function (cellCoords) {
+    _this.runHooks('beforeSetRangeStart', cellCoords);
   });
-  this.selection.addLocalHook("beforeSetRangeStartOnly", function (cellCoords) {
-    _this.runHooks("beforeSetRangeStartOnly", cellCoords);
+  this.selection.addLocalHook('beforeSetRangeStartOnly', function (cellCoords) {
+    _this.runHooks('beforeSetRangeStartOnly', cellCoords);
   });
-  this.selection.addLocalHook("beforeSetRangeEnd", function (cellCoords) {
-    _this.runHooks("beforeSetRangeEnd", cellCoords);
+  this.selection.addLocalHook('beforeSetRangeEnd', function (cellCoords) {
+    _this.runHooks('beforeSetRangeEnd', cellCoords);
 
     if (cellCoords.row < 0) {
       cellCoords.row = _this.view.wt.wtTable.getFirstVisibleRow();
@@ -21900,7 +21900,7 @@ function Core(rootElement, userSettings) {
       cellCoords.col = _this.view.wt.wtTable.getFirstVisibleColumn();
     }
   });
-  this.selection.addLocalHook("afterSetRangeEnd", function (cellCoords) {
+  this.selection.addLocalHook('afterSetRangeEnd', function (cellCoords) {
     var preventScrolling = (0, _object.createObjectPropListener)(false);
 
     var selectionRange = _this.selection.getSelectedRange();
@@ -21911,9 +21911,9 @@ function Core(rootElement, userSettings) {
 
     var selectionLayerLevel = selectionRange.size() - 1;
 
-    _this.runHooks("afterSelection", from.row, from.col, to.row, to.col, preventScrolling, selectionLayerLevel);
+    _this.runHooks('afterSelection', from.row, from.col, to.row, to.col, preventScrolling, selectionLayerLevel);
 
-    _this.runHooks("afterSelectionByProp", from.row, instance.colToProp(from.col), to.row, instance.colToProp(to.col), preventScrolling, selectionLayerLevel); // eslint-disable-line max-len
+    _this.runHooks('afterSelectionByProp', from.row, instance.colToProp(from.col), to.row, instance.colToProp(to.col), preventScrolling, selectionLayerLevel); // eslint-disable-line max-len
 
 
     var isSelectedByAnyHeader = _this.selection.isSelectedByAnyHeader();
@@ -21952,62 +21952,62 @@ function Core(rootElement, userSettings) {
 
 
     if (isSelectedByRowHeader && isSelectedByColumnHeader) {
-      (0, _element.addClass)(_this.rootElement, ["ht__selection--rows", "ht__selection--columns"]);
+      (0, _element.addClass)(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
     } else if (isSelectedByRowHeader) {
-      (0, _element.removeClass)(_this.rootElement, "ht__selection--columns");
-      (0, _element.addClass)(_this.rootElement, "ht__selection--rows");
+      (0, _element.removeClass)(_this.rootElement, 'ht__selection--columns');
+      (0, _element.addClass)(_this.rootElement, 'ht__selection--rows');
     } else if (isSelectedByColumnHeader) {
-      (0, _element.removeClass)(_this.rootElement, "ht__selection--rows");
-      (0, _element.addClass)(_this.rootElement, "ht__selection--columns");
+      (0, _element.removeClass)(_this.rootElement, 'ht__selection--rows');
+      (0, _element.addClass)(_this.rootElement, 'ht__selection--columns');
     } else {
-      (0, _element.removeClass)(_this.rootElement, ["ht__selection--rows", "ht__selection--columns"]);
+      (0, _element.removeClass)(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
     }
 
     _this._refreshBorders(null);
   });
-  this.selection.addLocalHook("afterSelectionFinished", function (cellRanges) {
+  this.selection.addLocalHook('afterSelectionFinished', function (cellRanges) {
     var selectionLayerLevel = cellRanges.length - 1;
     var _cellRanges$selection = cellRanges[selectionLayerLevel],
         from = _cellRanges$selection.from,
         to = _cellRanges$selection.to;
 
-    _this.runHooks("afterSelectionEnd", from.row, from.col, to.row, to.col, selectionLayerLevel);
+    _this.runHooks('afterSelectionEnd', from.row, from.col, to.row, to.col, selectionLayerLevel);
 
-    _this.runHooks("afterSelectionEndByProp", from.row, instance.colToProp(from.col), to.row, instance.colToProp(to.col), selectionLayerLevel);
+    _this.runHooks('afterSelectionEndByProp', from.row, instance.colToProp(from.col), to.row, instance.colToProp(to.col), selectionLayerLevel);
   });
-  this.selection.addLocalHook("afterIsMultipleSelection", function (isMultiple) {
-    var changedIsMultiple = _this.runHooks("afterIsMultipleSelection", isMultiple.value);
+  this.selection.addLocalHook('afterIsMultipleSelection', function (isMultiple) {
+    var changedIsMultiple = _this.runHooks('afterIsMultipleSelection', isMultiple.value);
 
     if (isMultiple.value) {
       isMultiple.value = changedIsMultiple;
     }
   });
-  this.selection.addLocalHook("beforeModifyTransformStart", function (cellCoordsDelta) {
-    _this.runHooks("modifyTransformStart", cellCoordsDelta);
+  this.selection.addLocalHook('beforeModifyTransformStart', function (cellCoordsDelta) {
+    _this.runHooks('modifyTransformStart', cellCoordsDelta);
   });
-  this.selection.addLocalHook("afterModifyTransformStart", function (coords, rowTransformDir, colTransformDir) {
-    _this.runHooks("afterModifyTransformStart", coords, rowTransformDir, colTransformDir);
+  this.selection.addLocalHook('afterModifyTransformStart', function (coords, rowTransformDir, colTransformDir) {
+    _this.runHooks('afterModifyTransformStart', coords, rowTransformDir, colTransformDir);
   });
-  this.selection.addLocalHook("beforeModifyTransformEnd", function (cellCoordsDelta) {
-    _this.runHooks("modifyTransformEnd", cellCoordsDelta);
+  this.selection.addLocalHook('beforeModifyTransformEnd', function (cellCoordsDelta) {
+    _this.runHooks('modifyTransformEnd', cellCoordsDelta);
   });
-  this.selection.addLocalHook("afterModifyTransformEnd", function (coords, rowTransformDir, colTransformDir) {
-    _this.runHooks("afterModifyTransformEnd", coords, rowTransformDir, colTransformDir);
+  this.selection.addLocalHook('afterModifyTransformEnd', function (coords, rowTransformDir, colTransformDir) {
+    _this.runHooks('afterModifyTransformEnd', coords, rowTransformDir, colTransformDir);
   });
-  this.selection.addLocalHook("afterDeselect", function () {
+  this.selection.addLocalHook('afterDeselect', function () {
     editorManager.destroyEditor();
 
     _this._refreshBorders();
 
-    (0, _element.removeClass)(_this.rootElement, ["ht__selection--rows", "ht__selection--columns"]);
+    (0, _element.removeClass)(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
 
-    _this.runHooks("afterDeselect");
+    _this.runHooks('afterDeselect');
   });
-  this.selection.addLocalHook("insertRowRequire", function (totalRows) {
-    _this.alter("insert_row", totalRows, 1, "auto");
+  this.selection.addLocalHook('insertRowRequire', function (totalRows) {
+    _this.alter('insert_row', totalRows, 1, 'auto');
   });
-  this.selection.addLocalHook("insertColRequire", function (totalCols) {
-    _this.alter("insert_col", totalCols, 1, "auto");
+  this.selection.addLocalHook('insertColRequire', function (totalCols) {
+    _this.alter('insert_col', totalCols, 1, 'auto');
   });
   grid = {
     /**
@@ -22080,7 +22080,7 @@ function Core(rootElement, userSettings) {
 
 
       switch (action) {
-        case "insert_row":
+        case 'insert_row':
           var numberOfSourceRows = instance.countSourceRows();
 
           if (tableMeta.maxRows === numberOfSourceRows) {
@@ -22122,7 +22122,7 @@ function Core(rootElement, userSettings) {
 
           break;
 
-        case "insert_col":
+        case 'insert_col':
           delta = datamap.createCol(index, amount, source);
 
           if (delta) {
@@ -22167,7 +22167,7 @@ function Core(rootElement, userSettings) {
 
           break;
 
-        case "remove_row":
+        case 'remove_row':
           var removeRow = function removeRow(indexes) {
             var offset = 0; // Normalize the {index, amount} groups into bigger groups.
 
@@ -22223,7 +22223,7 @@ function Core(rootElement, userSettings) {
 
           break;
 
-        case "remove_col":
+        case 'remove_col':
           var removeCol = function removeCol(indexes) {
             var offset = 0; // Normalize the {index, amount} groups into bigger groups.
 
@@ -22257,7 +22257,7 @@ function Core(rootElement, userSettings) {
               }
 
               if (Array.isArray(tableMeta.colHeaders)) {
-                if (typeof physicalColumnIndex === "undefined") {
+                if (typeof physicalColumnIndex === 'undefined') {
                   physicalColumnIndex = -1;
                 }
 
@@ -22306,7 +22306,7 @@ function Core(rootElement, userSettings) {
         if (nrOfRows < minRows) {
           // The synchronization with cell meta is not desired here. For `minRows` option,
           // we don't want to touch/shift cell meta objects.
-          datamap.createRow(nrOfRows, minRows - nrOfRows, "auto");
+          datamap.createRow(nrOfRows, minRows - nrOfRows, 'auto');
         }
       }
 
@@ -22318,7 +22318,7 @@ function Core(rootElement, userSettings) {
           var rowsToCreate = Math.min(emptyRowsMissing, tableMeta.maxRows - instance.countSourceRows()); // The synchronization with cell meta is not desired here. For `minSpareRows` option,
           // we don't want to touch/shift cell meta objects.
 
-          datamap.createRow(instance.countRows(), rowsToCreate, "auto");
+          datamap.createRow(instance.countRows(), rowsToCreate, 'auto');
         }
       }
 
@@ -22336,11 +22336,11 @@ function Core(rootElement, userSettings) {
           // we don't want to touch/shift cell meta objects.
           var colsToCreate = minCols - nrOfColumns;
           emptyCols += colsToCreate;
-          datamap.createCol(nrOfColumns, colsToCreate, "auto");
+          datamap.createCol(nrOfColumns, colsToCreate, 'auto');
         } // should I add empty cols to meet minSpareCols?
 
 
-        if (minSpareCols && !tableMeta.columns && instance.dataType === "array" && emptyCols < minSpareCols) {
+        if (minSpareCols && !tableMeta.columns && instance.dataType === 'array' && emptyCols < minSpareCols) {
           nrOfColumns = instance.countCols();
           var emptyColsMissing = minSpareCols - emptyCols;
 
@@ -22348,7 +22348,7 @@ function Core(rootElement, userSettings) {
           // we don't want to touch/shift cell meta objects.
 
 
-          datamap.createCol(nrOfColumns, _colsToCreate, "auto");
+          datamap.createCol(nrOfColumns, _colsToCreate, 'auto');
         }
       }
       var rowCount = instance.countRows();
@@ -22446,7 +22446,7 @@ function Core(rootElement, userSettings) {
       // insert data with specified pasteMode method
 
       switch (method) {
-        case "shift_down":
+        case 'shift_down':
           repeatCol = end ? end.col - start.col + 1 : 0;
           repeatRow = end ? end.row - start.row + 1 : 0; // eslint-disable-next-line no-param-reassign
 
@@ -22474,7 +22474,7 @@ function Core(rootElement, userSettings) {
 
           break;
 
-        case "shift_right":
+        case 'shift_right':
           repeatCol = end ? end.col - start.col + 1 : 0;
           repeatRow = end ? end.row - start.row + 1 : 0;
 
@@ -22500,7 +22500,7 @@ function Core(rootElement, userSettings) {
 
           break;
 
-        case "overwrite":
+        case 'overwrite':
         default:
           // overwrite and other not specified options
           current.row = start.row;
@@ -22553,7 +22553,7 @@ function Core(rootElement, userSettings) {
             current.col = start.col;
             cellMeta = instance.getCellMeta(current.row, current.col);
 
-            if ((source === "CopyPaste.paste" || source === "Autofill.fill") && cellMeta.skipRowOnPaste) {
+            if ((source === 'CopyPaste.paste' || source === 'Autofill.fill') && cellMeta.skipRowOnPaste) {
               skippedRow += 1;
               current.row += 1;
               rlen += 1;
@@ -22571,7 +22571,7 @@ function Core(rootElement, userSettings) {
 
               cellMeta = instance.getCellMeta(current.row, current.col);
 
-              if ((source === "CopyPaste.paste" || source === "Autofill.fill") && cellMeta.skipColumnOnPaste) {
+              if ((source === 'CopyPaste.paste' || source === 'Autofill.fill') && cellMeta.skipColumnOnPaste) {
                 skippedColumn += 1;
                 current.col += 1;
                 clen += 1;
@@ -22593,21 +22593,21 @@ function Core(rootElement, userSettings) {
                 col: visualColumn
               };
 
-              if (source === "Autofill.fill") {
-                var result = instance.runHooks("beforeAutofillInsidePopulate", index, direction, input, deltas, {}, selected);
+              if (source === 'Autofill.fill') {
+                var result = instance.runHooks('beforeAutofillInsidePopulate', index, direction, input, deltas, {}, selected);
 
                 if (result) {
                   value = (0, _mixed.isUndefined)(result.value) ? value : result.value;
                 }
               }
 
-              if (value !== null && (0, _typeof2.default)(value) === "object") {
+              if (value !== null && (0, _typeof2.default)(value) === 'object') {
                 // when 'value' is array and 'orgValue' is null, set 'orgValue' to
                 // an empty array so that the null value can be compared to 'value'
                 // as an empty value for the array context
                 if (Array.isArray(value) && orgValue === null) orgValue = [];
 
-                if (orgValue === null || (0, _typeof2.default)(orgValue) !== "object") {
+                if (orgValue === null || (0, _typeof2.default)(orgValue) !== 'object') {
                   pushData = false;
                 } else {
                   var orgValueSchema = (0, _object.duckSchema)(Array.isArray(orgValue) ? orgValue : orgValue[0] || orgValue);
@@ -22620,7 +22620,7 @@ function Core(rootElement, userSettings) {
                     pushData = false;
                   }
                 }
-              } else if (orgValue !== null && (0, _typeof2.default)(orgValue) === "object") {
+              } else if (orgValue !== null && (0, _typeof2.default)(orgValue) === 'object') {
                 pushData = false;
               }
 
@@ -22635,7 +22635,7 @@ function Core(rootElement, userSettings) {
             current.row += 1;
           }
 
-          instance.setDataAtCell(setData, null, null, source || "populateFromArray");
+          instance.setDataAtCell(setData, null, null, source || 'populateFromArray');
           break;
       }
     }
@@ -22652,9 +22652,9 @@ function Core(rootElement, userSettings) {
     var normalizedLanguageCode = (0, _utils.normalizeLanguageCode)(languageCode);
 
     if ((0, _registry4.hasLanguageDictionary)(normalizedLanguageCode)) {
-      instance.runHooks("beforeLanguageChange", normalizedLanguageCode);
+      instance.runHooks('beforeLanguageChange', normalizedLanguageCode);
       globalMeta.language = normalizedLanguageCode;
-      instance.runHooks("afterLanguageChange", normalizedLanguageCode);
+      instance.runHooks('afterLanguageChange', normalizedLanguageCode);
     } else {
       (0, _utils.warnUserAboutLanguageRegistration)(languageCode);
     }
@@ -22669,7 +22669,7 @@ function Core(rootElement, userSettings) {
 
 
   function setClassName(className, classSettings) {
-    var element = className === "className" ? instance.rootElement : instance.table;
+    var element = className === 'className' ? instance.rootElement : instance.table;
 
     if (firstRun) {
       (0, _element.addClass)(element, classSettings);
@@ -22702,26 +22702,26 @@ function Core(rootElement, userSettings) {
 
   this.init = function () {
     dataSource.setData(tableMeta.data);
-    instance.runHooks("beforeInit");
+    instance.runHooks('beforeInit');
 
     if ((0, _browser.isMobileBrowser)()) {
-      (0, _element.addClass)(instance.rootElement, "mobile");
+      (0, _element.addClass)(instance.rootElement, 'mobile');
     }
 
     this.updateSettings(tableMeta, true);
     this.view = new _tableView.default(this);
     editorManager = _editorManager.default.getInstance(instance, tableMeta, selection);
-    instance.runHooks("init");
+    instance.runHooks('init');
     this.forceFullRender = true; // used when data was changed
 
     this.view.render();
 
-    if ((0, _typeof2.default)(firstRun) === "object") {
-      instance.runHooks("afterChange", firstRun[0], firstRun[1]);
+    if ((0, _typeof2.default)(firstRun) === 'object') {
+      instance.runHooks('afterChange', firstRun[0], firstRun[1]);
       firstRun = false;
     }
 
-    instance.runHooks("afterInit");
+    instance.runHooks('afterInit');
   };
   /**
    * @ignore
@@ -22764,7 +22764,7 @@ function Core(rootElement, userSettings) {
   function getParsedNumber(numericData) {
     // Unifying "float like" string. Change from value with comma determiner to value with dot determiner,
     // for example from `450,65` to `450.65`.
-    var unifiedNumericData = numericData.replace(",", ".");
+    var unifiedNumericData = numericData.replace(',', '.');
 
     if (isNaN(parseFloat(unifiedNumericData)) === false) {
       return parseFloat(unifiedNumericData);
@@ -22786,7 +22786,7 @@ function Core(rootElement, userSettings) {
     }
 
     var activeEditor = instance.getActiveEditor();
-    var beforeChangeResult = instance.runHooks("beforeChange", changes, source || "edit");
+    var beforeChangeResult = instance.runHooks('beforeChange', changes, source || 'edit');
     var shouldBeCanceled = true;
 
     if (beforeChangeResult === false) {
@@ -22823,7 +22823,7 @@ function Core(rootElement, userSettings) {
         var col = datamap.propToCol(prop);
         var cellProperties = instance.getCellMeta(row, col);
 
-        if (cellProperties.type === "numeric" && typeof newValue === "string" && isNumericData(newValue)) {
+        if (cellProperties.type === 'numeric' && typeof newValue === 'string' && isNumericData(newValue)) {
           changes[i][3] = getParsedNumber(newValue);
         }
         /* eslint-disable no-loop-func */
@@ -22833,8 +22833,8 @@ function Core(rootElement, userSettings) {
           waitingForValidator.addValidatorToQueue();
           instance.validateCell(changes[i][3], cellProperties, function (index, cellPropertiesReference) {
             return function (result) {
-              if (typeof result !== "boolean") {
-                throw new Error("Validation error: result is not boolean");
+              if (typeof result !== 'boolean') {
+                throw new Error('Validation error: result is not boolean');
               }
 
               if (result === false && cellPropertiesReference.allowInvalid === false) {
@@ -22906,7 +22906,7 @@ function Core(rootElement, userSettings) {
         }
       }
 
-      if (instance.dataType === "array" && (!tableMeta.columns || tableMeta.columns.length === 0) && tableMeta.allowInsertColumn) {
+      if (instance.dataType === 'array' && (!tableMeta.columns || tableMeta.columns.length === 0) && tableMeta.allowInsertColumn) {
         while (datamap.propToCol(changes[i][1]) > instance.countPhysicalCols() - 1) {
           var numberOfCreatedColumns = datamap.createCol(void 0, void 0, source);
 
@@ -22930,14 +22930,14 @@ function Core(rootElement, userSettings) {
     instance.forceFullRender = true; // used when data was changed
 
     grid.adjustRowsAndCols();
-    instance.runHooks("beforeChangeRender", changes, source);
+    instance.runHooks('beforeChangeRender', changes, source);
     editorManager.lockEditor();
 
     instance._refreshBorders(null);
 
     editorManager.unlockEditor();
     instance.view.adjustElementsSize();
-    instance.runHooks("afterChange", changes, source || "edit");
+    instance.runHooks('afterChange', changes, source || 'edit');
     var activeEditor = instance.getActiveEditor();
 
     if (activeEditor && (0, _mixed.isDefined)(activeEditor.refreshValue)) {
@@ -22975,7 +22975,7 @@ function Core(rootElement, userSettings) {
       var row = cellProperties.visualRow;
       var td = instance.getCell(row, col, true);
 
-      if (td && td.nodeName !== "TH") {
+      if (td && td.nodeName !== 'TH') {
         var renderableRow = instance.rowIndexMapper.getRenderableFromVisualIndex(row);
         var renderableColumn = instance.columnIndexMapper.getRenderableFromVisualIndex(col);
         instance.view.wt.wtSettings.settings.cellRenderer(renderableRow, renderableColumn, td);
@@ -22994,7 +22994,7 @@ function Core(rootElement, userSettings) {
 
     if ((0, _function.isFunction)(validator)) {
       // eslint-disable-next-line no-param-reassign
-      value = instance.runHooks("beforeValidate", value, cellProperties.visualRow, cellProperties.prop, source); // To provide consistent behaviour, validation should be always asynchronous
+      value = instance.runHooks('beforeValidate', value, cellProperties.visualRow, cellProperties.prop, source); // To provide consistent behaviour, validation should be always asynchronous
 
       instance._registerImmediate(function () {
         validator.call(cellProperties, value, function (valid) {
@@ -23003,10 +23003,10 @@ function Core(rootElement, userSettings) {
           } // eslint-disable-next-line no-param-reassign
 
 
-          valid = instance.runHooks("afterValidate", valid, value, cellProperties.visualRow, cellProperties.prop, source);
+          valid = instance.runHooks('afterValidate', valid, value, cellProperties.visualRow, cellProperties.prop, source);
           cellProperties.valid = valid;
           done(valid);
-          instance.runHooks("postAfterValidate", valid, value, cellProperties.visualRow, cellProperties.prop, source);
+          instance.runHooks('postAfterValidate', valid, value, cellProperties.visualRow, cellProperties.prop, source);
         });
       });
     } else {
@@ -23057,12 +23057,12 @@ function Core(rootElement, userSettings) {
     var prop;
 
     for (i = 0, ilen = input.length; i < ilen; i++) {
-      if ((0, _typeof2.default)(input[i]) !== "object") {
-        throw new Error("Method `setDataAtCell` accepts row number or changes array of arrays as its first parameter");
+      if ((0, _typeof2.default)(input[i]) !== 'object') {
+        throw new Error('Method `setDataAtCell` accepts row number or changes array of arrays as its first parameter');
       }
 
-      if (typeof input[i][1] !== "number") {
-        throw new Error("Method `setDataAtCell` accepts row and column number as its parameters. If you want to use object property name, use method `setDataAtRowProp`"); // eslint-disable-line max-len
+      if (typeof input[i][1] !== 'number') {
+        throw new Error('Method `setDataAtCell` accepts row and column number as its parameters. If you want to use object property name, use method `setDataAtRowProp`'); // eslint-disable-line max-len
       }
 
       if (input[i][1] >= this.countCols()) {
@@ -23074,24 +23074,24 @@ function Core(rootElement, userSettings) {
       var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
       var newV = input[i][2];
 
-      if (newV && typeof newV === "string" && (0, _parseNumber.isFloat)(newV)) {
+      if (newV && typeof newV === 'string' && (0, _parseNumber.isFloat)(newV)) {
         newV = parseFloat(newV);
-      } else if (newV && typeof newV === "string" && Number.isInteger(newV)) {
+      } else if (newV && typeof newV === 'string' && Number.isInteger(newV)) {
         newV = parseInt(newV);
       }
 
-      if (oldV != newV) {
+      if (oldV !== newV) {
         changes.push([input[i][0], prop, oldV, newV]);
       }
     }
 
-    if (!changeSource && (0, _typeof2.default)(row) === "object") {
+    if (!changeSource && (0, _typeof2.default)(row) === 'object') {
       changeSource = column;
     }
 
     if (changes.length > 0) {
       applyChanges(changes, changeSource);
-      instance.runHooks("afterSetDataAtCell", changes, changeSource);
+      instance.runHooks('afterSetDataAtCell', changes, changeSource);
     }
   };
   /**
@@ -23119,14 +23119,14 @@ function Core(rootElement, userSettings) {
       changes.push([input[i][0], input[i][1], dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]), input[i][2]]);
     }
 
-    if (!changeSource && (0, _typeof2.default)(row) === "object") {
+    if (!changeSource && (0, _typeof2.default)(row) === 'object') {
       changeSource = prop;
     }
 
     validateChanges(changes, changeSource, function () {
       applyChanges(changes, changeSource);
     });
-    instance.runHooks("afterSetDataAtRowProp", changes, changeSource);
+    instance.runHooks('afterSetDataAtRowProp', changes, changeSource);
   };
   /**
    * Listen to the keyboard input on document body. This allows Handsontable to capture keyboard events and respond
@@ -23141,7 +23141,7 @@ function Core(rootElement, userSettings) {
   this.listen = function () {
     if (instance && !instance.isListening()) {
       activeGuid = instance.guid;
-      instance.runHooks("afterListen");
+      instance.runHooks('afterListen');
     }
   };
   /**
@@ -23156,7 +23156,7 @@ function Core(rootElement, userSettings) {
   this.unlisten = function () {
     if (this.isListening()) {
       activeGuid = null;
-      instance.runHooks("afterUnlisten");
+      instance.runHooks('afterUnlisten');
     }
   };
   /**
@@ -23210,11 +23210,11 @@ function Core(rootElement, userSettings) {
 
 
   this.populateFromArray = function (row, column, input, endRow, endCol, source, method, direction, deltas) {
-    if (!((0, _typeof2.default)(input) === "object" && (0, _typeof2.default)(input[0]) === "object")) {
-      throw new Error("populateFromArray parameter `input` must be an array of arrays"); // API changed in 0.9-beta2, let's check if you use it correctly
+    if (!((0, _typeof2.default)(input) === 'object' && (0, _typeof2.default)(input[0]) === 'object')) {
+      throw new Error('populateFromArray parameter `input` must be an array of arrays'); // API changed in 0.9-beta2, let's check if you use it correctly
     }
 
-    var c = typeof endRow === "number" ? new _src.CellCoords(endRow, endCol) : null;
+    var c = typeof endRow === 'number' ? new _src.CellCoords(endRow, endCol) : null;
     return grid.populateFromArray(new _src.CellCoords(row, column), input, c, source, method, direction, deltas);
   };
   /**
@@ -23713,7 +23713,7 @@ function Core(rootElement, userSettings) {
         height = _instance$rootElement.height;
 
     var isSizeChanged = width !== lastWidth || height !== lastHeight;
-    var isResizeBlocked = instance.runHooks("beforeRefreshDimensions", {
+    var isResizeBlocked = instance.runHooks('beforeRefreshDimensions', {
       width: lastWidth,
       height: lastHeight
     }, {
@@ -23730,7 +23730,7 @@ function Core(rootElement, userSettings) {
       instance.render();
     }
 
-    instance.runHooks("afterRefreshDimensions", {
+    instance.runHooks('afterRefreshDimensions', {
       width: lastWidth,
       height: lastHeight
     }, {
@@ -23754,11 +23754,11 @@ function Core(rootElement, userSettings) {
 
   this.loadData = function (data) {
     if (Array.isArray(tableMeta.dataSchema)) {
-      instance.dataType = "array";
+      instance.dataType = 'array';
     } else if ((0, _function.isFunction)(tableMeta.dataSchema)) {
-      instance.dataType = "function";
+      instance.dataType = 'function';
     } else {
-      instance.dataType = "object";
+      instance.dataType = 'object';
     }
 
     if (datamap) {
@@ -23767,7 +23767,7 @@ function Core(rootElement, userSettings) {
 
     datamap = new _index.DataMap(instance, data, tableMeta);
 
-    if ((0, _typeof2.default)(data) === "object" && data !== null) {
+    if ((0, _typeof2.default)(data) === 'object' && data !== null) {
       if (!(data.push && data.splice)) {
         // check if data is array. Must use duck-type check so Backbone Collections also pass it
         // when data is not an array, attempt to make a single-row array of it
@@ -23783,10 +23783,10 @@ function Core(rootElement, userSettings) {
       var rlen = 0;
 
       for (r = 0, rlen = tableMeta.startRows; r < rlen; r++) {
-        if ((instance.dataType === "object" || instance.dataType === "function") && tableMeta.dataSchema) {
+        if ((instance.dataType === 'object' || instance.dataType === 'function') && tableMeta.dataSchema) {
           row = (0, _object.deepClone)(dataSchema);
           data.push(row);
-        } else if (instance.dataType === "array") {
+        } else if (instance.dataType === 'array') {
           row = (0, _object.deepClone)(dataSchema[0]);
           data.push(row);
         } else {
@@ -23804,11 +23804,11 @@ function Core(rootElement, userSettings) {
     }
 
     if (Array.isArray(data[0])) {
-      instance.dataType = "array";
+      instance.dataType = 'array';
     }
 
     tableMeta.data = data;
-    instance.runHooks("beforeLoadData", data, firstRun);
+    instance.runHooks('beforeLoadData', data, firstRun);
     datamap.dataSource = data;
     dataSource.data = data;
     dataSource.dataType = instance.dataType;
@@ -23818,12 +23818,12 @@ function Core(rootElement, userSettings) {
     metaManager.clearCellsCache();
     instance.initIndexMappers();
     grid.adjustRowsAndCols();
-    instance.runHooks("afterLoadData", data, firstRun);
+    instance.runHooks('afterLoadData', data, firstRun);
 
     if (firstRun) {
-      firstRun = [null, "loadData"];
+      firstRun = [null, 'loadData'];
     } else {
-      instance.runHooks("afterChange", null, "loadData");
+      instance.runHooks('afterChange', null, 'loadData');
       instance.render();
     }
   };
@@ -23842,7 +23842,7 @@ function Core(rootElement, userSettings) {
     if (Array.isArray(columnsSettings)) {
       finalNrOfColumns = columnsSettings.length;
     } else if ((0, _function.isFunction)(columnsSettings)) {
-      if (instance.dataType === "array") {
+      if (instance.dataType === 'array') {
         var nrOfSourceColumns = this.countSourceCols();
 
         for (var columnIndex = 0; columnIndex < nrOfSourceColumns; columnIndex += 1) {
@@ -23851,7 +23851,7 @@ function Core(rootElement, userSettings) {
           }
         } // Extended dataset by the `columns` property? Moved code right from the refactored `countCols` method.
 
-      } else if (instance.dataType === "object" || instance.dataType === "function") {
+      } else if (instance.dataType === 'object' || instance.dataType === 'function') {
         finalNrOfColumns = datamap.colToPropCache.length;
       } // In some cases we need to check columns length from the schema, i.e. `data` may be empty.
 
@@ -23991,18 +23991,18 @@ function Core(rootElement, userSettings) {
 
 
     for (i in settings) {
-      if (i === "data") {
+      if (i === 'data') {
         /* eslint-disable-next-line no-continue */
         continue; // loadData will be triggered later
-      } else if (i === "language") {
+      } else if (i === 'language') {
         setLanguage(settings.language);
         /* eslint-disable-next-line no-continue */
 
         continue;
-      } else if (i === "className") {
-        setClassName("className", settings.className);
-      } else if (i === "tableClassName" && instance.table) {
-        setClassName("tableClassName", settings.tableClassName);
+      } else if (i === 'className') {
+        setClassName('className', settings.className);
+      } else if (i === 'tableClassName' && instance.table) {
+        setClassName('tableClassName', settings.tableClassName);
         instance.view.wt.wtOverlays.syncOverlayTableClassNames();
       } else if (_pluginHooks.default.getSingleton().isRegistered(i) || _pluginHooks.default.getSingleton().isDeprecated(i)) {
         if ((0, _function.isFunction)(settings[i]) || Array.isArray(settings[i])) {
@@ -24059,10 +24059,10 @@ function Core(rootElement, userSettings) {
       });
     }
 
-    instance.runHooks("afterCellMetaReset");
+    instance.runHooks('afterCellMetaReset');
     var currentHeight = instance.rootElement.style.height;
 
-    if (currentHeight !== "") {
+    if (currentHeight !== '') {
       currentHeight = parseInt(instance.rootElement.style.height, 10);
     }
 
@@ -24073,28 +24073,28 @@ function Core(rootElement, userSettings) {
     }
 
     if (init) {
-      var initialStyle = instance.rootElement.getAttribute("style");
+      var initialStyle = instance.rootElement.getAttribute('style');
 
       if (initialStyle) {
-        instance.rootElement.setAttribute("data-initialstyle", instance.rootElement.getAttribute("style"));
+        instance.rootElement.setAttribute('data-initialstyle', instance.rootElement.getAttribute('style'));
       }
     }
 
     if (height === null) {
-      var _initialStyle = instance.rootElement.getAttribute("data-initialstyle");
+      var _initialStyle = instance.rootElement.getAttribute('data-initialstyle');
 
-      if (_initialStyle && (_initialStyle.indexOf("height") > -1 || _initialStyle.indexOf("overflow") > -1)) {
-        instance.rootElement.setAttribute("style", _initialStyle);
+      if (_initialStyle && (_initialStyle.indexOf('height') > -1 || _initialStyle.indexOf('overflow') > -1)) {
+        instance.rootElement.setAttribute('style', _initialStyle);
       } else {
-        instance.rootElement.style.height = "";
-        instance.rootElement.style.overflow = "";
+        instance.rootElement.style.height = '';
+        instance.rootElement.style.overflow = '';
       }
     } else if (height !== void 0) {
       instance.rootElement.style.height = isNaN(height) ? "".concat(height) : "".concat(height, "px");
-      instance.rootElement.style.overflow = "hidden";
+      instance.rootElement.style.overflow = 'hidden';
     }
 
-    if (typeof settings.width !== "undefined") {
+    if (typeof settings.width !== 'undefined') {
       var width = settings.width;
 
       if ((0, _function.isFunction)(width)) {
@@ -24110,7 +24110,7 @@ function Core(rootElement, userSettings) {
         instance.view.wt.exportSettingsAsClassNames();
       }
 
-      instance.runHooks("afterUpdateSettings", settings);
+      instance.runHooks('afterUpdateSettings', settings);
     }
 
     grid.adjustRowsAndCols();
@@ -24125,7 +24125,7 @@ function Core(rootElement, userSettings) {
       editorManager.unlockEditor();
     }
 
-    if (!init && instance.view && (currentHeight === "" || height === "" || height === void 0) && currentHeight !== height) {
+    if (!init && instance.view && (currentHeight === '' || height === '' || height === void 0) && currentHeight !== height) {
       instance.view.wt.wtOverlays.updateMainScrollableElements();
     }
   };
@@ -24537,7 +24537,7 @@ function Core(rootElement, userSettings) {
 
   this.setSourceDataAtCell = function (row, column, value, source) {
     var input = setDataInputToArray(row, column, value);
-    var isThereAnySetSourceListener = this.hasHook("afterSetSourceDataAtCell");
+    var isThereAnySetSourceListener = this.hasHook('afterSetSourceDataAtCell');
     var changesForHook = [];
 
     if (isThereAnySetSourceListener) {
@@ -24562,7 +24562,7 @@ function Core(rootElement, userSettings) {
     });
 
     if (isThereAnySetSourceListener) {
-      this.runHooks("afterSetSourceDataAtCell", changesForHook, source);
+      this.runHooks('afterSetSourceDataAtCell', changesForHook, source);
     }
 
     this.render();
@@ -24656,7 +24656,7 @@ function Core(rootElement, userSettings) {
       columnEnd = columnStart;
     }
 
-    var type = "mixed";
+    var type = 'mixed';
     (0, _number.rangeEach)(Math.max(Math.min(rowStart, rowEnd), 0), Math.max(rowStart, rowEnd), function (row) {
       var isTypeEqual = true;
       (0, _number.rangeEach)(Math.max(Math.min(columnStart, columnEnd), 0), Math.max(columnStart, columnEnd), function (column) {
@@ -24672,7 +24672,7 @@ function Core(rootElement, userSettings) {
 
         return isTypeEqual;
       });
-      type = isTypeEqual ? currentType : "mixed";
+      type = isTypeEqual ? currentType : 'mixed';
       return isTypeEqual;
     });
     return type;
@@ -24695,11 +24695,11 @@ function Core(rootElement, userSettings) {
         physicalRow = _ref18[0],
         physicalColumn = _ref18[1];
     var cachedValue = metaManager.getCellMeta(physicalRow, physicalColumn, key);
-    var hookResult = instance.runHooks("beforeRemoveCellMeta", row, column, key, cachedValue);
+    var hookResult = instance.runHooks('beforeRemoveCellMeta', row, column, key, cachedValue);
 
     if (hookResult !== false) {
       metaManager.removeCellMeta(physicalRow, physicalColumn, key);
-      instance.runHooks("afterRemoveCellMeta", row, column, key, cachedValue);
+      instance.runHooks('afterRemoveCellMeta', row, column, key, cachedValue);
     }
 
     cachedValue = null;
@@ -24726,7 +24726,7 @@ function Core(rootElement, userSettings) {
     }
 
     if (cellMetaRows.length > 0 && !Array.isArray(cellMetaRows[0])) {
-      throw new Error("The 3rd argument (cellMetaRows) has to be passed as an array of cell meta objects array.");
+      throw new Error('The 3rd argument (cellMetaRows) has to be passed as an array of cell meta objects array.');
     }
 
     if (deleteAmount > 0) {
@@ -24756,7 +24756,7 @@ function Core(rootElement, userSettings) {
   this.setCellMetaObject = function (row, column, prop) {
     var _this5 = this;
 
-    if ((0, _typeof2.default)(prop) === "object") {
+    if ((0, _typeof2.default)(prop) === 'object') {
       (0, _object.objectEach)(prop, function (value, key) {
         _this5.setCellMeta(row, column, key, value);
       });
@@ -24777,7 +24777,7 @@ function Core(rootElement, userSettings) {
 
 
   this.setCellMeta = function (row, column, key, value) {
-    var allowSetCellMeta = instance.runHooks("beforeSetCellMeta", row, column, key, value);
+    var allowSetCellMeta = instance.runHooks('beforeSetCellMeta', row, column, key, value);
 
     if (allowSetCellMeta === false) {
       return;
@@ -24795,7 +24795,7 @@ function Core(rootElement, userSettings) {
     }
 
     metaManager.setCellMeta(physicalRow, physicalColumn, key, value);
-    instance.runHooks("afterSetCellMeta", row, column, key, value);
+    instance.runHooks('afterSetCellMeta', row, column, key, value);
   };
   /**
    * Get all the cells meta settings at least once generated in the table (in order of cell initialization).
@@ -24843,9 +24843,9 @@ function Core(rootElement, userSettings) {
     cellProperties.visualCol = column;
     cellProperties.prop = prop;
     cellProperties.instance = instance;
-    instance.runHooks("beforeGetCellMeta", row, column, cellProperties); // for `type` added or changed in beforeGetCellMeta
+    instance.runHooks('beforeGetCellMeta', row, column, cellProperties); // for `type` added or changed in beforeGetCellMeta
 
-    if (instance.hasHook("beforeGetCellMeta") && (0, _object.hasOwnProperty)(cellProperties, "type")) {
+    if (instance.hasHook('beforeGetCellMeta') && (0, _object.hasOwnProperty)(cellProperties, 'type')) {
       metaManager.updateCellMeta(physicalRow, physicalColumn, {
         type: cellProperties.type
       });
@@ -24859,7 +24859,7 @@ function Core(rootElement, userSettings) {
       }
     }
 
-    instance.runHooks("afterGetCellMeta", row, column, cellProperties);
+    instance.runHooks('afterGetCellMeta', row, column, cellProperties);
     return cellProperties;
   };
   /**
@@ -24885,10 +24885,10 @@ function Core(rootElement, userSettings) {
 
 
   this.isColumnModificationAllowed = function () {
-    return !(instance.dataType === "object" || tableMeta.columns);
+    return !(instance.dataType === 'object' || tableMeta.columns);
   };
 
-  var rendererLookup = (0, _data.cellMethodLookupFactory)("renderer");
+  var rendererLookup = (0, _data.cellMethodLookupFactory)('renderer');
   /**
    * Returns the cell renderer function by given `row` and `column` arguments.
    *
@@ -24927,8 +24927,8 @@ function Core(rootElement, userSettings) {
    */
 
 
-  this.getCellEditor = (0, _data.cellMethodLookupFactory)("editor");
-  var validatorLookup = (0, _data.cellMethodLookupFactory)("validator");
+  this.getCellEditor = (0, _data.cellMethodLookupFactory)('editor');
+  var validatorLookup = (0, _data.cellMethodLookupFactory)('validator');
   /**
    * Returns the cell validator by `row` and `column`.
    *
@@ -24949,7 +24949,7 @@ function Core(rootElement, userSettings) {
   this.getCellValidator = function (row, column) {
     var validator = validatorLookup.call(this, row, column);
 
-    if (typeof validator === "string") {
+    if (typeof validator === 'string') {
       validator = (0, _registry3.getValidator)(validator);
     }
 
@@ -25001,7 +25001,7 @@ function Core(rootElement, userSettings) {
 
   this.validateRows = function (rows, callback) {
     if (!Array.isArray(rows)) {
-      throw new Error("validateRows parameter `rows` must be an array");
+      throw new Error('validateRows parameter `rows` must be an array');
     }
 
     this._validateCells(callback, rows);
@@ -25029,7 +25029,7 @@ function Core(rootElement, userSettings) {
 
   this.validateColumns = function (columns, callback) {
     if (!Array.isArray(columns)) {
-      throw new Error("validateColumns parameter `columns` must be an array");
+      throw new Error('validateColumns parameter `columns` must be an array');
     }
 
     this._validateCells(callback, undefined, columns);
@@ -25075,8 +25075,8 @@ function Core(rootElement, userSettings) {
 
         waitingForValidator.addValidatorToQueue();
         instance.validateCell(instance.getDataAtCell(i, j), instance.getCellMeta(i, j), function (result) {
-          if (typeof result !== "boolean") {
-            throw new Error("Validation error: result is not boolean");
+          if (typeof result !== 'boolean') {
+            throw new Error('Validation error: result is not boolean');
           }
 
           if (result === false) {
@@ -25084,7 +25084,7 @@ function Core(rootElement, userSettings) {
           }
 
           waitingForValidator.removeValidatorFormQueue();
-        }, "validateCells");
+        }, 'validateCells');
         j -= 1;
       }
 
@@ -25109,7 +25109,7 @@ function Core(rootElement, userSettings) {
     var physicalRow = row;
 
     if (physicalRow !== void 0) {
-      physicalRow = instance.runHooks("modifyRowHeader", physicalRow);
+      physicalRow = instance.runHooks('modifyRowHeader', physicalRow);
     }
 
     if (physicalRow === void 0) {
@@ -25121,7 +25121,7 @@ function Core(rootElement, userSettings) {
       rowHeader = rowHeader[physicalRow];
     } else if ((0, _function.isFunction)(rowHeader)) {
       rowHeader = rowHeader(physicalRow);
-    } else if (rowHeader && typeof rowHeader !== "string" && typeof rowHeader !== "number") {
+    } else if (rowHeader && typeof rowHeader !== 'string' && typeof rowHeader !== 'number') {
       rowHeader = physicalRow + 1;
     }
 
@@ -25175,7 +25175,7 @@ function Core(rootElement, userSettings) {
 
 
   this.getColHeader = function (column) {
-    var columnIndex = instance.runHooks("modifyColHeader", column);
+    var columnIndex = instance.runHooks('modifyColHeader', column);
     var result = tableMeta.colHeaders;
 
     if (columnIndex === void 0) {
@@ -25215,7 +25215,7 @@ function Core(rootElement, userSettings) {
         result = tableMeta.colHeaders[physicalColumn];
       } else if ((0, _function.isFunction)(tableMeta.colHeaders)) {
         result = tableMeta.colHeaders(physicalColumn);
-      } else if (tableMeta.colHeaders && typeof tableMeta.colHeaders !== "string" && typeof tableMeta.colHeaders !== "number") {
+      } else if (tableMeta.colHeaders && typeof tableMeta.colHeaders !== 'string' && typeof tableMeta.colHeaders !== 'number') {
         result = (0, _data.spreadsheetColumnLabel)(columnIndex); // see #1458
       }
     }
@@ -25247,12 +25247,12 @@ function Core(rootElement, userSettings) {
 
     if (width !== void 0 && width !== null) {
       switch ((0, _typeof2.default)(width)) {
-        case "object":
+        case 'object':
           // array
           width = width[col];
           break;
 
-        case "function":
+        case 'function':
           width = width(col);
           break;
 
@@ -25260,7 +25260,7 @@ function Core(rootElement, userSettings) {
           break;
       }
 
-      if (typeof width === "string") {
+      if (typeof width === 'string') {
         width = parseInt(width, 10);
       }
     }
@@ -25281,7 +25281,7 @@ function Core(rootElement, userSettings) {
   this.getColWidth = function (column) {
     var width = instance._getColWidthFromSettings(column);
 
-    width = instance.runHooks("modifyColWidth", width, column);
+    width = instance.runHooks('modifyColWidth', width, column);
 
     if (width === void 0) {
       width = _src.ViewportColumnsCalculator.DEFAULT_WIDTH;
@@ -25311,12 +25311,12 @@ function Core(rootElement, userSettings) {
 
     if (height !== void 0 && height !== null) {
       switch ((0, _typeof2.default)(height)) {
-        case "object":
+        case 'object':
           // array
           height = height[row];
           break;
 
-        case "function":
+        case 'function':
           height = height(row);
           break;
 
@@ -25324,7 +25324,7 @@ function Core(rootElement, userSettings) {
           break;
       }
 
-      if (typeof height === "string") {
+      if (typeof height === 'string') {
         height = parseInt(height, 10);
       }
     }
@@ -25345,7 +25345,7 @@ function Core(rootElement, userSettings) {
   this.getRowHeight = function (row) {
     var height = instance._getRowHeightFromSettings(row);
 
-    height = instance.runHooks("modifyRowHeight", height, row);
+    height = instance.runHooks('modifyRowHeight', height, row);
     return height;
   };
   /**
@@ -25389,7 +25389,7 @@ function Core(rootElement, userSettings) {
    *
    * @memberof Core#
    * @function countPhysicalRows
-   * @returns {Number} Total number of rows.
+   * @returns {number} Total number of rows.
    */
 
 
@@ -25821,7 +25821,7 @@ function Core(rootElement, userSettings) {
     (0, _keyStateObserver.stopObserving)();
 
     if ((0, _rootInstance.isRootInstance)(instance)) {
-      var licenseInfo = this.rootDocument.querySelector("#hot-display-license-info");
+      var licenseInfo = this.rootDocument.querySelector('#hot-display-license-info');
 
       if (licenseInfo) {
         licenseInfo.parentNode.removeChild(licenseInfo);
@@ -25845,7 +25845,7 @@ function Core(rootElement, userSettings) {
         plugin.destroy();
       });
       pluginsRegistry.clear();
-      instance.runHooks("afterDestroy");
+      instance.runHooks('afterDestroy');
     }, true);
 
     _pluginHooks.default.getSingleton().destroy(instance);
@@ -25854,7 +25854,7 @@ function Core(rootElement, userSettings) {
       // replace instance methods with post mortem
       if ((0, _function.isFunction)(property)) {
         obj[key] = postMortem(key);
-      } else if (key !== "guid") {
+      } else if (key !== 'guid') {
         // replace instance properties with null (restores memory)
         // it should not be necessary but this prevents a memory leak side effects that show itself in Jasmine tests
         obj[key] = null;
@@ -25914,7 +25914,7 @@ function Core(rootElement, userSettings) {
   this.getPlugin = function (pluginName) {
     var unifiedPluginName = (0, _string.toUpperCaseFirst)(pluginName); // Workaround for the UndoRedo plugin which, currently doesn't follow the plugin architecture.
 
-    if (unifiedPluginName === "UndoRedo") {
+    if (unifiedPluginName === 'UndoRedo') {
       return this.undoRedo;
     }
 
@@ -26093,9 +26093,9 @@ function Core(rootElement, userSettings) {
 
 
   this.toTableElement = function () {
-    var tempElement = _this.rootDocument.createElement("div");
+    var tempElement = _this.rootDocument.createElement('div');
 
-    tempElement.insertAdjacentHTML("afterbegin", (0, _parseTable.instanceToHTML)(_this));
+    tempElement.insertAdjacentHTML('afterbegin', (0, _parseTable.instanceToHTML)(_this));
     return tempElement.firstElementChild;
   };
 
@@ -26113,7 +26113,7 @@ function Core(rootElement, userSettings) {
     var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     var handleFunc = handle;
 
-    if (typeof handleFunc === "function") {
+    if (typeof handleFunc === 'function') {
       handleFunc = setTimeout(handleFunc, delay);
     }
 
@@ -26180,7 +26180,7 @@ function Core(rootElement, userSettings) {
     pluginsRegistry.addItem(pluginName, new PluginClass(_this));
   });
 
-  _pluginHooks.default.getSingleton().run(instance, "construct");
+  _pluginHooks.default.getSingleton().run(instance, 'construct');
 }
 
 /***/ }),
@@ -40982,7 +40982,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "09/03/2021 14:31:35";
+Handsontable.buildDate = "16/03/2021 13:13:36";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
