@@ -34,7 +34,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "16/03/2021 14:57:50";
+Handsontable.buildDate = "24/03/2021 11:18:51";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,

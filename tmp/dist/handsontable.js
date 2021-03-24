@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 16/03/2021 14:58:52)
+ * Release date: 10/02/2021 (built at 24/03/2021 11:19:22)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -40982,7 +40982,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "16/03/2021 14:58:52";
+Handsontable.buildDate = "24/03/2021 11:19:22";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -90402,7 +90402,7 @@ var Matrix = /*#__PURE__*/function () {
   }, {
     key: "sort",
     value: function sort() {
-      this.data.sort((0, _array.dynamicSortMultiple)("row", "col"));
+      this.data.sort((0, _array.dynamicSortMultiple)('row', 'col'));
     }
     /**
      * Remove cell value from the collection.
@@ -90489,7 +90489,7 @@ var Matrix = /*#__PURE__*/function () {
     /**
      * Get cell dependencies using visual coordinates.
      *
-     * @param {Object} cellCoord Visual cell coordinates object.
+     * @param {object} cellCoord Visual cell coordinates object.
      */
 
   }, {
@@ -90501,6 +90501,9 @@ var Matrix = /*#__PURE__*/function () {
       var result = [];
       var startCell = cellCoord;
       var cellCode = this.coordsToA1([startCell[1] || startCell.column, (startCell[0] || startCell.row) + 1]);
+      /**
+       * @param array
+       */
 
       function distinctFilter(array) {
         var seenIt = {};
@@ -90517,7 +90520,7 @@ var Matrix = /*#__PURE__*/function () {
 
       this.data.forEach(function (dataCell) {
         if (dataCell.precedentsList && dataCell.precedentsList[cellCode]) {
-          result.push(_this2.getCellAt(dataCell.row, dataCell.column));
+          result.push(dataCell);
         }
       });
       result.forEach(function (parentCell) {
@@ -90528,7 +90531,7 @@ var Matrix = /*#__PURE__*/function () {
       return distinctFilter(result);
     }
     /**
-     *
+     * @param coords
      */
 
   }, {
@@ -90545,16 +90548,16 @@ var Matrix = /*#__PURE__*/function () {
   }, {
     key: "stringifyCol",
     value: function stringifyCol(value) {
-      if (typeof value === "string") {
+      if (typeof value === 'string') {
         return value;
       }
 
-      var col = "";
+      var col = '';
 
       while (value >= 0) {
         if (value / 26 >= 1) {
           col += String.fromCharCode(64 + Math.floor(value / 26));
-          value = value % 26;
+          value %= 26;
         } else {
           col += String.fromCharCode(65 + value);
           value = -1;
