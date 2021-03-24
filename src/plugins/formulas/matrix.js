@@ -5,8 +5,8 @@ import {
   dynamicSort,
   dynamicSortMultiple,
   binarySearch,
-} from "../../helpers/array";
-import CellValue from "./cell/value";
+} from '../../helpers/array';
+import CellValue from './cell/value';
 
 /**
  * This component is responsible for storing all calculated cells which contain formula expressions (CellValue) and
@@ -58,7 +58,7 @@ class Matrix {
     if (window.binary) {
       result = binarySearch(this.data, row, column);
     } else {
-      arrayEach(this.data, function (cell) {
+      arrayEach(this.data, (cell) => {
         if (cell.row === row && cell.column === column) {
           result = cell;
           return false;
@@ -75,7 +75,7 @@ class Matrix {
    * @returns {Array}
    */
   getOutOfDateCells() {
-    return arrayFilter(this.data, (cell) =>
+    return arrayFilter(this.data, cell =>
       cell.isState(CellValue.STATE_OUT_OFF_DATE)
     );
   }
@@ -86,7 +86,7 @@ class Matrix {
    * @param {CellValue|object} cellValue Cell value object.
    */
   add(cellValue) {
-    if (!arrayFilter(this.data, (cell) => cell.isEqual(cellValue)).length) {
+    if (!arrayFilter(this.data, cell => cell.isEqual(cellValue)).length) {
       this.data.push(cellValue);
     }
   }
@@ -96,7 +96,7 @@ class Matrix {
    *
    */
   sort() {
-    this.data.sort(dynamicSortMultiple("row", "col"));
+    this.data.sort(dynamicSortMultiple('row', 'col'));
   }
 
   /**
@@ -123,7 +123,7 @@ class Matrix {
 
       return result;
     };
-    this.data = arrayFilter(this.data, (cell) => !isEqual(cell, cellValue));
+    this.data = arrayFilter(this.data, cell => !isEqual(cell, cellValue));
   }
 
   /**
@@ -147,8 +147,8 @@ class Matrix {
         []
       );
     };
-    var resultLength = 0;
-    var maxDependenciesDeep =
+    let resultLength = 0;
+    const maxDependenciesDeep =
       this.hot && this.hot.getSettings().maxDependenciesDeep > -1
         ? this.hot.getSettings().maxDependenciesDeep
         : -1;
@@ -186,24 +186,27 @@ class Matrix {
   /**
    * Get cell dependencies using visual coordinates.
    *
-   * @param {Object} cellCoord Visual cell coordinates object.
+   * @param {object} cellCoord Visual cell coordinates object.
    */
   getDependenciesCustom(cellCoord) {
     /* eslint-disable arrow-body-style */
-    let result = [];
-    let startCell = cellCoord;
-    var cellCode = this.coordsToA1([
+    const result = [];
+    const startCell = cellCoord;
+    const cellCode = this.coordsToA1([
       startCell[1] || startCell.column,
       (startCell[0] || startCell.row) + 1,
     ]);
 
+    /**
+     * @param array
+     */
     function distinctFilter(array) {
-      var seenIt = {};
+      const seenIt = {};
 
       return array
         .reverse()
-        .filter(function (val) {
-          let key = `${val.row}-${val.column}`;
+        .filter((val) => {
+          const key = `${val.row}-${val.column}`;
           if (seenIt[key]) {
             return false;
           }
@@ -214,7 +217,7 @@ class Matrix {
 
     this.data.forEach((dataCell) => {
       if (dataCell.precedentsList && dataCell.precedentsList[cellCode]) {
-        result.push(this.getCellAt(dataCell.row, dataCell.column));
+        result.push(dataCell);
       }
     });
     result.forEach((parentCell) => {
@@ -229,7 +232,7 @@ class Matrix {
   }
 
   /**
-   *
+   * @param coords
    */
   coordsToA1(coords) {
     return this.stringifyCol(coords[0]) + coords[1];
@@ -240,16 +243,16 @@ class Matrix {
    * @param {*} value
    */
   stringifyCol(value) {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return value;
     }
 
-    let col = "";
+    let col = '';
 
     while (value >= 0) {
       if (value / 26 >= 1) {
         col += String.fromCharCode(64 + Math.floor(value / 26));
-        value = value % 26;
+        value %= 26;
       } else {
         col += String.fromCharCode(65 + value);
         value = -1;
@@ -266,7 +269,7 @@ class Matrix {
    */
   registerCellRef(cellReference) {
     if (
-      !arrayFilter(this.cellReferences, (cell) => cell.isEqual(cellReference))
+      !arrayFilter(this.cellReferences, cell => cell.isEqual(cellReference))
         .length
     ) {
       this.cellReferences.push(cellReference);
@@ -286,12 +289,12 @@ class Matrix {
   ) {
     const removed = [];
 
-    const rowMatch = (cell) =>
-      startRow === void 0 ? true : cell.row >= startRow && cell.row <= endRow;
-    const colMatch = (cell) =>
-      startColumn === void 0
+    const rowMatch = cell =>
+      (startRow === void 0 ? true : cell.row >= startRow && cell.row <= endRow);
+    const colMatch = cell =>
+      (startColumn === void 0
         ? true
-        : cell.column >= startColumn && cell.column <= endColumn;
+        : cell.column >= startColumn && cell.column <= endColumn);
 
     this.cellReferences = arrayFilter(this.cellReferences, (cell) => {
       if (rowMatch(cell) && colMatch(cell)) {
