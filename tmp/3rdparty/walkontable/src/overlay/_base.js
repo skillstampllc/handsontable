@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
-
 exports.__esModule = true;
 exports.Overlay = void 0;
+
+require("core-js/modules/es.array.index-of.js");
 
 var _element = require("./../../../../helpers/dom/element");
 

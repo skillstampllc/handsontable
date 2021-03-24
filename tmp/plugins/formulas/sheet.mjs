@@ -1,13 +1,3 @@
-import "core-js/modules/es.array.find-index.js";
-import "core-js/modules/es.array.for-each.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.promise.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/web.timers.js";
 import "regenerator-runtime/runtime.js";
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
@@ -19,6 +9,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+import "core-js/modules/es.promise.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.find-index.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.sort.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

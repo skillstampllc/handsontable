@@ -1,5 +1,7 @@
 "use strict";
 
+require("core-js/modules/es.array.sort.js");
+
 exports.__esModule = true;
 exports.sort = sort;
 exports.FIRST_AFTER_SECOND = exports.FIRST_BEFORE_SECOND = exports.DO_NOT_SWAP = void 0;

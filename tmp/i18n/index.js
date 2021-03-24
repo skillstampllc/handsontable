@@ -1,5 +1,9 @@
 "use strict";
 
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.keys.js");
+
 exports.__esModule = true;
 
 var _languages = require("./languages");

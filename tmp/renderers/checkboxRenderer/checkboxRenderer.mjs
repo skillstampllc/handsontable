@@ -1,11 +1,11 @@
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.to-string.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.regexp.to-string.js";
 import "core-js/modules/web.timers.js";
 import { baseRenderer } from "../baseRenderer/index.mjs";
 import EventManager from "../../eventManager.mjs";

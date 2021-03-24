@@ -1,10 +1,10 @@
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.weak-map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
 export var holder = new WeakMap();
 export var rootInstanceSymbol = Symbol('rootInstance');
 /**

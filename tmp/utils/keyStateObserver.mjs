@@ -1,10 +1,9 @@
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.array.some.js";
-import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.set.js";
+import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
 import EventManager from "../eventManager.mjs";
 import { isCtrlMetaKey, isKey } from "../helpers/unicode.mjs";
 var eventManager = new EventManager();

@@ -1,8 +1,8 @@
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.regexp.constructor.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.regexp.to-string.js";
 import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.regexp.constructor.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.array.filter.js";
 var COLUMN_ORDER_PREFIX = 'sort';
 /**
  * Get CSS classes which should be added to particular column header.

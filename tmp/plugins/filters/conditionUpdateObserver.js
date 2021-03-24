@@ -1,15 +1,15 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.filter.js");
+exports.__esModule = true;
+exports.default = void 0;
 
 require("core-js/modules/es.array.index-of.js");
 
 require("core-js/modules/es.array.slice.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.filter.js");
 
 var _array = require("../../helpers/array");
 

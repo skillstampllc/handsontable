@@ -1,7 +1,6 @@
-import "core-js/modules/es.array.for-each.js";
 import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.object.keys.js";
 import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.keys.js";
 import { getCellType } from "./../cellTypes/registry.mjs";
 import { deepObjectSize, hasOwnProperty, isObject } from "./object.mjs";
 var COLUMN_LABEL_BASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

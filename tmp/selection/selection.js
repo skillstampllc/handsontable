@@ -2,36 +2,48 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.array.concat.js");
+require("core-js/modules/es.array.slice.js");
 
-require("core-js/modules/es.array.for-each.js");
+require("core-js/modules/es.object.freeze.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.concat.js");
 
 require("core-js/modules/es.array.from.js");
 
 require("core-js/modules/es.array.includes.js");
 
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.array.some.js");
-
-require("core-js/modules/es.number.constructor.js");
+require("core-js/modules/es.string.includes.js");
 
 require("core-js/modules/es.number.is-integer.js");
 
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.string.iterator.js");
+require("core-js/modules/es.number.constructor.js");
 
 require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
 
 var _highlight = _interopRequireWildcard(require("./highlight/highlight"));
 

@@ -1,11 +1,11 @@
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.from.js";
 import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
 import { getComparisonFunction } from "../../helpers/feature.mjs";
 import { arrayUnique, arrayEach } from "../../helpers/array.mjs";
 var sortCompare = getComparisonFunction();

@@ -1,29 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.array.some.js");
-
-require("core-js/modules/es.number.constructor.js");
-
-require("core-js/modules/es.number.is-integer.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
 exports.__esModule = true;
 exports.areValidSortStates = areValidSortStates;
 exports.getNextSortOrder = getNextSortOrder;
@@ -31,6 +7,28 @@ exports.getHeaderSpanElement = getHeaderSpanElement;
 exports.isFirstLevelColumnHeader = isFirstLevelColumnHeader;
 exports.wasHeaderClickedProperly = wasHeaderClickedProperly;
 exports.HEADER_SPAN_CLASS = exports.DESC_SORT_STATE = exports.ASC_SORT_STATE = void 0;
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.array.map.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.from.js");
 
 var _object = require("../../helpers/object");
 

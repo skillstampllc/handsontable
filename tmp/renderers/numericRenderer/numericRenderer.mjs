@@ -1,8 +1,8 @@
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.regexp.exec.js";
 import "core-js/modules/es.string.replace.js";
-import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.join.js";
 import numbro from 'numbro';
 import { textRenderer } from "../textRenderer/index.mjs";
 import { isNumeric } from "../../helpers/number.mjs";

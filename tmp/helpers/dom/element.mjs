@@ -1,19 +1,3 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.constructor.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.regexp.to-string.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.string.replace.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/es.string.trim.js";
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -26,6 +10,29 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.regexp.constructor.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.string.trim.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.function.name.js";
 import { hasCaptionProblem, isClassListSupported, isTextContentSupported, isGetComputedStyleSupported } from "../feature.mjs";
 import { isSafari, isIE9 } from "../browser.mjs";
 import { sanitize } from "../string.mjs";

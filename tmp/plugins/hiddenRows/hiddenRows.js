@@ -2,44 +2,58 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.array.concat.js");
+require("core-js/modules/es.object.set-prototype-of.js");
 
-require("core-js/modules/es.array.every.js");
+require("core-js/modules/es.object.get-prototype-of.js");
 
-require("core-js/modules/es.array.from.js");
+require("core-js/modules/es.reflect.construct.js");
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.reflect.get.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.object.get-own-property-descriptor.js");
 
-require("core-js/modules/es.array.join.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.array.map.js");
+require("core-js/modules/es.symbol.description.js");
 
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.number.constructor.js");
-
-require("core-js/modules/es.number.is-integer.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
+require("core-js/modules/es.symbol.iterator.js");
 
 exports.__esModule = true;
 exports.HiddenRows = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.map.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.join.js");
+
+require("core-js/modules/es.weak-map.js");
 
 var _base = require("../base");
 
@@ -85,13 +99,19 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
-function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 _pluginHooks.default.getSingleton().register('beforeHideRows');
 

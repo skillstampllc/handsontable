@@ -2,26 +2,50 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.array.concat.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.array.filter.js");
+require("core-js/modules/es.symbol.description.js");
 
-require("core-js/modules/es.array.find.js");
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+exports.__esModule = true;
+exports.default = exports.PLUGIN_KEY = void 0;
 
 require("core-js/modules/es.array.includes.js");
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.array.find.js");
 
 require("core-js/modules/es.array.reduce.js");
 
 require("core-js/modules/es.array.slice.js");
 
-require("core-js/modules/es.array.sort.js");
-
 require("core-js/modules/es.array.splice.js");
 
-exports.__esModule = true;
-exports.default = exports.PLUGIN_KEY = void 0;
+require("core-js/modules/es.array.sort.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.concat.js");
 
 var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
 
@@ -53,7 +77,7 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 

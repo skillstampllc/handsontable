@@ -1,17 +1,16 @@
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/web.timers.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.includes.js";
 import { closestDown, hasClass, isChildOf, getParent } from "./../../../helpers/dom/element.mjs";
 import { partial } from "./../../../helpers/function.mjs";
 import { isTouchSupported } from "./../../../helpers/feature.mjs";

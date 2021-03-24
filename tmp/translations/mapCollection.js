@@ -1,10 +1,8 @@
 "use strict";
 
-require("core-js/modules/es.array.for-each.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.iterator.js");
+exports.__esModule = true;
+exports.getRegisteredMapsCounter = getRegisteredMapsCounter;
+exports.default = void 0;
 
 require("core-js/modules/es.map.js");
 
@@ -12,13 +10,13 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/web.dom-collections.for-each.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
-exports.__esModule = true;
-exports.getRegisteredMapsCounter = getRegisteredMapsCounter;
-exports.default = void 0;
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
 
 var _mixed = require("../helpers/mixed");
 

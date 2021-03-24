@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
 exports.__esModule = true;
 exports.default = jQueryWrapper;
+
+require("core-js/modules/es.array.concat.js");
 
 /**
  * @param {Core} Handsontable The Handsontable instance.

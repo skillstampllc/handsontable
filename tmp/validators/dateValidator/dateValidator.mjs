@@ -1,5 +1,5 @@
-import "core-js/modules/es.regexp.exec.js";
 import "core-js/modules/es.string.search.js";
+import "core-js/modules/es.regexp.exec.js";
 import moment from 'moment';
 import { getEditorInstance } from "../../editors/registry.mjs";
 import { EDITOR_TYPE as DATE_EDITOR_TYPE } from "../../editors/dateEditor/index.mjs";

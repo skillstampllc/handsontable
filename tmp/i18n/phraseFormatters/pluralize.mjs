@@ -1,5 +1,5 @@
-import "core-js/modules/es.number.constructor.js";
 import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
 
 /**
  * Try to choose plural form from available phrase propositions.

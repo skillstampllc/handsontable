@@ -1,14 +1,18 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
+require("core-js/modules/es.array.slice.js");
 
-require("core-js/modules/es.regexp.exec.js");
+require("core-js/modules/es.object.freeze.js");
 
 exports.__esModule = true;
 exports.extendNotExistingKeys = extendNotExistingKeys;
 exports.createCellHeadersRange = createCellHeadersRange;
 exports.normalizeLanguageCode = normalizeLanguageCode;
 exports.warnUserAboutLanguageRegistration = warnUserAboutLanguageRegistration;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.regexp.exec.js");
 
 var _mixed = require("./../helpers/mixed");
 

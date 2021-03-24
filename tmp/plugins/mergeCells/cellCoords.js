@@ -1,5 +1,9 @@
 "use strict";
 
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.object.freeze.js");
+
 exports.__esModule = true;
 exports.default = void 0;
 

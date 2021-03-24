@@ -1,18 +1,3 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.for-each.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -31,6 +16,25 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import "core-js/modules/es.map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
 import { defineGetter, objectEach } from "../../helpers/object.mjs";
 import { arrayEach } from "../../helpers/array.mjs";
 import { getPluginsNames, hasPlugin } from "../registry.mjs";

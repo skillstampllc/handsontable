@@ -1,11 +1,11 @@
 "use strict";
 
+exports.__esModule = true;
+exports.applySpanProperties = applySpanProperties;
+
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.regexp.to-string.js");
-
-exports.__esModule = true;
-exports.applySpanProperties = applySpanProperties;
 
 /**
  * Apply the `colspan`/`rowspan` properties.

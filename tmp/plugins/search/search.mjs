@@ -1,16 +1,5 @@
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.regexp.to-string.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.string.search.js";
-import "core-js/modules/es.string.split.js";
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -43,10 +32,34 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.string.search.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
 import { BasePlugin } from "../base/index.mjs";
 import { isObject } from "../../helpers/object.mjs";
 import { rangeEach } from "../../helpers/number.mjs";

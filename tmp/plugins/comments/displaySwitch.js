@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/web.timers.js");
-
 exports.__esModule = true;
 exports.default = void 0;
+
+require("core-js/modules/web.timers.js");
 
 var _function = require("../../helpers/function");
 

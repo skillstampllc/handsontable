@@ -1,11 +1,10 @@
-import "core-js/modules/es.array.for-each.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/web.dom-collections.for-each.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

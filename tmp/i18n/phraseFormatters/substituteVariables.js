@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/es.array.map.js");
-
 exports.__esModule = true;
 exports.default = substituteVariables;
+
+require("core-js/modules/es.array.map.js");
 
 var _string = require("./../../helpers/string");
 

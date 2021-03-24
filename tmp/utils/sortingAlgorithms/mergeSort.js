@@ -1,11 +1,11 @@
 "use strict";
 
+exports.__esModule = true;
+exports.default = mergeSort;
+
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.regexp.to-string.js");
-
-exports.__esModule = true;
-exports.default = mergeSort;
 
 var _linkedList = _interopRequireDefault(require("../dataStructures/linkedList"));
 

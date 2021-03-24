@@ -1,16 +1,3 @@
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.array.some.js";
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -25,6 +12,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.sort.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
 import { CellRange } from "./../3rdparty/walkontable/src/index.mjs";
 import { arrayEach, arrayReduce } from "./../helpers/array.mjs";
 import { isUndefined } from "./../helpers/mixed.mjs";

@@ -1,5 +1,5 @@
-import "core-js/modules/es.regexp.exec.js";
 import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.regexp.exec.js";
 import { baseRenderer } from "../baseRenderer/index.mjs";
 import { empty, fastInnerText } from "../../helpers/dom/element.mjs";
 import { stringify } from "../../helpers/mixed.mjs";

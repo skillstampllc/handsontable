@@ -1,24 +1,24 @@
 "use strict";
 
-require("core-js/modules/es.array.fill.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.regexp.exec.js");
+exports.__esModule = true;
+exports.parse = parse;
+exports.stringify = stringify;
 
 require("core-js/modules/es.string.match.js");
+
+require("core-js/modules/es.regexp.exec.js");
 
 require("core-js/modules/es.string.replace.js");
 
 require("core-js/modules/es.string.starts-with.js");
 
-exports.__esModule = true;
-exports.parse = parse;
-exports.stringify = stringify;
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.join.js");
+
+require("core-js/modules/es.array.fill.js");
+
+require("core-js/modules/es.array.index-of.js");
 
 /* eslint-disable jsdoc/require-description-complete-sentence */
 

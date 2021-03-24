@@ -1,13 +1,11 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.some.js");
-
-require("core-js/modules/es.number.to-fixed.js");
-
 exports.__esModule = true;
 exports.default = void 0;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.number.to-fixed.js");
 
 var _array = require("../../helpers/array");
 

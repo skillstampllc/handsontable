@@ -1,13 +1,13 @@
 "use strict";
 
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.regexp.exec.js");
+exports.__esModule = true;
+exports.default = void 0;
 
 require("core-js/modules/es.string.split.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.array.join.js");
 
 var _array = require("../../helpers/array");
 

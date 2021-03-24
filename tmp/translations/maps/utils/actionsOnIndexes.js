@@ -1,10 +1,10 @@
 "use strict";
 
-require("core-js/modules/es.array.filter.js");
-
 exports.__esModule = true;
 exports.getDecreasedIndexes = getDecreasedIndexes;
 exports.getIncreasedIndexes = getIncreasedIndexes;
+
+require("core-js/modules/es.array.filter.js");
 
 var _array = require("../../../helpers/array");
 

@@ -1,16 +1,3 @@
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.fill.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -28,6 +15,27 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+import "core-js/modules/es.array.fill.js";
+import "core-js/modules/es.map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.get-own-property-descriptors.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

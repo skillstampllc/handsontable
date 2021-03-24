@@ -1,30 +1,8 @@
 "use strict";
 
-require("core-js/modules/es.symbol.js");
+require("core-js/modules/es.array.slice.js");
 
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.string.code-point-at.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.string.pad-start.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
+require("core-js/modules/es.object.freeze.js");
 
 exports.__esModule = true;
 exports.stringify = stringify;
@@ -33,6 +11,32 @@ exports.isUndefined = isUndefined;
 exports.isEmpty = isEmpty;
 exports.isRegExp = isRegExp;
 exports._injectProductInfo = _injectProductInfo;
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/es.string.code-point-at.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.string.pad-start.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
 
 var _moment = _interopRequireDefault(require("moment"));
 

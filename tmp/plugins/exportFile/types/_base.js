@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/es.string.pad-start.js");
-
 exports.__esModule = true;
 exports.default = void 0;
+
+require("core-js/modules/es.string.pad-start.js");
 
 var _object = require("../../../helpers/object");
 

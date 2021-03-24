@@ -1,6 +1,30 @@
 "use strict";
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.get-own-property-descriptors.js");
+
+exports.__esModule = true;
+exports.depthFirstPreOrder = depthFirstPreOrder;
+exports.default = exports.TRAVERSAL_BF = exports.TRAVERSAL_DF_POST = exports.TRAVERSAL_DF_PRE = void 0;
 
 require("core-js/modules/es.map.js");
 
@@ -8,11 +32,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/web.dom-collections.iterator.js");
+require("core-js/modules/es.array.iterator.js");
 
-exports.__esModule = true;
-exports.depthFirstPreOrder = depthFirstPreOrder;
-exports.default = exports.TRAVERSAL_BF = exports.TRAVERSAL_DF_POST = exports.TRAVERSAL_DF_PRE = void 0;
+require("core-js/modules/web.dom-collections.iterator.js");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 

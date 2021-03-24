@@ -1,10 +1,10 @@
 "use strict";
 
-require("core-js/modules/es.array.splice.js");
-
 exports.__esModule = true;
 exports.getListenersCounter = getListenersCounter;
 exports.default = void 0;
+
+require("core-js/modules/es.array.splice.js");
 
 var _feature = require("./helpers/feature");
 

@@ -1,12 +1,13 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
 exports.__esModule = true;
 exports.getCondition = getCondition;
 exports.getConditionDescriptor = getConditionDescriptor;
 exports.registerCondition = registerCondition;
 exports.conditions = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
 var conditions = {};
 /**
  * Get condition closure with pre-bound arguments.

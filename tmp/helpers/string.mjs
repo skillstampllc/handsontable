@@ -1,8 +1,8 @@
 import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.exec.js";
 import "core-js/modules/es.regexp.to-string.js";
 import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.regexp.exec.js";
 import DOMPurify from 'dompurify';
 import { stringify } from "./mixed.mjs";
 /**

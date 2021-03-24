@@ -1,11 +1,11 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
+exports.__esModule = true;
+exports.default = void 0;
 
 require("core-js/modules/es.function.name.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/es.array.index-of.js");
 
 var _object = require("../../helpers/object");
 

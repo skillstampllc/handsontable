@@ -1,15 +1,15 @@
 "use strict";
 
-require("core-js/modules/es.number.constructor.js");
-
-require("core-js/modules/es.number.is-integer.js");
-
 exports.__esModule = true;
 exports.expandMetaType = expandMetaType;
 exports.columnFactory = columnFactory;
 exports.isUnsignedNumber = isUnsignedNumber;
 exports.assert = assert;
 exports.isNullish = isNullish;
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
 
 var _object = require("../../helpers/object");
 

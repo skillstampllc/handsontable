@@ -1,18 +1,19 @@
 "use strict";
 
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.string.split.js");
-
 exports.__esModule = true;
 exports.getClassesToAdd = getClassesToAdd;
 exports.getClassesToRemove = getClassesToRemove;
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.regexp.constructor.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/es.array.filter.js");
+
 var COLUMN_ORDER_PREFIX = 'sort';
 /**
  * Get CSS classes which should be added to particular column header.

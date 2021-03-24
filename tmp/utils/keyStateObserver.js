@@ -1,19 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.array.some.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
 exports.__esModule = true;
 exports._getRefCount = _getRefCount;
 exports._resetState = _resetState;
@@ -21,6 +7,18 @@ exports.isPressed = isPressed;
 exports.isPressedCtrlKey = isPressedCtrlKey;
 exports.startObserving = startObserving;
 exports.stopObserving = stopObserving;
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
 
 var _eventManager = _interopRequireDefault(require("../eventManager"));
 

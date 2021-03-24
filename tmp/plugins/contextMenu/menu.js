@@ -1,12 +1,11 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
+exports.__esModule = true;
+exports.default = void 0;
 
 require("core-js/modules/es.function.name.js");
 
 require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.regexp.constructor.js");
 
@@ -14,10 +13,11 @@ require("core-js/modules/es.regexp.exec.js");
 
 require("core-js/modules/es.regexp.to-string.js");
 
+require("core-js/modules/es.object.to-string.js");
+
 require("core-js/modules/es.string.replace.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/es.array.concat.js");
 
 var _cursor = _interopRequireDefault(require("./cursor"));
 

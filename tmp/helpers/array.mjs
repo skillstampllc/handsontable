@@ -1,17 +1,17 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.includes.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.regexp.exec.js";
 
 /**
  * @param {Array} arr An array to process.

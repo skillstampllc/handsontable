@@ -1,5 +1,7 @@
 "use strict";
 
+require("core-js/modules/es.array.sort.js");
+
 exports.__esModule = true;
 
 var _registry = require("./registry");

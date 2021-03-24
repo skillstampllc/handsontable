@@ -1,13 +1,11 @@
 "use strict";
 
-require("core-js/modules/es.array.for-each.js");
-
-require("core-js/modules/es.string.trim.js");
+exports.__esModule = true;
+exports.default = void 0;
 
 require("core-js/modules/web.dom-collections.for-each.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/es.string.trim.js");
 
 var _element = require("./../helpers/dom/element");
 

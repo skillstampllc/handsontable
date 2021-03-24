@@ -1,7 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
 exports.__esModule = true;
 exports.createId = createId;
 exports.createDefaultCustomBorder = createDefaultCustomBorder;
@@ -11,6 +9,8 @@ exports.createEmptyBorders = createEmptyBorders;
 exports.extendDefaultBorder = extendDefaultBorder;
 exports.checkSelectionBorders = checkSelectionBorders;
 exports.markSelected = markSelected;
+
+require("core-js/modules/es.array.concat.js");
 
 var _object = require("../../helpers/object");
 

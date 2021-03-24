@@ -1,4 +1,3 @@
-import "core-js/modules/es.array.every.js";
 import * as C from "../../../i18n/constants.mjs";
 import { registerOperation } from "../logicalOperationRegisterer.mjs";
 export var OPERATION_ID = 'conjunction';

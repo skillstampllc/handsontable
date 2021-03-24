@@ -1,14 +1,34 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.regexp.exec.js");
+require("core-js/modules/es.symbol.description.js");
 
-require("core-js/modules/es.string.match.js");
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
 
 exports.__esModule = true;
 exports.cleanPatches = cleanPatches;
 exports.parsePath = parsePath;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.string.match.js");
+
+require("core-js/modules/es.regexp.exec.js");
 
 var _array = require("../../helpers/array");
 

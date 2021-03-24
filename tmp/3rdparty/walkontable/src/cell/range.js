@@ -1,13 +1,13 @@
 "use strict";
 
-require("core-js/modules/es.array.includes.js");
+exports.__esModule = true;
+exports.default = void 0;
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.array.includes.js");
 
 require("core-js/modules/es.string.includes.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/es.array.index-of.js");
 
 var _coords = _interopRequireDefault(require("./../cell/coords"));
 

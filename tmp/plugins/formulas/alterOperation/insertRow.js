@@ -1,12 +1,12 @@
 "use strict";
 
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
 exports.__esModule = true;
 exports.operate = operate;
 exports.OPERATION_NAME = void 0;
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.regexp.to-string.js");
 
 var _array = require("../../../helpers/array");
 

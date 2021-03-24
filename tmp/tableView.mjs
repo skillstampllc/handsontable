@@ -1,11 +1,3 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.number.constructor.js";
-import "core-js/modules/es.number.is-integer.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -16,7 +8,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
@@ -38,6 +30,21 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
 import { addClass, clearTextSelection, empty, fastInnerHTML, fastInnerText, getScrollbarWidth, hasClass, isChildOf, isInput, isOutsideInput } from "./helpers/dom/element.mjs";
 import EventManager from "./eventManager.mjs";
 import { isImmediatePropagationStopped, isRightClick, isLeftClick } from "./helpers/dom/event.mjs";

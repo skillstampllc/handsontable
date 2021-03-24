@@ -1,13 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.for-each.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
 exports.__esModule = true;
 exports.spreadsheetColumnLabel = spreadsheetColumnLabel;
 exports.spreadsheetColumnIndex = spreadsheetColumnIndex;
@@ -18,6 +10,12 @@ exports.translateRowsToColumns = translateRowsToColumns;
 exports.cellMethodLookupFactory = cellMethodLookupFactory;
 exports.dataRowToChangesArray = dataRowToChangesArray;
 exports.countFirstRowKeys = countFirstRowKeys;
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.keys.js");
 
 var _registry = require("./../cellTypes/registry");
 

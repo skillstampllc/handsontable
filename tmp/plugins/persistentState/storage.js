@@ -1,11 +1,11 @@
 "use strict";
 
+exports.__esModule = true;
+exports.default = void 0;
+
 require("core-js/modules/es.array.concat.js");
 
 require("core-js/modules/es.array.index-of.js");
-
-exports.__esModule = true;
-exports.default = void 0;
 
 var _array = require("../../helpers/array");
 

@@ -1,21 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.array.sort.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
 exports.__esModule = true;
 exports.sortComparison = sortComparison;
 exports.toVisualValue = toVisualValue;
@@ -23,6 +7,22 @@ exports.createArrayAssertion = createArrayAssertion;
 exports.toEmptyString = toEmptyString;
 exports.unifyColumnValues = unifyColumnValues;
 exports.intersectValues = intersectValues;
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.sort.js");
 
 var _feature = require("../../helpers/feature");
 

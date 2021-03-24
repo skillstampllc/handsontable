@@ -1,7 +1,7 @@
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import { isRightClick as isRightClickEvent, isLeftClick as isLeftClickEvent } from "./../helpers/dom/event.mjs";
 import { CellCoords } from "./../3rdparty/walkontable/src/index.mjs";

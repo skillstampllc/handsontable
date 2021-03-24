@@ -1,7 +1,13 @@
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.map.js";
-import "core-js/modules/es.array.some.js";
-import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
 
 var _templateObject, _templateObject2;
 
@@ -18,6 +24,10 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.index-of.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

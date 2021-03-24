@@ -1,20 +1,23 @@
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.regexp.to-string.js";
-import "core-js/modules/es.string.code-point-at.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.string.pad-start.js";
-import "core-js/modules/es.string.replace.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
 
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6;
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.string.code-point-at.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.string.pad-start.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 

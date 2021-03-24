@@ -1,11 +1,3 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.array.map.js";
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -26,6 +18,19 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import "core-js/modules/es.map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.sort.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
 import { isNumeric } from "../../helpers/number.mjs";
 import { isFunction } from "../../helpers/function.mjs";
 export var ASC = 'asc';

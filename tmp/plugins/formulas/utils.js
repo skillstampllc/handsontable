@@ -1,17 +1,17 @@
 "use strict";
 
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.match.js");
-
-require("core-js/modules/es.string.replace.js");
-
 exports.__esModule = true;
 exports.isFormulaExpression = isFormulaExpression;
 exports.isFormulaExpressionEscaped = isFormulaExpressionEscaped;
 exports.unescapeFormulaExpression = unescapeFormulaExpression;
 exports.toUpperCaseFormula = toUpperCaseFormula;
 exports.cellCoordFactory = cellCoordFactory;
+
+require("core-js/modules/es.string.match.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 /**
  * Check if provided expression is valid formula expression.

@@ -1,5 +1,5 @@
-import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.index-of.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

@@ -1,14 +1,14 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.object.keys.js");
-
 exports.__esModule = true;
 exports.getDeltas = getDeltas;
 exports.getDragDirectionAndRange = getDragDirectionAndRange;
 exports.getMappedFillHandleSetting = getMappedFillHandleSetting;
 exports.DIRECTIONS = void 0;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.object.keys.js");
 
 var _object = require("../../helpers/object");
 

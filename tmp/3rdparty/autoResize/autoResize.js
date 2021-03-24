@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/web.timers.js");
-
 exports.__esModule = true;
 exports.autoResize = autoResize;
+
+require("core-js/modules/web.timers.js");
 
 /**
  * autoResize - resizes a DOM element to the width and height of another DOM element

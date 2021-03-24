@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
 exports.__esModule = true;
 exports.default = void 0;
+
+require("core-js/modules/es.array.concat.js");
 
 var _array = require("../../helpers/array");
 

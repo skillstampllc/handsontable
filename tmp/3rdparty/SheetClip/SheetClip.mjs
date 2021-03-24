@@ -1,11 +1,11 @@
-import "core-js/modules/es.array.fill.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.regexp.exec.js";
 import "core-js/modules/es.string.match.js";
+import "core-js/modules/es.regexp.exec.js";
 import "core-js/modules/es.string.replace.js";
 import "core-js/modules/es.string.starts-with.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.array.fill.js";
+import "core-js/modules/es.array.index-of.js";
 
 /* eslint-disable jsdoc/require-description-complete-sentence */
 

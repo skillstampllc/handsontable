@@ -1,19 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.reverse.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
 exports.__esModule = true;
 exports.normalizeSelection = normalizeSelection;
 exports.isSeparator = isSeparator;
@@ -29,6 +15,20 @@ exports.checkSelectionConsistency = checkSelectionConsistency;
 exports.markLabelAsSelected = markLabelAsSelected;
 exports.isItemHidden = isItemHidden;
 exports.filterSeparators = filterSeparators;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.reverse.js");
 
 var _array = require("../../helpers/array");
 

@@ -1,15 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.string.replace.js");
-
 exports.__esModule = true;
 exports.toUpperCaseFirst = toUpperCaseFirst;
 exports.equalsIgnoreCase = equalsIgnoreCase;
@@ -18,6 +8,16 @@ exports.isPercentValue = isPercentValue;
 exports.substitute = substitute;
 exports.stripTags = stripTags;
 exports.sanitize = sanitize;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.regexp.exec.js");
 
 var _dompurify = _interopRequireDefault(require("dompurify"));
 

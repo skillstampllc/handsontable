@@ -1,37 +1,51 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.array.for-each.js");
+require("core-js/modules/es.symbol.description.js");
 
-require("core-js/modules/es.array.from.js");
+require("core-js/modules/es.object.to-string.js");
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.array.reverse.js");
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = Core;
 
 require("core-js/modules/es.array.sort.js");
 
 require("core-js/modules/es.array.splice.js");
 
-require("core-js/modules/es.number.constructor.js");
-
 require("core-js/modules/es.number.is-integer.js");
 
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.iterator.js");
+require("core-js/modules/es.number.constructor.js");
 
 require("core-js/modules/es.string.replace.js");
 
-require("core-js/modules/web.dom-collections.for-each.js");
+require("core-js/modules/es.regexp.exec.js");
 
-require("core-js/modules/web.immediate.js");
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.reverse.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
 
 require("core-js/modules/web.timers.js");
 
-exports.__esModule = true;
-exports.default = Core;
+require("core-js/modules/web.immediate.js");
 
 var _function = require("./helpers/function");
 

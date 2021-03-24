@@ -1,12 +1,12 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
-
 exports.__esModule = true;
 exports.registerOverlayOnce = registerOverlayOnce;
 exports.createOverlay = createOverlay;
 exports.hasOverlay = hasOverlay;
 exports.isOverlayTypeOf = isOverlayTypeOf;
+
+require("core-js/modules/es.array.index-of.js");
 
 var _constants = require("./constants");
 

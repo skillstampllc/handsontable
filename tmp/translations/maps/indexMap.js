@@ -1,9 +1,9 @@
 "use strict";
 
-require("core-js/modules/es.array.slice.js");
-
 exports.__esModule = true;
 exports.default = void 0;
+
+require("core-js/modules/es.array.slice.js");
 
 var _number = require("../../helpers/number");
 

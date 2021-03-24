@@ -1,13 +1,13 @@
 "use strict";
 
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.search.js");
-
 exports.__esModule = true;
 exports.dateValidator = dateValidator;
 exports.correctFormat = correctFormat;
 exports.VALIDATOR_TYPE = void 0;
+
+require("core-js/modules/es.string.search.js");
+
+require("core-js/modules/es.regexp.exec.js");
 
 var _moment = _interopRequireDefault(require("moment"));
 

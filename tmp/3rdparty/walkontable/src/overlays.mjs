@@ -1,4 +1,3 @@
-import "core-js/modules/es.array.for-each.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 import "core-js/modules/web.timers.js";
 

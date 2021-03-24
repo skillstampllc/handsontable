@@ -1,12 +1,13 @@
 "use strict";
 
-require("core-js/modules/es.function.name.js");
-
 exports.__esModule = true;
 exports.getOperationFunc = getOperationFunc;
 exports.getOperationName = getOperationName;
 exports.registerOperation = registerOperation;
 exports.operations = void 0;
+
+require("core-js/modules/es.function.name.js");
+
 var operations = {};
 /**
  * Get operation closure with pre-bound arguments.

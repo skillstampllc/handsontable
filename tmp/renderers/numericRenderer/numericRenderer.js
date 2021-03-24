@@ -1,18 +1,18 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
+exports.__esModule = true;
+exports.numericRenderer = numericRenderer;
+exports.RENDERER_TYPE = void 0;
 
-require("core-js/modules/es.array.join.js");
+require("core-js/modules/es.string.split.js");
 
 require("core-js/modules/es.regexp.exec.js");
 
 require("core-js/modules/es.string.replace.js");
 
-require("core-js/modules/es.string.split.js");
+require("core-js/modules/es.array.index-of.js");
 
-exports.__esModule = true;
-exports.numericRenderer = numericRenderer;
-exports.RENDERER_TYPE = void 0;
+require("core-js/modules/es.array.join.js");
 
 var _numbro = _interopRequireDefault(require("numbro"));
 

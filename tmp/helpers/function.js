@@ -1,13 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.reverse.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/web.timers.js");
-
 exports.__esModule = true;
 exports.isFunction = isFunction;
 exports.throttle = throttle;
@@ -17,6 +9,14 @@ exports.pipe = pipe;
 exports.partial = partial;
 exports.curry = curry;
 exports.curryRight = curryRight;
+
+require("core-js/modules/web.timers.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.reverse.js");
 
 var _array = require("./array");
 

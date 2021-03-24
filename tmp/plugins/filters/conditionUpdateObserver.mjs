@@ -1,7 +1,7 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.filter.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

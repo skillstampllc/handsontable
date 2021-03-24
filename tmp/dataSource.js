@@ -1,15 +1,13 @@
 "use strict";
 
-require("core-js/modules/es.array.for-each.js");
-
-require("core-js/modules/es.number.constructor.js");
+exports.__esModule = true;
+exports.default = void 0;
 
 require("core-js/modules/es.number.is-integer.js");
 
-require("core-js/modules/web.dom-collections.for-each.js");
+require("core-js/modules/es.number.constructor.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/web.dom-collections.for-each.js");
 
 var _object = require("./helpers/object");
 

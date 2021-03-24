@@ -1,11 +1,21 @@
 "use strict";
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.object.keys.js");
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.get-own-property-descriptors.js");
 
 exports.__esModule = true;
 exports.default = void 0;
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.index-of.js");
 
 var _visualSelection = _interopRequireDefault(require("../visualSelection"));
 

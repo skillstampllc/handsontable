@@ -1,9 +1,9 @@
-import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.weak-set.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/es.weak-set.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.weak-map.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

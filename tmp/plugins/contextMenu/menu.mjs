@@ -1,11 +1,11 @@
-import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.function.name.js";
 import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.regexp.constructor.js";
 import "core-js/modules/es.regexp.exec.js";
 import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.array.concat.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

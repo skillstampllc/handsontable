@@ -1,11 +1,11 @@
 "use strict";
 
-require("core-js/modules/es.number.constructor.js");
+exports.__esModule = true;
+exports.default = pluralize;
 
 require("core-js/modules/es.number.is-integer.js");
 
-exports.__esModule = true;
-exports.default = pluralize;
+require("core-js/modules/es.number.constructor.js");
 
 /**
  * Try to choose plural form from available phrase propositions.

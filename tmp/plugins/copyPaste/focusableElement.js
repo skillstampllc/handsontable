@@ -1,21 +1,21 @@
 "use strict";
 
-require("core-js/modules/es.array.iterator.js");
+exports.__esModule = true;
+exports.createElement = createElement;
+exports.deactivateElement = deactivateElement;
+exports.destroyElement = destroyElement;
+
+require("core-js/modules/es.weak-set.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/es.weak-set.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
-exports.__esModule = true;
-exports.createElement = createElement;
-exports.deactivateElement = deactivateElement;
-exports.destroyElement = destroyElement;
+require("core-js/modules/es.weak-map.js");
 
 var _eventManager = _interopRequireDefault(require("../../eventManager"));
 

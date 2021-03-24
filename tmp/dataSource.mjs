@@ -1,6 +1,5 @@
-import "core-js/modules/es.array.for-each.js";
-import "core-js/modules/es.number.constructor.js";
 import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

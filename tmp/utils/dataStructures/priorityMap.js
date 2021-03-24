@@ -1,10 +1,20 @@
 "use strict";
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.array.map.js");
+require("core-js/modules/es.symbol.description.js");
 
-require("core-js/modules/es.array.sort.js");
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.createPriorityMap = createPriorityMap;
+exports.DESC = exports.ASC = void 0;
 
 require("core-js/modules/es.map.js");
 
@@ -12,11 +22,13 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
+require("core-js/modules/es.array.iterator.js");
+
 require("core-js/modules/web.dom-collections.iterator.js");
 
-exports.__esModule = true;
-exports.createPriorityMap = createPriorityMap;
-exports.DESC = exports.ASC = void 0;
+require("core-js/modules/es.array.map.js");
+
+require("core-js/modules/es.array.sort.js");
 
 var _number = require("../../helpers/number");
 

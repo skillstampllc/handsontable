@@ -1,7 +1,7 @@
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.slice.js";
 import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.array.reverse.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/web.timers.js";
 import { arrayReduce } from "./array.mjs";
 /**
  * Checks if given variable is function.

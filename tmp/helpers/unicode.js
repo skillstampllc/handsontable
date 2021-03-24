@@ -1,15 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.string.split.js");
-
 exports.__esModule = true;
 exports.isPrintableChar = isPrintableChar;
 exports.isMetaKey = isMetaKey;
@@ -17,6 +7,16 @@ exports.isCtrlKey = isCtrlKey;
 exports.isCtrlMetaKey = isCtrlMetaKey;
 exports.isKey = isKey;
 exports.KEY_CODES = void 0;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.regexp.exec.js");
 
 var _array = require("./array");
 

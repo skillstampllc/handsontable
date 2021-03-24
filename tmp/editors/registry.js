@@ -1,21 +1,21 @@
 "use strict";
 
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
 exports.__esModule = true;
 exports.RegisteredEditor = RegisteredEditor;
 exports.getEditorInstance = exports._getEditorInstance = _getEditorInstance;
 exports.registerEditor = _register;
 exports.getEditor = _getItem;
 exports.getRegisteredEditors = exports.getRegisteredEditorNames = exports.hasEditor = void 0;
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
 
 var _pluginHooks = _interopRequireDefault(require("../pluginHooks"));
 

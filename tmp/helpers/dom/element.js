@@ -1,34 +1,20 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.array.filter.js");
+require("core-js/modules/es.symbol.description.js");
 
-require("core-js/modules/es.array.includes.js");
+require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.join.js");
+require("core-js/modules/es.array.iterator.js");
 
-require("core-js/modules/es.array.slice.js");
+require("core-js/modules/web.dom-collections.iterator.js");
 
-require("core-js/modules/es.object.get-prototype-of.js");
+require("core-js/modules/es.array.from.js");
 
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.string.trim.js");
+require("core-js/modules/es.function.name.js");
 
 exports.__esModule = true;
 exports.getParent = getParent;
@@ -80,6 +66,36 @@ exports.isOutsideInput = isOutsideInput;
 exports.selectElementIfAllowed = selectElementIfAllowed;
 exports.isDetached = isDetached;
 exports.HTML_CHARACTERS = void 0;
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.regexp.constructor.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/es.array.join.js");
+
+require("core-js/modules/es.string.trim.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.array.concat.js");
 
 var _feature = require("../feature");
 

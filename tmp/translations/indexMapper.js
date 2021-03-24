@@ -1,29 +1,39 @@
 "use strict";
 
-require("core-js/modules/es.array.fill.js");
+require("core-js/modules/es.symbol.js");
 
-require("core-js/modules/es.array.filter.js");
+require("core-js/modules/es.symbol.description.js");
 
-require("core-js/modules/es.array.includes.js");
+require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.array.index-of.js");
+require("core-js/modules/es.array.from.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.array.slice.js");
 
-require("core-js/modules/es.array.some.js");
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = void 0;
 
 require("core-js/modules/es.map.js");
 
 require("core-js/modules/es.object.to-string.js");
 
-require("core-js/modules/es.string.includes.js");
-
 require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
-exports.__esModule = true;
-exports.default = void 0;
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.array.fill.js");
 
 var _array = require("../helpers/array");
 

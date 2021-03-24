@@ -1,33 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
 exports.__esModule = true;
 exports.to2dArray = to2dArray;
 exports.extendArray = extendArray;
@@ -49,6 +21,34 @@ exports.stringToArray = stringToArray;
 exports.dynamicSort = dynamicSort;
 exports.dynamicSortMultiple = dynamicSortMultiple;
 exports.binarySearch = binarySearch;
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.regexp.exec.js");
 
 /**
  * @param {Array} arr An array to process.

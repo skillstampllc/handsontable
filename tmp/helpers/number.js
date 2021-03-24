@@ -1,30 +1,30 @@
 "use strict";
 
+exports.__esModule = true;
+exports.isNumeric = isNumeric;
+exports.rangeEach = rangeEach;
+exports.rangeEachReverse = rangeEachReverse;
+exports.valueAccordingPercent = valueAccordingPercent;
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
 require("core-js/modules/es.symbol.js");
 
 require("core-js/modules/es.symbol.description.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.string.replace.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.isNumeric = isNumeric;
-exports.rangeEach = rangeEach;
-exports.rangeEachReverse = rangeEachReverse;
-exports.valueAccordingPercent = valueAccordingPercent;
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 

@@ -1,12 +1,12 @@
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.from.js";
 import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
 import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

@@ -1,10 +1,11 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.regexp.exec.js";
-
 var _templateObject;
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
 import { isUndefined, isDefined } from "./../helpers/mixed.mjs";
 import { objectEach } from "./../helpers/object.mjs";
 import { error } from "./../helpers/console.mjs";

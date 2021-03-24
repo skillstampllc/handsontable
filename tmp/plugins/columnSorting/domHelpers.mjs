@@ -1,10 +1,10 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.from.js";
 import { isDefined } from "../../helpers/mixed.mjs";
 import { ASC_SORT_STATE, DESC_SORT_STATE } from "./utils.mjs";
 var HEADER_CLASS_ASC_SORT = 'ascending';
