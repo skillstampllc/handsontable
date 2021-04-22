@@ -162,7 +162,7 @@ var Matrix = /*#__PURE__*/function () {
   }, {
     key: "sort",
     value: function sort() {
-      this.data.sort((0, _array.dynamicSortMultiple)('row', 'col'));
+      this.data.sort((0, _array.dynamicSortMultiple)('row', 'column'));
     }
     /**
      * Remove cell value from the collection.

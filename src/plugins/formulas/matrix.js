@@ -96,7 +96,7 @@ class Matrix {
    *
    */
   sort() {
-    this.data.sort(dynamicSortMultiple('row', 'col'));
+    this.data.sort(dynamicSortMultiple('row', 'column'));
   }
 
   /**

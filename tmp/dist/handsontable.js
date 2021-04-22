@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 8.3.1
- * Release date: 10/02/2021 (built at 26/03/2021 12:42:57)
+ * Release date: 10/02/2021 (built at 22/04/2021 17:27:41)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -40258,7 +40258,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "26/03/2021 12:42:57";
+Handsontable.buildDate = "22/04/2021 17:27:41";
 Handsontable.version = "8.3.1";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -56126,9 +56126,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__433__;
 
 /***/ }),
 /* 434 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 /* 435 */
@@ -90728,7 +90728,7 @@ var Matrix = /*#__PURE__*/function () {
   }, {
     key: "sort",
     value: function sort() {
-      this.data.sort((0, _array.dynamicSortMultiple)('row', 'col'));
+      this.data.sort((0, _array.dynamicSortMultiple)('row', 'column'));
     }
     /**
      * Remove cell value from the collection.
