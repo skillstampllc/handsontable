@@ -11,9 +11,9 @@
   },
   "author": "Handsoncode <hello@handsontable.com>",
   "version": "9.0.0",
-  "main": "index",
-  "module": "index.mjs",
-  "jsnext:main": "index.mjs",
+  "main": "tmp/index",
+  "module": "tmp/index.mjs",
+  "jsnext:main": "tmp/index.mjs",
   "jsdelivr": "dist/handsontable.full.min.js",
   "unpkg": "dist/handsontable.full.min.js",
   "keywords": [
@@ -35,6 +35,7 @@
     "@types/pikaday": "1.7.4",
     "core-js": "^3.0.0",
     "dompurify": "^2.1.1",
+    "hot-formula-parser": "github:skillstampllc/formula-parser#dev",
     "moment": "2.24.0",
     "numbro": "2.1.2",
     "pikaday": "1.8.0"
