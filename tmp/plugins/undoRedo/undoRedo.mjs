@@ -252,6 +252,7 @@ UndoRedo.prototype.done = function (wrappedAction, source) {
 
   var newAction = wrappedAction();
   var undoneActionsCopy = this.undoneActions.slice();
+  newAction.actionType = source;
   this.doneActions.push(newAction);
   this.instance.runHooks('afterUndoStackChange', doneActionsCopy, this.doneActions.slice());
   this.instance.runHooks('beforeRedoStackChange', undoneActionsCopy);

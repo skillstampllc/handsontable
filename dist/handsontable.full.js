@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 9.0.0
- * Release date: 01/06/2021 (built at 04/06/2021 14:05:47)
+ * Release date: 01/06/2021 (built at 09/06/2021 14:48:14)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -59121,7 +59121,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "04/06/2021 14:05:47";
+Handsontable.buildDate = "09/06/2021 14:48:14";
 Handsontable.version = "9.0.0";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -99928,6 +99928,7 @@ UndoRedo.prototype.done = function (wrappedAction, source) {
 
   var newAction = wrappedAction();
   var undoneActionsCopy = this.undoneActions.slice();
+  newAction.actionType = source;
   this.doneActions.push(newAction);
   this.instance.runHooks('afterUndoStackChange', doneActionsCopy, this.doneActions.slice());
   this.instance.runHooks('beforeRedoStackChange', undoneActionsCopy);
