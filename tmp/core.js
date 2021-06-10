@@ -101,6 +101,8 @@ var _index = require("./dataMap/index");
 
 var _uniqueMap = require("./utils/dataStructures/uniqueMap");
 
+var _parseNumber = require("./utils/parseNumber");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1515,7 +1517,19 @@ function Core(rootElement, userSettings) {
         prop = datamap.colToProp(input[i][1]);
       }
 
-      changes.push([input[i][0], prop, dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]), input[i][2]]);
+      var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
+      var newV = input[i][2];
+
+      if (newV && typeof newV === 'string' && (0, _parseNumber.isFloat)(newV)) {
+        newV = parseFloat(newV);
+      } else if (newV && typeof newV === 'string' && Number.isInteger(newV)) {
+        newV = parseInt(newV, 10);
+      }
+
+      if (oldV != newV) {
+        // eslint-disable-line eqeqeq
+        changes.push([input[i][0], prop, oldV, newV]);
+      }
     }
 
     if (!changeSource && _typeof(row) === 'object') {
