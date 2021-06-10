@@ -326,3 +326,80 @@ export function getUnionOfArrays(...arrays) {
 export function stringToArray(value, delimiter = ' ') {
   return value.split(delimiter);
 }
+
+/**
+ * @param {any} property A property to sort.
+ * @returns {function(*, *): number}
+ */
+export function dynamicSort(property) {
+  return function(obj1, obj2) {
+    if (obj1[property] > obj2[property]) {
+      return 1;
+    } else if (obj1[property] < obj2[property]) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+}
+
+/**
+ * @param {Array} args A full list of arguments.
+ * @returns {function(*=, *=): number}
+ */
+export function dynamicSortMultiple(...args) {
+  /*
+   * save the arguments object as it will be overwritten
+   * note that arguments object is an array-like object
+   * consisting of the names of the properties to sort by
+   */
+  const props = args;
+
+  return function(obj1, obj2) {
+    let i = 0;
+    let result = 0;
+    const numberOfProperties = props.length;
+
+    /* try getting a different result from 0 (equal)
+     * as long as we have extra properties to compare
+     */
+    while (result === 0 && i < numberOfProperties) {
+      result = dynamicSort(props[i])(obj1, obj2);
+      i += 1;
+    }
+
+    return result;
+  };
+}
+
+/**
+ * @param {Array} sortedArray Sorted array for search.
+ * @param {number} row A row for search.
+ * @param {number} col A column for search.
+ * @returns {null|*}
+ */
+export function binarySearch(sortedArray, row, col) {
+  let start = 0;
+  let end = sortedArray.length - 1;
+
+  while (start <= end) {
+    const middle = Math.floor((start + end) / 2);
+
+    if (sortedArray[middle].row === row && sortedArray[middle].column === col) {
+      // found the key
+      return sortedArray[middle];
+    } else if (
+      sortedArray[middle].row < row ||
+      (sortedArray[middle].row === row && sortedArray[middle].column < col)
+    ) {
+      // continue searching to the right
+      start = middle + 1;
+    } else {
+      // search searching to the left
+      end = middle - 1;
+    }
+  }
+
+  // key wasn't found
+  return null;
+}
