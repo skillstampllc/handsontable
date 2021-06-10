@@ -70,6 +70,7 @@ import { startObserving as keyStateStartObserving, stopObserving as keyStateStop
 import { Selection } from "./selection/index.mjs";
 import { MetaManager, DataMap } from "./dataMap/index.mjs";
 import { createUniqueMap } from "./utils/dataStructures/uniqueMap.mjs";
+import { isFloat } from "./utils/parseNumber.mjs";
 var activeGuid = null;
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -1460,7 +1461,19 @@ export default function Core(rootElement, userSettings) {
         prop = datamap.colToProp(input[i][1]);
       }
 
-      changes.push([input[i][0], prop, dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]), input[i][2]]);
+      var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
+      var newV = input[i][2];
+
+      if (newV && typeof newV === 'string' && isFloat(newV)) {
+        newV = parseFloat(newV);
+      } else if (newV && typeof newV === 'string' && Number.isInteger(newV)) {
+        newV = parseInt(newV, 10);
+      }
+
+      if (oldV != newV) {
+        // eslint-disable-line eqeqeq
+        changes.push([input[i][0], prop, oldV, newV]);
+      }
     }
 
     if (!changeSource && _typeof(row) === 'object') {

@@ -18,6 +18,9 @@ exports.getDifferenceOfArrays = getDifferenceOfArrays;
 exports.getIntersectionOfArrays = getIntersectionOfArrays;
 exports.getUnionOfArrays = getUnionOfArrays;
 exports.stringToArray = stringToArray;
+exports.dynamicSort = dynamicSort;
+exports.dynamicSortMultiple = dynamicSortMultiple;
+exports.binarySearch = binarySearch;
 
 require("core-js/modules/es.array.from.js");
 
@@ -416,4 +419,84 @@ function getUnionOfArrays() {
 function stringToArray(value) {
   var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
   return value.split(delimiter);
+}
+/**
+ * @param {any} property A property to sort.
+ * @returns {function(*, *): number}
+ */
+
+
+function dynamicSort(property) {
+  return function (obj1, obj2) {
+    if (obj1[property] > obj2[property]) {
+      return 1;
+    } else if (obj1[property] < obj2[property]) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+}
+/**
+ * @param {Array} args A full list of arguments.
+ * @returns {function(*=, *=): number}
+ */
+
+
+function dynamicSortMultiple() {
+  for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+    args[_key4] = arguments[_key4];
+  }
+
+  /*
+   * save the arguments object as it will be overwritten
+   * note that arguments object is an array-like object
+   * consisting of the names of the properties to sort by
+   */
+  var props = args;
+  return function (obj1, obj2) {
+    var i = 0;
+    var result = 0;
+    var numberOfProperties = props.length;
+    /* try getting a different result from 0 (equal)
+     * as long as we have extra properties to compare
+     */
+
+    while (result === 0 && i < numberOfProperties) {
+      result = dynamicSort(props[i])(obj1, obj2);
+      i += 1;
+    }
+
+    return result;
+  };
+}
+/**
+ * @param {Array} sortedArray Sorted array for search.
+ * @param {number} row A row for search.
+ * @param {number} col A column for search.
+ * @returns {null|*}
+ */
+
+
+function binarySearch(sortedArray, row, col) {
+  var start = 0;
+  var end = sortedArray.length - 1;
+
+  while (start <= end) {
+    var middle = Math.floor((start + end) / 2);
+
+    if (sortedArray[middle].row === row && sortedArray[middle].column === col) {
+      // found the key
+      return sortedArray[middle];
+    } else if (sortedArray[middle].row < row || sortedArray[middle].row === row && sortedArray[middle].column < col) {
+      // continue searching to the right
+      start = middle + 1;
+    } else {
+      // search searching to the left
+      end = middle - 1;
+    }
+  } // key wasn't found
+
+
+  return null;
 }
