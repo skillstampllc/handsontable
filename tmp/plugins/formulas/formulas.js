@@ -53,6 +53,8 @@ require("core-js/modules/es.array.sort.js");
 
 require("core-js/modules/es.weak-map.js");
 
+var _hyperformula = require("hyperformula");
+
 var _base = require("../base");
 
 var _autofill = require("./autofill");
@@ -74,6 +76,8 @@ var _data = require("../../helpers/data");
 var _string = require("../../helpers/string");
 
 var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+var _customHyperFunction = require("./custom/custom-hyper-function");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -370,6 +374,10 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "updatePlugin",
     value: function updatePlugin(newSettings) {
+      if (this.engine instanceof _hyperformula.HyperFormula) {
+        _hyperformula.HyperFormula.registerFunctionPlugin(_customHyperFunction.HFValueFunction);
+      }
+
       this.engine.updateConfig((0, _settings.getEngineSettingsWithOverrides)(this.hot.getSettings()));
       var pluginSettings = this.hot.getSettings()[PLUGIN_KEY];
 

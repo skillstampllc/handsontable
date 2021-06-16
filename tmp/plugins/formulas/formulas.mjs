@@ -82,6 +82,7 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
+import { HyperFormula } from 'hyperformula';
 import { BasePlugin } from "../base/index.mjs";
 import { createAutofillHooks } from "./autofill.mjs";
 import staticRegister from "../../utils/staticRegister.mjs";
@@ -93,6 +94,7 @@ import { getEngineSettingsWithOverrides } from "./engine/settings.mjs";
 import { isArrayOfArrays } from "../../helpers/data.mjs";
 import { toUpperCaseFirst } from "../../helpers/string.mjs";
 import Hooks from "../../pluginHooks.mjs";
+import { HFValueFunction } from "./custom/custom-hyper-function.mjs";
 export var PLUGIN_KEY = 'formulas';
 export var PLUGIN_PRIORITY = 260;
 Hooks.getSingleton().register('afterNamedExpressionAdded');
@@ -319,6 +321,10 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "updatePlugin",
     value: function updatePlugin(newSettings) {
+      if (this.engine instanceof HyperFormula) {
+        HyperFormula.registerFunctionPlugin(HFValueFunction);
+      }
+
       this.engine.updateConfig(getEngineSettingsWithOverrides(this.hot.getSettings()));
       var pluginSettings = this.hot.getSettings()[PLUGIN_KEY];
 
