@@ -1,62 +1,36 @@
-"use strict";
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.freeze.js");
-
-exports.__esModule = true;
-exports.stringify = stringify;
-exports.isDefined = isDefined;
-exports.isUndefined = isUndefined;
-exports.isEmpty = isEmpty;
-exports.isRegExp = isRegExp;
-exports._injectProductInfo = _injectProductInfo;
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.string.code-point-at.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.string.pad-start.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-var _moment = _interopRequireDefault(require("moment"));
-
-var _templateLiteralTag = require("./templateLiteralTag");
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
 
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.string.code-point-at.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.string.pad-start.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+import moment from 'moment';
+import { toSingleLine } from "./templateLiteralTag.mjs";
 /**
  * Converts any value to string.
  *
  * @param {*} value The value to stringify.
  * @returns {string}
  */
-function stringify(value) {
+
+export function stringify(value) {
   var result;
 
   switch (_typeof(value)) {
@@ -87,8 +61,7 @@ function stringify(value) {
  * @returns {boolean}
  */
 
-
-function isDefined(variable) {
+export function isDefined(variable) {
   return typeof variable !== 'undefined';
 }
 /**
@@ -98,8 +71,7 @@ function isDefined(variable) {
  * @returns {boolean}
  */
 
-
-function isUndefined(variable) {
+export function isUndefined(variable) {
   return typeof variable === 'undefined';
 }
 /**
@@ -109,8 +81,7 @@ function isUndefined(variable) {
  * @returns {boolean}
  */
 
-
-function isEmpty(variable) {
+export function isEmpty(variable) {
   return variable === null || variable === '' || isUndefined(variable);
 }
 /**
@@ -120,12 +91,10 @@ function isEmpty(variable) {
  * @returns {boolean}
  */
 
-
-function isRegExp(variable) {
+export function isRegExp(variable) {
   return Object.prototype.toString.call(variable) === '[object RegExp]';
 }
 /* eslint-disable */
-
 
 var _m = '\x6C\x65\x6E\x67\x74\x68';
 
@@ -160,15 +129,15 @@ var _ignored = function _ignored() {
 var _notified = false;
 var consoleMessages = {
   invalid: function invalid() {
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    The license key for Handsontable is invalid. \n    If you need any help, contact us at support@handsontable.com."], ["\n    The license key for Handsontable is invalid.\\x20\n    If you need any help, contact us at support@handsontable.com."])));
+    return toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    The license key for Handsontable is invalid. \n    If you need any help, contact us at support@handsontable.com."], ["\n    The license key for Handsontable is invalid.\\x20\n    If you need any help, contact us at support@handsontable.com."])));
   },
   expired: function expired(_ref) {
     var keyValidityDate = _ref.keyValidityDate,
         hotVersion = _ref.hotVersion;
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior \n    to ", ". If you need any help, contact us at sales@handsontable.com."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior\\x20\n    to ", ". If you need any help, contact us at sales@handsontable.com."])), keyValidityDate, hotVersion, keyValidityDate);
+    return toSingleLine(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior \n    to ", ". If you need any help, contact us at sales@handsontable.com."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior\\x20\n    to ", ". If you need any help, contact us at sales@handsontable.com."])), keyValidityDate, hotVersion, keyValidityDate);
   },
   missing: function missing() {
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n    The license key for Handsontable is missing. Use your purchased key to activate the product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact \n    us at support@handsontable.com."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact\\x20\n    us at support@handsontable.com."])));
+    return toSingleLine(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n    The license key for Handsontable is missing. Use your purchased key to activate the product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact \n    us at support@handsontable.com."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact\\x20\n    us at support@handsontable.com."])));
   },
   non_commercial: function non_commercial() {
     return '';
@@ -176,22 +145,21 @@ var consoleMessages = {
 };
 var domMessages = {
   invalid: function invalid() {
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n    The license key for Handsontable is invalid. \n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> on how to \n    install it properly or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."], ["\n    The license key for Handsontable is invalid.\\x20\n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> on how to\\x20\n    install it properly or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."])));
+    return toSingleLine(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n    The license key for Handsontable is invalid. \n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> on how to \n    install it properly or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."], ["\n    The license key for Handsontable is invalid.\\x20\n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> on how to\\x20\n    install it properly or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."])));
   },
   expired: function expired(_ref2) {
     var keyValidityDate = _ref2.keyValidityDate,
         hotVersion = _ref2.hotVersion;
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your \n    license key or downgrade to a version released prior to ", ". If you need any \n    help, contact us at <a href=\"mailto:sales@handsontable.com\">sales@handsontable.com</a>."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your\\x20\n    license key or downgrade to a version released prior to ", ". If you need any\\x20\n    help, contact us at <a href=\"mailto:sales@handsontable.com\">sales@handsontable.com</a>."])), keyValidityDate, hotVersion, keyValidityDate);
+    return toSingleLine(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your \n    license key or downgrade to a version released prior to ", ". If you need any \n    help, contact us at <a href=\"mailto:sales@handsontable.com\">sales@handsontable.com</a>."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your\\x20\n    license key or downgrade to a version released prior to ", ". If you need any\\x20\n    help, contact us at <a href=\"mailto:sales@handsontable.com\">sales@handsontable.com</a>."])), keyValidityDate, hotVersion, keyValidityDate);
   },
   missing: function missing() {
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n    The license key for Handsontable is missing. Use your purchased key to activate the product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. \n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in \n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'.\\x20\n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in\\x20\n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."])));
+    return toSingleLine(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n    The license key for Handsontable is missing. Use your purchased key to activate the product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. \n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in \n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'.\\x20\n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in\\x20\n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."])));
   },
   non_commercial: function non_commercial() {
     return '';
   }
 };
-
-function _injectProductInfo(key, element) {
+export function _injectProductInfo(key, element) {
   var hasValidType = !isEmpty(key);
   var isNonCommercial = typeof key === 'string' && key.toLowerCase() === 'non-commercial-and-evaluation';
   var hotVersion = "9.0.0";
@@ -204,15 +172,15 @@ function _injectProductInfo(key, element) {
 
   if (hasValidType || isNonCommercial || schemaValidity) {
     if (schemaValidity) {
-      var releaseDate = (0, _moment.default)("01/06/2021", 'DD/MM/YYYY');
+      var releaseDate = moment("01/06/2021", 'DD/MM/YYYY');
       var releaseDays = Math.floor(releaseDate.toDate().getTime() / 8.64e7);
 
       var keyValidityDays = _extractTime(key);
 
-      keyValidityDate = (0, _moment.default)((keyValidityDays + 1) * 8.64e7, 'x').format('MMMM DD, YYYY');
+      keyValidityDate = moment((keyValidityDays + 1) * 8.64e7, 'x').format('MMMM DD, YYYY');
 
       if (releaseDays > keyValidityDays) {
-        var daysAfterRelease = (0, _moment.default)().diff(releaseDate, 'days');
+        var daysAfterRelease = moment().diff(releaseDate, 'days');
         consoleMessageState = daysAfterRelease <= 1 ? 'valid' : 'expired';
         domMessageState = daysAfterRelease <= 15 ? 'valid' : 'expired';
       } else {

@@ -1,42 +1,22 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/es.array.includes.js");
-
-var _element = require("./../../../helpers/dom/element");
-
-var _function = require("./../../../helpers/function");
-
-var _feature = require("./../../../helpers/feature");
-
-var _browser = require("./../../../helpers/browser");
-
-var _eventManager = _interopRequireDefault(require("./../../../eventManager"));
-
-var _mixed = require("../../../helpers/mixed");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.includes.js";
+import { closestDown, hasClass, isChildOf, getParent } from "./../../../helpers/dom/element.mjs";
+import { partial } from "./../../../helpers/function.mjs";
+import { isTouchSupported } from "./../../../helpers/feature.mjs";
+import { isMobileBrowser, isChromeWebKit, isFirefoxWebKit, isIOS } from "./../../../helpers/browser.mjs";
+import EventManager from "./../../../eventManager.mjs";
+import { isDefined } from "../../../helpers/mixed.mjs";
 var privatePool = new WeakMap();
 /**
  * @class Event
@@ -63,7 +43,7 @@ var Event = /*#__PURE__*/function () {
      * @type {EventManager}
      */
 
-    this.eventManager = new _eventManager.default(instance);
+    this.eventManager = new EventManager(instance);
     privatePool.set(this, {
       selectedCellBeforeTouchEnd: void 0,
       dblClickTimeout: [null, null],
@@ -134,11 +114,11 @@ var Event = /*#__PURE__*/function () {
         });
       };
 
-      if ((0, _browser.isMobileBrowser)()) {
+      if (isMobileBrowser()) {
         initTouchEvents();
       } else {
         // PC like devices which support both methods (touchscreen and ability to plug-in mouse).
-        if ((0, _feature.isTouchSupported)()) {
+        if (isTouchSupported()) {
           initTouchEvents();
         }
 
@@ -185,15 +165,15 @@ var Event = /*#__PURE__*/function () {
     value: function parentCell(elem) {
       var cell = {};
       var TABLE = this.instance.wtTable.TABLE;
-      var TD = (0, _element.closestDown)(elem, ['TD', 'TH'], TABLE);
+      var TD = closestDown(elem, ['TD', 'TH'], TABLE);
 
       if (TD) {
         cell.coords = this.instance.wtTable.getCoords(TD);
         cell.TD = TD;
-      } else if ((0, _element.hasClass)(elem, 'wtBorder') && (0, _element.hasClass)(elem, 'current')) {
+      } else if (hasClass(elem, 'wtBorder') && hasClass(elem, 'current')) {
         cell.coords = this.instance.selections.getCell().cellRange.highlight;
         cell.TD = this.instance.wtTable.getCell(cell.coords);
-      } else if ((0, _element.hasClass)(elem, 'wtBorder') && (0, _element.hasClass)(elem, 'area')) {
+      } else if (hasClass(elem, 'wtBorder') && hasClass(elem, 'area')) {
         if (this.instance.selections.createOrGetArea().cellRange) {
           cell.coords = this.instance.selections.createOrGetArea().cellRange.to;
           cell.TD = this.instance.wtTable.getCell(cell.coords);
@@ -214,7 +194,7 @@ var Event = /*#__PURE__*/function () {
     value: function onMouseDown(event) {
       var priv = privatePool.get(this);
       var activeElement = this.instance.rootDocument.activeElement;
-      var getParentNode = (0, _function.partial)(_element.getParent, event.target);
+      var getParentNode = partial(getParent, event.target);
       var realTarget = event.target; // ignore focusable element from mouse down processing (https://github.com/handsontable/handsontable/issues/3555)
 
       if (realTarget === activeElement || getParentNode(0) === activeElement || getParentNode(1) === activeElement) {
@@ -223,7 +203,7 @@ var Event = /*#__PURE__*/function () {
 
       var cell = this.parentCell(realTarget);
 
-      if ((0, _element.hasClass)(realTarget, 'corner')) {
+      if (hasClass(realTarget, 'corner')) {
         this.instance.getSetting('onCellCornerMouseDown', event, realTarget);
       } else if (cell.TD && this.instance.hasSetting('onCellMouseDown')) {
         this.instance.getSetting('onCellMouseDown', event, cell.coords, cell.TD, this.instance);
@@ -271,10 +251,10 @@ var Event = /*#__PURE__*/function () {
       }
 
       var table = this.instance.wtTable.TABLE;
-      var td = (0, _element.closestDown)(event.target, ['TD', 'TH'], table);
+      var td = closestDown(event.target, ['TD', 'TH'], table);
       var mainWOT = this.instance.cloneSource || this.instance;
 
-      if (td && td !== mainWOT.lastMouseOver && (0, _element.isChildOf)(td, table)) {
+      if (td && td !== mainWOT.lastMouseOver && isChildOf(td, table)) {
         mainWOT.lastMouseOver = td;
         this.instance.getSetting('onCellMouseOver', event, this.instance.wtTable.getCoords(td), td, this.instance);
       }
@@ -294,10 +274,10 @@ var Event = /*#__PURE__*/function () {
       }
 
       var table = this.instance.wtTable.TABLE;
-      var lastTD = (0, _element.closestDown)(event.target, ['TD', 'TH'], table);
-      var nextTD = (0, _element.closestDown)(event.relatedTarget, ['TD', 'TH'], table);
+      var lastTD = closestDown(event.target, ['TD', 'TH'], table);
+      var nextTD = closestDown(event.relatedTarget, ['TD', 'TH'], table);
 
-      if (lastTD && lastTD !== nextTD && (0, _element.isChildOf)(lastTD, table)) {
+      if (lastTD && lastTD !== nextTD && isChildOf(lastTD, table)) {
         this.instance.getSetting('onCellMouseOut', event, this.instance.wtTable.getCoords(lastTD), lastTD, this.instance);
       }
     }
@@ -324,7 +304,7 @@ var Event = /*#__PURE__*/function () {
       }
 
       if (cell.TD === priv.dblClickOrigin[0] && cell.TD === priv.dblClickOrigin[1]) {
-        if ((0, _element.hasClass)(event.target, 'corner')) {
+        if (hasClass(event.target, 'corner')) {
           this.instance.getSetting('onCellCornerDblClick', event, cell.coords, cell.TD, this.instance);
         } else {
           this.instance.getSetting('onCellDblClick', event, cell.coords, cell.TD, this.instance);
@@ -369,7 +349,7 @@ var Event = /*#__PURE__*/function () {
 
       var target = event.target;
       var parentCellCoords = (_this$parentCell = this.parentCell(target)) === null || _this$parentCell === void 0 ? void 0 : _this$parentCell.coords;
-      var isCellsRange = (0, _mixed.isDefined)(parentCellCoords) && parentCellCoords.row >= 0 && parentCellCoords.col >= 0;
+      var isCellsRange = isDefined(parentCellCoords) && parentCellCoords.row >= 0 && parentCellCoords.col >= 0;
       var isEventCancelable = event.cancelable && isCellsRange && this.instance.getSetting('isDataViewInstance'); // To prevent accidental redirects or other actions that the interactive elements (e.q "A" link) do
       // while the cell is highlighted, all touch events that are triggered on different cells are
       // "preventDefault"'ed. The user can interact with the element (e.q. click on the link that opens
@@ -382,7 +362,7 @@ var Event = /*#__PURE__*/function () {
         // To make the interactive elements work, the event target element has to be check. If the element
         // matches the allow-list, the event is not prevented.
 
-        if ((0, _browser.isIOS)() && ((0, _browser.isChromeWebKit)() || (0, _browser.isFirefoxWebKit)()) && this.selectedCellWasTouched(target) && !interactiveElements.includes(target.tagName)) {
+        if (isIOS() && (isChromeWebKit() || isFirefoxWebKit()) && this.selectedCellWasTouched(target) && !interactiveElements.includes(target.tagName)) {
           event.preventDefault();
         } else if (!this.selectedCellWasTouched(target)) {
           // For other browsers, prevent default is fired only for the first tap and only when the previous
@@ -411,5 +391,4 @@ var Event = /*#__PURE__*/function () {
   return Event;
 }();
 
-var _default = Event;
-exports.default = _default;
+export default Event;

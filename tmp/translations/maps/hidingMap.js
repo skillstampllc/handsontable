@@ -1,33 +1,15 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.HidingMap = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _physicalIndexToValueMap = require("./physicalIndexToValueMap");
-
-var _array = require("../../helpers/array");
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -49,11 +31,14 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { PhysicalIndexToValueMap } from "./physicalIndexToValueMap.mjs";
+import { arrayReduce } from "../../helpers/array.mjs";
 /**
  * Map for storing mappings from an physical index to a boolean value. It stores information whether physical index is
  * included in a dataset, but skipped in the process of rendering.
  */
-var HidingMap = /*#__PURE__*/function (_PhysicalIndexToValue) {
+
+export var HidingMap = /*#__PURE__*/function (_PhysicalIndexToValue) {
   _inherits(HidingMap, _PhysicalIndexToValue);
 
   var _super = _createSuper(HidingMap);
@@ -77,7 +62,7 @@ var HidingMap = /*#__PURE__*/function (_PhysicalIndexToValue) {
   _createClass(HidingMap, [{
     key: "getHiddenIndexes",
     value: function getHiddenIndexes() {
-      return (0, _array.arrayReduce)(this.getValues(), function (indexesList, isHidden, physicalIndex) {
+      return arrayReduce(this.getValues(), function (indexesList, isHidden, physicalIndex) {
         if (isHidden) {
           indexesList.push(physicalIndex);
         }
@@ -88,6 +73,4 @@ var HidingMap = /*#__PURE__*/function (_PhysicalIndexToValue) {
   }]);
 
   return HidingMap;
-}(_physicalIndexToValueMap.PhysicalIndexToValueMap);
-
-exports.HidingMap = HidingMap;
+}(PhysicalIndexToValueMap);

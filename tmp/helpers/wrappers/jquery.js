@@ -1,14 +1,9 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = jQueryWrapper;
-
-require("core-js/modules/es.array.concat.js");
+import "core-js/modules/es.array.concat.js";
 
 /**
  * @param {Core} Handsontable The Handsontable instance.
  */
-function jQueryWrapper(Handsontable) {
+export default function jQueryWrapper(Handsontable) {
   // eslint-disable-next-line
   var jQuery = typeof window === 'undefined' ? false : window.jQuery;
 

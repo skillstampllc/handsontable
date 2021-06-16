@@ -1,28 +1,12 @@
-"use strict";
-
-exports.__esModule = true;
-exports.numericRenderer = numericRenderer;
-exports.RENDERER_TYPE = void 0;
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.join.js");
-
-var _numbro = _interopRequireDefault(require("numbro"));
-
-var _textRenderer = require("../textRenderer");
-
-var _number = require("../../helpers/number");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RENDERER_TYPE = 'numeric';
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.join.js";
+import numbro from 'numbro';
+import { textRenderer } from "../textRenderer/index.mjs";
+import { isNumeric } from "../../helpers/number.mjs";
+export var RENDERER_TYPE = 'numeric';
 /**
  * Numeric cell renderer.
  *
@@ -36,30 +20,27 @@ var RENDERER_TYPE = 'numeric';
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-exports.RENDERER_TYPE = RENDERER_TYPE;
-
-function numericRenderer(instance, TD, row, col, prop, value, cellProperties) {
+export function numericRenderer(instance, TD, row, col, prop, value, cellProperties) {
   var newValue = value;
 
-  if ((0, _number.isNumeric)(newValue)) {
+  if (isNumeric(newValue)) {
     var numericFormat = cellProperties.numericFormat;
     var cellCulture = numericFormat && numericFormat.culture || '-';
     var cellFormatPattern = numericFormat && numericFormat.pattern;
     var className = cellProperties.className || '';
     var classArr = className.length ? className.split(' ') : [];
 
-    if (typeof cellCulture !== 'undefined' && !_numbro.default.languages()[cellCulture]) {
+    if (typeof cellCulture !== 'undefined' && !numbro.languages()[cellCulture]) {
       var shortTag = cellCulture.replace('-', '');
-      var langData = _numbro.default.allLanguages ? _numbro.default.allLanguages[cellCulture] : _numbro.default[shortTag];
+      var langData = numbro.allLanguages ? numbro.allLanguages[cellCulture] : numbro[shortTag];
 
       if (langData) {
-        _numbro.default.registerLanguage(langData);
+        numbro.registerLanguage(langData);
       }
     }
 
-    _numbro.default.setLanguage(cellCulture);
-
-    newValue = (0, _numbro.default)(newValue).format(cellFormatPattern || '0');
+    numbro.setLanguage(cellCulture);
+    newValue = numbro(newValue).format(cellFormatPattern || '0');
 
     if (classArr.indexOf('htLeft') < 0 && classArr.indexOf('htCenter') < 0 && classArr.indexOf('htRight') < 0 && classArr.indexOf('htJustify') < 0) {
       classArr.push('htRight');
@@ -72,7 +53,6 @@ function numericRenderer(instance, TD, row, col, prop, value, cellProperties) {
     cellProperties.className = classArr.join(' ');
   }
 
-  (0, _textRenderer.textRenderer)(instance, TD, row, col, prop, newValue, cellProperties);
+  textRenderer(instance, TD, row, col, prop, newValue, cellProperties);
 }
-
 numericRenderer.RENDERER_TYPE = RENDERER_TYPE;

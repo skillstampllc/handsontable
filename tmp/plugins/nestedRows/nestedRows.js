@@ -1,65 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.NestedRows = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.reduce.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.set.js");
-
-var _base = require("../base");
-
-var _dataManager = _interopRequireDefault(require("./data/dataManager"));
-
-var _collapsing = _interopRequireDefault(require("./ui/collapsing"));
-
-var _headers = _interopRequireDefault(require("./ui/headers"));
-
-var _contextMenu = _interopRequireDefault(require("./ui/contextMenu"));
-
-var _translations = require("../../translations");
-
-var _rowMoveController = _interopRequireDefault(require("./utils/rowMoveController"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -97,10 +36,35 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var PLUGIN_KEY = 'nestedRows';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 300;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.reduce.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import { BasePlugin } from "../base/index.mjs";
+import DataManager from "./data/dataManager.mjs";
+import CollapsingUI from "./ui/collapsing.mjs";
+import HeadersUI from "./ui/headers.mjs";
+import ContextMenuUI from "./ui/contextMenu.mjs";
+import { TrimmingMap } from "../../translations/index.mjs";
+import RowMoveController from "./utils/rowMoveController.mjs";
+export var PLUGIN_KEY = 'nestedRows';
+export var PLUGIN_PRIORITY = 300;
 var privatePool = new WeakMap();
 /**
  * @plugin NestedRows
@@ -109,7 +73,7 @@ var privatePool = new WeakMap();
  * Plugin responsible for displaying and operating on data sources with nested structures.
  */
 
-var NestedRows = /*#__PURE__*/function (_BasePlugin) {
+export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
   _inherits(NestedRows, _BasePlugin);
 
   var _super = _createSuper(NestedRows);
@@ -177,12 +141,12 @@ var NestedRows = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.collapsedRowsMap = this.hot.rowIndexMapper.registerMap('nestedRows', new _translations.TrimmingMap());
-      this.dataManager = new _dataManager.default(this, this.hot);
-      this.collapsingUI = new _collapsing.default(this, this.hot);
-      this.headersUI = new _headers.default(this, this.hot);
-      this.contextMenuUI = new _contextMenu.default(this, this.hot);
-      this.rowMoveController = new _rowMoveController.default(this);
+      this.collapsedRowsMap = this.hot.rowIndexMapper.registerMap('nestedRows', new TrimmingMap());
+      this.dataManager = new DataManager(this, this.hot);
+      this.collapsingUI = new CollapsingUI(this, this.hot);
+      this.headersUI = new HeadersUI(this, this.hot);
+      this.contextMenuUI = new ContextMenuUI(this, this.hot);
+      this.rowMoveController = new RowMoveController(this);
       this.addHook('afterInit', function () {
         return _this2.onAfterInit.apply(_this2, arguments);
       });
@@ -645,6 +609,4 @@ var NestedRows = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return NestedRows;
-}(_base.BasePlugin);
-
-exports.NestedRows = NestedRows;
+}(BasePlugin);

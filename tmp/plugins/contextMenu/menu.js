@@ -1,55 +1,12 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.array.concat.js");
-
-var _cursor = _interopRequireDefault(require("./cursor"));
-
-var _predefinedItems = require("./predefinedItems");
-
-var _utils = require("./utils");
-
-var _core = _interopRequireDefault(require("../../core"));
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _array = require("../../helpers/array");
-
-var _browser = require("../../helpers/browser");
-
-var _element = require("../../helpers/dom/element");
-
-var _event = require("../../helpers/dom/event");
-
-var _function = require("../../helpers/function");
-
-var _mixed = require("../../helpers/mixed");
-
-var _object = require("../../helpers/object");
-
-var _unicode = require("../../helpers/unicode");
-
-var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.regexp.constructor.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.array.concat.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -57,6 +14,20 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import Cursor from "./cursor.mjs";
+import { SEPARATOR, NO_ITEMS, predefinedItems } from "./predefinedItems.mjs";
+import { filterSeparators, hasSubMenu, isDisabled, isItemHidden, isSeparator, isSelectionDisabled, normalizeSelection } from "./utils.mjs";
+import Core from "../../core.mjs";
+import EventManager from "../../eventManager.mjs";
+import { arrayEach, arrayFilter, arrayReduce } from "../../helpers/array.mjs";
+import { isWindowsOS, isMobileBrowser, isIpadOS } from "../../helpers/browser.mjs";
+import { addClass, empty, fastInnerHTML, getScrollbarWidth, isChildOf, isInput, removeClass, getParentWindow, hasClass } from "../../helpers/dom/element.mjs";
+import { stopImmediatePropagation, isRightClick } from "../../helpers/dom/event.mjs";
+import { debounce, isFunction } from "../../helpers/function.mjs";
+import { isUndefined, isDefined } from "../../helpers/mixed.mjs";
+import { mixin, hasOwnProperty } from "../../helpers/object.mjs";
+import { KEY_CODES } from "../../helpers/unicode.mjs";
+import localHooks from "../../mixins/localHooks.mjs";
 var MIN_WIDTH = 215;
 /**
  * @class Menu
@@ -77,7 +48,7 @@ var Menu = /*#__PURE__*/function () {
       minWidth: MIN_WIDTH,
       container: this.hot.rootDocument.documentElement
     };
-    this.eventManager = new _eventManager.default(this);
+    this.eventManager = new EventManager(this);
     this.container = this.createContainer(this.options.name);
     this.hotMenu = null;
     this.hotSubMenus = {};
@@ -115,7 +86,7 @@ var Menu = /*#__PURE__*/function () {
         this.eventManager.addEventListener(frame.document, 'contextmenu', function (event) {
           return _this.onDocumentContextMenu(event);
         });
-        frame = (0, _element.getParentWindow)(frame);
+        frame = getParentWindow(frame);
       }
     }
     /**
@@ -190,26 +161,26 @@ var Menu = /*#__PURE__*/function () {
       this.runLocalHooks('beforeOpen');
       this.container.removeAttribute('style');
       this.container.style.display = 'block';
-      var delayedOpenSubMenu = (0, _function.debounce)(function (row) {
+      var delayedOpenSubMenu = debounce(function (row) {
         return _this2.openSubMenu(row);
       }, 300);
       var minWidthOfMenu = this.options.minWidth || MIN_WIDTH;
       var noItemsDefined = false;
-      var filteredItems = (0, _array.arrayFilter)(this.menuItems, function (item) {
-        if (item.key === _predefinedItems.NO_ITEMS) {
+      var filteredItems = arrayFilter(this.menuItems, function (item) {
+        if (item.key === NO_ITEMS) {
           noItemsDefined = true;
         }
 
-        return (0, _utils.isItemHidden)(item, _this2.hot);
+        return isItemHidden(item, _this2.hot);
       });
 
       if (filteredItems.length < 1 && !noItemsDefined) {
-        filteredItems.push((0, _predefinedItems.predefinedItems)()[_predefinedItems.NO_ITEMS]);
+        filteredItems.push(predefinedItems()[NO_ITEMS]);
       } else if (filteredItems.length === 0) {
         return;
       }
 
-      filteredItems = (0, _utils.filterSeparators)(filteredItems, _predefinedItems.SEPARATOR);
+      filteredItems = filterSeparators(filteredItems, SEPARATOR);
       var shouldAutoCloseMenu = false;
       var settings = {
         data: filteredItems,
@@ -217,7 +188,7 @@ var Menu = /*#__PURE__*/function () {
         autoColumnSize: true,
         autoWrapRow: false,
         modifyColWidth: function modifyColWidth(width) {
-          if ((0, _mixed.isDefined)(width) && width < minWidthOfMenu) {
+          if (isDefined(width) && width < minWidthOfMenu) {
             return minWidthOfMenu;
           }
 
@@ -249,13 +220,13 @@ var Menu = /*#__PURE__*/function () {
           }
         },
         rowHeights: function rowHeights(row) {
-          return filteredItems[row].name === _predefinedItems.SEPARATOR ? 1 : 23;
+          return filteredItems[row].name === SEPARATOR ? 1 : 23;
         },
         afterOnCellContextMenu: function afterOnCellContextMenu(event) {
           event.preventDefault(); // On the Windows platform, the "contextmenu" is triggered after the "mouseup" so that's
           // why the closing menu is here. (#6507#issuecomment-582392301).
 
-          if ((0, _browser.isWindowsOS)() && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
+          if (isWindowsOS() && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
             _this2.close(true);
           }
         },
@@ -270,13 +241,13 @@ var Menu = /*#__PURE__*/function () {
           // If the code runs on the other platform than Windows, the "mouseup" is triggered
           // after the "contextmenu". So then "mouseup" closes the menu. Otherwise, the closing
           // menu responsibility is forwarded to "afterOnCellContextMenu" callback (#6507#issuecomment-582392301).
-          if ((!(0, _browser.isWindowsOS)() || !(0, _event.isRightClick)(event)) && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
+          if ((!isWindowsOS() || !isRightClick(event)) && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
             // The timeout is necessary only for mobile devices. For desktop, the click event that is fired
             // right after the mouseup event gets the event element target the same as the mouseup event.
             // For mobile devices, the click event is triggered with native delay (~300ms), so when the mouseup
             // event hides the tapped element, the click event grabs the element below. As a result, the filter
             // by condition menu is closed and immediately open on tapping the "None" item.
-            if ((0, _browser.isMobileBrowser)() || (0, _browser.isIpadOS)()) {
+            if (isMobileBrowser() || isIpadOS()) {
               setTimeout(function () {
                 return _this2.close(true);
               }, 325);
@@ -295,7 +266,7 @@ var Menu = /*#__PURE__*/function () {
       };
       this.origOutsideClickDeselects = this.hot.getSettings().outsideClickDeselects;
       this.hot.getSettings().outsideClickDeselects = false;
-      this.hotMenu = new _core.default(this.container, settings);
+      this.hotMenu = new Core(this.container, settings);
       this.hotMenu.addHook('afterInit', function () {
         return _this2.onAfterInit();
       });
@@ -355,7 +326,7 @@ var Menu = /*#__PURE__*/function () {
       var cell = this.hotMenu.getCell(row, 0);
       this.closeAllSubMenus();
 
-      if (!cell || !(0, _utils.hasSubMenu)(cell)) {
+      if (!cell || !hasSubMenu(cell)) {
         return false;
       }
 
@@ -399,7 +370,7 @@ var Menu = /*#__PURE__*/function () {
     value: function closeAllSubMenus() {
       var _this3 = this;
 
-      (0, _array.arrayEach)(this.hotMenu.getData(), function (value, row) {
+      arrayEach(this.hotMenu.getData(), function (value, row) {
         return _this3.closeSubMenu(row);
       });
     }
@@ -463,7 +434,7 @@ var Menu = /*#__PURE__*/function () {
       }
 
       var selRanges = this.hot.getSelectedRange();
-      var normalizedSelection = selRanges ? (0, _utils.normalizeSelection)(selRanges) : [];
+      var normalizedSelection = selRanges ? normalizeSelection(selRanges) : [];
       this.runLocalHooks('executeCommand', selectedItem.key, normalizedSelection, event);
 
       if (this.isSubMenu()) {
@@ -488,7 +459,7 @@ var Menu = /*#__PURE__*/function () {
           disabled = commandDescriptor.disabled,
           submenu = commandDescriptor.submenu;
       var isItemDisabled = disabled === true || typeof disabled === 'function' && disabled.call(this.hot) === true;
-      return isCommand === false || commandName === _predefinedItems.SEPARATOR || isItemDisabled === true || submenu;
+      return isCommand === false || commandName === SEPARATOR || isItemDisabled === true || submenu;
     }
     /**
      * Set menu position based on dom event or based on literal object.
@@ -499,7 +470,7 @@ var Menu = /*#__PURE__*/function () {
   }, {
     key: "setPosition",
     value: function setPosition(coords) {
-      var cursor = new _cursor.default(coords, this.container.ownerDocument.defaultView);
+      var cursor = new Cursor(coords, this.container.ownerDocument.defaultView);
 
       if (this.options.keepInViewport) {
         if (cursor.fitsBelow(this.container)) {
@@ -582,7 +553,7 @@ var Menu = /*#__PURE__*/function () {
   }, {
     key: "setPositionOnLeftOfCursor",
     value: function setPositionOnLeftOfCursor(cursor) {
-      var scrollbarWidth = (0, _element.getScrollbarWidth)(this.hot.rootDocument);
+      var scrollbarWidth = getScrollbarWidth(this.hot.rootDocument);
       var left = this.offset.left + cursor.left - this.container.offsetWidth + scrollbarWidth + 4;
       this.container.style.left = "".concat(left, "px");
     }
@@ -595,7 +566,7 @@ var Menu = /*#__PURE__*/function () {
     value: function selectFirstCell() {
       var cell = this.hotMenu.getCell(0, 0);
 
-      if ((0, _utils.isSeparator)(cell) || (0, _utils.isDisabled)(cell) || (0, _utils.isSelectionDisabled)(cell)) {
+      if (isSeparator(cell) || isDisabled(cell) || isSelectionDisabled(cell)) {
         this.selectNextCell(0, 0);
       } else {
         this.hotMenu.selectCell(0, 0);
@@ -611,7 +582,7 @@ var Menu = /*#__PURE__*/function () {
       var lastRow = this.hotMenu.countRows() - 1;
       var cell = this.hotMenu.getCell(lastRow, 0);
 
-      if ((0, _utils.isSeparator)(cell) || (0, _utils.isDisabled)(cell) || (0, _utils.isSelectionDisabled)(cell)) {
+      if (isSeparator(cell) || isDisabled(cell) || isSelectionDisabled(cell)) {
         this.selectPrevCell(lastRow, 0);
       } else {
         this.hotMenu.selectCell(lastRow, 0);
@@ -634,7 +605,7 @@ var Menu = /*#__PURE__*/function () {
         return;
       }
 
-      if ((0, _utils.isSeparator)(cell) || (0, _utils.isDisabled)(cell) || (0, _utils.isSelectionDisabled)(cell)) {
+      if (isSeparator(cell) || isDisabled(cell) || isSelectionDisabled(cell)) {
         this.selectNextCell(nextRow, col);
       } else {
         this.hotMenu.selectCell(nextRow, col);
@@ -657,7 +628,7 @@ var Menu = /*#__PURE__*/function () {
         return;
       }
 
-      if ((0, _utils.isSeparator)(cell) || (0, _utils.isDisabled)(cell) || (0, _utils.isSelectionDisabled)(cell)) {
+      if (isSeparator(cell) || isDisabled(cell) || isSelectionDisabled(cell)) {
         this.selectPrevCell(prevRow, col);
       } else {
         this.hotMenu.selectCell(prevRow, col);
@@ -684,11 +655,11 @@ var Menu = /*#__PURE__*/function () {
       var wrapper = this.hot.rootDocument.createElement('div');
 
       var isSubMenu = function isSubMenu(itemToTest) {
-        return (0, _object.hasOwnProperty)(itemToTest, 'submenu');
+        return hasOwnProperty(itemToTest, 'submenu');
       };
 
       var itemIsSeparator = function itemIsSeparator(itemToTest) {
-        return new RegExp(_predefinedItems.SEPARATOR, 'i').test(itemToTest.name);
+        return new RegExp(SEPARATOR, 'i').test(itemToTest.name);
       };
 
       var itemIsDisabled = function itemIsDisabled(itemToTest) {
@@ -705,31 +676,31 @@ var Menu = /*#__PURE__*/function () {
         itemValue = itemValue.call(this.hot);
       }
 
-      (0, _element.empty)(TD);
-      (0, _element.addClass)(wrapper, 'htItemWrapper');
+      empty(TD);
+      addClass(wrapper, 'htItemWrapper');
       TD.appendChild(wrapper);
 
       if (itemIsSeparator(item)) {
-        (0, _element.addClass)(TD, 'htSeparator');
+        addClass(TD, 'htSeparator');
       } else if (typeof item.renderer === 'function') {
-        (0, _element.addClass)(TD, 'htCustomMenuRenderer');
+        addClass(TD, 'htCustomMenuRenderer');
         TD.appendChild(item.renderer(hot, wrapper, row, col, prop, itemValue));
       } else {
-        (0, _element.fastInnerHTML)(wrapper, itemValue);
+        fastInnerHTML(wrapper, itemValue);
       }
 
       if (itemIsDisabled(item)) {
-        (0, _element.addClass)(TD, 'htDisabled');
+        addClass(TD, 'htDisabled');
         this.eventManager.addEventListener(TD, 'mouseenter', function () {
           return hot.deselectCell();
         });
       } else if (itemIsSelectionDisabled(item)) {
-        (0, _element.addClass)(TD, 'htSelectionDisabled');
+        addClass(TD, 'htSelectionDisabled');
         this.eventManager.addEventListener(TD, 'mouseenter', function () {
           return hot.deselectCell();
         });
       } else if (isSubMenu(item)) {
-        (0, _element.addClass)(TD, 'htSubmenu');
+        addClass(TD, 'htSubmenu');
 
         if (itemIsSelectionDisabled(item)) {
           this.eventManager.addEventListener(TD, 'mouseenter', function () {
@@ -741,7 +712,7 @@ var Menu = /*#__PURE__*/function () {
           });
         }
       } else {
-        (0, _element.removeClass)(TD, ['htSubmenu', 'htDisabled']);
+        removeClass(TD, ['htSubmenu', 'htDisabled']);
 
         if (itemIsSelectionDisabled(item)) {
           this.eventManager.addEventListener(TD, 'mouseenter', function () {
@@ -771,10 +742,10 @@ var Menu = /*#__PURE__*/function () {
       var container;
 
       if (className) {
-        if ((0, _function.isFunction)(className)) {
+        if (isFunction(className)) {
           className = className.call(this.hot);
 
-          if (className === null || (0, _mixed.isUndefined)(className)) {
+          if (className === null || isUndefined(className)) {
             className = '';
           } else {
             className = className.toString();
@@ -788,10 +759,10 @@ var Menu = /*#__PURE__*/function () {
 
       if (!container) {
         container = doc.createElement('div');
-        (0, _element.addClass)(container, "htMenu ".concat(this.options.className));
+        addClass(container, "htMenu ".concat(this.options.className));
 
         if (className) {
-          (0, _element.addClass)(container, className);
+          addClass(container, className);
         }
 
         this.options.container.appendChild(container);
@@ -836,8 +807,8 @@ var Menu = /*#__PURE__*/function () {
     value: function onBeforeKeyDown(event) {
       // For input elements, prevent event propagation. It allows entering text into an input
       // element freely - without steeling the key events from the menu module (#6506, #6549).
-      if ((0, _element.isInput)(event.target) && this.container.contains(event.target)) {
-        (0, _event.stopImmediatePropagation)(event);
+      if (isInput(event.target) && this.container.contains(event.target)) {
+        stopImmediatePropagation(event);
         return;
       }
 
@@ -846,12 +817,12 @@ var Menu = /*#__PURE__*/function () {
       this.keyEvent = true;
 
       switch (event.keyCode) {
-        case _unicode.KEY_CODES.ESCAPE:
+        case KEY_CODES.ESCAPE:
           this.close();
           stopEvent = true;
           break;
 
-        case _unicode.KEY_CODES.ENTER:
+        case KEY_CODES.ENTER:
           if (selection) {
             if (this.hotMenu.getSourceDataAtRow(selection[0]).submenu) {
               stopEvent = true;
@@ -863,7 +834,7 @@ var Menu = /*#__PURE__*/function () {
 
           break;
 
-        case _unicode.KEY_CODES.ARROW_DOWN:
+        case KEY_CODES.ARROW_DOWN:
           if (selection) {
             this.selectNextCell(selection[0], selection[1]);
           } else {
@@ -873,7 +844,7 @@ var Menu = /*#__PURE__*/function () {
           stopEvent = true;
           break;
 
-        case _unicode.KEY_CODES.ARROW_UP:
+        case KEY_CODES.ARROW_UP:
           if (selection) {
             this.selectPrevCell(selection[0], selection[1]);
           } else {
@@ -883,7 +854,7 @@ var Menu = /*#__PURE__*/function () {
           stopEvent = true;
           break;
 
-        case _unicode.KEY_CODES.ARROW_RIGHT:
+        case KEY_CODES.ARROW_RIGHT:
           if (selection) {
             var menu = this.openSubMenu(selection[0]);
 
@@ -895,7 +866,7 @@ var Menu = /*#__PURE__*/function () {
           stopEvent = true;
           break;
 
-        case _unicode.KEY_CODES.ARROW_LEFT:
+        case KEY_CODES.ARROW_LEFT:
           if (selection && this.isSubMenu()) {
             this.close();
 
@@ -914,7 +885,7 @@ var Menu = /*#__PURE__*/function () {
 
       if (stopEvent) {
         event.preventDefault();
-        (0, _event.stopImmediatePropagation)(event);
+        stopImmediatePropagation(event);
       }
 
       this.keyEvent = false;
@@ -933,8 +904,8 @@ var Menu = /*#__PURE__*/function () {
       var hiderStyle = wtTable.hider.style;
       var holderStyle = wtTable.holder.style;
       var currentHiderWidth = parseInt(hiderStyle.width, 10);
-      var realHeight = (0, _array.arrayReduce)(data, function (accumulator, value) {
-        return accumulator + (value.name === _predefinedItems.SEPARATOR ? 1 : 26);
+      var realHeight = arrayReduce(data, function (accumulator, value) {
+        return accumulator + (value.name === SEPARATOR ? 1 : 26);
       }, 0); // Additional 3px to menu's size because of additional border around its `table.htCore`.
 
       holderStyle.width = "".concat(currentHiderWidth + 3, "px");
@@ -973,9 +944,9 @@ var Menu = /*#__PURE__*/function () {
       } // Close menu when clicked element is not belongs to menu itself
 
 
-      if (this.options.standalone && this.hotMenu && !(0, _element.isChildOf)(event.target, this.hotMenu.rootElement)) {
+      if (this.options.standalone && this.hotMenu && !isChildOf(event.target, this.hotMenu.rootElement)) {
         this.close(true); // Automatically close menu when clicked element is not belongs to menu or submenu (not necessarily to itself)
-      } else if ((this.isAllSubMenusClosed() || this.isSubMenu()) && !(0, _element.isChildOf)(event.target, '.htMenu') && ((0, _element.isChildOf)(event.target, this.container.ownerDocument) || (0, _element.isChildOf)(event.target, this.hot.rootDocument))) {
+      } else if ((this.isAllSubMenusClosed() || this.isSubMenu()) && !isChildOf(event.target, '.htMenu') && (isChildOf(event.target, this.container.ownerDocument) || isChildOf(event.target, this.hot.rootDocument))) {
         this.close(true);
       }
     }
@@ -993,7 +964,7 @@ var Menu = /*#__PURE__*/function () {
         return;
       }
 
-      if ((0, _element.hasClass)(event.target, 'htCore') && (0, _element.isChildOf)(event.target, this.hotMenu.rootElement)) {
+      if (hasClass(event.target, 'htCore') && isChildOf(event.target, this.hotMenu.rootElement)) {
         event.preventDefault();
       }
     }
@@ -1002,6 +973,5 @@ var Menu = /*#__PURE__*/function () {
   return Menu;
 }();
 
-(0, _object.mixin)(Menu, _localHooks.default);
-var _default = Menu;
-exports.default = _default;
+mixin(Menu, localHooks);
+export default Menu;

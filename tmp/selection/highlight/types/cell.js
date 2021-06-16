@@ -1,29 +1,11 @@
-"use strict";
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.object.get-own-property-descriptors.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _constants = require("../constants");
-
-var _visualSelection = _interopRequireDefault(require("../visualSelection"));
-
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.get-own-property-descriptors.js";
 var _excluded = ["cellCornerVisible"];
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -35,6 +17,8 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
+import { CELL_TYPE } from "../constants.mjs";
+import VisualSelection from "../visualSelection.mjs";
 /**
  * Creates the new instance of Selection responsible for highlighting currently selected cell. This type of selection
  * can present on the table only one at the time.
@@ -43,11 +27,12 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
  * @param {Function} highlightParams.cellCornerVisible Function to determine if cell's corner should be visible.
  * @returns {Selection}
  */
+
 function createHighlight(_ref) {
   var cellCornerVisible = _ref.cellCornerVisible,
       restOptions = _objectWithoutProperties(_ref, _excluded);
 
-  var s = new _visualSelection.default(_objectSpread(_objectSpread({
+  var s = new VisualSelection(_objectSpread(_objectSpread({
     className: 'current',
     border: {
       width: 2,
@@ -55,10 +40,9 @@ function createHighlight(_ref) {
       cornerVisible: cellCornerVisible
     }
   }, restOptions), {}, {
-    selectionType: _constants.CELL_TYPE
+    selectionType: CELL_TYPE
   }));
   return s;
 }
 
-var _default = createHighlight;
-exports.default = _default;
+export default createHighlight;

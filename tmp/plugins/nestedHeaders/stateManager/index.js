@@ -1,47 +1,17 @@
-"use strict";
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.object.get-own-property-descriptors.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-var _array = require("../../../helpers/array");
-
-var _sourceSettings2 = _interopRequireDefault(require("./sourceSettings"));
-
-var _headersTree2 = _interopRequireDefault(require("./headersTree"));
-
-var _nodeModifiers = require("./nodeModifiers");
-
-var _matrixGenerator = require("./matrixGenerator");
-
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.get-own-property-descriptors.js";
 var _excluded = ["row"];
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -69,12 +39,11 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
-var _sourceSettings = /*#__PURE__*/new WeakMap();
-
-var _headersTree = /*#__PURE__*/new WeakMap();
-
-var _stateMatrix = /*#__PURE__*/new WeakMap();
-
+import { arrayMap, arrayReduce } from "../../../helpers/array.mjs";
+import SourceSettings from "./sourceSettings.mjs";
+import HeadersTree from "./headersTree.mjs";
+import { triggerNodeModification as _triggerNodeModification } from "./nodeModifiers/index.mjs";
+import { generateMatrix } from "./matrixGenerator.mjs";
 /**
  * The state manager is a source of truth for nested headers configuration.
  * The state generation process is divided into three stages.
@@ -104,18 +73,25 @@ var _stateMatrix = /*#__PURE__*/new WeakMap();
  * @class StateManager
  * @plugin NestedHeaders
  */
+
+var _sourceSettings = /*#__PURE__*/new WeakMap();
+
+var _headersTree = /*#__PURE__*/new WeakMap();
+
+var _stateMatrix = /*#__PURE__*/new WeakMap();
+
 var StateManager = /*#__PURE__*/function () {
   function StateManager() {
     _classCallCheck(this, StateManager);
 
     _sourceSettings.set(this, {
       writable: true,
-      value: new _sourceSettings2.default()
+      value: new SourceSettings()
     });
 
     _headersTree.set(this, {
       writable: true,
-      value: new _headersTree2.default(_classPrivateFieldGet(this, _sourceSettings))
+      value: new HeadersTree(_classPrivateFieldGet(this, _sourceSettings))
     });
 
     _stateMatrix.set(this, {
@@ -149,7 +125,7 @@ var StateManager = /*#__PURE__*/function () {
         hasError = true;
       }
 
-      _classPrivateFieldSet(this, _stateMatrix, (0, _matrixGenerator.generateMatrix)(_classPrivateFieldGet(this, _headersTree).getRoots()));
+      _classPrivateFieldSet(this, _stateMatrix, generateMatrix(_classPrivateFieldGet(this, _headersTree).getRoots()));
 
       return hasError;
     }
@@ -181,7 +157,7 @@ var StateManager = /*#__PURE__*/function () {
     value: function mergeStateWith(settings) {
       var _this = this;
 
-      var transformedSettings = (0, _array.arrayMap)(settings, function (_ref) {
+      var transformedSettings = arrayMap(settings, function (_ref) {
         var row = _ref.row,
             rest = _objectWithoutProperties(_ref, _excluded);
 
@@ -194,7 +170,7 @@ var StateManager = /*#__PURE__*/function () {
 
       _classPrivateFieldGet(this, _headersTree).buildTree();
 
-      _classPrivateFieldSet(this, _stateMatrix, (0, _matrixGenerator.generateMatrix)(_classPrivateFieldGet(this, _headersTree).getRoots()));
+      _classPrivateFieldSet(this, _stateMatrix, generateMatrix(_classPrivateFieldGet(this, _headersTree).getRoots()));
     }
     /**
      * Maps the current state with a callback. For each header settings the callback function
@@ -215,7 +191,7 @@ var StateManager = /*#__PURE__*/function () {
 
       _classPrivateFieldGet(this, _headersTree).buildTree();
 
-      _classPrivateFieldSet(this, _stateMatrix, (0, _matrixGenerator.generateMatrix)(_classPrivateFieldGet(this, _headersTree).getRoots()));
+      _classPrivateFieldSet(this, _stateMatrix, generateMatrix(_classPrivateFieldGet(this, _headersTree).getRoots()));
     }
     /**
      * Maps the current tree nodes with a callback. For each node the callback function
@@ -230,7 +206,7 @@ var StateManager = /*#__PURE__*/function () {
   }, {
     key: "mapNodes",
     value: function mapNodes(callback) {
-      return (0, _array.arrayReduce)(_classPrivateFieldGet(this, _headersTree).getRoots(), function (acc, rootNode) {
+      return arrayReduce(_classPrivateFieldGet(this, _headersTree).getRoots(), function (acc, rootNode) {
         rootNode.walkDown(function (node) {
           var result = callback(node.data);
 
@@ -264,9 +240,9 @@ var StateManager = /*#__PURE__*/function () {
       var actionResult;
 
       if (nodeToProcess) {
-        actionResult = (0, _nodeModifiers.triggerNodeModification)(action, nodeToProcess, columnIndex); // TODO (perf-tip): Trigger matrix generation once after multiple node modifications.
+        actionResult = _triggerNodeModification(action, nodeToProcess, columnIndex); // TODO (perf-tip): Trigger matrix generation once after multiple node modifications.
 
-        _classPrivateFieldSet(this, _stateMatrix, (0, _matrixGenerator.generateMatrix)(_classPrivateFieldGet(this, _headersTree).getRoots()));
+        _classPrivateFieldSet(this, _stateMatrix, generateMatrix(_classPrivateFieldGet(this, _headersTree).getRoots()));
       }
 
       return actionResult;
@@ -493,4 +469,4 @@ var StateManager = /*#__PURE__*/function () {
   return StateManager;
 }();
 
-exports.default = StateManager;
+export { StateManager as default };

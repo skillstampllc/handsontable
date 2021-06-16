@@ -1,28 +1,19 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _object = require("../../../helpers/object");
-
-var _utils = require("../utils");
-
-var _lazyFactoryMap = _interopRequireDefault(require("../lazyFactoryMap"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { extend } from "../../../helpers/object.mjs";
+import { columnFactory, expandMetaType } from "../utils.mjs";
+import LazyFactoryMap from "../lazyFactoryMap.mjs";
 /**
  * List of props which have to be cleared in the column meta-layer. That props have a
  * different meaning when using in column meta.
  *
  * @type {string[]}
  */
+
 var COLUMNS_PROPS_CONFLICTS = ['data', 'width'];
 /**
  * The column meta object is a root of all settings defined in the column property of the Handsontable
@@ -71,7 +62,7 @@ var ColumnMeta = /*#__PURE__*/function () {
      * @type {LazyFactoryMap}
      */
 
-    this.metas = new _lazyFactoryMap.default(function () {
+    this.metas = new LazyFactoryMap(function () {
       return _this._createMeta();
     });
   }
@@ -87,8 +78,8 @@ var ColumnMeta = /*#__PURE__*/function () {
     key: "updateMeta",
     value: function updateMeta(physicalColumn, settings) {
       var meta = this.getMeta(physicalColumn);
-      (0, _object.extend)(meta, settings);
-      (0, _object.extend)(meta, (0, _utils.expandMetaType)(settings.type, meta));
+      extend(meta, settings);
+      extend(meta, expandMetaType(settings.type, meta));
     }
     /**
      * Creates one or more columns at specific position.
@@ -157,11 +148,11 @@ var ColumnMeta = /*#__PURE__*/function () {
   }, {
     key: "_createMeta",
     value: function _createMeta() {
-      return (0, _utils.columnFactory)(this.globalMeta.getMetaConstructor(), COLUMNS_PROPS_CONFLICTS).prototype;
+      return columnFactory(this.globalMeta.getMetaConstructor(), COLUMNS_PROPS_CONFLICTS).prototype;
     }
   }]);
 
   return ColumnMeta;
 }();
 
-exports.default = ColumnMeta;
+export { ColumnMeta as default };

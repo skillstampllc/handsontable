@@ -1,83 +1,30 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.HiddenRows = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.number.is-integer.js");
-
-require("core-js/modules/es.number.constructor.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.weak-map.js");
-
-var _base = require("../base");
-
-var _element = require("../../helpers/dom/element");
-
-var _number = require("../../helpers/number");
-
-var _array = require("../../helpers/array");
-
-var _object = require("../../helpers/object");
-
-var _mixed = require("../../helpers/mixed");
-
-var _predefinedItems = require("../contextMenu/predefinedItems");
-
-var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
-
-var _hideRow = _interopRequireDefault(require("./contextMenuItem/hideRow"));
-
-var _showRow = _interopRequireDefault(require("./contextMenuItem/showRow"));
-
-var _translations = require("../../translations");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -113,17 +60,23 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
-_pluginHooks.default.getSingleton().register('beforeHideRows');
-
-_pluginHooks.default.getSingleton().register('afterHideRows');
-
-_pluginHooks.default.getSingleton().register('beforeUnhideRows');
-
-_pluginHooks.default.getSingleton().register('afterUnhideRows');
-
-var PLUGIN_KEY = 'hiddenRows';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 320;
+import { BasePlugin } from "../base/index.mjs";
+import { addClass } from "../../helpers/dom/element.mjs";
+import { rangeEach } from "../../helpers/number.mjs";
+import { arrayEach, arrayMap, arrayReduce } from "../../helpers/array.mjs";
+import { isObject } from "../../helpers/object.mjs";
+import { isUndefined } from "../../helpers/mixed.mjs";
+import { SEPARATOR } from "../contextMenu/predefinedItems.mjs";
+import Hooks from "../../pluginHooks.mjs";
+import hideRowItem from "./contextMenuItem/hideRow.mjs";
+import showRowItem from "./contextMenuItem/showRow.mjs";
+import { HidingMap } from "../../translations/index.mjs";
+Hooks.getSingleton().register('beforeHideRows');
+Hooks.getSingleton().register('afterHideRows');
+Hooks.getSingleton().register('beforeUnhideRows');
+Hooks.getSingleton().register('afterUnhideRows');
+export var PLUGIN_KEY = 'hiddenRows';
+export var PLUGIN_PRIORITY = 320;
 /**
  * @plugin HiddenRows
  *
@@ -176,13 +129,11 @@ var PLUGIN_PRIORITY = 320;
  * ```
  */
 
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
-
 var _settings = /*#__PURE__*/new WeakMap();
 
 var _hiddenRowsMap = /*#__PURE__*/new WeakMap();
 
-var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
+export var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
   _inherits(HiddenRows, _BasePlugin);
 
   var _super = _createSuper(HiddenRows);
@@ -238,15 +189,15 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
 
       var pluginSettings = this.hot.getSettings()[PLUGIN_KEY];
 
-      if ((0, _object.isObject)(pluginSettings)) {
+      if (isObject(pluginSettings)) {
         _classPrivateFieldSet(this, _settings, pluginSettings);
 
-        if ((0, _mixed.isUndefined)(pluginSettings.copyPasteEnabled)) {
+        if (isUndefined(pluginSettings.copyPasteEnabled)) {
           pluginSettings.copyPasteEnabled = true;
         }
       }
 
-      _classPrivateFieldSet(this, _hiddenRowsMap, new _translations.HidingMap());
+      _classPrivateFieldSet(this, _hiddenRowsMap, new HidingMap());
 
       _classPrivateFieldGet(this, _hiddenRowsMap).addLocalHook('init', function () {
         return _this2.onMapInit();
@@ -322,11 +273,11 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
           return _this3.hot.toPhysicalRow(visualRow);
         }); // Preparing new values for hiding map.
 
-        (0, _array.arrayEach)(physicalRows, function (physicalRow) {
+        arrayEach(physicalRows, function (physicalRow) {
           hidingMapValues[physicalRow] = false;
         }); // Preparing new hiding config.
 
-        destinationHideConfig = (0, _array.arrayReduce)(hidingMapValues, function (hiddenIndexes, isHidden, physicalIndex) {
+        destinationHideConfig = arrayReduce(hidingMapValues, function (hiddenIndexes, isHidden, physicalIndex) {
           if (isHidden) {
             hiddenIndexes.push(_this3.hot.toVisualRow(physicalIndex));
           }
@@ -389,7 +340,7 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
 
       if (isConfigValid) {
         this.hot.batchExecution(function () {
-          (0, _array.arrayEach)(rows, function (visualRow) {
+          arrayEach(rows, function (visualRow) {
             _classPrivateFieldGet(_this4, _hiddenRowsMap).setValueAtIndex(_this4.hot.toPhysicalRow(visualRow), true);
           });
         }, true);
@@ -423,7 +374,7 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
     value: function getHiddenRows() {
       var _this5 = this;
 
-      return (0, _array.arrayMap)(_classPrivateFieldGet(this, _hiddenRowsMap).getHiddenIndexes(), function (physicalRowIndex) {
+      return arrayMap(_classPrivateFieldGet(this, _hiddenRowsMap).getHiddenIndexes(), function (physicalRowIndex) {
         return _this5.hot.toVisualRow(physicalRowIndex);
       });
     }
@@ -468,7 +419,7 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "resetCellsMeta",
     value: function resetCellsMeta() {
-      (0, _array.arrayEach)(this.hot.getCellsMeta(), function (meta) {
+      arrayEach(this.hot.getCellsMeta(), function (meta) {
         if (meta) {
           meta.skipRowOnPaste = false;
         }
@@ -560,10 +511,10 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
         });
       };
 
-      (0, _array.arrayEach)(ranges, function (range) {
+      arrayEach(ranges, function (range) {
         var isHidden = true;
         var rangeStart = 0;
-        (0, _number.rangeEach)(range.startRow, range.endRow, function (visualRow) {
+        rangeEach(range.startRow, range.endRow, function (visualRow) {
           if (_this6.isHidden(visualRow)) {
             if (!isHidden) {
               pushRange(rangeStart, visualRow - 1, range.startCol, range.endCol);
@@ -610,7 +561,7 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
         classList.push('beforeHiddenRow');
       }
 
-      (0, _element.addClass)(TH, classList);
+      addClass(TH, classList);
     }
     /**
      * Add Show-hide rows to context menu.
@@ -623,8 +574,8 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
     key: "onAfterContextMenuDefaultOptions",
     value: function onAfterContextMenuDefaultOptions(options) {
       options.items.push({
-        name: _predefinedItems.SEPARATOR
-      }, (0, _hideRow.default)(this), (0, _showRow.default)(this));
+        name: SEPARATOR
+      }, hideRowItem(this), showRowItem(this));
     }
     /**
      * On map initialized hook callback.
@@ -672,6 +623,4 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return HiddenRows;
-}(_base.BasePlugin);
-
-exports.HiddenRows = HiddenRows;
+}(BasePlugin);

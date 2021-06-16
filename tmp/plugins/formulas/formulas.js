@@ -1,86 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.Formulas = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.map.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.array.reverse.js");
-
-require("core-js/modules/es.array.sort.js");
-
-require("core-js/modules/es.weak-map.js");
-
-var _hyperformula = require("hyperformula");
-
-var _base = require("../base");
-
-var _autofill = require("./autofill");
-
-var _staticRegister = _interopRequireDefault(require("../../utils/staticRegister"));
-
-var _console = require("../../helpers/console");
-
-var _mixed = require("../../helpers/mixed");
-
-var _register = require("./engine/register");
-
-var _utils = require("./utils");
-
-var _settings = require("./engine/settings");
-
-var _data = require("../../helpers/data");
-
-var _string = require("../../helpers/string");
-
-var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
-
-var _customHyperFunction = require("./custom/custom-hyper-function");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -102,6 +19,32 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.map.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.reverse.js";
+import "core-js/modules/es.array.sort.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -139,22 +82,27 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
-var PLUGIN_KEY = 'formulas';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 260;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
-
-_pluginHooks.default.getSingleton().register('afterNamedExpressionAdded');
-
-_pluginHooks.default.getSingleton().register('afterNamedExpressionRemoved');
-
-_pluginHooks.default.getSingleton().register('afterSheetAdded');
-
-_pluginHooks.default.getSingleton().register('afterSheetRemoved');
-
-_pluginHooks.default.getSingleton().register('afterSheetRenamed');
-
-_pluginHooks.default.getSingleton().register('afterFormulasValuesUpdate');
+import { HyperFormula } from 'hyperformula';
+import { BasePlugin } from "../base/index.mjs";
+import { createAutofillHooks } from "./autofill.mjs";
+import staticRegister from "../../utils/staticRegister.mjs";
+import { error, warn } from "../../helpers/console.mjs";
+import { isDefined, isUndefined } from "../../helpers/mixed.mjs";
+import { setupEngine, setupSheet, unregisterEngine, getRegisteredHotInstances } from "./engine/register.mjs";
+import { isEscapedFormulaExpression, unescapeFormulaExpression } from "./utils.mjs";
+import { getEngineSettingsWithOverrides } from "./engine/settings.mjs";
+import { isArrayOfArrays } from "../../helpers/data.mjs";
+import { toUpperCaseFirst } from "../../helpers/string.mjs";
+import Hooks from "../../pluginHooks.mjs";
+import { HFValueFunction } from "./custom/custom-hyper-function.mjs";
+export var PLUGIN_KEY = 'formulas';
+export var PLUGIN_PRIORITY = 260;
+Hooks.getSingleton().register('afterNamedExpressionAdded');
+Hooks.getSingleton().register('afterNamedExpressionRemoved');
+Hooks.getSingleton().register('afterSheetAdded');
+Hooks.getSingleton().register('afterSheetRemoved');
+Hooks.getSingleton().register('afterSheetRenamed');
+Hooks.getSingleton().register('afterFormulasValuesUpdate');
 /**
  * This plugin allows you to perform Excel-like calculations in your business applications. It does it by an
  * integration with our other product, [HyperFormula](https://github.com/handsontable/hyperformula/), which is a
@@ -163,14 +111,13 @@ _pluginHooks.default.getSingleton().register('afterFormulasValuesUpdate');
  * @plugin Formulas
  */
 
-
 var _internalOperationPending = /*#__PURE__*/new WeakMap();
 
 var _hotWasInitializedWithEmptyData = /*#__PURE__*/new WeakMap();
 
 var _engineListeners = /*#__PURE__*/new WeakMap();
 
-var Formulas = /*#__PURE__*/function (_BasePlugin) {
+export var Formulas = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Formulas, _BasePlugin);
 
   var _super = _createSuper(Formulas);
@@ -225,7 +172,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
       }]]
     });
 
-    _defineProperty(_assertThisInitialized(_this), "staticRegister", (0, _staticRegister.default)('formulas'));
+    _defineProperty(_assertThisInitialized(_this), "staticRegister", staticRegister('formulas'));
 
     _defineProperty(_assertThisInitialized(_this), "engine", null);
 
@@ -272,10 +219,10 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.engine = (_setupEngine = (0, _register.setupEngine)(this.hot)) !== null && _setupEngine !== void 0 ? _setupEngine : this.engine;
+      this.engine = (_setupEngine = setupEngine(this.hot)) !== null && _setupEngine !== void 0 ? _setupEngine : this.engine;
 
       if (!this.engine) {
-        (0, _console.warn)('Missing the required `engine` key in the Formulas settings. Please fill it with either an' + ' engine class or an engine instance.');
+        warn('Missing the required `engine` key in the Formulas settings. Please fill it with either an' + ' engine class or an engine instance.');
         return;
       } // Useful for disabling -> enabling the plugin using `updateSettings` or the API.
 
@@ -329,7 +276,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('afterRemoveCol', function () {
         return _this8.onAfterRemoveCol.apply(_this8, arguments);
       });
-      var autofillHooks = (0, _autofill.createAutofillHooks)(this);
+      var autofillHooks = createAutofillHooks(this);
       this.addHook('beforeAutofill', autofillHooks.beforeAutofill);
       this.addHook('afterAutofill', autofillHooks.afterAutofill);
 
@@ -360,7 +307,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
         return _this9.engine.off(eventName, listener);
       });
 
-      (0, _register.unregisterEngine)(this.engine, this.hot);
+      unregisterEngine(this.engine, this.hot);
 
       _get(_getPrototypeOf(Formulas.prototype), "disablePlugin", this).call(this);
     }
@@ -374,14 +321,14 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "updatePlugin",
     value: function updatePlugin(newSettings) {
-      if (this.engine instanceof _hyperformula.HyperFormula) {
-        _hyperformula.HyperFormula.registerFunctionPlugin(_customHyperFunction.HFValueFunction);
+      if (this.engine instanceof HyperFormula) {
+        HyperFormula.registerFunctionPlugin(HFValueFunction);
       }
 
-      this.engine.updateConfig((0, _settings.getEngineSettingsWithOverrides)(this.hot.getSettings()));
+      this.engine.updateConfig(getEngineSettingsWithOverrides(this.hot.getSettings()));
       var pluginSettings = this.hot.getSettings()[PLUGIN_KEY];
 
-      if ((0, _mixed.isDefined)(pluginSettings) && (0, _mixed.isDefined)(pluginSettings.sheetName) && pluginSettings.sheetName !== this.sheetName) {
+      if (isDefined(pluginSettings) && isDefined(pluginSettings.sheetName) && pluginSettings.sheetName !== this.sheetName) {
         this.switchSheet(pluginSettings.sheetName);
       } // If no data was passed to the `updateSettings` method and no sheet is connected to the instance -> create a
       // new sheet using the currently used data. Otherwise, it will be handled by the `afterLoadData` call.
@@ -420,7 +367,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
 
       _classPrivateFieldSet(this, _engineListeners, null);
 
-      (0, _register.unregisterEngine)(this.engine, this.hot);
+      unregisterEngine(this.engine, this.hot);
 
       _get(_getPrototypeOf(Formulas.prototype), "destroy", this).call(this);
     }
@@ -496,13 +443,13 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "addSheet",
     value: function addSheet(sheetName, sheetData) {
-      if ((0, _mixed.isDefined)(sheetData) && !(0, _data.isArrayOfArrays)(sheetData)) {
-        (0, _console.warn)('The provided data should be an array of arrays.');
+      if (isDefined(sheetData) && !isArrayOfArrays(sheetData)) {
+        warn('The provided data should be an array of arrays.');
         return false;
       }
 
       if (sheetName !== void 0 && sheetName !== null && this.engine.doesSheetExist(sheetName)) {
-        (0, _console.warn)('Sheet with the provided name already exists.');
+        warn('Sheet with the provided name already exists.');
         return false;
       }
 
@@ -515,7 +462,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
 
         return actualSheetName;
       } catch (e) {
-        (0, _console.warn)(e.message);
+        warn(e.message);
         return false;
       }
     }
@@ -530,7 +477,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
     key: "switchSheet",
     value: function switchSheet(sheetName) {
       if (!this.engine.doesSheetExist(sheetName)) {
-        (0, _console.error)("The sheet named `".concat(sheetName, "` does not exist, switch aborted."));
+        error("The sheet named `".concat(sheetName, "` does not exist, switch aborted."));
         return;
       }
 
@@ -538,7 +485,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
       var serialized = this.engine.getSheetSerialized(this.sheetId);
 
       if (serialized.length > 0) {
-        this.hot.loadData(serialized, "".concat((0, _string.toUpperCaseFirst)(PLUGIN_KEY), ".switchSheet"));
+        this.hot.loadData(serialized, "".concat(toUpperCaseFirst(PLUGIN_KEY), ".switchSheet"));
       }
     }
     /**
@@ -612,7 +559,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
           }
         }
       });
-      var hotInstances = new Map((0, _register.getRegisteredHotInstances)(this.engine).map(function (hot) {
+      var hotInstances = new Map(getRegisteredHotInstances(this.engine).map(function (hot) {
         return [hot.getPlugin('formulas').sheetId, hot];
       }));
       hotInstances.forEach(function (relatedHot, sheetId) {
@@ -644,7 +591,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
       };
 
       if (!this.engine.isItPossibleToSetCellContents(address)) {
-        (0, _console.warn)("Not possible to set cell data at ".concat(JSON.stringify(address)));
+        warn("Not possible to set cell data at ".concat(JSON.stringify(address)));
         return;
       }
 
@@ -691,13 +638,13 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
     value: function onBeforeLoadData(sourceData, initialLoad) {
       var source = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
-      if (source.includes((0, _string.toUpperCaseFirst)(PLUGIN_KEY))) {
+      if (source.includes(toUpperCaseFirst(PLUGIN_KEY))) {
         return;
       } // This flag needs to be defined, because not passing data to HOT results in HOT auto-generating a `null`-filled
       // initial dataset.
 
 
-      _classPrivateFieldSet(this, _hotWasInitializedWithEmptyData, (0, _mixed.isUndefined)(this.hot.getSettings().data));
+      _classPrivateFieldSet(this, _hotWasInitializedWithEmptyData, isUndefined(this.hot.getSettings().data));
     }
     /**
      * `afterLoadData` hook callback.
@@ -713,11 +660,11 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
     value: function onAfterLoadData(sourceData, initialLoad) {
       var source = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
-      if (source.includes((0, _string.toUpperCaseFirst)(PLUGIN_KEY))) {
+      if (source.includes(toUpperCaseFirst(PLUGIN_KEY))) {
         return;
       }
 
-      this.sheetName = (0, _register.setupSheet)(this.engine, this.hot.getSettings()[PLUGIN_KEY].sheetName);
+      this.sheetName = setupSheet(this.engine, this.hot.getSettings()[PLUGIN_KEY].sheetName);
 
       if (!_classPrivateFieldGet(this, _hotWasInitializedWithEmptyData)) {
         var sourceDataArray = this.hot.getSourceDataArray();
@@ -756,8 +703,8 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
       var isFormulaCellType = this.isFormulaCellType(this.hot.toVisualRow(row), column);
 
       if (!isFormulaCellType) {
-        if ((0, _utils.isEscapedFormulaExpression)(valueHolder.value)) {
-          valueHolder.value = (0, _utils.unescapeFormulaExpression)(valueHolder.value);
+        if (isEscapedFormulaExpression(valueHolder.value)) {
+          valueHolder.value = unescapeFormulaExpression(valueHolder.value);
         }
 
         return;
@@ -892,7 +839,7 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
         };
 
         if (!_this13.engine.isItPossibleToSetCellContents(address)) {
-          (0, _console.warn)("Not possible to set source cell data at ".concat(JSON.stringify(address)));
+          warn("Not possible to set source cell data at ".concat(JSON.stringify(address)));
           return;
         }
 
@@ -1146,6 +1093,4 @@ var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return Formulas;
-}(_base.BasePlugin);
-
-exports.Formulas = Formulas;
+}(BasePlugin);

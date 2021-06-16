@@ -1,138 +1,48 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = getOptionsList;
-exports.TYPES = exports.TYPE_DATE = exports.TYPE_TEXT = exports.TYPE_NUMERIC = void 0;
-
-var _object = require("../../helpers/object");
-
-var _array = require("../../helpers/array");
-
-var _predefinedItems = require("../contextMenu/predefinedItems");
-
-var _conditionRegisterer = require("./conditionRegisterer");
-
-var _none = require("./condition/none");
-
-exports.CONDITION_NONE = _none.CONDITION_NAME;
-
-var _empty = require("./condition/empty");
-
-exports.CONDITION_EMPTY = _empty.CONDITION_NAME;
-
-var _notEmpty = require("./condition/notEmpty");
-
-exports.CONDITION_NOT_EMPTY = _notEmpty.CONDITION_NAME;
-
-var _equal = require("./condition/equal");
-
-exports.CONDITION_EQUAL = _equal.CONDITION_NAME;
-
-var _notEqual = require("./condition/notEqual");
-
-exports.CONDITION_NOT_EQUAL = _notEqual.CONDITION_NAME;
-
-var _greaterThan = require("./condition/greaterThan");
-
-exports.CONDITION_GREATER_THAN = _greaterThan.CONDITION_NAME;
-
-var _greaterThanOrEqual = require("./condition/greaterThanOrEqual");
-
-exports.CONDITION_GREATER_THAN_OR_EQUAL = _greaterThanOrEqual.CONDITION_NAME;
-
-var _lessThan = require("./condition/lessThan");
-
-exports.CONDITION_LESS_THAN = _lessThan.CONDITION_NAME;
-
-var _lessThanOrEqual = require("./condition/lessThanOrEqual");
-
-exports.CONDITION_LESS_THAN_OR_EQUAL = _lessThanOrEqual.CONDITION_NAME;
-
-var _between = require("./condition/between");
-
-exports.CONDITION_BETWEEN = _between.CONDITION_NAME;
-
-var _notBetween = require("./condition/notBetween");
-
-exports.CONDITION_NOT_BETWEEN = _notBetween.CONDITION_NAME;
-
-var _beginsWith = require("./condition/beginsWith");
-
-exports.CONDITION_BEGINS_WITH = _beginsWith.CONDITION_NAME;
-
-var _endsWith = require("./condition/endsWith");
-
-exports.CONDITION_ENDS_WITH = _endsWith.CONDITION_NAME;
-
-var _contains = require("./condition/contains");
-
-exports.CONDITION_CONTAINS = _contains.CONDITION_NAME;
-
-var _notContains = require("./condition/notContains");
-
-exports.CONDITION_NOT_CONTAINS = _notContains.CONDITION_NAME;
-
-var _before = require("./condition/date/before");
-
-exports.CONDITION_DATE_BEFORE = _before.CONDITION_NAME;
-
-var _after = require("./condition/date/after");
-
-exports.CONDITION_DATE_AFTER = _after.CONDITION_NAME;
-
-var _tomorrow = require("./condition/date/tomorrow");
-
-exports.CONDITION_TOMORROW = _tomorrow.CONDITION_NAME;
-
-var _today = require("./condition/date/today");
-
-exports.CONDITION_TODAY = _today.CONDITION_NAME;
-
-var _yesterday = require("./condition/date/yesterday");
-
-exports.CONDITION_YESTERDAY = _yesterday.CONDITION_NAME;
-
-var _byValue = require("./condition/byValue");
-
-exports.CONDITION_BY_VALUE = _byValue.CONDITION_NAME;
-
-var _true = require("./condition/true");
-
-exports.CONDITION_TRUE = _true.CONDITION_NAME;
-
-var _false = require("./condition/false");
-
-exports.CONDITION_FALSE = _false.CONDITION_NAME;
-
-var _conjunction = require("./logicalOperations/conjunction");
-
-exports.OPERATION_AND = _conjunction.OPERATION_ID;
-
-var _disjunction = require("./logicalOperations/disjunction");
-
-exports.OPERATION_OR = _disjunction.OPERATION_ID;
-
-var _disjunctionWithExtraCondition = require("./logicalOperations/disjunctionWithExtraCondition");
-
-exports.OPERATION_OR_THEN_VARIABLE = _disjunctionWithExtraCondition.OPERATION_ID;
-
 var _TYPES;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var TYPE_NUMERIC = 'numeric';
-exports.TYPE_NUMERIC = TYPE_NUMERIC;
-var TYPE_TEXT = 'text';
-exports.TYPE_TEXT = TYPE_TEXT;
-var TYPE_DATE = 'date';
+import { clone } from "../../helpers/object.mjs";
+import { arrayEach } from "../../helpers/array.mjs";
+import { SEPARATOR } from "../contextMenu/predefinedItems.mjs";
+import { getConditionDescriptor } from "./conditionRegisterer.mjs";
+import { CONDITION_NAME as CONDITION_NONE } from "./condition/none.mjs";
+import { CONDITION_NAME as CONDITION_EMPTY } from "./condition/empty.mjs";
+import { CONDITION_NAME as CONDITION_NOT_EMPTY } from "./condition/notEmpty.mjs";
+import { CONDITION_NAME as CONDITION_EQUAL } from "./condition/equal.mjs";
+import { CONDITION_NAME as CONDITION_NOT_EQUAL } from "./condition/notEqual.mjs";
+import { CONDITION_NAME as CONDITION_GREATER_THAN } from "./condition/greaterThan.mjs";
+import { CONDITION_NAME as CONDITION_GREATER_THAN_OR_EQUAL } from "./condition/greaterThanOrEqual.mjs";
+import { CONDITION_NAME as CONDITION_LESS_THAN } from "./condition/lessThan.mjs";
+import { CONDITION_NAME as CONDITION_LESS_THAN_OR_EQUAL } from "./condition/lessThanOrEqual.mjs";
+import { CONDITION_NAME as CONDITION_BETWEEN } from "./condition/between.mjs";
+import { CONDITION_NAME as CONDITION_NOT_BETWEEN } from "./condition/notBetween.mjs";
+import { CONDITION_NAME as CONDITION_BEGINS_WITH } from "./condition/beginsWith.mjs";
+import { CONDITION_NAME as CONDITION_ENDS_WITH } from "./condition/endsWith.mjs";
+import { CONDITION_NAME as CONDITION_CONTAINS } from "./condition/contains.mjs";
+import { CONDITION_NAME as CONDITION_NOT_CONTAINS } from "./condition/notContains.mjs";
+import { CONDITION_NAME as CONDITION_DATE_BEFORE } from "./condition/date/before.mjs";
+import { CONDITION_NAME as CONDITION_DATE_AFTER } from "./condition/date/after.mjs";
+import { CONDITION_NAME as CONDITION_TOMORROW } from "./condition/date/tomorrow.mjs";
+import { CONDITION_NAME as CONDITION_TODAY } from "./condition/date/today.mjs";
+import { CONDITION_NAME as CONDITION_YESTERDAY } from "./condition/date/yesterday.mjs";
+import { CONDITION_NAME as CONDITION_BY_VALUE } from "./condition/byValue.mjs";
+import { CONDITION_NAME as CONDITION_TRUE } from "./condition/true.mjs";
+import { CONDITION_NAME as CONDITION_FALSE } from "./condition/false.mjs";
+import { OPERATION_ID as OPERATION_AND } from "./logicalOperations/conjunction.mjs";
+import { OPERATION_ID as OPERATION_OR } from "./logicalOperations/disjunction.mjs";
+import { OPERATION_ID as OPERATION_OR_THEN_VARIABLE } from "./logicalOperations/disjunctionWithExtraCondition.mjs";
+export { CONDITION_NONE, CONDITION_EMPTY, CONDITION_NOT_EMPTY, CONDITION_EQUAL, CONDITION_NOT_EQUAL, CONDITION_GREATER_THAN, CONDITION_GREATER_THAN_OR_EQUAL, CONDITION_LESS_THAN, CONDITION_LESS_THAN_OR_EQUAL, CONDITION_BETWEEN, CONDITION_NOT_BETWEEN, CONDITION_BEGINS_WITH, CONDITION_ENDS_WITH, CONDITION_CONTAINS, CONDITION_NOT_CONTAINS, CONDITION_DATE_BEFORE, CONDITION_DATE_AFTER, CONDITION_TOMORROW, CONDITION_TODAY, CONDITION_YESTERDAY, CONDITION_BY_VALUE, CONDITION_TRUE, CONDITION_FALSE, OPERATION_AND, OPERATION_OR, OPERATION_OR_THEN_VARIABLE };
+export var TYPE_NUMERIC = 'numeric';
+export var TYPE_TEXT = 'text';
+export var TYPE_DATE = 'date';
 /**
  * Default types and order for filter conditions.
  *
  * @type {object}
  */
 
-exports.TYPE_DATE = TYPE_DATE;
-var TYPES = (_TYPES = {}, _defineProperty(_TYPES, TYPE_NUMERIC, [_none.CONDITION_NAME, _predefinedItems.SEPARATOR, _empty.CONDITION_NAME, _notEmpty.CONDITION_NAME, _predefinedItems.SEPARATOR, _equal.CONDITION_NAME, _notEqual.CONDITION_NAME, _predefinedItems.SEPARATOR, _greaterThan.CONDITION_NAME, _greaterThanOrEqual.CONDITION_NAME, _lessThan.CONDITION_NAME, _lessThanOrEqual.CONDITION_NAME, _between.CONDITION_NAME, _notBetween.CONDITION_NAME]), _defineProperty(_TYPES, TYPE_TEXT, [_none.CONDITION_NAME, _predefinedItems.SEPARATOR, _empty.CONDITION_NAME, _notEmpty.CONDITION_NAME, _predefinedItems.SEPARATOR, _equal.CONDITION_NAME, _notEqual.CONDITION_NAME, _predefinedItems.SEPARATOR, _beginsWith.CONDITION_NAME, _endsWith.CONDITION_NAME, _predefinedItems.SEPARATOR, _contains.CONDITION_NAME, _notContains.CONDITION_NAME]), _defineProperty(_TYPES, TYPE_DATE, [_none.CONDITION_NAME, _predefinedItems.SEPARATOR, _empty.CONDITION_NAME, _notEmpty.CONDITION_NAME, _predefinedItems.SEPARATOR, _equal.CONDITION_NAME, _notEqual.CONDITION_NAME, _predefinedItems.SEPARATOR, _before.CONDITION_NAME, _after.CONDITION_NAME, _between.CONDITION_NAME, _predefinedItems.SEPARATOR, _tomorrow.CONDITION_NAME, _today.CONDITION_NAME, _yesterday.CONDITION_NAME]), _TYPES);
+export var TYPES = (_TYPES = {}, _defineProperty(_TYPES, TYPE_NUMERIC, [CONDITION_NONE, SEPARATOR, CONDITION_EMPTY, CONDITION_NOT_EMPTY, SEPARATOR, CONDITION_EQUAL, CONDITION_NOT_EQUAL, SEPARATOR, CONDITION_GREATER_THAN, CONDITION_GREATER_THAN_OR_EQUAL, CONDITION_LESS_THAN, CONDITION_LESS_THAN_OR_EQUAL, CONDITION_BETWEEN, CONDITION_NOT_BETWEEN]), _defineProperty(_TYPES, TYPE_TEXT, [CONDITION_NONE, SEPARATOR, CONDITION_EMPTY, CONDITION_NOT_EMPTY, SEPARATOR, CONDITION_EQUAL, CONDITION_NOT_EQUAL, SEPARATOR, CONDITION_BEGINS_WITH, CONDITION_ENDS_WITH, SEPARATOR, CONDITION_CONTAINS, CONDITION_NOT_CONTAINS]), _defineProperty(_TYPES, TYPE_DATE, [CONDITION_NONE, SEPARATOR, CONDITION_EMPTY, CONDITION_NOT_EMPTY, SEPARATOR, CONDITION_EQUAL, CONDITION_NOT_EQUAL, SEPARATOR, CONDITION_DATE_BEFORE, CONDITION_DATE_AFTER, CONDITION_BETWEEN, SEPARATOR, CONDITION_TOMORROW, CONDITION_TODAY, CONDITION_YESTERDAY]), _TYPES);
 /**
  * Get options list for conditional filter by data type (e.q: `'text'`, `'numeric'`, `'date'`).
  *
@@ -140,9 +50,7 @@ var TYPES = (_TYPES = {}, _defineProperty(_TYPES, TYPE_NUMERIC, [_none.CONDITION
  * @returns {object}
  */
 
-exports.TYPES = TYPES;
-
-function getOptionsList(type) {
+export default function getOptionsList(type) {
   var items = [];
   var typeName = type;
 
@@ -150,15 +58,15 @@ function getOptionsList(type) {
     typeName = TYPE_TEXT;
   }
 
-  (0, _array.arrayEach)(TYPES[typeName], function (typeValue) {
+  arrayEach(TYPES[typeName], function (typeValue) {
     var option;
 
-    if (typeValue === _predefinedItems.SEPARATOR) {
+    if (typeValue === SEPARATOR) {
       option = {
-        name: _predefinedItems.SEPARATOR
+        name: SEPARATOR
       };
     } else {
-      option = (0, _object.clone)((0, _conditionRegisterer.getConditionDescriptor)(typeValue));
+      option = clone(getConditionDescriptor(typeValue));
     }
 
     items.push(option);

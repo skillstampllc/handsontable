@@ -1,55 +1,15 @@
-"use strict";
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.freeze.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-var _array = require("../../helpers/array");
-
-var _object = require("../../helpers/object");
-
-var _templateLiteralTag = require("../../helpers/templateLiteralTag");
-
-var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
-
-var _conditionRegisterer = require("./conditionRegisterer");
-
-var _conjunction = require("./logicalOperations/conjunction");
-
-var _logicalOperationRegisterer = require("./logicalOperationRegisterer");
-
-var _mixed = require("../../helpers/mixed");
-
-var _translations = require("../../translations");
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
 
 var _templateObject, _templateObject2;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -65,12 +25,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.index-of.js";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { arrayEach, arrayMap, arrayReduce } from "../../helpers/array.mjs";
+import { mixin } from "../../helpers/object.mjs";
+import { toSingleLine } from "../../helpers/templateLiteralTag.mjs";
+import localHooks from "../../mixins/localHooks.mjs";
+import { getCondition } from "./conditionRegisterer.mjs";
+import { OPERATION_ID as OPERATION_AND } from "./logicalOperations/conjunction.mjs";
+import { operations, getOperationFunc } from "./logicalOperationRegisterer.mjs";
+import { isUndefined } from "../../helpers/mixed.mjs";
+import { LinkedPhysicalIndexToValueMap as IndexToValueMap } from "../../translations/index.mjs";
 var MAP_NAME = 'ConditionCollection.filteringStates';
 /**
  * @class ConditionCollection
@@ -104,7 +77,7 @@ var ConditionCollection = /*#__PURE__*/function () {
      * @type {LinkedPhysicalIndexToValueMap}
      */
 
-    this.filteringStates = new _translations.LinkedPhysicalIndexToValueMap();
+    this.filteringStates = new IndexToValueMap();
 
     if (this.isMapRegistrable === true) {
       this.hot.columnIndexMapper.registerMap(MAP_NAME, this.filteringStates);
@@ -154,10 +127,10 @@ var ConditionCollection = /*#__PURE__*/function () {
   }, {
     key: "isMatchInConditions",
     value: function isMatchInConditions(conditions, value) {
-      var operationType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _conjunction.OPERATION_ID;
+      var operationType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : OPERATION_AND;
 
       if (conditions.length) {
-        return (0, _logicalOperationRegisterer.getOperationFunc)(operationType)(conditions, value);
+        return getOperationFunc(operationType)(conditions, value);
       }
 
       return true;
@@ -179,9 +152,9 @@ var ConditionCollection = /*#__PURE__*/function () {
   }, {
     key: "addCondition",
     value: function addCondition(column, conditionDefinition) {
-      var operation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _conjunction.OPERATION_ID;
+      var operation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : OPERATION_AND;
       var position = arguments.length > 3 ? arguments[3] : undefined;
-      var args = (0, _array.arrayMap)(conditionDefinition.args, function (v) {
+      var args = arrayMap(conditionDefinition.args, function (v) {
         return typeof v === 'string' ? v.toLowerCase() : v;
       });
       var name = conditionDefinition.name || conditionDefinition.command.key;
@@ -190,10 +163,10 @@ var ConditionCollection = /*#__PURE__*/function () {
 
       if (columnType) {
         if (columnType !== operation) {
-          throw Error((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["The column of index ", " has been already applied with a `", "` \n        filter operation. Use `removeConditions` to clear the current conditions and then add new ones. \n        Mind that you cannot mix different types of operations (for instance, if you use `conjunction`, \n        use it consequently for a particular column)."], ["The column of index ", " has been already applied with a \\`", "\\`\\x20\n        filter operation. Use \\`removeConditions\\` to clear the current conditions and then add new ones.\\x20\n        Mind that you cannot mix different types of operations (for instance, if you use \\`conjunction\\`,\\x20\n        use it consequently for a particular column)."])), column, columnType));
+          throw Error(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["The column of index ", " has been already applied with a `", "` \n        filter operation. Use `removeConditions` to clear the current conditions and then add new ones. \n        Mind that you cannot mix different types of operations (for instance, if you use `conjunction`, \n        use it consequently for a particular column)."], ["The column of index ", " has been already applied with a \\`", "\\`\\x20\n        filter operation. Use \\`removeConditions\\` to clear the current conditions and then add new ones.\\x20\n        Mind that you cannot mix different types of operations (for instance, if you use \\`conjunction\\`,\\x20\n        use it consequently for a particular column)."])), column, columnType));
         }
-      } else if ((0, _mixed.isUndefined)(_logicalOperationRegisterer.operations[operation])) {
-        throw new Error((0, _templateLiteralTag.toSingleLine)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Unexpected operation named `", "`. Possible ones are \n        `disjunction` and `conjunction`."], ["Unexpected operation named \\`", "\\`. Possible ones are\\x20\n        \\`disjunction\\` and \\`conjunction\\`."])), operation));
+      } else if (isUndefined(operations[operation])) {
+        throw new Error(toSingleLine(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Unexpected operation named `", "`. Possible ones are \n        `disjunction` and `conjunction`."], ["Unexpected operation named \\`", "\\`. Possible ones are\\x20\n        \\`disjunction\\` and \\`conjunction\\`."])), operation));
       }
 
       var conditionsForColumn = this.getConditions(column);
@@ -205,7 +178,7 @@ var ConditionCollection = /*#__PURE__*/function () {
           conditions: [{
             name: name,
             args: args,
-            func: (0, _conditionRegisterer.getCondition)(name, args)
+            func: getCondition(name, args)
           }]
         }, position);
       } else {
@@ -213,7 +186,7 @@ var ConditionCollection = /*#__PURE__*/function () {
         conditionsForColumn.push({
           name: name,
           args: args,
-          func: (0, _conditionRegisterer.getCondition)(name, args)
+          func: getCondition(name, args)
         });
       }
 
@@ -284,7 +257,7 @@ var ConditionCollection = /*#__PURE__*/function () {
   }, {
     key: "exportAllConditions",
     value: function exportAllConditions() {
-      return (0, _array.arrayReduce)(this.filteringStates.getEntries(), function (allConditions, _ref3) {
+      return arrayReduce(this.filteringStates.getEntries(), function (allConditions, _ref3) {
         var _ref4 = _slicedToArray(_ref3, 2),
             column = _ref4[0],
             _ref4$ = _ref4[1],
@@ -294,7 +267,7 @@ var ConditionCollection = /*#__PURE__*/function () {
         allConditions.push({
           column: column,
           operation: operation,
-          conditions: (0, _array.arrayMap)(conditions, function (_ref5) {
+          conditions: arrayMap(conditions, function (_ref5) {
             var name = _ref5.name,
                 args = _ref5.args;
             return {
@@ -318,8 +291,8 @@ var ConditionCollection = /*#__PURE__*/function () {
       var _this = this;
 
       this.clean();
-      (0, _array.arrayEach)(conditions, function (stack) {
-        (0, _array.arrayEach)(stack.conditions, function (condition) {
+      arrayEach(conditions, function (stack) {
+        arrayEach(stack.conditions, function (condition) {
           return _this.addCondition(stack.column, condition);
         });
       });
@@ -394,6 +367,5 @@ var ConditionCollection = /*#__PURE__*/function () {
   return ConditionCollection;
 }();
 
-(0, _object.mixin)(ConditionCollection, _localHooks.default);
-var _default = ConditionCollection;
-exports.default = _default;
+mixin(ConditionCollection, localHooks);
+export default ConditionCollection;

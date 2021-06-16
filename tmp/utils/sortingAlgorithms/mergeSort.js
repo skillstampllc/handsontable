@@ -1,16 +1,6 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = mergeSort;
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-var _linkedList = _interopRequireDefault(require("../dataStructures/linkedList"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.regexp.to-string.js";
+import LinkedList from "../dataStructures/linkedList.mjs";
 /**
  * Refactored implementation of mergeSort (part of javascript-algorithms project) by Github users:
  * mgechev, AndriiHeonia and lekkas (part of javascript-algorithms project - all project contributors
@@ -27,6 +17,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {*} b The second compared element.
  * @returns {number}
  */
+
 var defaultCompareFunction = function defaultCompareFunction(a, b) {
   // sort lexically
   var firstValue = a.toString();
@@ -52,7 +43,7 @@ var defaultCompareFunction = function defaultCompareFunction(a, b) {
  */
 
 
-function mergeSort(array) {
+export default function mergeSort(array) {
   var compareFunction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultCompareFunction;
   var startIndex = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
   var endIndex = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : array.length;
@@ -79,10 +70,9 @@ function mergeSort(array) {
  * @returns {Array} The array with sorted subarray.
  */
 
-
 function merge(array, compareFunction, startIndex, middleIndex, endIndex) {
-  var leftElements = new _linkedList.default();
-  var rightElements = new _linkedList.default();
+  var leftElements = new LinkedList();
+  var rightElements = new LinkedList();
   var leftSize = middleIndex - startIndex;
   var rightSize = endIndex - middleIndex;
   var maxSize = Math.max(leftSize, rightSize);

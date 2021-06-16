@@ -1,32 +1,12 @@
-"use strict";
-
-exports.__esModule = true;
-exports._getRefCount = _getRefCount;
-exports._resetState = _resetState;
-exports.isPressed = isPressed;
-exports.isPressedCtrlKey = isPressedCtrlKey;
-exports.startObserving = startObserving;
-exports.stopObserving = stopObserving;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-var _eventManager = _interopRequireDefault(require("../eventManager"));
-
-var _unicode = require("../helpers/unicode");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var eventManager = new _eventManager.default();
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import EventManager from "../eventManager.mjs";
+import { isCtrlMetaKey, isKey } from "../helpers/unicode.mjs";
+var eventManager = new EventManager();
 var pressedKeys = new Set();
 var refCount = 0;
 /**
@@ -93,7 +73,7 @@ function _resetState() {
 
 function isPressed(keyCodes) {
   return Array.from(pressedKeys.values()).some(function (_keyCode) {
-    return (0, _unicode.isKey)(_keyCode, keyCodes);
+    return isKey(_keyCode, keyCodes);
   });
 }
 /**
@@ -106,7 +86,7 @@ function isPressed(keyCodes) {
 function isPressedCtrlKey() {
   var values = Array.from(pressedKeys.values());
   return values.some(function (_keyCode) {
-    return (0, _unicode.isCtrlMetaKey)(_keyCode);
+    return isCtrlMetaKey(_keyCode);
   });
 }
 /**
@@ -119,3 +99,5 @@ function isPressedCtrlKey() {
 function _getRefCount() {
   return refCount;
 }
+
+export { _getRefCount, _resetState, isPressed, isPressedCtrlKey, startObserving, stopObserving };

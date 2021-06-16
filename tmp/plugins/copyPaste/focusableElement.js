@@ -1,33 +1,9 @@
-"use strict";
-
-exports.__esModule = true;
-exports.createElement = createElement;
-exports.deactivateElement = deactivateElement;
-exports.destroyElement = destroyElement;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-set.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
-
-var _object = require("../../helpers/object");
-
-var _browser = require("../../helpers/browser");
-
-var _element = require("../../helpers/dom/element");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-set.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.weak-map.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35,11 +11,17 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import EventManager from "../../eventManager.mjs";
+import localHooks from "../../mixins/localHooks.mjs";
+import { mixin } from "../../helpers/object.mjs";
+import { isMobileBrowser } from "../../helpers/browser.mjs";
+import { selectElementIfAllowed } from "../../helpers/dom/element.mjs";
 /**
  * @class FocusableWrapper
  *
  * @plugin CopyPaste
  */
+
 var FocusableWrapper = /*#__PURE__*/function () {
   function FocusableWrapper(container) {
     _classCallCheck(this, FocusableWrapper);
@@ -58,7 +40,7 @@ var FocusableWrapper = /*#__PURE__*/function () {
      * @type {EventManager}
      */
 
-    this.eventManager = new _eventManager.default(this);
+    this.eventManager = new EventManager(this);
     /**
      * An object for tracking information about event listeners attached to the focusable element.
      *
@@ -128,8 +110,8 @@ var FocusableWrapper = /*#__PURE__*/function () {
       // Add an empty space to texarea. It is necessary for safari to enable "copy" command from menu bar.
       this.mainElement.value = ' ';
 
-      if (!(0, _browser.isMobileBrowser)()) {
-        (0, _element.selectElementIfAllowed)(this.mainElement);
+      if (!isMobileBrowser()) {
+        selectElementIfAllowed(this.mainElement);
       }
     }
   }]);
@@ -137,7 +119,7 @@ var FocusableWrapper = /*#__PURE__*/function () {
   return FocusableWrapper;
 }();
 
-(0, _object.mixin)(FocusableWrapper, _localHooks.default);
+mixin(FocusableWrapper, localHooks);
 var refCounter = new WeakMap();
 /**
  * Create and return the FocusableWrapper instance.
@@ -252,3 +234,5 @@ function destroyElement(wrapper) {
 
   refCounter.set(wrapper.container, counter);
 }
+
+export { createElement, deactivateElement, destroyElement };

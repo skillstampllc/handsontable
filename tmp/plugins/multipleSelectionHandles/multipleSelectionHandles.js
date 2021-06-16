@@ -1,51 +1,20 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.MultipleSelectionHandles = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _element = require("../../helpers/dom/element");
-
-var _browser = require("../../helpers/browser");
-
-var _base = require("../base");
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _src = require("../../3rdparty/walkontable/src");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71,17 +40,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var PLUGIN_KEY = 'multipleSelectionHandles';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 160;
+import { getWindowScrollTop, hasClass, getWindowScrollLeft } from "../../helpers/dom/element.mjs";
+import { isMobileBrowser } from "../../helpers/browser.mjs";
+import { BasePlugin } from "../base/index.mjs";
+import EventManager from "../../eventManager.mjs";
+import { CellCoords } from "../../3rdparty/walkontable/src/index.mjs";
+export var PLUGIN_KEY = 'multipleSelectionHandles';
+export var PLUGIN_PRIORITY = 160;
 /**
  * @private
  * @plugin MultipleSelectionHandles
  */
 
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
-
-var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
+export var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
   _inherits(MultipleSelectionHandles, _BasePlugin);
 
   var _super = _createSuper(MultipleSelectionHandles);
@@ -124,7 +95,7 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
   _createClass(MultipleSelectionHandles, [{
     key: "isEnabled",
     value: function isEnabled() {
-      return (0, _browser.isMobileBrowser)();
+      return isMobileBrowser();
     }
     /**
      * Enable plugin for this Handsontable instance.
@@ -138,7 +109,7 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (!this.eventManager) {
-        this.eventManager = new _eventManager.default(this);
+        this.eventManager = new EventManager(this);
       }
 
       this.registerListeners();
@@ -186,7 +157,7 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
       this.eventManager.addEventListener(rootElement, 'touchstart', function (event) {
         var selectedRange;
 
-        if ((0, _element.hasClass)(event.target, 'topLeftSelectionHandle-HitArea')) {
+        if (hasClass(event.target, 'topLeftSelectionHandle-HitArea')) {
           selectedRange = _this.hot.getSelectedRangeLast();
 
           _this.dragged.push('topLeft');
@@ -198,7 +169,7 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
           };
           event.preventDefault();
           return false;
-        } else if ((0, _element.hasClass)(event.target, 'bottomRightSelectionHandle-HitArea')) {
+        } else if (hasClass(event.target, 'bottomRightSelectionHandle-HitArea')) {
           selectedRange = _this.hot.getSelectedRangeLast();
 
           _this.dragged.push('bottomRight');
@@ -213,12 +184,12 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
         }
       });
       this.eventManager.addEventListener(rootElement, 'touchend', function (event) {
-        if ((0, _element.hasClass)(event.target, 'topLeftSelectionHandle-HitArea')) {
+        if (hasClass(event.target, 'topLeftSelectionHandle-HitArea')) {
           removeFromDragged.call(_this, 'topLeft');
           _this.touchStartRange = void 0;
           event.preventDefault();
           return false;
-        } else if ((0, _element.hasClass)(event.target, 'bottomRightSelectionHandle-HitArea')) {
+        } else if (hasClass(event.target, 'bottomRightSelectionHandle-HitArea')) {
           removeFromDragged.call(_this, 'bottomRight');
           _this.touchStartRange = void 0;
           event.preventDefault();
@@ -229,8 +200,8 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
         var _this3$hot = _this3.hot,
             rootWindow = _this3$hot.rootWindow,
             rootDocument = _this3$hot.rootDocument;
-        var scrollTop = (0, _element.getWindowScrollTop)(rootWindow);
-        var scrollLeft = (0, _element.getWindowScrollLeft)(rootWindow);
+        var scrollTop = getWindowScrollTop(rootWindow);
+        var scrollLeft = getWindowScrollLeft(rootWindow);
         var targetCoords;
         var selectedRange;
         var rangeWidth;
@@ -297,13 +268,13 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
             case 'NW-SE':
               if (draggedHandle === 'topLeft') {
                 newCoords = {
-                  start: new _src.CellCoords(currentTouch.row, selectedRange.highlight.col),
-                  end: new _src.CellCoords(bottomLeftCorner.row, currentTouch.col)
+                  start: new CellCoords(currentTouch.row, selectedRange.highlight.col),
+                  end: new CellCoords(bottomLeftCorner.row, currentTouch.col)
                 };
               } else {
                 newCoords = {
-                  start: new _src.CellCoords(selectedRange.highlight.row, currentTouch.col),
-                  end: new _src.CellCoords(currentTouch.row, topLeftCorner.col)
+                  start: new CellCoords(selectedRange.highlight.row, currentTouch.col),
+                  end: new CellCoords(currentTouch.row, topLeftCorner.col)
                 };
               }
 
@@ -312,8 +283,8 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
             case 'SE-NW':
               if (draggedHandle === 'bottomRight') {
                 newCoords = {
-                  start: new _src.CellCoords(bottomRightCorner.row, currentTouch.col),
-                  end: new _src.CellCoords(currentTouch.row, topLeftCorner.col)
+                  start: new CellCoords(bottomRightCorner.row, currentTouch.col),
+                  end: new CellCoords(currentTouch.row, topLeftCorner.col)
                 };
               }
 
@@ -386,13 +357,13 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
             case 'NW-SE':
               if (draggedHandle === 'bottomRight') {
                 newCoords = {
-                  start: new _src.CellCoords(currentTouch.row, topLeftCorner.col),
-                  end: new _src.CellCoords(bottomLeftCorner.row, currentTouch.col)
+                  start: new CellCoords(currentTouch.row, topLeftCorner.col),
+                  end: new CellCoords(bottomLeftCorner.row, currentTouch.col)
                 };
               } else {
                 newCoords = {
-                  start: new _src.CellCoords(topLeftCorner.row, currentTouch.col),
-                  end: new _src.CellCoords(currentTouch.row, bottomRightCorner.col)
+                  start: new CellCoords(topLeftCorner.row, currentTouch.col),
+                  end: new CellCoords(currentTouch.row, bottomRightCorner.col)
                 };
               }
 
@@ -404,13 +375,13 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
             case 'SW-NE':
               if (draggedHandle === 'topLeft') {
                 newCoords = {
-                  start: new _src.CellCoords(selectedRange.highlight.row, currentTouch.col),
-                  end: new _src.CellCoords(currentTouch.row, bottomRightCorner.col)
+                  start: new CellCoords(selectedRange.highlight.row, currentTouch.col),
+                  end: new CellCoords(currentTouch.row, bottomRightCorner.col)
                 };
               } else {
                 newCoords = {
-                  start: new _src.CellCoords(currentTouch.row, topLeftCorner.col),
-                  end: new _src.CellCoords(topLeftCorner.row, currentTouch.col)
+                  start: new CellCoords(currentTouch.row, topLeftCorner.col),
+                  end: new CellCoords(topLeftCorner.row, currentTouch.col)
                 };
               }
 
@@ -419,8 +390,8 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
             case 'SE-NW':
               if (draggedHandle === 'bottomRight') {
                 newCoords = {
-                  start: new _src.CellCoords(currentTouch.row, topRightCorner.col),
-                  end: new _src.CellCoords(topLeftCorner.row, currentTouch.col)
+                  start: new CellCoords(currentTouch.row, topRightCorner.col),
+                  end: new CellCoords(topLeftCorner.row, currentTouch.col)
                 };
               } else if (draggedHandle === 'topLeft') {
                 newCoords = {
@@ -496,6 +467,4 @@ var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return MultipleSelectionHandles;
-}(_base.BasePlugin);
-
-exports.MultipleSelectionHandles = MultipleSelectionHandles;
+}(BasePlugin);

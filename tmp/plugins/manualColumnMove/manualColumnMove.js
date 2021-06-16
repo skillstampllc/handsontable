@@ -1,57 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.ManualColumnMove = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-var _base = require("../base");
-
-var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
-
-var _array = require("../../helpers/array");
-
-var _element = require("../../helpers/dom/element");
-
-var _number = require("../../helpers/number");
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _backlight = _interopRequireDefault(require("./ui/backlight"));
-
-var _guideline = _interopRequireDefault(require("./ui/guideline"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77,14 +24,33 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-_pluginHooks.default.getSingleton().register('beforeColumnMove');
-
-_pluginHooks.default.getSingleton().register('afterColumnMove');
-
-var PLUGIN_KEY = 'manualColumnMove';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 120;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import { BasePlugin } from "../base/index.mjs";
+import Hooks from "../../pluginHooks.mjs";
+import { arrayReduce } from "../../helpers/array.mjs";
+import { addClass, removeClass, offset, hasClass } from "../../helpers/dom/element.mjs";
+import { rangeEach } from "../../helpers/number.mjs";
+import EventManager from "../../eventManager.mjs";
+import BacklightUI from "./ui/backlight.mjs";
+import GuidelineUI from "./ui/guideline.mjs";
+Hooks.getSingleton().register('beforeColumnMove');
+Hooks.getSingleton().register('afterColumnMove');
+export var PLUGIN_KEY = 'manualColumnMove';
+export var PLUGIN_PRIORITY = 120;
 var privatePool = new WeakMap();
 var CSS_PLUGIN = 'ht__manualColumnMove';
 var CSS_SHOW_UI = 'show-ui';
@@ -114,7 +80,7 @@ var CSS_AFTER_SELECTION = 'after-selection--columns';
  * @plugin ManualColumnMove
  */
 
-var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
+export var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualColumnMove, _BasePlugin);
 
   var _super = _createSuper(ManualColumnMove);
@@ -149,7 +115,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
      * @type {object}
      */
 
-    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
+    _this.eventManager = new EventManager(_assertThisInitialized(_this));
     /**
      * Backlight UI object.
      *
@@ -157,7 +123,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
      * @type {object}
      */
 
-    _this.backlight = new _backlight.default(hotInstance);
+    _this.backlight = new BacklightUI(hotInstance);
     /**
      * Guideline UI object.
      *
@@ -165,7 +131,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
      * @type {object}
      */
 
-    _this.guideline = new _guideline.default(hotInstance);
+    _this.guideline = new GuidelineUI(hotInstance);
     return _this;
   }
   /**
@@ -209,7 +175,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
       this.buildPluginUI();
       this.registerEvents(); // TODO: move adding plugin classname to BasePlugin.
 
-      (0, _element.addClass)(this.hot.rootElement, CSS_PLUGIN);
+      addClass(this.hot.rootElement, CSS_PLUGIN);
 
       _get(_getPrototypeOf(ManualColumnMove.prototype), "enablePlugin", this).call(this);
     }
@@ -233,7 +199,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "disablePlugin",
     value: function disablePlugin() {
-      (0, _element.removeClass)(this.hot.rootElement, CSS_PLUGIN);
+      removeClass(this.hot.rootElement, CSS_PLUGIN);
       this.unregisterEvents();
       this.backlight.destroy();
       this.guideline.destroy();
@@ -381,7 +347,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "countFinalIndex",
     value: function countFinalIndex(movedColumns, dropIndex) {
-      var numberOfColumnsLowerThanDropIndex = (0, _array.arrayReduce)(movedColumns, function (numberOfColumns, currentColumnIndex) {
+      var numberOfColumnsLowerThanDropIndex = arrayReduce(movedColumns, function (numberOfColumns, currentColumnIndex) {
         if (currentColumnIndex < dropIndex) {
           numberOfColumns += 1;
         }
@@ -493,7 +459,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
     key: "prepareColumnsToMoving",
     value: function prepareColumnsToMoving(start, end) {
       var selectedColumns = [];
-      (0, _number.rangeEach)(start, end, function (i) {
+      rangeEach(start, end, function (i) {
         selectedColumns.push(i);
       });
       return selectedColumns;
@@ -640,12 +606,12 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
       var selection = this.hot.getSelectedRangeLast();
       var priv = privatePool.get(this); // This block action shouldn't be handled below.
 
-      var isSortingElement = (0, _element.hasClass)(event.target, 'sortAction');
+      var isSortingElement = hasClass(event.target, 'sortAction');
 
       if (!selection || !isHeaderSelection || priv.pressed || event.button !== 0 || isSortingElement) {
         priv.pressed = false;
         priv.columnsToMove.length = 0;
-        (0, _element.removeClass)(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI]);
+        removeClass(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI]);
         return;
       }
 
@@ -673,7 +639,7 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
         priv.hasRowHeaders = !!this.hot.getSettings().rowHeaders;
         priv.countCols = this.hot.countCols();
         priv.fixedColumns = this.hot.getSettings().fixedColumnsLeft;
-        priv.rootElementOffset = (0, _element.offset)(this.hot.rootElement).left;
+        priv.rootElementOffset = offset(this.hot.rootElement).left;
         var countColumnsFrom = priv.hasRowHeaders ? -1 : 0;
         var topPos = wtTable.holder.scrollTop + wtTable.getColumnHeaderHeight(0) + 1;
         var fixedColumns = coords.col < priv.fixedColumns;
@@ -684,9 +650,9 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
         this.backlight.setPosition(topPos, this.getColumnsWidth(countColumnsFrom, start - 1) + leftOffset);
         this.backlight.setSize(this.getColumnsWidth(start, end), wtTable.hider.offsetHeight - topPos);
         this.backlight.setOffset(null, leftOffset * -1);
-        (0, _element.addClass)(this.hot.rootElement, CSS_ON_MOVING);
+        addClass(this.hot.rootElement, CSS_ON_MOVING);
       } else {
-        (0, _element.removeClass)(this.hot.rootElement, CSS_AFTER_SELECTION);
+        removeClass(this.hot.rootElement, CSS_AFTER_SELECTION);
         priv.pressed = false;
         priv.columnsToMove.length = 0;
       }
@@ -740,9 +706,9 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (priv.columnsToMove.indexOf(coords.col) > -1) {
-        (0, _element.removeClass)(this.hot.rootElement, CSS_SHOW_UI);
+        removeClass(this.hot.rootElement, CSS_SHOW_UI);
       } else {
-        (0, _element.addClass)(this.hot.rootElement, CSS_SHOW_UI);
+        addClass(this.hot.rootElement, CSS_SHOW_UI);
       }
 
       blockCalculations.row = true;
@@ -766,10 +732,10 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
       priv.coords = void 0;
       priv.pressed = false;
       priv.backlightWidth = 0;
-      (0, _element.removeClass)(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI, CSS_AFTER_SELECTION]);
+      removeClass(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI, CSS_AFTER_SELECTION]);
 
       if (this.hot.selection.isSelectedByColumnHeader()) {
-        (0, _element.addClass)(this.hot.rootElement, CSS_AFTER_SELECTION);
+        addClass(this.hot.rootElement, CSS_AFTER_SELECTION);
       }
 
       if (columnsLen < 1 || target === void 0) {
@@ -854,6 +820,4 @@ var ManualColumnMove = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ManualColumnMove;
-}(_base.BasePlugin);
-
-exports.ManualColumnMove = ManualColumnMove;
+}(BasePlugin);

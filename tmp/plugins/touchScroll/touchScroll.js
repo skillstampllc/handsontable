@@ -1,43 +1,18 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.TouchScroll = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _element = require("../../helpers/dom/element");
-
-var _array = require("../../helpers/array");
-
-var _base = require("../base");
-
-var _feature = require("../../helpers/feature");
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63,18 +38,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var PLUGIN_KEY = 'touchScroll';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 200;
+import { addClass, removeClass } from "../../helpers/dom/element.mjs";
+import { arrayEach } from "../../helpers/array.mjs";
+import { BasePlugin } from "../base/index.mjs";
+import { isTouchSupported } from "../../helpers/feature.mjs";
+export var PLUGIN_KEY = 'touchScroll';
+export var PLUGIN_PRIORITY = 200;
 /**
  * @private
  * @plugin TouchScroll
  * @class TouchScroll
  */
 
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
-
-var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
+export var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
   _inherits(TouchScroll, _BasePlugin);
 
   var _super = _createSuper(TouchScroll);
@@ -127,7 +103,7 @@ var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
   _createClass(TouchScroll, [{
     key: "isEnabled",
     value: function isEnabled() {
-      return (0, _feature.isTouchSupported)();
+      return isTouchSupported();
     }
     /**
      * Enable the plugin.
@@ -256,8 +232,8 @@ var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
     key: "onBeforeTouchScroll",
     value: function onBeforeTouchScroll() {
       this.freezeOverlays = true;
-      (0, _array.arrayEach)(this.clones, function (clone) {
-        (0, _element.addClass)(clone, 'hide-tween');
+      arrayEach(this.clones, function (clone) {
+        addClass(clone, 'hide-tween');
       });
     }
     /**
@@ -272,16 +248,16 @@ var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
       var _this4 = this;
 
       this.freezeOverlays = false;
-      (0, _array.arrayEach)(this.clones, function (clone) {
-        (0, _element.removeClass)(clone, 'hide-tween');
-        (0, _element.addClass)(clone, 'show-tween');
+      arrayEach(this.clones, function (clone) {
+        removeClass(clone, 'hide-tween');
+        addClass(clone, 'show-tween');
       });
       setTimeout(function () {
-        (0, _array.arrayEach)(_this4.clones, function (clone) {
-          (0, _element.removeClass)(clone, 'show-tween');
+        arrayEach(_this4.clones, function (clone) {
+          removeClass(clone, 'show-tween');
         });
       }, 400);
-      (0, _array.arrayEach)(this.scrollbars, function (scrollbar) {
+      arrayEach(this.scrollbars, function (scrollbar) {
         scrollbar.refresh();
         scrollbar.resetFixedPosition();
       });
@@ -300,6 +276,4 @@ var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return TouchScroll;
-}(_base.BasePlugin);
-
-exports.TouchScroll = TouchScroll;
+}(BasePlugin);

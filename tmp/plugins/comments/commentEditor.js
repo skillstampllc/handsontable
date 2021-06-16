@@ -1,22 +1,17 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _element = require("../../helpers/dom/element");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { addClass } from "../../helpers/dom/element.mjs";
 /**
  * Comment editor for the Comments plugin.
  *
  * @class CommentEditor
  * @plugin Comments
  */
+
 var CommentEditor = /*#__PURE__*/function () {
   function CommentEditor(rootDocument) {
     _classCallCheck(this, CommentEditor);
@@ -168,10 +163,10 @@ var CommentEditor = /*#__PURE__*/function () {
       var editor = this.rootDocument.createElement('div');
       var textArea = this.rootDocument.createElement('textarea');
       this.container = this.rootDocument.createElement('div');
-      (0, _element.addClass)(this.container, CommentEditor.CLASS_EDITOR_CONTAINER);
+      addClass(this.container, CommentEditor.CLASS_EDITOR_CONTAINER);
       this.rootDocument.body.appendChild(this.container);
-      (0, _element.addClass)(editor, CommentEditor.CLASS_EDITOR);
-      (0, _element.addClass)(textArea, CommentEditor.CLASS_INPUT);
+      addClass(editor, CommentEditor.CLASS_EDITOR);
+      addClass(textArea, CommentEditor.CLASS_INPUT);
       editor.appendChild(textArea);
       this.container.appendChild(editor);
       return editor;
@@ -228,5 +223,4 @@ var CommentEditor = /*#__PURE__*/function () {
   return CommentEditor;
 }();
 
-var _default = CommentEditor;
-exports.default = _default;
+export default CommentEditor;

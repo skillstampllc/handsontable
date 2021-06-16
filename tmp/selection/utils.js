@@ -1,47 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.detectSelectionType = detectSelectionType;
-exports.normalizeSelectionFactory = normalizeSelectionFactory;
-exports.transformSelectionToColumnDistance = transformSelectionToColumnDistance;
-exports.transformSelectionToRowDistance = transformSelectionToRowDistance;
-exports.isValidCoord = isValidCoord;
-exports.SELECTION_TYPES = exports.SELECTION_TYPE_OBJECT = exports.SELECTION_TYPE_ARRAY = exports.SELECTION_TYPE_EMPTY = exports.SELECTION_TYPE_UNRECOGNIZED = void 0;
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.sort.js");
-
-var _src = require("./../3rdparty/walkontable/src");
-
-var _array = require("./../helpers/array");
-
-var _mixed = require("./../helpers/mixed");
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -56,16 +12,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var SELECTION_TYPE_UNRECOGNIZED = 0;
-exports.SELECTION_TYPE_UNRECOGNIZED = SELECTION_TYPE_UNRECOGNIZED;
-var SELECTION_TYPE_EMPTY = 1;
-exports.SELECTION_TYPE_EMPTY = SELECTION_TYPE_EMPTY;
-var SELECTION_TYPE_ARRAY = 2;
-exports.SELECTION_TYPE_ARRAY = SELECTION_TYPE_ARRAY;
-var SELECTION_TYPE_OBJECT = 3;
-exports.SELECTION_TYPE_OBJECT = SELECTION_TYPE_OBJECT;
-var SELECTION_TYPES = [SELECTION_TYPE_OBJECT, SELECTION_TYPE_ARRAY];
-exports.SELECTION_TYPES = SELECTION_TYPES;
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.sort.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import { CellRange } from "./../3rdparty/walkontable/src/index.mjs";
+import { arrayEach, arrayReduce } from "./../helpers/array.mjs";
+import { isUndefined } from "./../helpers/mixed.mjs";
+export var SELECTION_TYPE_UNRECOGNIZED = 0;
+export var SELECTION_TYPE_EMPTY = 1;
+export var SELECTION_TYPE_ARRAY = 2;
+export var SELECTION_TYPE_OBJECT = 3;
+export var SELECTION_TYPES = [SELECTION_TYPE_OBJECT, SELECTION_TYPE_ARRAY];
 var ARRAY_TYPE_PATTERN = [['number'], ['number', 'string'], ['number', 'undefined'], ['number', 'string', 'undefined']];
 var rootCall = Symbol('root');
 var childCall = Symbol('child');
@@ -80,7 +48,7 @@ var childCall = Symbol('child');
  * is unrecognized than it returns `0`.
  */
 
-function detectSelectionType(selectionRanges) {
+export function detectSelectionType(selectionRanges) {
   var _callSymbol = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : rootCall;
 
   if (_callSymbol !== rootCall && _callSymbol !== childCall) {
@@ -96,7 +64,7 @@ function detectSelectionType(selectionRanges) {
 
     if (selectionRanges.length === 0) {
       result = SELECTION_TYPE_EMPTY;
-    } else if (isRootCall && firstItem instanceof _src.CellRange) {
+    } else if (isRootCall && firstItem instanceof CellRange) {
       result = SELECTION_TYPE_OBJECT;
     } else if (isRootCall && Array.isArray(firstItem)) {
       result = detectSelectionType(firstItem, childCall);
@@ -126,8 +94,7 @@ function detectSelectionType(selectionRanges) {
  * @returns {number[]} Returns normalized data about selected range as an array (`[rowStart, columnStart, rowEnd, columnEnd]`).
  */
 
-
-function normalizeSelectionFactory(type) {
+export function normalizeSelectionFactory(type) {
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
       _ref$keepDirection = _ref.keepDirection,
       keepDirection = _ref$keepDirection === void 0 ? false : _ref$keepDirection,
@@ -154,11 +121,11 @@ function normalizeSelectionFactory(type) {
       }
     }
 
-    if ((0, _mixed.isUndefined)(rowEnd)) {
+    if (isUndefined(rowEnd)) {
       rowEnd = rowStart;
     }
 
-    if ((0, _mixed.isUndefined)(columnEnd)) {
+    if (isUndefined(columnEnd)) {
       columnEnd = columnStart;
     }
 
@@ -189,8 +156,7 @@ function normalizeSelectionFactory(type) {
  *                   right (the latest column index).
  */
 
-
-function transformSelectionToColumnDistance(selectionRanges) {
+export function transformSelectionToColumnDistance(selectionRanges) {
   var selectionType = detectSelectionType(selectionRanges);
 
   if (selectionType === SELECTION_TYPE_UNRECOGNIZED || selectionType === SELECTION_TYPE_EMPTY) {
@@ -200,7 +166,7 @@ function transformSelectionToColumnDistance(selectionRanges) {
   var selectionSchemaNormalizer = normalizeSelectionFactory(selectionType);
   var unorderedIndexes = new Set(); // Iterate through all ranges and collect all column indexes which are not saved yet.
 
-  (0, _array.arrayEach)(selectionRanges, function (selection) {
+  arrayEach(selectionRanges, function (selection) {
     var _selectionSchemaNorma = selectionSchemaNormalizer(selection),
         _selectionSchemaNorma2 = _slicedToArray(_selectionSchemaNorma, 4),
         columnStart = _selectionSchemaNorma2[1],
@@ -208,7 +174,7 @@ function transformSelectionToColumnDistance(selectionRanges) {
 
     var columnNonHeaderStart = Math.max(columnStart, 0);
     var amount = columnEnd - columnNonHeaderStart + 1;
-    (0, _array.arrayEach)(Array.from(new Array(amount), function (_, i) {
+    arrayEach(Array.from(new Array(amount), function (_, i) {
       return columnNonHeaderStart + i;
     }), function (index) {
       if (!unorderedIndexes.has(index)) {
@@ -220,7 +186,7 @@ function transformSelectionToColumnDistance(selectionRanges) {
   var orderedIndexes = Array.from(unorderedIndexes).sort(function (a, b) {
     return a - b;
   });
-  var normalizedColumnRanges = (0, _array.arrayReduce)(orderedIndexes, function (acc, visualColumnIndex, index, array) {
+  var normalizedColumnRanges = arrayReduce(orderedIndexes, function (acc, visualColumnIndex, index, array) {
     if (index !== 0 && visualColumnIndex === array[index - 1] + 1) {
       acc[acc.length - 1][1] += 1;
     } else {
@@ -244,8 +210,7 @@ function transformSelectionToColumnDistance(selectionRanges) {
  *                   right (the latest column index).
  */
 
-
-function transformSelectionToRowDistance(selectionRanges) {
+export function transformSelectionToRowDistance(selectionRanges) {
   var selectionType = detectSelectionType(selectionRanges);
 
   if (selectionType === SELECTION_TYPE_UNRECOGNIZED || selectionType === SELECTION_TYPE_EMPTY) {
@@ -255,7 +220,7 @@ function transformSelectionToRowDistance(selectionRanges) {
   var selectionSchemaNormalizer = normalizeSelectionFactory(selectionType);
   var unorderedIndexes = new Set(); // Iterate through all ranges and collect all column indexes which are not saved yet.
 
-  (0, _array.arrayEach)(selectionRanges, function (selection) {
+  arrayEach(selectionRanges, function (selection) {
     var _selectionSchemaNorma3 = selectionSchemaNormalizer(selection),
         _selectionSchemaNorma4 = _slicedToArray(_selectionSchemaNorma3, 3),
         rowStart = _selectionSchemaNorma4[0],
@@ -263,7 +228,7 @@ function transformSelectionToRowDistance(selectionRanges) {
 
     var rowNonHeaderStart = Math.max(rowStart, 0);
     var amount = rowEnd - rowNonHeaderStart + 1;
-    (0, _array.arrayEach)(Array.from(new Array(amount), function (_, i) {
+    arrayEach(Array.from(new Array(amount), function (_, i) {
       return rowNonHeaderStart + i;
     }), function (index) {
       if (!unorderedIndexes.has(index)) {
@@ -275,7 +240,7 @@ function transformSelectionToRowDistance(selectionRanges) {
   var orderedIndexes = Array.from(unorderedIndexes).sort(function (a, b) {
     return a - b;
   });
-  var normalizedRowRanges = (0, _array.arrayReduce)(orderedIndexes, function (acc, rowIndex, index, array) {
+  var normalizedRowRanges = arrayReduce(orderedIndexes, function (acc, rowIndex, index, array) {
     if (index !== 0 && rowIndex === array[index - 1] + 1) {
       acc[acc.length - 1][1] += 1;
     } else {
@@ -295,8 +260,7 @@ function transformSelectionToRowDistance(selectionRanges) {
  * @returns {boolean}
  */
 
-
-function isValidCoord(coord) {
+export function isValidCoord(coord) {
   var maxTableItemsCount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Infinity;
   return typeof coord === 'number' && coord >= 0 && coord < maxTableItemsCount;
 }

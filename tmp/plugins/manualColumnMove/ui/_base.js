@@ -1,16 +1,10 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _number = require("../../../helpers/number");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { isNumeric } from "../../../helpers/number.mjs";
 var STATE_INITIALIZED = 0;
 var STATE_BUILT = 1;
 var STATE_APPENDED = 2;
@@ -119,11 +113,11 @@ var BaseUI = /*#__PURE__*/function () {
   }, {
     key: "setPosition",
     value: function setPosition(top, left) {
-      if ((0, _number.isNumeric)(top)) {
+      if (isNumeric(top)) {
         this._element.style.top = top + UNIT;
       }
 
-      if ((0, _number.isNumeric)(left)) {
+      if (isNumeric(left)) {
         this._element.style.left = left + UNIT;
       }
     }
@@ -151,11 +145,11 @@ var BaseUI = /*#__PURE__*/function () {
   }, {
     key: "setSize",
     value: function setSize(width, height) {
-      if ((0, _number.isNumeric)(width)) {
+      if (isNumeric(width)) {
         this._element.style.width = width + UNIT;
       }
 
-      if ((0, _number.isNumeric)(height)) {
+      if (isNumeric(height)) {
         this._element.style.height = height + UNIT;
       }
     }
@@ -183,11 +177,11 @@ var BaseUI = /*#__PURE__*/function () {
   }, {
     key: "setOffset",
     value: function setOffset(top, left) {
-      if ((0, _number.isNumeric)(top)) {
+      if (isNumeric(top)) {
         this._element.style.marginTop = top + UNIT;
       }
 
-      if ((0, _number.isNumeric)(left)) {
+      if (isNumeric(left)) {
         this._element.style.marginLeft = left + UNIT;
       }
     }
@@ -210,5 +204,4 @@ var BaseUI = /*#__PURE__*/function () {
   return BaseUI;
 }();
 
-var _default = BaseUI;
-exports.default = _default;
+export default BaseUI;

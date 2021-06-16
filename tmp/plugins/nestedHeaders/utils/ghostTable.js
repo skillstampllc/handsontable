@@ -1,17 +1,11 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _element = require("../../../helpers/dom/element");
-
-var _object = require("../../../helpers/object");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+import { fastInnerHTML } from "../../../helpers/dom/element.mjs";
+import { clone } from "../../../helpers/object.mjs";
 
 var GhostTable = /*#__PURE__*/function () {
   function GhostTable(plugin) {
@@ -88,7 +82,7 @@ var GhostTable = /*#__PURE__*/function () {
 
         for (var col = 0; col < maxCols; col++) {
           var td = rootDocument.createElement('th');
-          var headerObj = (0, _object.clone)(this.nestedHeaders.getHeaderSettings(row, col));
+          var headerObj = clone(this.nestedHeaders.getHeaderSettings(row, col));
 
           if (headerObj && !headerObj.isHidden) {
             if (row === lastRowIndex) {
@@ -101,7 +95,7 @@ var GhostTable = /*#__PURE__*/function () {
               }
             }
 
-            (0, _element.fastInnerHTML)(td, headerObj.label);
+            fastInnerHTML(td, headerObj.label);
             td.colSpan = headerObj.colspan;
             tr.appendChild(td);
           }
@@ -143,5 +137,4 @@ var GhostTable = /*#__PURE__*/function () {
   return GhostTable;
 }();
 
-var _default = GhostTable;
-exports.default = _default;
+export default GhostTable;

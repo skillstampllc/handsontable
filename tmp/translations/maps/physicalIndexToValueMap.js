@@ -1,37 +1,17 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.PhysicalIndexToValueMap = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _indexMap = require("./indexMap");
-
-var _physicallyIndexed = require("./utils/physicallyIndexed");
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -57,12 +37,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { IndexMap } from "./indexMap.mjs";
+import { getListWithRemovedItems, getListWithInsertedItems } from "./utils/physicallyIndexed.mjs";
 /**
  * Map for storing mappings from an physical index to a value.
  *
  * Does not update stored values on remove/add row or column action.
  */
-var PhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
+
+export var PhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   _inherits(PhysicalIndexToValueMap, _IndexMap);
 
   var _super = _createSuper(PhysicalIndexToValueMap);
@@ -84,7 +67,7 @@ var PhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
      * @param {Array} insertedIndexes List of inserted indexes.
      */
     function insert(insertionIndex, insertedIndexes) {
-      this.indexedValues = (0, _physicallyIndexed.getListWithInsertedItems)(this.indexedValues, insertionIndex, insertedIndexes, this.initValueOrFn);
+      this.indexedValues = getListWithInsertedItems(this.indexedValues, insertionIndex, insertedIndexes, this.initValueOrFn);
 
       _get(_getPrototypeOf(PhysicalIndexToValueMap.prototype), "insert", this).call(this, insertionIndex, insertedIndexes);
     }
@@ -98,13 +81,11 @@ var PhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   }, {
     key: "remove",
     value: function remove(removedIndexes) {
-      this.indexedValues = (0, _physicallyIndexed.getListWithRemovedItems)(this.indexedValues, removedIndexes);
+      this.indexedValues = getListWithRemovedItems(this.indexedValues, removedIndexes);
 
       _get(_getPrototypeOf(PhysicalIndexToValueMap.prototype), "remove", this).call(this, removedIndexes);
     }
   }]);
 
   return PhysicalIndexToValueMap;
-}(_indexMap.IndexMap);
-
-exports.PhysicalIndexToValueMap = PhysicalIndexToValueMap;
+}(IndexMap);

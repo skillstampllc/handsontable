@@ -1,61 +1,24 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.freeze.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.find.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _element = require("../../../helpers/dom/element");
-
-var _array = require("../../../helpers/array");
-
-var _templateLiteralTag = require("../../../helpers/templateLiteralTag");
-
-var _base = _interopRequireDefault(require("./_base"));
-
-var _logicalOperationRegisterer = require("../logicalOperationRegisterer");
-
-var _conjunction = require("../logicalOperations/conjunction");
-
-var _disjunction = require("../logicalOperations/disjunction");
-
-var _disjunctionWithExtraCondition = require("../logicalOperations/disjunctionWithExtraCondition");
-
-var _radioInput = _interopRequireDefault(require("../ui/radioInput"));
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 var _templateObject;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.find.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77,6 +40,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { addClass } from "../../../helpers/dom/element.mjs";
+import { arrayEach } from "../../../helpers/array.mjs";
+import { toSingleLine } from "../../../helpers/templateLiteralTag.mjs";
+import BaseComponent from "./_base.mjs";
+import { getOperationName } from "../logicalOperationRegisterer.mjs";
+import { OPERATION_ID as OPERATION_AND } from "../logicalOperations/conjunction.mjs";
+import { OPERATION_ID as OPERATION_OR } from "../logicalOperations/disjunction.mjs";
+import { OPERATION_ID as OPERATION_OR_THEN_VARIABLE } from "../logicalOperations/disjunctionWithExtraCondition.mjs";
+import RadioInputUI from "../ui/radioInput.mjs";
 var SELECTED_AT_START_ELEMENT_INDEX = 0;
 /**
  * @class OperatorsComponent
@@ -124,10 +96,10 @@ var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
           return _this2.isHidden();
         },
         renderer: function renderer(hot, wrapper) {
-          (0, _element.addClass)(wrapper.parentNode, 'htFiltersMenuOperators');
+          addClass(wrapper.parentNode, 'htFiltersMenuOperators');
 
           if (!wrapper.parentNode.hasAttribute('ghost-table')) {
-            (0, _array.arrayEach)(_this2.elements, function (ui) {
+            arrayEach(_this2.elements, function (ui) {
               return wrapper.appendChild(ui.element);
             });
           }
@@ -147,13 +119,13 @@ var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
     value: function buildOperatorsElement() {
       var _this3 = this;
 
-      var operationKeys = [_conjunction.OPERATION_ID, _disjunction.OPERATION_ID];
-      (0, _array.arrayEach)(operationKeys, function (operation) {
-        var radioInput = new _radioInput.default(_this3.hot, {
+      var operationKeys = [OPERATION_AND, OPERATION_OR];
+      arrayEach(operationKeys, function (operation) {
+        var radioInput = new RadioInputUI(_this3.hot, {
           name: 'operator',
           label: {
             htmlFor: operation,
-            textContent: (0, _logicalOperationRegisterer.getOperationName)(operation)
+            textContent: getOperationName(operation)
           },
           value: operation,
           checked: operation === operationKeys[SELECTED_AT_START_ELEMENT_INDEX],
@@ -176,10 +148,10 @@ var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
     key: "setChecked",
     value: function setChecked(searchedIndex) {
       if (this.elements.length < searchedIndex) {
-        throw Error((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Radio button with index ", " doesn't exist."])), searchedIndex));
+        throw Error(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["Radio button with index ", " doesn't exist."])), searchedIndex));
       }
 
-      (0, _array.arrayEach)(this.elements, function (element, index) {
+      arrayEach(this.elements, function (element, index) {
         element.setChecked(index === searchedIndex);
       });
     }
@@ -193,14 +165,14 @@ var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
     key: "getActiveOperationId",
     value: function getActiveOperationId() {
       var operationElement = this.elements.find(function (element) {
-        return element instanceof _radioInput.default && element.isChecked();
+        return element instanceof RadioInputUI && element.isChecked();
       });
 
       if (operationElement) {
         return operationElement.getValue();
       }
 
-      return _conjunction.OPERATION_ID;
+      return OPERATION_AND;
     }
     /**
      * Export state of the component (get selected operator).
@@ -225,7 +197,7 @@ var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
       this.reset();
 
       if (value && this.getActiveOperationId() !== value) {
-        (0, _array.arrayEach)(this.elements, function (element) {
+        arrayEach(this.elements, function (element) {
           element.setChecked(element.getValue() === value);
         });
       }
@@ -240,12 +212,12 @@ var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
   }, {
     key: "updateState",
     value: function updateState() {
-      var operationId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _conjunction.OPERATION_ID;
+      var operationId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : OPERATION_AND;
       var column = arguments.length > 1 ? arguments[1] : undefined;
       var selectedOperationId = operationId;
 
-      if (selectedOperationId === _disjunctionWithExtraCondition.OPERATION_ID) {
-        selectedOperationId = _disjunction.OPERATION_ID;
+      if (selectedOperationId === OPERATION_OR_THEN_VARIABLE) {
+        selectedOperationId = OPERATION_OR;
       }
 
       this.state.setValueAtIndex(column, selectedOperationId);
@@ -274,7 +246,6 @@ var OperatorsComponent = /*#__PURE__*/function (_BaseComponent) {
   }]);
 
   return OperatorsComponent;
-}(_base.default);
+}(BaseComponent);
 
-var _default = OperatorsComponent;
-exports.default = _default;
+export default OperatorsComponent;

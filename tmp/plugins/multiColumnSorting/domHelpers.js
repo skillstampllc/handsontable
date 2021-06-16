@@ -1,19 +1,8 @@
-"use strict";
-
-exports.__esModule = true;
-exports.getClassesToAdd = getClassesToAdd;
-exports.getClassesToRemove = getClassesToRemove;
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.array.filter.js");
-
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.regexp.constructor.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.array.filter.js";
 var COLUMN_ORDER_PREFIX = 'sort';
 /**
  * Get CSS classes which should be added to particular column header.
@@ -24,7 +13,7 @@ var COLUMN_ORDER_PREFIX = 'sort';
  * @returns {Array} Array of CSS classes.
  */
 
-function getClassesToAdd(columnStatesManager, column, showSortIndicator) {
+export function getClassesToAdd(columnStatesManager, column, showSortIndicator) {
   var cssClasses = [];
 
   if (showSortIndicator === false) {
@@ -44,8 +33,7 @@ function getClassesToAdd(columnStatesManager, column, showSortIndicator) {
  * @returns {Array} Array of CSS classes.
  */
 
-
-function getClassesToRemove(htmlElement) {
+export function getClassesToRemove(htmlElement) {
   var cssClasses = htmlElement.className.split(' ');
   var sortSequenceRegExp = new RegExp("^".concat(COLUMN_ORDER_PREFIX, "-[0-9]{1,2}$"));
   return cssClasses.filter(function (cssClass) {

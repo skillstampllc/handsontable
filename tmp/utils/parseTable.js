@@ -1,64 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.instanceToHTML = instanceToHTML;
-exports._dataToHTML = _dataToHTML;
-exports.htmlToGridSettings = htmlToGridSettings;
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.string.match.js");
-
-require("core-js/modules/es.array.last-index-of.js");
-
-require("core-js/modules/es.array.reduce.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.array.find-index.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-var _mixed = require("./../helpers/mixed");
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -71,6 +10,33 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+import "core-js/modules/es.regexp.constructor.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.string.match.js";
+import "core-js/modules/es.array.last-index-of.js";
+import "core-js/modules/es.array.reduce.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.array.find-index.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import { isEmpty } from "./../helpers/mixed.mjs";
 var ESCAPED_HTML_CHARS = {
   '&nbsp;': '\x20',
   '&amp;': '&',
@@ -98,7 +64,7 @@ function isHTMLTable(element) {
  */
 
 
-function instanceToHTML(instance) {
+export function instanceToHTML(instance) {
   var hasColumnHeaders = instance.hasColHeaders();
   var hasRowHeaders = instance.hasRowHeaders();
   var coords = [hasColumnHeaders ? -1 : 0, hasRowHeaders ? -1 : 0, instance.countRows() - 1, instance.countCols() - 1];
@@ -142,7 +108,7 @@ function instanceToHTML(instance) {
             attrs.push("colspan=\"".concat(colspan, "\""));
           }
 
-          if ((0, _mixed.isEmpty)(cellData)) {
+          if (isEmpty(cellData)) {
             cell = "<td ".concat(attrs.join(' '), "></td>");
           } else {
             var value = cellData.toString().replace('<', '&lt;').replace('>', '&gt;').replace(/(<br(\s*|\/)>(\r\n|\n)?|\r\n|\n)/g, '<br>\r\n').replace(/\x20/gi, '&nbsp;').replace(/\t/gi, '&#9;');
@@ -174,8 +140,7 @@ function instanceToHTML(instance) {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function _dataToHTML(input) {
+export function _dataToHTML(input) {
   var inputLen = input.length;
   var result = ['<table>'];
 
@@ -190,7 +155,7 @@ function _dataToHTML(input) {
 
     for (var column = 0; column < columnsLen; column += 1) {
       var cellData = rowData[column];
-      var parsedCellData = (0, _mixed.isEmpty)(cellData) ? '' : cellData.toString().replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(<br(\s*|\/)>(\r\n|\n)?|\r\n|\n)/g, '<br>\r\n').replace(/\x20/gi, '&nbsp;').replace(/\t/gi, '&#9;');
+      var parsedCellData = isEmpty(cellData) ? '' : cellData.toString().replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(<br(\s*|\/)>(\r\n|\n)?|\r\n|\n)/g, '<br>\r\n').replace(/\x20/gi, '&nbsp;').replace(/\t/gi, '&#9;');
       columnsResult.push("<td>".concat(parsedCellData, "</td>"));
     }
 
@@ -213,8 +178,7 @@ function _dataToHTML(input) {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function htmlToGridSettings(element) {
+export function htmlToGridSettings(element) {
   var rootDocument = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
   var settingsObj = {};
   var fragment = rootDocument.createDocumentFragment();

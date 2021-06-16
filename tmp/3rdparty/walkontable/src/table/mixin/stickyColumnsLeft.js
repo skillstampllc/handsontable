@@ -1,10 +1,4 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _object = require("../../../../../helpers/object");
-
+import { defineGetter } from "../../../../../helpers/object.mjs";
 var MIXIN_NAME = 'stickyColumnsLeft';
 /**
  * Mixin for the subclasses of `Table` with implementations of
@@ -80,9 +74,8 @@ var stickyColumnsLeft = {
     return this.getRenderedColumnsCount();
   }
 };
-(0, _object.defineGetter)(stickyColumnsLeft, 'MIXIN_NAME', MIXIN_NAME, {
+defineGetter(stickyColumnsLeft, 'MIXIN_NAME', MIXIN_NAME, {
   writable: false,
   enumerable: false
 });
-var _default = stickyColumnsLeft;
-exports.default = _default;
+export default stickyColumnsLeft;

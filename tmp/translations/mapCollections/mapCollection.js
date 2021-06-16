@@ -1,30 +1,10 @@
-"use strict";
-
-exports.__esModule = true;
-exports.getRegisteredMapsCounter = getRegisteredMapsCounter;
-exports.MapCollection = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.map.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.array.from.js");
-
-var _mixed = require("../../helpers/mixed");
-
-var _object = require("../../helpers/object");
-
-var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.array.from.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32,13 +12,16 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// Counter for checking if there is a memory leak.
+import { isUndefined, isDefined } from "../../helpers/mixed.mjs";
+import { mixin } from "../../helpers/object.mjs";
+import localHooks from "../../mixins/localHooks.mjs"; // Counter for checking if there is a memory leak.
+
 var registeredMaps = 0;
 /**
  * Collection of index maps having unique names. It allow us to perform bulk operations such as init, remove, insert on all index maps that have been registered in the collection.
  */
 
-var MapCollection = /*#__PURE__*/function () {
+export var MapCollection = /*#__PURE__*/function () {
   function MapCollection() {
     _classCallCheck(this, MapCollection);
 
@@ -81,7 +64,7 @@ var MapCollection = /*#__PURE__*/function () {
     value: function unregister(name) {
       var indexMap = this.collection.get(name);
 
-      if ((0, _mixed.isDefined)(indexMap)) {
+      if (isDefined(indexMap)) {
         indexMap.destroy();
         this.collection.delete(name);
         this.runLocalHooks('change', indexMap);
@@ -112,7 +95,7 @@ var MapCollection = /*#__PURE__*/function () {
   }, {
     key: "get",
     value: function get(name) {
-      if ((0, _mixed.isUndefined)(name)) {
+      if (isUndefined(name)) {
         return Array.from(this.collection.values());
       }
 
@@ -175,13 +158,11 @@ var MapCollection = /*#__PURE__*/function () {
 
   return MapCollection;
 }();
-
-exports.MapCollection = MapCollection;
-(0, _object.mixin)(MapCollection, _localHooks.default);
+mixin(MapCollection, localHooks);
 /**
  * @returns {number}
  */
 
-function getRegisteredMapsCounter() {
+export function getRegisteredMapsCounter() {
   return registeredMaps;
 }

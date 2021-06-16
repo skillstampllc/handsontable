@@ -1,37 +1,22 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _element = require("./../../../helpers/dom/element");
-
-var _object = require("./../../../helpers/object");
-
-var _string = require("./../../../helpers/string");
-
-var _event = _interopRequireDefault(require("./event"));
-
-var _overlays = _interopRequireDefault(require("./overlays"));
-
-var _scroll = _interopRequireDefault(require("./scroll"));
-
-var _settings = _interopRequireDefault(require("./settings"));
-
-var _master = _interopRequireDefault(require("./table/master"));
-
-var _viewport = _interopRequireDefault(require("./viewport"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { addClass, fastInnerText, removeClass } from "./../../../helpers/dom/element.mjs";
+import { objectEach } from "./../../../helpers/object.mjs";
+import { randomString } from "./../../../helpers/string.mjs";
+import Event from "./event.mjs";
+import Overlays from "./overlays.mjs";
+import Scroll from "./scroll.mjs";
+import Settings from "./settings.mjs";
+import MasterTable from "./table/master.mjs";
+import Viewport from "./viewport.mjs";
 /**
  * @class Walkontable
  */
+
 var Walkontable = /*#__PURE__*/function () {
   /**
    * @param {object} settings The Walkontable settings.
@@ -41,7 +26,7 @@ var Walkontable = /*#__PURE__*/function () {
 
     var originalHeaders = []; // this is the namespace for global events
 
-    this.guid = "wt_".concat((0, _string.randomString)());
+    this.guid = "wt_".concat(randomString());
     this.rootDocument = settings.table.ownerDocument;
     this.rootWindow = this.rootDocument.defaultView; // bootstrap from settings
 
@@ -50,18 +35,18 @@ var Walkontable = /*#__PURE__*/function () {
       this.cloneOverlay = settings.cloneOverlay;
       this.wtSettings = settings.cloneSource.wtSettings;
       this.wtTable = this.cloneOverlay.createTable(this, settings.table);
-      this.wtScroll = new _scroll.default(this);
+      this.wtScroll = new Scroll(this);
       this.wtViewport = settings.cloneSource.wtViewport;
-      this.wtEvent = new _event.default(this);
+      this.wtEvent = new Event(this);
       this.selections = this.cloneSource.selections;
     } else {
-      this.wtSettings = new _settings.default(this, settings);
-      this.wtTable = new _master.default(this, settings.table);
-      this.wtScroll = new _scroll.default(this);
-      this.wtViewport = new _viewport.default(this);
-      this.wtEvent = new _event.default(this);
+      this.wtSettings = new Settings(this, settings);
+      this.wtTable = new MasterTable(this, settings.table);
+      this.wtScroll = new Scroll(this);
+      this.wtViewport = new Viewport(this);
+      this.wtEvent = new Event(this);
       this.selections = this.getSetting('selections');
-      this.wtOverlays = new _overlays.default(this);
+      this.wtOverlays = new Overlays(this);
       this.exportSettingsAsClassNames();
     } // find original headers
 
@@ -73,7 +58,7 @@ var Walkontable = /*#__PURE__*/function () {
 
       if (!this.getSetting('columnHeaders').length) {
         this.update('columnHeaders', [function (column, TH) {
-          (0, _element.fastInnerText)(TH, originalHeaders[column]);
+          fastInnerText(TH, originalHeaders[column]);
         }]);
       }
     }
@@ -251,15 +236,15 @@ var Walkontable = /*#__PURE__*/function () {
       };
       var allClassNames = [];
       var newClassNames = [];
-      (0, _object.objectEach)(toExport, function (className, key) {
+      objectEach(toExport, function (className, key) {
         if (_this.getSetting(key).length) {
           newClassNames.push(className);
         }
 
         allClassNames.push(className);
       });
-      (0, _element.removeClass)(this.wtTable.wtRootElement.parentNode, allClassNames);
-      (0, _element.addClass)(this.wtTable.wtRootElement.parentNode, newClassNames);
+      removeClass(this.wtTable.wtRootElement.parentNode, allClassNames);
+      addClass(this.wtTable.wtRootElement.parentNode, newClassNames);
     }
     /**
      * Get/Set Walkontable instance setting.
@@ -305,5 +290,4 @@ var Walkontable = /*#__PURE__*/function () {
   return Walkontable;
 }();
 
-var _default = Walkontable;
-exports.default = _default;
+export default Walkontable;

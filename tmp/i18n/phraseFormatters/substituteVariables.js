@@ -1,12 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = substituteVariables;
-
-require("core-js/modules/es.array.map.js");
-
-var _string = require("./../../helpers/string");
-
+import "core-js/modules/es.array.map.js";
+import { substitute } from "./../../helpers/string.mjs";
 /**
  * Try to substitute variable inside phrase propositions.
  *
@@ -15,12 +8,13 @@ var _string = require("./../../helpers/string");
  *
  * @returns {string} Phrases with substituted variables if it's possible, list of unchanged phrase propositions otherwise.
  */
-function substituteVariables(phrasePropositions, zippedVariablesAndValues) {
+
+export default function substituteVariables(phrasePropositions, zippedVariablesAndValues) {
   if (Array.isArray(phrasePropositions)) {
     return phrasePropositions.map(function (phraseProposition) {
       return substituteVariables(phraseProposition, zippedVariablesAndValues);
     });
   }
 
-  return (0, _string.substitute)(phrasePropositions, zippedVariablesAndValues);
+  return substitute(phrasePropositions, zippedVariablesAndValues);
 }

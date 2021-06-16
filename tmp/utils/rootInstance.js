@@ -1,37 +1,19 @@
-"use strict";
-
-exports.__esModule = true;
-exports.registerAsRootInstance = registerAsRootInstance;
-exports.hasValidParameter = hasValidParameter;
-exports.isRootInstance = isRootInstance;
-exports.rootInstanceSymbol = exports.holder = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-var holder = new WeakMap();
-exports.holder = holder;
-var rootInstanceSymbol = Symbol('rootInstance');
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+export var holder = new WeakMap();
+export var rootInstanceSymbol = Symbol('rootInstance');
 /**
  * Register an object as a root instance.
  *
  * @param  {object} object An object to associate with root instance flag.
  */
 
-exports.rootInstanceSymbol = rootInstanceSymbol;
-
-function registerAsRootInstance(object) {
+export function registerAsRootInstance(object) {
   holder.set(object, true);
 }
 /**
@@ -41,8 +23,7 @@ function registerAsRootInstance(object) {
  * @returns {boolean}
  */
 
-
-function hasValidParameter(rootSymbol) {
+export function hasValidParameter(rootSymbol) {
   return rootSymbol === rootInstanceSymbol;
 }
 /**
@@ -52,7 +33,6 @@ function hasValidParameter(rootSymbol) {
  * @returns {boolean}
  */
 
-
-function isRootInstance(object) {
+export function isRootInstance(object) {
   return holder.has(object);
 }

@@ -1,11 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.applySpanProperties = applySpanProperties;
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.to-string.js");
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.regexp.to-string.js";
 
 /**
  * Apply the `colspan`/`rowspan` properties.
@@ -15,7 +9,7 @@ require("core-js/modules/es.regexp.to-string.js");
  * @param {number} row Row index.
  * @param {number} col Column index.
  */
-function applySpanProperties(TD, mergedCellInfo, row, col) {
+export function applySpanProperties(TD, mergedCellInfo, row, col) {
   if (mergedCellInfo) {
     if (mergedCellInfo.row === row && mergedCellInfo.col === col) {
       TD.setAttribute('rowspan', mergedCellInfo.rowspan.toString());

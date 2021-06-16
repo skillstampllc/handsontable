@@ -123,48 +123,37 @@
   ],
   "exports": {
     "./cellTypes/autocompleteType": {
-      "require": "./cellTypes/autocompleteType/index.js",
-      "import": "./cellTypes/autocompleteType/index.mjs"
+      "require": "./cellTypes/autocompleteType/index.js"
     },
     "./cellTypes/checkboxType": {
-      "require": "./cellTypes/checkboxType/index.js",
-      "import": "./cellTypes/checkboxType/index.mjs"
+      "require": "./cellTypes/checkboxType/index.js"
     },
     "./cellTypes/dateType": {
-      "require": "./cellTypes/dateType/index.js",
-      "import": "./cellTypes/dateType/index.mjs"
+      "require": "./cellTypes/dateType/index.js"
     },
     "./cellTypes/dropdownType": {
-      "require": "./cellTypes/dropdownType/index.js",
-      "import": "./cellTypes/dropdownType/index.mjs"
+      "require": "./cellTypes/dropdownType/index.js"
     },
     "./cellTypes/handsontableType": {
-      "require": "./cellTypes/handsontableType/index.js",
-      "import": "./cellTypes/handsontableType/index.mjs"
+      "require": "./cellTypes/handsontableType/index.js"
     },
     "./cellTypes/numericType": {
-      "require": "./cellTypes/numericType/index.js",
-      "import": "./cellTypes/numericType/index.mjs"
+      "require": "./cellTypes/numericType/index.js"
     },
     "./cellTypes/passwordType": {
-      "require": "./cellTypes/passwordType/index.js",
-      "import": "./cellTypes/passwordType/index.mjs"
+      "require": "./cellTypes/passwordType/index.js"
     },
     "./cellTypes/textType": {
-      "require": "./cellTypes/textType/index.js",
-      "import": "./cellTypes/textType/index.mjs"
+      "require": "./cellTypes/textType/index.js"
     },
     "./cellTypes/timeType": {
-      "require": "./cellTypes/timeType/index.js",
-      "import": "./cellTypes/timeType/index.mjs"
+      "require": "./cellTypes/timeType/index.js"
     },
     "./cellTypes": {
-      "require": "./cellTypes/index.js",
-      "import": "./cellTypes/index.mjs"
+      "require": "./cellTypes/index.js"
     },
     "./cellTypes/registry": {
-      "require": "./cellTypes/registry.js",
-      "import": "./cellTypes/registry.mjs"
+      "require": "./cellTypes/registry.js"
     },
     "./languages/de-CH": {
       "require": "./languages/de-CH.js",
@@ -235,332 +224,250 @@
       "import": "./languages/zh-TW.mjs"
     },
     "./editors/autocompleteEditor": {
-      "require": "./editors/autocompleteEditor/index.js",
-      "import": "./editors/autocompleteEditor/index.mjs"
+      "require": "./editors/autocompleteEditor/index.js"
     },
     "./editors/baseEditor": {
-      "require": "./editors/baseEditor/index.js",
-      "import": "./editors/baseEditor/index.mjs"
+      "require": "./editors/baseEditor/index.js"
     },
     "./editors/checkboxEditor": {
-      "require": "./editors/checkboxEditor/index.js",
-      "import": "./editors/checkboxEditor/index.mjs"
+      "require": "./editors/checkboxEditor/index.js"
     },
     "./editors/dateEditor": {
-      "require": "./editors/dateEditor/index.js",
-      "import": "./editors/dateEditor/index.mjs"
+      "require": "./editors/dateEditor/index.js"
     },
     "./editors/dropdownEditor": {
-      "require": "./editors/dropdownEditor/index.js",
-      "import": "./editors/dropdownEditor/index.mjs"
+      "require": "./editors/dropdownEditor/index.js"
     },
     "./editors/handsontableEditor": {
-      "require": "./editors/handsontableEditor/index.js",
-      "import": "./editors/handsontableEditor/index.mjs"
+      "require": "./editors/handsontableEditor/index.js"
     },
     "./editors/numericEditor": {
-      "require": "./editors/numericEditor/index.js",
-      "import": "./editors/numericEditor/index.mjs"
+      "require": "./editors/numericEditor/index.js"
     },
     "./editors/passwordEditor": {
-      "require": "./editors/passwordEditor/index.js",
-      "import": "./editors/passwordEditor/index.mjs"
+      "require": "./editors/passwordEditor/index.js"
     },
     "./editors/selectEditor": {
-      "require": "./editors/selectEditor/index.js",
-      "import": "./editors/selectEditor/index.mjs"
+      "require": "./editors/selectEditor/index.js"
     },
     "./editors/textEditor": {
-      "require": "./editors/textEditor/index.js",
-      "import": "./editors/textEditor/index.mjs"
+      "require": "./editors/textEditor/index.js"
     },
     "./editors": {
-      "require": "./editors/index.js",
-      "import": "./editors/index.mjs"
+      "require": "./editors/index.js"
     },
     "./editors/registry": {
-      "require": "./editors/registry.js",
-      "import": "./editors/registry.mjs"
+      "require": "./editors/registry.js"
     },
     "./plugins/autoColumnSize": {
-      "require": "./plugins/autoColumnSize/index.js",
-      "import": "./plugins/autoColumnSize/index.mjs"
+      "require": "./plugins/autoColumnSize/index.js"
     },
     "./plugins/autofill": {
-      "require": "./plugins/autofill/index.js",
-      "import": "./plugins/autofill/index.mjs"
+      "require": "./plugins/autofill/index.js"
     },
     "./plugins/autoRowSize": {
-      "require": "./plugins/autoRowSize/index.js",
-      "import": "./plugins/autoRowSize/index.mjs"
+      "require": "./plugins/autoRowSize/index.js"
     },
     "./plugins/base": {
-      "require": "./plugins/base/index.js",
-      "import": "./plugins/base/index.mjs"
+      "require": "./plugins/base/index.js"
     },
     "./plugins/bindRowsWithHeaders": {
-      "require": "./plugins/bindRowsWithHeaders/index.js",
-      "import": "./plugins/bindRowsWithHeaders/index.mjs"
+      "require": "./plugins/bindRowsWithHeaders/index.js"
     },
     "./plugins/collapsibleColumns": {
-      "require": "./plugins/collapsibleColumns/index.js",
-      "import": "./plugins/collapsibleColumns/index.mjs"
+      "require": "./plugins/collapsibleColumns/index.js"
     },
     "./plugins/columnSorting": {
-      "require": "./plugins/columnSorting/index.js",
-      "import": "./plugins/columnSorting/index.mjs"
+      "require": "./plugins/columnSorting/index.js"
     },
     "./plugins/columnSummary": {
-      "require": "./plugins/columnSummary/index.js",
-      "import": "./plugins/columnSummary/index.mjs"
+      "require": "./plugins/columnSummary/index.js"
     },
     "./plugins/comments": {
-      "require": "./plugins/comments/index.js",
-      "import": "./plugins/comments/index.mjs"
+      "require": "./plugins/comments/index.js"
     },
     "./plugins/contextMenu": {
-      "require": "./plugins/contextMenu/index.js",
-      "import": "./plugins/contextMenu/index.mjs"
+      "require": "./plugins/contextMenu/index.js"
     },
     "./plugins/copyPaste": {
-      "require": "./plugins/copyPaste/index.js",
-      "import": "./plugins/copyPaste/index.mjs"
+      "require": "./plugins/copyPaste/index.js"
     },
     "./plugins/customBorders": {
-      "require": "./plugins/customBorders/index.js",
-      "import": "./plugins/customBorders/index.mjs"
+      "require": "./plugins/customBorders/index.js"
     },
     "./plugins/dragToScroll": {
-      "require": "./plugins/dragToScroll/index.js",
-      "import": "./plugins/dragToScroll/index.mjs"
+      "require": "./plugins/dragToScroll/index.js"
     },
     "./plugins/dropdownMenu": {
-      "require": "./plugins/dropdownMenu/index.js",
-      "import": "./plugins/dropdownMenu/index.mjs"
+      "require": "./plugins/dropdownMenu/index.js"
     },
     "./plugins/exportFile": {
-      "require": "./plugins/exportFile/index.js",
-      "import": "./plugins/exportFile/index.mjs"
+      "require": "./plugins/exportFile/index.js"
     },
     "./plugins/filters": {
-      "require": "./plugins/filters/index.js",
-      "import": "./plugins/filters/index.mjs"
+      "require": "./plugins/filters/index.js"
     },
     "./plugins/formulas": {
-      "require": "./plugins/formulas/index.js",
-      "import": "./plugins/formulas/index.mjs"
+      "require": "./plugins/formulas/index.js"
     },
     "./plugins/hiddenColumns": {
-      "require": "./plugins/hiddenColumns/index.js",
-      "import": "./plugins/hiddenColumns/index.mjs"
+      "require": "./plugins/hiddenColumns/index.js"
     },
     "./plugins/hiddenRows": {
-      "require": "./plugins/hiddenRows/index.js",
-      "import": "./plugins/hiddenRows/index.mjs"
+      "require": "./plugins/hiddenRows/index.js"
     },
     "./plugins/manualColumnFreeze": {
-      "require": "./plugins/manualColumnFreeze/index.js",
-      "import": "./plugins/manualColumnFreeze/index.mjs"
+      "require": "./plugins/manualColumnFreeze/index.js"
     },
     "./plugins/manualColumnMove": {
-      "require": "./plugins/manualColumnMove/index.js",
-      "import": "./plugins/manualColumnMove/index.mjs"
+      "require": "./plugins/manualColumnMove/index.js"
     },
     "./plugins/manualColumnResize": {
-      "require": "./plugins/manualColumnResize/index.js",
-      "import": "./plugins/manualColumnResize/index.mjs"
+      "require": "./plugins/manualColumnResize/index.js"
     },
     "./plugins/manualRowMove": {
-      "require": "./plugins/manualRowMove/index.js",
-      "import": "./plugins/manualRowMove/index.mjs"
+      "require": "./plugins/manualRowMove/index.js"
     },
     "./plugins/manualRowResize": {
-      "require": "./plugins/manualRowResize/index.js",
-      "import": "./plugins/manualRowResize/index.mjs"
+      "require": "./plugins/manualRowResize/index.js"
     },
     "./plugins/mergeCells": {
-      "require": "./plugins/mergeCells/index.js",
-      "import": "./plugins/mergeCells/index.mjs"
+      "require": "./plugins/mergeCells/index.js"
     },
     "./plugins/multiColumnSorting": {
-      "require": "./plugins/multiColumnSorting/index.js",
-      "import": "./plugins/multiColumnSorting/index.mjs"
+      "require": "./plugins/multiColumnSorting/index.js"
     },
     "./plugins/multipleSelectionHandles": {
-      "require": "./plugins/multipleSelectionHandles/index.js",
-      "import": "./plugins/multipleSelectionHandles/index.mjs"
+      "require": "./plugins/multipleSelectionHandles/index.js"
     },
     "./plugins/nestedHeaders": {
-      "require": "./plugins/nestedHeaders/index.js",
-      "import": "./plugins/nestedHeaders/index.mjs"
+      "require": "./plugins/nestedHeaders/index.js"
     },
     "./plugins/nestedRows": {
-      "require": "./plugins/nestedRows/index.js",
-      "import": "./plugins/nestedRows/index.mjs"
+      "require": "./plugins/nestedRows/index.js"
     },
     "./plugins/persistentState": {
-      "require": "./plugins/persistentState/index.js",
-      "import": "./plugins/persistentState/index.mjs"
+      "require": "./plugins/persistentState/index.js"
     },
     "./plugins/search": {
-      "require": "./plugins/search/index.js",
-      "import": "./plugins/search/index.mjs"
+      "require": "./plugins/search/index.js"
     },
     "./plugins/touchScroll": {
-      "require": "./plugins/touchScroll/index.js",
-      "import": "./plugins/touchScroll/index.mjs"
+      "require": "./plugins/touchScroll/index.js"
     },
     "./plugins/trimRows": {
-      "require": "./plugins/trimRows/index.js",
-      "import": "./plugins/trimRows/index.mjs"
+      "require": "./plugins/trimRows/index.js"
     },
     "./plugins/undoRedo": {
-      "require": "./plugins/undoRedo/index.js",
-      "import": "./plugins/undoRedo/index.mjs"
+      "require": "./plugins/undoRedo/index.js"
     },
     "./plugins": {
-      "require": "./plugins/index.js",
-      "import": "./plugins/index.mjs"
+      "require": "./plugins/index.js"
     },
     "./plugins/registry": {
-      "require": "./plugins/registry.js",
-      "import": "./plugins/registry.mjs"
+      "require": "./plugins/registry.js"
     },
     "./renderers/autocompleteRenderer": {
-      "require": "./renderers/autocompleteRenderer/index.js",
-      "import": "./renderers/autocompleteRenderer/index.mjs"
+      "require": "./renderers/autocompleteRenderer/index.js"
     },
     "./renderers/baseRenderer": {
-      "require": "./renderers/baseRenderer/index.js",
-      "import": "./renderers/baseRenderer/index.mjs"
+      "require": "./renderers/baseRenderer/index.js"
     },
     "./renderers/checkboxRenderer": {
-      "require": "./renderers/checkboxRenderer/index.js",
-      "import": "./renderers/checkboxRenderer/index.mjs"
+      "require": "./renderers/checkboxRenderer/index.js"
     },
     "./renderers/htmlRenderer": {
-      "require": "./renderers/htmlRenderer/index.js",
-      "import": "./renderers/htmlRenderer/index.mjs"
+      "require": "./renderers/htmlRenderer/index.js"
     },
     "./renderers/numericRenderer": {
-      "require": "./renderers/numericRenderer/index.js",
-      "import": "./renderers/numericRenderer/index.mjs"
+      "require": "./renderers/numericRenderer/index.js"
     },
     "./renderers/passwordRenderer": {
-      "require": "./renderers/passwordRenderer/index.js",
-      "import": "./renderers/passwordRenderer/index.mjs"
+      "require": "./renderers/passwordRenderer/index.js"
     },
     "./renderers/textRenderer": {
-      "require": "./renderers/textRenderer/index.js",
-      "import": "./renderers/textRenderer/index.mjs"
+      "require": "./renderers/textRenderer/index.js"
     },
     "./renderers": {
-      "require": "./renderers/index.js",
-      "import": "./renderers/index.mjs"
+      "require": "./renderers/index.js"
     },
     "./renderers/registry": {
-      "require": "./renderers/registry.js",
-      "import": "./renderers/registry.mjs"
+      "require": "./renderers/registry.js"
     },
     "./validators/autocompleteValidator": {
-      "require": "./validators/autocompleteValidator/index.js",
-      "import": "./validators/autocompleteValidator/index.mjs"
+      "require": "./validators/autocompleteValidator/index.js"
     },
     "./validators/dateValidator": {
-      "require": "./validators/dateValidator/index.js",
-      "import": "./validators/dateValidator/index.mjs"
+      "require": "./validators/dateValidator/index.js"
     },
     "./validators/numericValidator": {
-      "require": "./validators/numericValidator/index.js",
-      "import": "./validators/numericValidator/index.mjs"
+      "require": "./validators/numericValidator/index.js"
     },
     "./validators/timeValidator": {
-      "require": "./validators/timeValidator/index.js",
-      "import": "./validators/timeValidator/index.mjs"
+      "require": "./validators/timeValidator/index.js"
     },
     "./validators": {
-      "require": "./validators/index.js",
-      "import": "./validators/index.mjs"
+      "require": "./validators/index.js"
     },
     "./validators/registry": {
-      "require": "./validators/registry.js",
-      "import": "./validators/registry.mjs"
+      "require": "./validators/registry.js"
     },
     "./i18n": {
-      "require": "./i18n/index.js",
-      "import": "./i18n/index.mjs"
+      "require": "./i18n/index.js"
     },
     "./i18n/registry": {
-      "require": "./i18n/registry.js",
-      "import": "./i18n/registry.mjs"
+      "require": "./i18n/registry.js"
     },
     "./i18n/languages/de-CH": {
-      "require": "./i18n/languages/de-CH.js",
-      "import": "./i18n/languages/de-CH.mjs"
+      "require": "./i18n/languages/de-CH.js"
     },
     "./i18n/languages/de-DE": {
-      "require": "./i18n/languages/de-DE.js",
-      "import": "./i18n/languages/de-DE.mjs"
+      "require": "./i18n/languages/de-DE.js"
     },
     "./i18n/languages/en-US": {
-      "require": "./i18n/languages/en-US.js",
-      "import": "./i18n/languages/en-US.mjs"
+      "require": "./i18n/languages/en-US.js"
     },
     "./i18n/languages/es-MX": {
-      "require": "./i18n/languages/es-MX.js",
-      "import": "./i18n/languages/es-MX.mjs"
+      "require": "./i18n/languages/es-MX.js"
     },
     "./i18n/languages/fr-FR": {
-      "require": "./i18n/languages/fr-FR.js",
-      "import": "./i18n/languages/fr-FR.mjs"
+      "require": "./i18n/languages/fr-FR.js"
     },
     "./i18n/languages": {
-      "require": "./i18n/languages/index.js",
-      "import": "./i18n/languages/index.mjs"
+      "require": "./i18n/languages/index.js"
     },
     "./i18n/languages/it-IT": {
-      "require": "./i18n/languages/it-IT.js",
-      "import": "./i18n/languages/it-IT.mjs"
+      "require": "./i18n/languages/it-IT.js"
     },
     "./i18n/languages/ja-JP": {
-      "require": "./i18n/languages/ja-JP.js",
-      "import": "./i18n/languages/ja-JP.mjs"
+      "require": "./i18n/languages/ja-JP.js"
     },
     "./i18n/languages/ko-KR": {
-      "require": "./i18n/languages/ko-KR.js",
-      "import": "./i18n/languages/ko-KR.mjs"
+      "require": "./i18n/languages/ko-KR.js"
     },
     "./i18n/languages/lv-LV": {
-      "require": "./i18n/languages/lv-LV.js",
-      "import": "./i18n/languages/lv-LV.mjs"
+      "require": "./i18n/languages/lv-LV.js"
     },
     "./i18n/languages/nb-NO": {
-      "require": "./i18n/languages/nb-NO.js",
-      "import": "./i18n/languages/nb-NO.mjs"
+      "require": "./i18n/languages/nb-NO.js"
     },
     "./i18n/languages/nl-NL": {
-      "require": "./i18n/languages/nl-NL.js",
-      "import": "./i18n/languages/nl-NL.mjs"
+      "require": "./i18n/languages/nl-NL.js"
     },
     "./i18n/languages/pl-PL": {
-      "require": "./i18n/languages/pl-PL.js",
-      "import": "./i18n/languages/pl-PL.mjs"
+      "require": "./i18n/languages/pl-PL.js"
     },
     "./i18n/languages/pt-BR": {
-      "require": "./i18n/languages/pt-BR.js",
-      "import": "./i18n/languages/pt-BR.mjs"
+      "require": "./i18n/languages/pt-BR.js"
     },
     "./i18n/languages/ru-RU": {
-      "require": "./i18n/languages/ru-RU.js",
-      "import": "./i18n/languages/ru-RU.mjs"
+      "require": "./i18n/languages/ru-RU.js"
     },
     "./i18n/languages/zh-CN": {
-      "require": "./i18n/languages/zh-CN.js",
-      "import": "./i18n/languages/zh-CN.mjs"
+      "require": "./i18n/languages/zh-CN.js"
     },
     "./i18n/languages/zh-TW": {
-      "require": "./i18n/languages/zh-TW.js",
-      "import": "./i18n/languages/zh-TW.mjs"
+      "require": "./i18n/languages/zh-TW.js"
     },
     "./dist/handsontable.css": "./dist/handsontable.css",
     "./dist/handsontable.full.css": "./dist/handsontable.full.css",
@@ -603,18 +510,6 @@
     "./dist/languages/zh-CN.js": "./dist/languages/zh-CN.js",
     "./dist/languages/zh-CN.min.js": "./dist/languages/zh-CN.min.js",
     "./dist/languages/zh-TW.js": "./dist/languages/zh-TW.js",
-    "./dist/languages/zh-TW.min.js": "./dist/languages/zh-TW.min.js",
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.js"
-    },
-    "./base": {
-      "import": "./base.mjs",
-      "require": "./base.js"
-    },
-    "./languages/all": {
-      "import": "./languages/index.mjs",
-      "require": "./languages/all.js"
-    }
+    "./dist/languages/zh-TW.min.js": "./dist/languages/zh-TW.min.js"
   }
 }

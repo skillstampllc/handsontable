@@ -1,51 +1,16 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _element = require("../../../helpers/dom/element");
-
-var _array = require("../../../helpers/array");
-
-var C = _interopRequireWildcard(require("../../../i18n/constants"));
-
-var _base = _interopRequireDefault(require("./_base"));
-
-var _input = _interopRequireDefault(require("../ui/input"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67,10 +32,16 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { addClass } from "../../../helpers/dom/element.mjs";
+import { arrayEach } from "../../../helpers/array.mjs";
+import * as C from "../../../i18n/constants.mjs";
+import BaseComponent from "./_base.mjs";
+import InputUI from "../ui/input.mjs";
 /**
  * @class ActionBarComponent
  * @plugin Filters
  */
+
 var ActionBarComponent = /*#__PURE__*/function (_BaseComponent) {
   _inherits(ActionBarComponent, _BaseComponent);
 
@@ -87,14 +58,14 @@ var ActionBarComponent = /*#__PURE__*/function (_BaseComponent) {
     });
     _this.name = options.name;
 
-    _this.elements.push(new _input.default(_this.hot, {
+    _this.elements.push(new InputUI(_this.hot, {
       type: 'button',
       value: C.FILTERS_BUTTONS_OK,
       className: 'htUIButton htUIButtonOK',
       identifier: ActionBarComponent.BUTTON_OK
     }));
 
-    _this.elements.push(new _input.default(_this.hot, {
+    _this.elements.push(new InputUI(_this.hot, {
       type: 'button',
       value: C.FILTERS_BUTTONS_CANCEL,
       className: 'htUIButton htUIButtonCancel',
@@ -117,7 +88,7 @@ var ActionBarComponent = /*#__PURE__*/function (_BaseComponent) {
     value: function registerHooks() {
       var _this2 = this;
 
-      (0, _array.arrayEach)(this.elements, function (element) {
+      arrayEach(this.elements, function (element) {
         element.addLocalHook('click', function (event, button) {
           return _this2.onButtonClick(event, button);
         });
@@ -143,10 +114,10 @@ var ActionBarComponent = /*#__PURE__*/function (_BaseComponent) {
           return _this3.isHidden();
         },
         renderer: function renderer(hot, wrapper) {
-          (0, _element.addClass)(wrapper.parentNode, 'htFiltersMenuActionBar');
+          addClass(wrapper.parentNode, 'htFiltersMenuActionBar');
 
           if (!wrapper.parentNode.hasAttribute('ghost-table')) {
-            (0, _array.arrayEach)(_this3.elements, function (ui) {
+            arrayEach(_this3.elements, function (ui) {
               return wrapper.appendChild(ui.element);
             });
           }
@@ -203,7 +174,6 @@ var ActionBarComponent = /*#__PURE__*/function (_BaseComponent) {
   }]);
 
   return ActionBarComponent;
-}(_base.default);
+}(BaseComponent);
 
-var _default = ActionBarComponent;
-exports.default = _default;
+export default ActionBarComponent;

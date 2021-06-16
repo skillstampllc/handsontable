@@ -1,57 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.ManualRowMove = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-var _base = require("../base");
-
-var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
-
-var _array = require("../../helpers/array");
-
-var _element = require("../../helpers/dom/element");
-
-var _number = require("../../helpers/number");
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _backlight = _interopRequireDefault(require("./ui/backlight"));
-
-var _guideline = _interopRequireDefault(require("./ui/guideline"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77,14 +24,33 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-_pluginHooks.default.getSingleton().register('beforeRowMove');
-
-_pluginHooks.default.getSingleton().register('afterRowMove');
-
-var PLUGIN_KEY = 'manualRowMove';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 140;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import { BasePlugin } from "../base/index.mjs";
+import Hooks from "../../pluginHooks.mjs";
+import { arrayReduce } from "../../helpers/array.mjs";
+import { addClass, removeClass, offset } from "../../helpers/dom/element.mjs";
+import { rangeEach } from "../../helpers/number.mjs";
+import EventManager from "../../eventManager.mjs";
+import BacklightUI from "./ui/backlight.mjs";
+import GuidelineUI from "./ui/guideline.mjs";
+Hooks.getSingleton().register('beforeRowMove');
+Hooks.getSingleton().register('afterRowMove');
+export var PLUGIN_KEY = 'manualRowMove';
+export var PLUGIN_PRIORITY = 140;
 var privatePool = new WeakMap();
 var CSS_PLUGIN = 'ht__manualRowMove';
 var CSS_SHOW_UI = 'show-ui';
@@ -114,7 +80,7 @@ var CSS_AFTER_SELECTION = 'after-selection--rows';
  * @plugin ManualRowMove
  */
 
-var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
+export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualRowMove, _BasePlugin);
 
   var _super = _createSuper(ManualRowMove);
@@ -147,7 +113,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      * @type {object}
      */
 
-    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
+    _this.eventManager = new EventManager(_assertThisInitialized(_this));
     /**
      * Backlight UI object.
      *
@@ -155,7 +121,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      * @type {object}
      */
 
-    _this.backlight = new _backlight.default(hotInstance);
+    _this.backlight = new BacklightUI(hotInstance);
     /**
      * Guideline UI object.
      *
@@ -163,7 +129,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      * @type {object}
      */
 
-    _this.guideline = new _guideline.default(hotInstance);
+    _this.guideline = new GuidelineUI(hotInstance);
     return _this;
   }
   /**
@@ -207,7 +173,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
       this.buildPluginUI();
       this.registerEvents(); // TODO: move adding plugin classname to BasePlugin.
 
-      (0, _element.addClass)(this.hot.rootElement, CSS_PLUGIN);
+      addClass(this.hot.rootElement, CSS_PLUGIN);
 
       _get(_getPrototypeOf(ManualRowMove.prototype), "enablePlugin", this).call(this);
     }
@@ -231,7 +197,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "disablePlugin",
     value: function disablePlugin() {
-      (0, _element.removeClass)(this.hot.rootElement, CSS_PLUGIN);
+      removeClass(this.hot.rootElement, CSS_PLUGIN);
       this.unregisterEvents();
       this.backlight.destroy();
       this.guideline.destroy();
@@ -379,7 +345,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "countFinalIndex",
     value: function countFinalIndex(movedRows, dropIndex) {
-      var numberOfRowsLowerThanDropIndex = (0, _array.arrayReduce)(movedRows, function (numberOfRows, currentRowIndex) {
+      var numberOfRowsLowerThanDropIndex = arrayReduce(movedRows, function (numberOfRows, currentRowIndex) {
         if (currentRowIndex < dropIndex) {
           numberOfRows += 1;
         }
@@ -509,7 +475,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
           to = selection.to;
       var start = Math.min(from.row, to.row);
       var end = Math.max(from.row, to.row);
-      (0, _number.rangeEach)(start, end, function (i) {
+      rangeEach(start, end, function (i) {
         selectedRows.push(i);
       });
       return selectedRows;
@@ -540,7 +506,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
 
       var wtTable = this.hot.view.wt.wtTable;
       var TD = priv.target.TD;
-      var rootElementOffset = (0, _element.offset)(this.hot.rootElement);
+      var rootElementOffset = offset(this.hot.rootElement);
       var tdOffsetTop = this.hot.view.THEAD.offsetHeight + this.getRowsHeight(0, coords.row - 1);
       var mouseOffsetTop = priv.target.eventPageY - rootElementOffset.top + wtTable.holder.scrollTop;
       var hiderHeight = wtTable.hider.offsetHeight;
@@ -651,7 +617,7 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
       if (!selection || !isHeaderSelection || priv.pressed || event.button !== 0) {
         priv.pressed = false;
         priv.rowsToMove.length = 0;
-        (0, _element.removeClass)(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI]);
+        removeClass(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI]);
         return;
       }
 
@@ -679,10 +645,10 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
         this.backlight.setPosition(null, leftPos);
         this.backlight.setSize(wtTable.hider.offsetWidth - leftPos, this.getRowsHeight(start, end));
         this.backlight.setOffset((this.getRowsHeight(start, coords.row - 1) + event.offsetY) * -1, null);
-        (0, _element.addClass)(this.hot.rootElement, CSS_ON_MOVING);
+        addClass(this.hot.rootElement, CSS_ON_MOVING);
         this.refreshPositions();
       } else {
-        (0, _element.removeClass)(this.hot.rootElement, CSS_AFTER_SELECTION);
+        removeClass(this.hot.rootElement, CSS_AFTER_SELECTION);
         priv.pressed = false;
         priv.rowsToMove.length = 0;
       }
@@ -736,9 +702,9 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (priv.rowsToMove.indexOf(coords.row) > -1) {
-        (0, _element.removeClass)(this.hot.rootElement, CSS_SHOW_UI);
+        removeClass(this.hot.rootElement, CSS_SHOW_UI);
       } else {
-        (0, _element.addClass)(this.hot.rootElement, CSS_SHOW_UI);
+        addClass(this.hot.rootElement, CSS_SHOW_UI);
       }
 
       blockCalculations.row = true;
@@ -761,10 +727,10 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
       var rowsLen = priv.rowsToMove.length;
       priv.pressed = false;
       priv.backlightHeight = 0;
-      (0, _element.removeClass)(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI, CSS_AFTER_SELECTION]);
+      removeClass(this.hot.rootElement, [CSS_ON_MOVING, CSS_SHOW_UI, CSS_AFTER_SELECTION]);
 
       if (this.hot.selection.isSelectedByRowHeader()) {
-        (0, _element.addClass)(this.hot.rootElement, CSS_AFTER_SELECTION);
+        addClass(this.hot.rootElement, CSS_AFTER_SELECTION);
       }
 
       if (rowsLen < 1 || target === void 0) {
@@ -849,6 +815,4 @@ var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ManualRowMove;
-}(_base.BasePlugin);
-
-exports.ManualRowMove = ManualRowMove;
+}(BasePlugin);

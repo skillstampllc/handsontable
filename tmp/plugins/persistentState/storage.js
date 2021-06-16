@@ -1,13 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-var _array = require("../../helpers/array");
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.index-of.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15,10 +7,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { arrayEach } from "../../helpers/array.mjs";
 /**
  * @class Storage
  * @plugin PersistentState
  */
+
 var Storage = /*#__PURE__*/function () {
   // eslint-disable-next-line no-restricted-globals
   function Storage(prefix) {
@@ -103,7 +97,7 @@ var Storage = /*#__PURE__*/function () {
     value: function resetAll() {
       var _this = this;
 
-      (0, _array.arrayEach)(this.savedKeys, function (value, index) {
+      arrayEach(this.savedKeys, function (value, index) {
         _this.rootWindow.localStorage.removeItem("".concat(_this.prefix, "_").concat(_this.savedKeys[index]));
       });
       this.clearSavedKeys();
@@ -149,5 +143,4 @@ var Storage = /*#__PURE__*/function () {
   return Storage;
 }();
 
-var _default = Storage;
-exports.default = _default;
+export default Storage;

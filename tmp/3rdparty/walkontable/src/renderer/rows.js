@@ -1,45 +1,19 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.freeze.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _console = require("./../../../../helpers/console");
-
-var _templateLiteralTag = require("./../../../../helpers/templateLiteralTag");
-
-var _orderView = require("./../utils/orderView");
-
-var _base = _interopRequireDefault(require("./_base"));
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 var _templateObject;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -63,6 +37,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { warn } from "./../../../../helpers/console.mjs";
+import { toSingleLine } from "./../../../../helpers/templateLiteralTag.mjs";
+import { OrderView } from "./../utils/orderView/index.mjs";
+import BaseRenderer from "./_base.mjs";
 var performanceWarningAppeared = false;
 /**
  * Rows renderer responsible for managing (inserting, tracking, rendering) TR elements belongs to TBODY.
@@ -94,7 +72,7 @@ var RowsRenderer = /*#__PURE__*/function (_BaseRenderer) {
      * @type {WeakMap}
      */
 
-    _this.orderView = new _orderView.OrderView(rootNode, function (sourceRowIndex) {
+    _this.orderView = new OrderView(rootNode, function (sourceRowIndex) {
       return _this.nodesPool.obtain(sourceRowIndex);
     }, _this.nodeType);
     return _this;
@@ -123,7 +101,7 @@ var RowsRenderer = /*#__PURE__*/function (_BaseRenderer) {
 
       if (!performanceWarningAppeared && rowsToRender > 1000) {
         performanceWarningAppeared = true;
-        (0, _console.warn)((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Performance tip: Handsontable rendered more than 1000 visible rows. Consider limiting \n        the number of rendered rows by specifying the table height and/or turning off the \"renderAllRows\" option."], ["Performance tip: Handsontable rendered more than 1000 visible rows. Consider limiting\\x20\n        the number of rendered rows by specifying the table height and/or turning off the \"renderAllRows\" option."]))));
+        warn(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["Performance tip: Handsontable rendered more than 1000 visible rows. Consider limiting \n        the number of rendered rows by specifying the table height and/or turning off the \"renderAllRows\" option."], ["Performance tip: Handsontable rendered more than 1000 visible rows. Consider limiting\\x20\n        the number of rendered rows by specifying the table height and/or turning off the \"renderAllRows\" option."]))));
       }
 
       this.orderView.setSize(rowsToRender).setOffset(this.table.renderedRowToSource(0)).start();
@@ -137,6 +115,6 @@ var RowsRenderer = /*#__PURE__*/function (_BaseRenderer) {
   }]);
 
   return RowsRenderer;
-}(_base.default);
+}(BaseRenderer);
 
-exports.default = RowsRenderer;
+export { RowsRenderer as default };

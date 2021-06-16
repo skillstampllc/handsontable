@@ -1,44 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.join.js");
-
-var _element = require("./../../../helpers/dom/element");
-
-var _event = require("./../../../helpers/dom/event");
-
-var _object = require("./../../../helpers/object");
-
-var _browser = require("./../../../helpers/browser");
-
-var _eventManager = _interopRequireDefault(require("./../../../eventManager"));
-
-var _coords = _interopRequireDefault(require("./cell/coords"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -51,15 +10,34 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { addClass, hasClass, removeClass, getComputedStyle, getTrimmingContainer, innerWidth, innerHeight, offset, outerHeight, outerWidth } from "./../../../helpers/dom/element.mjs";
+import { stopImmediatePropagation } from "./../../../helpers/dom/event.mjs";
+import { objectEach } from "./../../../helpers/object.mjs";
+import { isMobileBrowser } from "./../../../helpers/browser.mjs";
+import EventManager from "./../../../eventManager.mjs";
+import CellCoords from "./cell/coords.mjs";
 /**
  *
  */
+
 var Border = /*#__PURE__*/function () {
   /**
    * @param {Walkontable} wotInstance The Walkontable instance.
@@ -72,7 +50,7 @@ var Border = /*#__PURE__*/function () {
       return;
     }
 
-    this.eventManager = new _eventManager.default(wotInstance);
+    this.eventManager = new EventManager(wotInstance);
     this.instance = wotInstance;
     this.wot = wotInstance;
     this.settings = settings;
@@ -168,7 +146,7 @@ var Border = /*#__PURE__*/function () {
       }
 
       event.preventDefault();
-      (0, _event.stopImmediatePropagation)(event);
+      stopImmediatePropagation(event);
 
       var _this = this;
 
@@ -261,7 +239,7 @@ var Border = /*#__PURE__*/function () {
       this.cornerStyle.height = this.cornerDefaultStyle.height;
       this.cornerStyle.border = [this.cornerDefaultStyle.borderWidth, this.cornerDefaultStyle.borderStyle, this.cornerDefaultStyle.borderColor].join(' ');
 
-      if ((0, _browser.isMobileBrowser)()) {
+      if (isMobileBrowser()) {
         this.createMultipleSelectorHandles();
       }
 
@@ -312,7 +290,7 @@ var Border = /*#__PURE__*/function () {
         width: "".concat(hitAreaWidth, "px"),
         'border-radius': "".concat(parseInt(hitAreaWidth / 1.5, 10), "px")
       };
-      (0, _object.objectEach)(hitAreaStyle, function (value, key) {
+      objectEach(hitAreaStyle, function (value, key) {
         _this3.selectionHandles.styles.bottomRightHitArea[key] = value;
         _this3.selectionHandles.styles.topLeftHitArea[key] = value;
       });
@@ -324,7 +302,7 @@ var Border = /*#__PURE__*/function () {
         background: '#F5F5FF',
         border: '1px solid #4285c8'
       };
-      (0, _object.objectEach)(handleStyle, function (value, key) {
+      objectEach(handleStyle, function (value, key) {
         _this3.selectionHandles.styles.bottomRight[key] = value;
         _this3.selectionHandles.styles.topLeft[key] = value;
       });
@@ -471,16 +449,16 @@ var Border = /*#__PURE__*/function () {
         return;
       }
 
-      var fromTD = wtTable.getCell(new _coords.default(fromRow, fromColumn));
+      var fromTD = wtTable.getCell(new CellCoords(fromRow, fromColumn));
       var isMultiple = fromRow !== toRow || fromColumn !== toColumn;
-      var toTD = isMultiple ? wtTable.getCell(new _coords.default(toRow, toColumn)) : fromTD;
-      var fromOffset = (0, _element.offset)(fromTD);
-      var toOffset = isMultiple ? (0, _element.offset)(toTD) : fromOffset;
-      var containerOffset = (0, _element.offset)(wtTable.TABLE);
+      var toTD = isMultiple ? wtTable.getCell(new CellCoords(toRow, toColumn)) : fromTD;
+      var fromOffset = offset(fromTD);
+      var toOffset = isMultiple ? offset(toTD) : fromOffset;
+      var containerOffset = offset(wtTable.TABLE);
       var minTop = fromOffset.top;
       var minLeft = fromOffset.left;
       var left = minLeft - containerOffset.left - 1;
-      var width = toOffset.left + (0, _element.outerWidth)(toTD) - minLeft;
+      var width = toOffset.left + outerWidth(toTD) - minLeft;
 
       if (this.isEntireColumnSelected(fromRow, toRow)) {
         var modifiedValues = this.getDimensionsFromHeader('columns', fromColumn, toColumn, rowHeader, containerOffset);
@@ -500,7 +478,7 @@ var Border = /*#__PURE__*/function () {
       }
 
       var top = minTop - containerOffset.top - 1;
-      var height = toOffset.top + (0, _element.outerHeight)(toTD) - minTop;
+      var height = toOffset.top + outerHeight(toTD) - minTop;
 
       if (this.isEntireRowSelected(fromColumn, toColumn)) {
         var _modifiedValues2 = this.getDimensionsFromHeader('rows', fromRow, toRow, columnHeader, containerOffset);
@@ -520,7 +498,7 @@ var Border = /*#__PURE__*/function () {
         }
       }
 
-      var style = (0, _element.getComputedStyle)(fromTD, rootWindow);
+      var style = getComputedStyle(fromTD, rootWindow);
 
       if (parseInt(style.borderTopWidth, 10) > 0) {
         top += 1;
@@ -562,7 +540,7 @@ var Border = /*#__PURE__*/function () {
         checkCol = _hookResult[3];
       }
 
-      if ((0, _browser.isMobileBrowser)() || !cornerVisibleSetting || this.isPartRange(checkRow, checkCol)) {
+      if (isMobileBrowser() || !cornerVisibleSetting || this.isPartRange(checkRow, checkCol)) {
         this.cornerStyle.display = 'none';
       } else {
         this.cornerStyle.top = "".concat(top + height + this.cornerCenterPointOffset - 1, "px");
@@ -571,7 +549,7 @@ var Border = /*#__PURE__*/function () {
         this.cornerStyle.width = this.cornerDefaultStyle.width; // Hide the fill handle, so the possible further adjustments won't force unneeded scrollbars.
 
         this.cornerStyle.display = 'none';
-        var trimmingContainer = (0, _element.getTrimmingContainer)(wtTable.TABLE);
+        var trimmingContainer = getTrimmingContainer(wtTable.TABLE);
         var trimToWindow = trimmingContainer === rootWindow;
 
         if (trimToWindow) {
@@ -580,8 +558,8 @@ var Border = /*#__PURE__*/function () {
 
         if (toColumn === this.wot.getSetting('totalColumns') - 1) {
           var toTdOffsetLeft = trimToWindow ? toTD.getBoundingClientRect().left : toTD.offsetLeft;
-          var cornerRightEdge = toTdOffsetLeft + (0, _element.outerWidth)(toTD) + parseInt(this.cornerDefaultStyle.width, 10) / 2;
-          var cornerOverlappingContainer = cornerRightEdge >= (0, _element.innerWidth)(trimmingContainer);
+          var cornerRightEdge = toTdOffsetLeft + outerWidth(toTD) + parseInt(this.cornerDefaultStyle.width, 10) / 2;
+          var cornerOverlappingContainer = cornerRightEdge >= innerWidth(trimmingContainer);
 
           if (cornerOverlappingContainer) {
             this.cornerStyle.left = "".concat(Math.floor(left + width + this.cornerCenterPointOffset - parseInt(this.cornerDefaultStyle.width, 10) / 2), "px"); // eslint-disable-line max-len
@@ -592,9 +570,9 @@ var Border = /*#__PURE__*/function () {
 
         if (toRow === this.wot.getSetting('totalRows') - 1) {
           var toTdOffsetTop = trimToWindow ? toTD.getBoundingClientRect().top : toTD.offsetTop;
-          var cornerBottomEdge = toTdOffsetTop + (0, _element.outerHeight)(toTD) + parseInt(this.cornerDefaultStyle.height, 10) / 2;
+          var cornerBottomEdge = toTdOffsetTop + outerHeight(toTD) + parseInt(this.cornerDefaultStyle.height, 10) / 2;
 
-          var _cornerOverlappingContainer = cornerBottomEdge >= (0, _element.innerHeight)(trimmingContainer);
+          var _cornerOverlappingContainer = cornerBottomEdge >= innerHeight(trimmingContainer);
 
           if (_cornerOverlappingContainer) {
             this.cornerStyle.top = "".concat(Math.floor(top + height + this.cornerCenterPointOffset - parseInt(this.cornerDefaultStyle.height, 10) / 2), "px"); // eslint-disable-line max-len
@@ -606,7 +584,7 @@ var Border = /*#__PURE__*/function () {
         this.cornerStyle.display = 'block';
       }
 
-      if ((0, _browser.isMobileBrowser)()) {
+      if (isMobileBrowser()) {
         this.updateMultipleSelectionHandlesPosition(toRow, toColumn, top, left, width, height);
       }
     }
@@ -671,7 +649,7 @@ var Border = /*#__PURE__*/function () {
           };
 
           dimensionFn = function dimensionFn() {
-            return _element.outerHeight.apply(void 0, arguments);
+            return outerHeight.apply(void 0, arguments);
           };
 
           entireSelectionClassname = 'ht__selection--rows';
@@ -684,7 +662,7 @@ var Border = /*#__PURE__*/function () {
           };
 
           dimensionFn = function dimensionFn() {
-            return _element.outerWidth.apply(void 0, arguments);
+            return outerWidth.apply(void 0, arguments);
           };
 
           entireSelectionClassname = 'ht__selection--columns';
@@ -703,8 +681,8 @@ var Border = /*#__PURE__*/function () {
           return false;
         }
 
-        var startHeaderOffset = (0, _element.offset)(startHeader);
-        var endOffset = (0, _element.offset)(endHeader);
+        var startHeaderOffset = offset(startHeader);
+        var endOffset = offset(endHeader);
 
         if (startHeader && endHeader) {
           index = startHeaderOffset[dimensionProperty] - containerOffset[dimensionProperty] - 1;
@@ -731,10 +709,10 @@ var Border = /*#__PURE__*/function () {
       var borderStyle = border[borderElement];
 
       if (!borderStyle || borderStyle.hide) {
-        (0, _element.addClass)(this[borderElement], 'hidden');
+        addClass(this[borderElement], 'hidden');
       } else {
-        if ((0, _element.hasClass)(this[borderElement], 'hidden')) {
-          (0, _element.removeClass)(this[borderElement], 'hidden');
+        if (hasClass(this[borderElement], 'hidden')) {
+          removeClass(this[borderElement], 'hidden');
         }
 
         style.backgroundColor = borderStyle.color;
@@ -781,9 +759,9 @@ var Border = /*#__PURE__*/function () {
       this.changeBorderToDefaultStyle(borderElement);
 
       if (remove) {
-        (0, _element.addClass)(this[borderElement], 'hidden');
+        addClass(this[borderElement], 'hidden');
       } else {
-        (0, _element.removeClass)(this[borderElement], 'hidden');
+        removeClass(this[borderElement], 'hidden');
       }
     }
     /**
@@ -799,7 +777,7 @@ var Border = /*#__PURE__*/function () {
       this.rightStyle.display = 'none';
       this.cornerStyle.display = 'none';
 
-      if ((0, _browser.isMobileBrowser)()) {
+      if (isMobileBrowser()) {
         this.selectionHandles.styles.topLeft.display = 'none';
         this.selectionHandles.styles.bottomRight.display = 'none';
       }
@@ -819,5 +797,4 @@ var Border = /*#__PURE__*/function () {
   return Border;
 }();
 
-var _default = Border;
-exports.default = _default;
+export default Border;

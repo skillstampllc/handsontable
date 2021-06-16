@@ -1,27 +1,11 @@
-"use strict";
-
-exports.__esModule = true;
-exports.ChangesObservable = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.fill.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.weak-map.js");
-
-var _observer = require("./observer");
-
-var _utils = require("./utils");
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.fill.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.weak-map.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39,6 +23,16 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
+import { ChangesObserver } from "./observer.mjs";
+import { arrayDiff } from "./utils.mjs";
+/**
+ * The ChangesObservable module is an object that represents a resource that provides
+ * the ability to observe the changes that happened in the index map indexes during
+ * the code running.
+ *
+ * @class ChangesObservable
+ */
+
 var _observers = /*#__PURE__*/new WeakMap();
 
 var _indexMatrix = /*#__PURE__*/new WeakMap();
@@ -49,14 +43,7 @@ var _isMatrixIndexesInitialized = /*#__PURE__*/new WeakMap();
 
 var _initialIndexValue = /*#__PURE__*/new WeakMap();
 
-/**
- * The ChangesObservable module is an object that represents a resource that provides
- * the ability to observe the changes that happened in the index map indexes during
- * the code running.
- *
- * @class ChangesObservable
- */
-var ChangesObservable = /*#__PURE__*/function () {
+export var ChangesObservable = /*#__PURE__*/function () {
   /**
    * The list of registered ChangesObserver instances.
    *
@@ -163,7 +150,7 @@ var ChangesObservable = /*#__PURE__*/function () {
     value: function createObserver() {
       var _this = this;
 
-      var observer = new _observer.ChangesObserver();
+      var observer = new ChangesObserver();
 
       _classPrivateFieldGet(this, _observers).add(observer);
 
@@ -171,7 +158,7 @@ var ChangesObservable = /*#__PURE__*/function () {
         _classPrivateFieldGet(_this, _observers).delete(observer);
       });
 
-      observer._writeInitialChanges((0, _utils.arrayDiff)(_classPrivateFieldGet(this, _indexMatrix), _classPrivateFieldGet(this, _currentIndexState)));
+      observer._writeInitialChanges(arrayDiff(_classPrivateFieldGet(this, _indexMatrix), _classPrivateFieldGet(this, _currentIndexState)));
 
       return observer;
     }
@@ -202,7 +189,7 @@ var ChangesObservable = /*#__PURE__*/function () {
         }
       }
 
-      var changes = (0, _utils.arrayDiff)(currentIndexState, indexesState);
+      var changes = arrayDiff(currentIndexState, indexesState);
 
       _classPrivateFieldGet(this, _observers).forEach(function (observer) {
         return observer._write(changes);
@@ -214,5 +201,3 @@ var ChangesObservable = /*#__PURE__*/function () {
 
   return ChangesObservable;
 }();
-
-exports.ChangesObservable = ChangesObservable;

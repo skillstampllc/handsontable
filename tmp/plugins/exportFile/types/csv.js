@@ -1,51 +1,22 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _array = require("../../../helpers/array");
-
-var _mixed = require("../../../helpers/mixed");
-
-var _base = _interopRequireDefault(require("./_base"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.regexp.constructor.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67,6 +38,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { arrayEach, arrayMap } from "../../../helpers/array.mjs";
+import { stringify } from "../../../helpers/mixed.mjs";
+import BaseType from "./_base.mjs";
 var CHAR_CARRIAGE_RETURN = String.fromCharCode(13);
 var CHAR_DOUBLE_QUOTES = String.fromCharCode(34);
 var CHAR_LINE_FEED = String.fromCharCode(10);
@@ -106,7 +80,7 @@ var Csv = /*#__PURE__*/function (_BaseType) {
       var result = options.bom ? String.fromCharCode(0xFEFF) : '';
 
       if (hasColumnHeaders) {
-        columnHeaders = (0, _array.arrayMap)(columnHeaders, function (value) {
+        columnHeaders = arrayMap(columnHeaders, function (value) {
           return _this._escapeCell(value, true);
         });
 
@@ -118,7 +92,7 @@ var Csv = /*#__PURE__*/function (_BaseType) {
         result += options.rowDelimiter;
       }
 
-      (0, _array.arrayEach)(data, function (value, index) {
+      arrayEach(data, function (value, index) {
         if (index > 0) {
           result += options.rowDelimiter;
         }
@@ -145,7 +119,7 @@ var Csv = /*#__PURE__*/function (_BaseType) {
     key: "_escapeCell",
     value: function _escapeCell(value) {
       var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var escapedValue = (0, _mixed.stringify)(value);
+      var escapedValue = stringify(value);
 
       if (escapedValue !== '' && (force || escapedValue.indexOf(CHAR_CARRIAGE_RETURN) >= 0 || escapedValue.indexOf(CHAR_DOUBLE_QUOTES) >= 0 || escapedValue.indexOf(CHAR_LINE_FEED) >= 0 || escapedValue.indexOf(this.options.columnDelimiter) >= 0)) {
         escapedValue = escapedValue.replace(new RegExp('"', 'g'), '""');
@@ -174,7 +148,6 @@ var Csv = /*#__PURE__*/function (_BaseType) {
   }]);
 
   return Csv;
-}(_base.default);
+}(BaseType);
 
-var _default = Csv;
-exports.default = _default;
+export default Csv;

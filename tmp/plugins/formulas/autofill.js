@@ -1,19 +1,13 @@
-"use strict";
-
-exports.__esModule = true;
-exports.createAutofillHooks = void 0;
-
-require("core-js/modules/es.array.reduce.js");
-
-var _object = require("../../helpers/object");
-
+import "core-js/modules/es.array.reduce.js";
+import { isObjectEqual } from "../../helpers/object.mjs";
 /**
  * Creates hooks for autofill.
  *
  * @param {object} pluginInstance The formulas plugin instance.
  * @returns {object}
  */
-var createAutofillHooks = function createAutofillHooks(pluginInstance) {
+
+export var createAutofillHooks = function createAutofillHooks(pluginInstance) {
   // Blocks the autofill operation if at least one of the underlying's cell
   // contents cannot be set, e.g. if there's a matrix underneath.
   var beforeAutofill = function beforeAutofill(_, __, target) {
@@ -154,7 +148,7 @@ var createAutofillHooks = function createAutofillHooks(pluginInstance) {
 
     var sheet = pluginInstance.sheetId;
     operations.reduce(function (previousCopy, operation) {
-      if (!(0, _object.isObjectEqual)(previousCopy, operation.copy)) {
+      if (!isObjectEqual(previousCopy, operation.copy)) {
         pluginInstance.engine.copy({
           sheet: sheet,
           row: operation.copy.row,
@@ -176,5 +170,3 @@ var createAutofillHooks = function createAutofillHooks(pluginInstance) {
     afterAutofill: afterAutofill
   };
 };
-
-exports.createAutofillHooks = createAutofillHooks;

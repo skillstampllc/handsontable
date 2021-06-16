@@ -1,26 +1,14 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _core = _interopRequireDefault(require("./core"));
-
-var _rootInstance = require("./utils/rootInstance");
-
-var _registry = require("./i18n/registry");
-
-var _registry2 = require("./cellTypes/registry");
-
-var _textType = require("./cellTypes/textType");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// FIXME: Bug in eslint-plugin-import: https://github.com/benmosher/eslint-plugin-import/issues/1883
+import Core from "./core.mjs";
+import { rootInstanceSymbol } from "./utils/rootInstance.mjs"; // FIXME: Bug in eslint-plugin-import: https://github.com/benmosher/eslint-plugin-import/issues/1883
 
 /* eslint-disable import/named */
 
+import { dictionaryKeys, getTranslatedPhrase, registerLanguageDictionary, getLanguagesDictionaries, getLanguageDictionary } from "./i18n/registry.mjs";
 /* eslint-enable import/named */
-(0, _registry2.registerCellType)(_textType.TextCellType);
+
+import { registerCellType } from "./cellTypes/registry.mjs";
+import { TextCellType } from "./cellTypes/textType/index.mjs";
+registerCellType(TextCellType);
 /**
  * @param {HTMLElement} rootElement The element to which the Handsontable instance is injected.
  * @param {object} userSettings The user defined options.
@@ -28,25 +16,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 
 function Handsontable(rootElement, userSettings) {
-  var instance = new _core.default(rootElement, userSettings || {}, _rootInstance.rootInstanceSymbol);
+  var instance = new Core(rootElement, userSettings || {}, rootInstanceSymbol);
   instance.init();
   return instance;
 }
 
 Handsontable.Core = function (rootElement) {
   var userSettings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return new _core.default(rootElement, userSettings, _rootInstance.rootInstanceSymbol);
+  return new Core(rootElement, userSettings, rootInstanceSymbol);
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "16/06/2021 12:06:44";
+Handsontable.buildDate = "16/06/2021 13:26:24";
 Handsontable.version = "9.0.0";
 Handsontable.languages = {
-  dictionaryKeys: _registry.dictionaryKeys,
-  getLanguageDictionary: _registry.getLanguageDictionary,
-  getLanguagesDictionaries: _registry.getLanguagesDictionaries,
-  registerLanguageDictionary: _registry.registerLanguageDictionary,
-  getTranslatedPhrase: _registry.getTranslatedPhrase
+  dictionaryKeys: dictionaryKeys,
+  getLanguageDictionary: getLanguageDictionary,
+  getLanguagesDictionaries: getLanguagesDictionaries,
+  registerLanguageDictionary: registerLanguageDictionary,
+  getTranslatedPhrase: getTranslatedPhrase
 };
-var _default = Handsontable;
-exports.default = _default;
+export default Handsontable;

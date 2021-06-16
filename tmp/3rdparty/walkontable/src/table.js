@@ -1,54 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-var _element = require("./../../../helpers/dom/element");
-
-var _function = require("./../../../helpers/function");
-
-var _coords = _interopRequireDefault(require("./cell/coords"));
-
-var _column = _interopRequireDefault(require("./filter/column"));
-
-var _row = _interopRequireDefault(require("./filter/row"));
-
-var _renderer = require("./renderer");
-
-var _column2 = _interopRequireDefault(require("./utils/column"));
-
-var _row2 = _interopRequireDefault(require("./utils/row"));
-
-var _registerer = require("./overlay/registerer");
-
-var _constants = require("./overlay/constants");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -69,15 +18,39 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { hasClass, index, offset, removeClass, removeTextNodes, overlayContainsElement, closest, outerWidth, innerHeight, isVisible as _isVisible } from "./../../../helpers/dom/element.mjs";
+import { isFunction } from "./../../../helpers/function.mjs";
+import CellCoords from "./cell/coords.mjs";
+import ColumnFilter from "./filter/column.mjs";
+import RowFilter from "./filter/row.mjs";
+import { Renderer } from "./renderer/index.mjs";
+import ColumnUtils from "./utils/column.mjs";
+import RowUtils from "./utils/row.mjs";
+import { isOverlayTypeOf } from "./overlay/registerer.mjs";
+import { CLONE_TOP, CLONE_BOTTOM, CLONE_LEFT, CLONE_TOP_LEFT_CORNER, CLONE_BOTTOM_LEFT_CORNER } from "./overlay/constants.mjs";
 /**
  *
  */
+
 var Table = /*#__PURE__*/function () {
   /**
    * @param {Walkontable} wotInstance The Walkontable instance.
@@ -126,7 +99,7 @@ var Table = /*#__PURE__*/function () {
      */
 
     this.isTableVisible = false;
-    (0, _element.removeTextNodes)(this.TABLE);
+    removeTextNodes(this.TABLE);
     this.spreader = this.createSpreader(this.TABLE);
     this.hider = this.createHider(this.spreader);
     this.holder = this.createHolder(this.hider);
@@ -146,9 +119,9 @@ var Table = /*#__PURE__*/function () {
       return _this._modifyRowHeaderWidth(origRowHeaderWidth);
     };
 
-    this.rowUtils = new _row2.default(this.wot);
-    this.columnUtils = new _column2.default(this.wot);
-    this.tableRenderer = new _renderer.Renderer({
+    this.rowUtils = new RowUtils(this.wot);
+    this.columnUtils = new ColumnUtils(this.wot);
+    this.tableRenderer = new Renderer({
       TABLE: this.TABLE,
       THEAD: this.THEAD,
       COLGROUP: this.COLGROUP,
@@ -170,7 +143,7 @@ var Table = /*#__PURE__*/function () {
   _createClass(Table, [{
     key: "is",
     value: function is(overlayTypeName) {
-      return (0, _registerer.isOverlayTypeOf)(this.wot.cloneOverlay, overlayTypeName);
+      return isOverlayTypeOf(this.wot.cloneOverlay, overlayTypeName);
     }
     /**
      *
@@ -216,7 +189,7 @@ var Table = /*#__PURE__*/function () {
       var parent = table.parentNode;
       var spreader;
 
-      if (!parent || parent.nodeType !== Node.ELEMENT_NODE || !(0, _element.hasClass)(parent, 'wtHolder')) {
+      if (!parent || parent.nodeType !== Node.ELEMENT_NODE || !hasClass(parent, 'wtHolder')) {
         spreader = this.wot.rootDocument.createElement('div');
         spreader.className = 'wtSpreader';
 
@@ -242,7 +215,7 @@ var Table = /*#__PURE__*/function () {
       var parent = spreader.parentNode;
       var hider;
 
-      if (!parent || parent.nodeType !== Node.ELEMENT_NODE || !(0, _element.hasClass)(parent, 'wtHolder')) {
+      if (!parent || parent.nodeType !== Node.ELEMENT_NODE || !hasClass(parent, 'wtHolder')) {
         hider = this.wot.rootDocument.createElement('div');
         hider.className = 'wtHider';
 
@@ -268,7 +241,7 @@ var Table = /*#__PURE__*/function () {
       var parent = hider.parentNode;
       var holder;
 
-      if (!parent || parent.nodeType !== Node.ELEMENT_NODE || !(0, _element.hasClass)(parent, 'wtHolder')) {
+      if (!parent || parent.nodeType !== Node.ELEMENT_NODE || !hasClass(parent, 'wtHolder')) {
         holder = this.wot.rootDocument.createElement('div');
         holder.style.position = 'relative';
         holder.className = 'wtHolder';
@@ -312,7 +285,7 @@ var Table = /*#__PURE__*/function () {
       var runFastDraw = fastDraw;
 
       if (this.isMaster) {
-        this.holderOffset = (0, _element.offset)(this.holder);
+        this.holderOffset = offset(this.holder);
         runFastDraw = wtViewport.createRenderCalculators(runFastDraw);
 
         if (rowHeadersCount && !wot.getSetting('fixedColumnsLeft')) {
@@ -341,15 +314,15 @@ var Table = /*#__PURE__*/function () {
         }
       } else {
         if (this.isMaster) {
-          this.tableOffset = (0, _element.offset)(this.TABLE);
+          this.tableOffset = offset(this.TABLE);
         } else {
           this.tableOffset = this.wot.cloneSource.wtTable.tableOffset;
         }
 
         var startRow = totalRows > 0 ? this.getFirstRenderedRow() : 0;
         var startColumn = totalColumns > 0 ? this.getFirstRenderedColumn() : 0;
-        this.rowFilter = new _row.default(startRow, totalRows, columnHeadersCount);
-        this.columnFilter = new _column.default(startColumn, totalColumns, rowHeadersCount);
+        this.rowFilter = new RowFilter(startRow, totalRows, columnHeadersCount);
+        this.columnFilter = new ColumnFilter(startColumn, totalColumns, rowHeadersCount);
         var performRedraw = true; // Only master table rendering can be skipped
 
         if (this.isMaster) {
@@ -362,7 +335,7 @@ var Table = /*#__PURE__*/function () {
         if (performRedraw) {
           this.tableRenderer.setHeaderContentRenderers(rowHeaders, columnHeaders);
 
-          if (this.is(_constants.CLONE_BOTTOM) || this.is(_constants.CLONE_BOTTOM_LEFT_CORNER)) {
+          if (this.is(CLONE_BOTTOM) || this.is(CLONE_BOTTOM_LEFT_CORNER)) {
             // do NOT render headers on the bottom or bottom-left corner overlay
             this.tableRenderer.setHeaderContentRenderers(rowHeaders, []);
           }
@@ -379,7 +352,7 @@ var Table = /*#__PURE__*/function () {
 
           this.adjustColumnHeaderHeights();
 
-          if (this.isMaster || this.is(_constants.CLONE_BOTTOM)) {
+          if (this.isMaster || this.is(CLONE_BOTTOM)) {
             this.markOversizedRows();
           }
 
@@ -387,8 +360,8 @@ var Table = /*#__PURE__*/function () {
             this.wot.wtViewport.createVisibleCalculators();
             this.wot.wtOverlays.refresh(false);
             this.wot.wtOverlays.applyToDOM();
-            var hiderWidth = (0, _element.outerWidth)(this.hider);
-            var tableWidth = (0, _element.outerWidth)(this.TABLE);
+            var hiderWidth = outerWidth(this.hider);
+            var tableWidth = outerWidth(this.TABLE);
 
             if (hiderWidth !== 0 && tableWidth !== hiderWidth) {
               // Recalculate the column widths, if width changes made in the overlays removed the scrollbar, thus changing the viewport width.
@@ -404,7 +377,7 @@ var Table = /*#__PURE__*/function () {
             }
 
             this.wot.getSetting('onDraw', true);
-          } else if (this.is(_constants.CLONE_BOTTOM)) {
+          } else if (this.is(CLONE_BOTTOM)) {
             this.wot.cloneSource.wtOverlays.adjustElementsSize();
           }
         }
@@ -470,7 +443,7 @@ var Table = /*#__PURE__*/function () {
           continue;
         }
 
-        currentHeaderHeight = (0, _element.innerHeight)(currentHeader);
+        currentHeaderHeight = innerHeight(currentHeader);
 
         if (!previousColHeaderHeight && defaultRowHeight < currentHeaderHeight || previousColHeaderHeight < currentHeaderHeight) {
           this.wot.wtViewport.oversizedColumnHeaders[level] = currentHeaderHeight;
@@ -521,7 +494,7 @@ var Table = /*#__PURE__*/function () {
     value: function resetOversizedRows() {
       var wot = this.wot;
 
-      if (!this.isMaster && !this.is(_constants.CLONE_BOTTOM)) {
+      if (!this.isMaster && !this.is(CLONE_BOTTOM)) {
         return;
       }
 
@@ -547,7 +520,7 @@ var Table = /*#__PURE__*/function () {
       var nodes = this.TABLE.querySelectorAll(".".concat(className));
 
       for (var i = 0, len = nodes.length; i < len; i++) {
-        (0, _element.removeClass)(nodes[i], className);
+        removeClass(nodes[i], className);
       }
     }
     /**
@@ -789,7 +762,7 @@ var Table = /*#__PURE__*/function () {
       var cellElement = TD;
 
       if (cellElement.nodeName !== 'TD' && cellElement.nodeName !== 'TH') {
-        cellElement = (0, _element.closest)(cellElement, ['TD', 'TH']);
+        cellElement = closest(cellElement, ['TD', 'TH']);
       }
 
       if (cellElement === null) {
@@ -798,14 +771,14 @@ var Table = /*#__PURE__*/function () {
 
       var TR = cellElement.parentNode;
       var CONTAINER = TR.parentNode;
-      var row = (0, _element.index)(TR);
+      var row = index(TR);
       var col = cellElement.cellIndex;
 
-      if ((0, _element.overlayContainsElement)(_constants.CLONE_TOP_LEFT_CORNER, cellElement, this.wtRootElement) || (0, _element.overlayContainsElement)(_constants.CLONE_TOP, cellElement, this.wtRootElement)) {
+      if (overlayContainsElement(CLONE_TOP_LEFT_CORNER, cellElement, this.wtRootElement) || overlayContainsElement(CLONE_TOP, cellElement, this.wtRootElement)) {
         if (CONTAINER.nodeName === 'THEAD') {
           row -= CONTAINER.childNodes.length;
         }
-      } else if ((0, _element.overlayContainsElement)(_constants.CLONE_BOTTOM_LEFT_CORNER, cellElement, this.wtRootElement) || (0, _element.overlayContainsElement)(_constants.CLONE_BOTTOM, cellElement, this.wtRootElement)) {
+      } else if (overlayContainsElement(CLONE_BOTTOM_LEFT_CORNER, cellElement, this.wtRootElement) || overlayContainsElement(CLONE_BOTTOM, cellElement, this.wtRootElement)) {
         var totalRows = this.wot.getSetting('totalRows');
         row = totalRows - CONTAINER.childNodes.length + row;
       } else if (CONTAINER === this.THEAD) {
@@ -814,13 +787,13 @@ var Table = /*#__PURE__*/function () {
         row = this.rowFilter.renderedToSource(row);
       }
 
-      if ((0, _element.overlayContainsElement)(_constants.CLONE_TOP_LEFT_CORNER, cellElement, this.wtRootElement) || (0, _element.overlayContainsElement)(_constants.CLONE_LEFT, cellElement, this.wtRootElement) || (0, _element.overlayContainsElement)(_constants.CLONE_BOTTOM_LEFT_CORNER, cellElement, this.wtRootElement)) {
+      if (overlayContainsElement(CLONE_TOP_LEFT_CORNER, cellElement, this.wtRootElement) || overlayContainsElement(CLONE_LEFT, cellElement, this.wtRootElement) || overlayContainsElement(CLONE_BOTTOM_LEFT_CORNER, cellElement, this.wtRootElement)) {
         col = this.columnFilter.offsettedTH(col);
       } else {
         col = this.columnFilter.visibleRowHeadedColumnToSourceColumn(col);
       }
 
-      return new _coords.default(row, col);
+      return new CellCoords(row, col);
     }
     /**
      * Check if any of the rendered rows is higher than expected, and if so, cache them.
@@ -835,7 +808,7 @@ var Table = /*#__PURE__*/function () {
 
       var rowCount = this.TBODY.childNodes.length;
       var expectedTableHeight = rowCount * this.wot.wtSettings.settings.defaultRowHeight;
-      var actualTableHeight = (0, _element.innerHeight)(this.TBODY) - 1;
+      var actualTableHeight = innerHeight(this.TBODY) - 1;
       var previousRowHeight;
       var rowInnerHeight;
       var sourceRowIndex;
@@ -855,9 +828,9 @@ var Table = /*#__PURE__*/function () {
         rowHeader = currentTr.querySelector('th');
 
         if (rowHeader) {
-          rowInnerHeight = (0, _element.innerHeight)(rowHeader);
+          rowInnerHeight = innerHeight(rowHeader);
         } else {
-          rowInnerHeight = (0, _element.innerHeight)(currentTr) - 1;
+          rowInnerHeight = innerHeight(currentTr) - 1;
         }
 
         if (!previousRowHeight && this.wot.wtSettings.settings.defaultRowHeight < rowInnerHeight || previousRowHeight < rowInnerHeight) {
@@ -1181,7 +1154,7 @@ var Table = /*#__PURE__*/function () {
   }, {
     key: "isVisible",
     value: function isVisible() {
-      return (0, _element.isVisible)(this.TABLE);
+      return _isVisible(this.TABLE);
     }
     /**
      * Modify row header widths provided by user in class contructor.
@@ -1194,7 +1167,7 @@ var Table = /*#__PURE__*/function () {
   }, {
     key: "_modifyRowHeaderWidth",
     value: function _modifyRowHeaderWidth(rowHeaderWidthFactory) {
-      var widths = (0, _function.isFunction)(rowHeaderWidthFactory) ? rowHeaderWidthFactory() : null;
+      var widths = isFunction(rowHeaderWidthFactory) ? rowHeaderWidthFactory() : null;
 
       if (Array.isArray(widths)) {
         widths = _toConsumableArray(widths);
@@ -1233,5 +1206,4 @@ var Table = /*#__PURE__*/function () {
   return Table;
 }();
 
-var _default = Table;
-exports.default = _default;
+export default Table;

@@ -1,8 +1,3 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = exports.NodeStructure = void 0;
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -54,8 +49,6 @@ var NodeStructure = function NodeStructure(data) {
  * @util
  */
 
-
-exports.NodeStructure = NodeStructure;
 
 var LinkedList = /*#__PURE__*/function () {
   function LinkedList() {
@@ -299,5 +292,5 @@ var LinkedList = /*#__PURE__*/function () {
   return LinkedList;
 }();
 
-var _default = LinkedList;
-exports.default = _default;
+export { NodeStructure };
+export default LinkedList;

@@ -1,39 +1,15 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.LeftOverlay = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _element = require("./../../../../helpers/dom/element");
-
-var _left = _interopRequireDefault(require("./../table/left"));
-
-var _base = require("./_base");
-
-var _constants = require("./constants");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
@@ -57,10 +33,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { addClass, getScrollbarWidth, getScrollLeft, getWindowScrollTop, hasClass, outerWidth, removeClass, setOverlayPosition, resetCssTransform } from "./../../../../helpers/dom/element.mjs";
+import LeftOverlayTable from "./../table/left.mjs";
+import { Overlay } from "./_base.mjs";
+import { CLONE_LEFT } from "./constants.mjs";
 /**
  * @class LeftOverlay
  */
-var LeftOverlay = /*#__PURE__*/function (_Overlay) {
+
+export var LeftOverlay = /*#__PURE__*/function (_Overlay) {
   _inherits(LeftOverlay, _Overlay);
 
   var _super = _createSuper(LeftOverlay);
@@ -74,7 +55,7 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
     _classCallCheck(this, LeftOverlay);
 
     _this = _super.call(this, wotInstance);
-    _this.clone = _this.makeClone(_constants.CLONE_LEFT);
+    _this.clone = _this.makeClone(CLONE_LEFT);
     return _this;
   }
   /**
@@ -93,7 +74,7 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
         args[_key] = arguments[_key];
       }
 
-      return _construct(_left.default, args);
+      return _construct(LeftOverlayTable, args);
     }
     /**
      * Checks if overlay should be fully rendered.
@@ -143,10 +124,10 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
 
         headerPosition = finalLeft;
         finalLeft += 'px';
-        (0, _element.setOverlayPosition)(overlayRoot, finalLeft, finalTop);
+        setOverlayPosition(overlayRoot, finalLeft, finalTop);
       } else {
         headerPosition = this.getScrollPosition();
-        (0, _element.resetCssTransform)(overlayRoot);
+        resetCssTransform(overlayRoot);
       }
 
       var positionChanged = this.adjustHeaderBordersPosition(headerPosition);
@@ -167,7 +148,7 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
       var result = false;
 
       if (this.mainTableScrollableElement === rootWindow && rootWindow.scrollX !== pos) {
-        rootWindow.scrollTo(pos, (0, _element.getWindowScrollTop)(rootWindow));
+        rootWindow.scrollTo(pos, getWindowScrollTop(rootWindow));
         result = true;
       } else if (this.mainTableScrollableElement.scrollLeft !== pos) {
         this.mainTableScrollableElement.scrollLeft = pos;
@@ -235,7 +216,7 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
           wtTable = _this$wot.wtTable,
           rootDocument = _this$wot.rootDocument,
           rootWindow = _this$wot.rootWindow;
-      var scrollbarHeight = (0, _element.getScrollbarWidth)(rootDocument);
+      var scrollbarHeight = getScrollbarWidth(rootDocument);
       var overlayRoot = this.clone.wtTable.holder.parentNode;
       var overlayRootStyle = overlayRoot.style;
       var preventOverflow = this.wot.getSetting('preventOverflow');
@@ -254,7 +235,7 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
       }
 
       this.clone.wtTable.holder.style.height = overlayRootStyle.height;
-      var tableWidth = (0, _element.outerWidth)(this.clone.wtTable.TABLE);
+      var tableWidth = outerWidth(this.clone.wtTable.TABLE);
       overlayRootStyle.width = "".concat(tableWidth, "px");
     }
     /**
@@ -329,7 +310,7 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
       var scrollbarCompensation = 0;
 
       if (beyondRendered && mainHolder.offsetWidth !== mainHolder.clientWidth) {
-        scrollbarCompensation = (0, _element.getScrollbarWidth)(this.wot.rootDocument);
+        scrollbarCompensation = getScrollbarWidth(this.wot.rootDocument);
       }
 
       if (beyondRendered) {
@@ -369,7 +350,7 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
   }, {
     key: "getScrollPosition",
     value: function getScrollPosition() {
-      return (0, _element.getScrollLeft)(this.mainTableScrollableElement, this.wot.rootWindow);
+      return getScrollLeft(this.mainTableScrollableElement, this.wot.rootWindow);
     }
     /**
      * Adds css classes to hide the header border's header (cell-selection border hiding issue).
@@ -387,23 +368,23 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
       var totalRows = this.wot.getSetting('totalRows');
 
       if (totalRows) {
-        (0, _element.removeClass)(masterParent, 'emptyRows');
+        removeClass(masterParent, 'emptyRows');
       } else {
-        (0, _element.addClass)(masterParent, 'emptyRows');
+        addClass(masterParent, 'emptyRows');
       }
 
       var positionChanged = false;
 
       if (fixedColumnsLeft && !rowHeaders.length) {
-        (0, _element.addClass)(masterParent, 'innerBorderLeft');
+        addClass(masterParent, 'innerBorderLeft');
       } else if (!fixedColumnsLeft && rowHeaders.length) {
-        var previousState = (0, _element.hasClass)(masterParent, 'innerBorderLeft');
+        var previousState = hasClass(masterParent, 'innerBorderLeft');
 
         if (position) {
-          (0, _element.addClass)(masterParent, 'innerBorderLeft');
+          addClass(masterParent, 'innerBorderLeft');
           positionChanged = !previousState;
         } else {
-          (0, _element.removeClass)(masterParent, 'innerBorderLeft');
+          removeClass(masterParent, 'innerBorderLeft');
           positionChanged = previousState;
         }
       }
@@ -413,11 +394,9 @@ var LeftOverlay = /*#__PURE__*/function (_Overlay) {
   }], [{
     key: "OVERLAY_NAME",
     get: function get() {
-      return _constants.CLONE_LEFT;
+      return CLONE_LEFT;
     }
   }]);
 
   return LeftOverlay;
-}(_base.Overlay);
-
-exports.LeftOverlay = LeftOverlay;
+}(Overlay);

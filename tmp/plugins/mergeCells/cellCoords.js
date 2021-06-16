@@ -1,15 +1,5 @@
-"use strict";
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.freeze.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _index = require("../../3rdparty/walkontable/src/index");
-
-var _templateLiteralTag = require("../../helpers/templateLiteralTag");
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
 
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
 
@@ -21,12 +11,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { CellCoords, CellRange } from "../../3rdparty/walkontable/src/index.mjs";
+import { toSingleLine } from "../../helpers/templateLiteralTag.mjs";
 /**
  * The `MergedCellCoords` class represents a single merged cell.
  *
  * @class MergedCellCoords
  * @plugin MergeCells
  */
+
 var MergedCellCoords = /*#__PURE__*/function () {
   function MergedCellCoords(row, column, rowspan, colspan) {
     _classCallCheck(this, MergedCellCoords);
@@ -251,12 +244,12 @@ var MergedCellCoords = /*#__PURE__*/function () {
   }, {
     key: "getRange",
     value: function getRange() {
-      return new _index.CellRange(new _index.CellCoords(this.row, this.col), new _index.CellCoords(this.row, this.col), new _index.CellCoords(this.getLastRow(), this.getLastColumn()));
+      return new CellRange(new CellCoords(this.row, this.col), new CellCoords(this.row, this.col), new CellCoords(this.getLastRow(), this.getLastColumn()));
     }
   }], [{
     key: "NEGATIVE_VALUES_WARNING",
     value: function NEGATIVE_VALUES_WARNING(newMergedCell) {
-      return (0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["The merged cell declared with {row: ", ", col: ", ", \n      rowspan: ", ", colspan: ", "} contains negative values, which is \n      not supported. It will not be added to the collection."], ["The merged cell declared with {row: ", ", col: ", ",\\x20\n      rowspan: ", ", colspan: ", "} contains negative values, which is\\x20\n      not supported. It will not be added to the collection."])), newMergedCell.row, newMergedCell.col, newMergedCell.rowspan, newMergedCell.colspan);
+      return toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["The merged cell declared with {row: ", ", col: ", ", \n      rowspan: ", ", colspan: ", "} contains negative values, which is \n      not supported. It will not be added to the collection."], ["The merged cell declared with {row: ", ", col: ", ",\\x20\n      rowspan: ", ", colspan: ", "} contains negative values, which is\\x20\n      not supported. It will not be added to the collection."])), newMergedCell.row, newMergedCell.col, newMergedCell.rowspan, newMergedCell.colspan);
     }
     /**
      * Get a warning message for when the declared merged cell data contains values exceeding the table limits.
@@ -268,7 +261,7 @@ var MergedCellCoords = /*#__PURE__*/function () {
   }, {
     key: "IS_OUT_OF_BOUNDS_WARNING",
     value: function IS_OUT_OF_BOUNDS_WARNING(newMergedCell) {
-      return (0, _templateLiteralTag.toSingleLine)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "] is positioned \n      (or positioned partially) outside of the table range. It was not added to the table, please fix your setup."], ["The merged cell declared at [", ", ", "] is positioned\\x20\n      (or positioned partially) outside of the table range. It was not added to the table, please fix your setup."])), newMergedCell.row, newMergedCell.col);
+      return toSingleLine(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "] is positioned \n      (or positioned partially) outside of the table range. It was not added to the table, please fix your setup."], ["The merged cell declared at [", ", ", "] is positioned\\x20\n      (or positioned partially) outside of the table range. It was not added to the table, please fix your setup."])), newMergedCell.row, newMergedCell.col);
     }
     /**
      * Get a warning message for when the declared merged cell data represents a single cell.
@@ -280,7 +273,7 @@ var MergedCellCoords = /*#__PURE__*/function () {
   }, {
     key: "IS_SINGLE_CELL",
     value: function IS_SINGLE_CELL(newMergedCell) {
-      return (0, _templateLiteralTag.toSingleLine)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "] has both \"rowspan\" \n      and \"colspan\" declared as \"1\", which makes it a single cell. It cannot be added to the collection."], ["The merged cell declared at [", ", ", "] has both \"rowspan\"\\x20\n      and \"colspan\" declared as \"1\", which makes it a single cell. It cannot be added to the collection."])), newMergedCell.row, newMergedCell.col);
+      return toSingleLine(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "] has both \"rowspan\" \n      and \"colspan\" declared as \"1\", which makes it a single cell. It cannot be added to the collection."], ["The merged cell declared at [", ", ", "] has both \"rowspan\"\\x20\n      and \"colspan\" declared as \"1\", which makes it a single cell. It cannot be added to the collection."])), newMergedCell.row, newMergedCell.col);
     }
     /**
      * Get a warning message for when the declared merged cell data contains "colspan" or "rowspan", that equals 0.
@@ -292,7 +285,7 @@ var MergedCellCoords = /*#__PURE__*/function () {
   }, {
     key: "ZERO_SPAN_WARNING",
     value: function ZERO_SPAN_WARNING(newMergedCell) {
-      return (0, _templateLiteralTag.toSingleLine)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "] has \"rowspan\" \n      or \"colspan\" declared as \"0\", which is not supported. It cannot be added to the collection."], ["The merged cell declared at [", ", ", "] has \"rowspan\"\\x20\n      or \"colspan\" declared as \"0\", which is not supported. It cannot be added to the collection."])), newMergedCell.row, newMergedCell.col);
+      return toSingleLine(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "] has \"rowspan\" \n      or \"colspan\" declared as \"0\", which is not supported. It cannot be added to the collection."], ["The merged cell declared at [", ", ", "] has \"rowspan\"\\x20\n      or \"colspan\" declared as \"0\", which is not supported. It cannot be added to the collection."])), newMergedCell.row, newMergedCell.col);
     }
     /**
      * Check whether the values provided for a merged cell contain any negative values.
@@ -351,5 +344,4 @@ var MergedCellCoords = /*#__PURE__*/function () {
   return MergedCellCoords;
 }();
 
-var _default = MergedCellCoords;
-exports.default = _default;
+export default MergedCellCoords;

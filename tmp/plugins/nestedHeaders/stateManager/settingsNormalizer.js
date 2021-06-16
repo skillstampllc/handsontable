@@ -1,39 +1,15 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.normalizeSettings = normalizeSettings;
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.array.concat.js");
-
-var _array = require("../../../helpers/array");
-
-var _object = require("../../../helpers/object");
-
-var _mixed = require("../../../helpers/mixed");
-
-var _utils = require("./utils");
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -47,6 +23,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+/* eslint-disable jsdoc/require-description-complete-sentence */
+import { arrayEach, arrayMap } from "../../../helpers/array.mjs";
+import { isObject } from "../../../helpers/object.mjs";
+import { stringify } from "../../../helpers/mixed.mjs";
+import { createDefaultHeaderSettings, createPlaceholderHeaderSettings } from "./utils.mjs";
 /**
  * A function that normalizes user-defined settings into one predictable
  * structure. Currently, the developer can declare nested headers by passing
@@ -85,7 +66,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *                                         structure.
  * @returns {Array[]}
  */
-function normalizeSettings(sourceSettings) {
+
+export function normalizeSettings(sourceSettings) {
   var columnsLimit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Infinity;
   var normalizedSettings = [];
 
@@ -94,24 +76,24 @@ function normalizeSettings(sourceSettings) {
   } // Normalize array items (header settings) into one shape - literal object with default props.
 
 
-  (0, _array.arrayEach)(sourceSettings, function (headersSettings) {
+  arrayEach(sourceSettings, function (headersSettings) {
     var columns = [];
     var columnIndex = 0;
     normalizedSettings.push(columns);
-    (0, _array.arrayEach)(headersSettings, function (sourceHeaderSettings) {
-      var headerSettings = (0, _utils.createDefaultHeaderSettings)();
+    arrayEach(headersSettings, function (sourceHeaderSettings) {
+      var headerSettings = createDefaultHeaderSettings();
 
-      if ((0, _object.isObject)(sourceHeaderSettings)) {
+      if (isObject(sourceHeaderSettings)) {
         var label = sourceHeaderSettings.label,
             colspan = sourceHeaderSettings.colspan;
-        headerSettings.label = (0, _mixed.stringify)(label);
+        headerSettings.label = stringify(label);
 
         if (typeof colspan === 'number' && colspan > 1) {
           headerSettings.colspan = colspan;
           headerSettings.origColspan = colspan;
         }
       } else {
-        headerSettings.label = (0, _mixed.stringify)(sourceHeaderSettings);
+        headerSettings.label = stringify(sourceHeaderSettings);
       }
 
       columnIndex += headerSettings.origColspan;
@@ -128,21 +110,21 @@ function normalizeSettings(sourceSettings) {
 
       if (headerSettings.colspan > 1) {
         for (var i = 0; i < headerSettings.colspan - 1; i++) {
-          columns.push((0, _utils.createPlaceholderHeaderSettings)());
+          columns.push(createPlaceholderHeaderSettings());
         }
       }
 
       return !cancelProcessing;
     });
   });
-  var columnsLength = Math.max.apply(Math, _toConsumableArray((0, _array.arrayMap)(normalizedSettings, function (headersSettings) {
+  var columnsLength = Math.max.apply(Math, _toConsumableArray(arrayMap(normalizedSettings, function (headersSettings) {
     return headersSettings.length;
   }))); // Normalize the length of each header layer to the same columns length.
 
-  (0, _array.arrayEach)(normalizedSettings, function (headersSettings) {
+  arrayEach(normalizedSettings, function (headersSettings) {
     if (headersSettings.length < columnsLength) {
-      var defaultSettings = (0, _array.arrayMap)(new Array(columnsLength - headersSettings.length), function () {
-        return (0, _utils.createDefaultHeaderSettings)();
+      var defaultSettings = arrayMap(new Array(columnsLength - headersSettings.length), function () {
+        return createDefaultHeaderSettings();
       });
       headersSettings.splice.apply(headersSettings, [headersSettings.length, 0].concat(_toConsumableArray(defaultSettings)));
     }

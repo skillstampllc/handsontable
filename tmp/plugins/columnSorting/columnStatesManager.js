@@ -1,50 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.object.get-own-property-descriptors.js");
-
-exports.__esModule = true;
-exports.ColumnStatesManager = void 0;
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.array.find-index.js");
-
-require("core-js/modules/es.array.map.js");
-
-var _object = require("../../helpers/object");
-
-var _translations = require("../../translations");
-
-var _mixed = require("../../helpers/mixed");
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -63,12 +16,34 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.array.find-index.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.get-own-property-descriptors.js";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { isObject, objectEach } from "../../helpers/object.mjs";
+import { LinkedPhysicalIndexToValueMap as IndexToValueMap } from "../../translations/index.mjs";
+import { isDefined } from "../../helpers/mixed.mjs";
 var inheritedColumnProperties = ['sortEmptyCells', 'indicator', 'headerAction', 'compareFunctionFactory'];
 var SORT_EMPTY_CELLS_DEFAULT = false;
 var SHOW_SORT_INDICATOR_DEFAULT = true;
@@ -80,7 +55,7 @@ var HEADER_ACTION_DEFAULT = true;
  * @plugin ColumnSorting
  */
 
-var ColumnStatesManager = /*#__PURE__*/function () {
+export var ColumnStatesManager = /*#__PURE__*/function () {
   function ColumnStatesManager(hot, mapName) {
     _classCallCheck(this, ColumnStatesManager);
 
@@ -96,7 +71,7 @@ var ColumnStatesManager = /*#__PURE__*/function () {
      * @type {LinkedPhysicalIndexToValueMap}
      */
 
-    this.sortingStates = new _translations.LinkedPhysicalIndexToValueMap();
+    this.sortingStates = new IndexToValueMap();
     /**
      * Determines whether we should sort empty cells.
      *
@@ -146,11 +121,11 @@ var ColumnStatesManager = /*#__PURE__*/function () {
     value: function updateAllColumnsProperties(allSortSettings) {
       var _this = this;
 
-      if (!(0, _object.isObject)(allSortSettings)) {
+      if (!isObject(allSortSettings)) {
         return;
       }
 
-      (0, _object.objectEach)(allSortSettings, function (newValue, propertyName) {
+      objectEach(allSortSettings, function (newValue, propertyName) {
         if (inheritedColumnProperties.includes(propertyName)) {
           _this[propertyName] = newValue;
         }
@@ -241,7 +216,7 @@ var ColumnStatesManager = /*#__PURE__*/function () {
   }, {
     key: "isColumnSorted",
     value: function isColumnSorted(column) {
-      return (0, _object.isObject)(this.sortingStates.getValueAtIndex(this.hot.toPhysicalColumn(column)));
+      return isObject(this.sortingStates.getValueAtIndex(this.hot.toPhysicalColumn(column)));
     }
     /**
      * Queue of sort states containing sorted columns and their orders (Array of objects containing `column` and `sortOrder` properties).
@@ -285,7 +260,7 @@ var ColumnStatesManager = /*#__PURE__*/function () {
     value: function getColumnSortState(column) {
       var sortOrder = this.getSortOrderOfColumn(column);
 
-      if ((0, _mixed.isDefined)(sortOrder)) {
+      if (isDefined(sortOrder)) {
         return {
           column: column,
           sortOrder: sortOrder
@@ -323,5 +298,3 @@ var ColumnStatesManager = /*#__PURE__*/function () {
 
   return ColumnStatesManager;
 }();
-
-exports.ColumnStatesManager = ColumnStatesManager;

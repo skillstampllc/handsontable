@@ -1,14 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.getCondition = getCondition;
-exports.getConditionDescriptor = getConditionDescriptor;
-exports.registerCondition = registerCondition;
-exports.conditions = void 0;
-
-require("core-js/modules/es.array.concat.js");
-
-var conditions = {};
+import "core-js/modules/es.array.concat.js";
+export var conditions = {};
 /**
  * Get condition closure with pre-bound arguments.
  *
@@ -17,9 +8,7 @@ var conditions = {};
  * @returns {Function}
  */
 
-exports.conditions = conditions;
-
-function getCondition(name, args) {
+export function getCondition(name, args) {
   if (!conditions[name]) {
     throw Error("Filter condition \"".concat(name, "\" does not exist."));
   }
@@ -44,8 +33,7 @@ function getCondition(name, args) {
  * @returns {object}
  */
 
-
-function getConditionDescriptor(name) {
+export function getConditionDescriptor(name) {
   if (!conditions[name]) {
     throw Error("Filter condition \"".concat(name, "\" does not exist."));
   }
@@ -60,8 +48,7 @@ function getConditionDescriptor(name) {
  * @param {object} descriptor Condition descriptor.
  */
 
-
-function registerCondition(name, condition, descriptor) {
+export function registerCondition(name, condition, descriptor) {
   descriptor.key = name;
   conditions[name] = {
     condition: condition,

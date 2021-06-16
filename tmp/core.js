@@ -1,110 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.default = Core;
-
-require("core-js/modules/es.array.sort.js");
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.number.is-integer.js");
-
-require("core-js/modules/es.number.constructor.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.reverse.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/web.immediate.js");
-
-var _element = require("./helpers/dom/element");
-
-var _function = require("./helpers/function");
-
-var _mixed = require("./helpers/mixed");
-
-var _browser = require("./helpers/browser");
-
-var _editorManager = _interopRequireDefault(require("./editorManager"));
-
-var _eventManager = _interopRequireDefault(require("./eventManager"));
-
-var _object = require("./helpers/object");
-
-var _array = require("./helpers/array");
-
-var _parseTable = require("./utils/parseTable");
-
-var _registry = require("./plugins/registry");
-
-var _registry2 = require("./renderers/registry");
-
-var _registry3 = require("./validators/registry");
-
-var _string = require("./helpers/string");
-
-var _number = require("./helpers/number");
-
-var _tableView = _interopRequireDefault(require("./tableView"));
-
-var _dataSource = _interopRequireDefault(require("./dataSource"));
-
-var _data = require("./helpers/data");
-
-var _translations = require("./translations");
-
-var _rootInstance = require("./utils/rootInstance");
-
-var _src = require("./3rdparty/walkontable/src");
-
-var _pluginHooks = _interopRequireDefault(require("./pluginHooks"));
-
-var _registry4 = require("./i18n/registry");
-
-var _utils = require("./i18n/utils");
-
-var _keyStateObserver = require("./utils/keyStateObserver");
-
-var _selection = require("./selection");
-
-var _index = require("./dataMap/index");
-
-var _uniqueMap = require("./utils/dataStructures/uniqueMap");
-
-var _parseNumber = require("./utils/parseNumber");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -114,6 +7,29 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+import "core-js/modules/es.array.sort.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.reverse.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/web.immediate.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -127,6 +43,34 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+import { addClass, empty, removeClass } from "./helpers/dom/element.mjs";
+import { isFunction } from "./helpers/function.mjs";
+import { isDefined, isUndefined, isRegExp, _injectProductInfo, isEmpty } from "./helpers/mixed.mjs";
+import { isMobileBrowser, isIpadOS } from "./helpers/browser.mjs";
+import EditorManager from "./editorManager.mjs";
+import EventManager from "./eventManager.mjs";
+import { deepClone, duckSchema, isObjectEqual, deepObjectSize, hasOwnProperty, createObjectPropListener, objectEach } from "./helpers/object.mjs";
+import { arrayMap, arrayEach, arrayReduce, getDifferenceOfArrays, stringToArray } from "./helpers/array.mjs";
+import { instanceToHTML } from "./utils/parseTable.mjs";
+import { getPlugin, getPluginsNames } from "./plugins/registry.mjs";
+import { getRenderer } from "./renderers/registry.mjs";
+import { getValidator } from "./validators/registry.mjs";
+import { randomString, toUpperCaseFirst } from "./helpers/string.mjs";
+import { rangeEach, rangeEachReverse } from "./helpers/number.mjs";
+import TableView from "./tableView.mjs";
+import DataSource from "./dataSource.mjs";
+import { translateRowsToColumns, cellMethodLookupFactory, spreadsheetColumnLabel } from "./helpers/data.mjs";
+import { IndexMapper } from "./translations/index.mjs";
+import { registerAsRootInstance, hasValidParameter, isRootInstance } from "./utils/rootInstance.mjs";
+import { CellCoords, ViewportColumnsCalculator } from "./3rdparty/walkontable/src/index.mjs";
+import Hooks from "./pluginHooks.mjs";
+import { hasLanguageDictionary, getValidLanguageCode, getTranslatedPhrase } from "./i18n/registry.mjs";
+import { warnUserAboutLanguageRegistration, normalizeLanguageCode } from "./i18n/utils.mjs";
+import { startObserving as keyStateStartObserving, stopObserving as keyStateStopObserving } from "./utils/keyStateObserver.mjs";
+import { Selection } from "./selection/index.mjs";
+import { MetaManager, DataMap } from "./dataMap/index.mjs";
+import { createUniqueMap } from "./utils/dataStructures/uniqueMap.mjs";
+import { isFloat } from "./utils/parseNumber.mjs";
 var activeGuid = null;
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -160,26 +104,26 @@ var activeGuid = null;
  * @param {boolean} [rootInstanceSymbol=false] Indicates if the instance is root of all later instances created.
  */
 
-function Core(rootElement, userSettings) {
+export default function Core(rootElement, userSettings) {
   var _this = this;
 
   var rootInstanceSymbol = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   var preventScrollingToCell = false;
   var instance = this;
-  var eventManager = new _eventManager.default(instance);
+  var eventManager = new EventManager(instance);
   var datamap;
   var dataSource;
   var grid;
   var editorManager;
   var firstRun = true;
-  userSettings.language = (0, _registry4.getValidLanguageCode)(userSettings.language);
-  var metaManager = new _index.MetaManager(userSettings);
+  userSettings.language = getValidLanguageCode(userSettings.language);
+  var metaManager = new MetaManager(userSettings);
   var tableMeta = metaManager.getTableMeta();
   var globalMeta = metaManager.getGlobalMeta();
-  var pluginsRegistry = (0, _uniqueMap.createUniqueMap)();
+  var pluginsRegistry = createUniqueMap();
 
-  if ((0, _rootInstance.hasValidParameter)(rootInstanceSymbol)) {
-    (0, _rootInstance.registerAsRootInstance)(this);
+  if (hasValidParameter(rootInstanceSymbol)) {
+    registerAsRootInstance(this);
   } // TODO: check if references to DOM elements should be move to UI layer (Walkontable)
 
   /**
@@ -241,16 +185,16 @@ function Core(rootElement, userSettings) {
    */
 
   this.executionSuspendedCounter = 0;
-  (0, _keyStateObserver.startObserving)(this.rootDocument);
+  keyStateStartObserving(this.rootDocument);
   this.container = this.rootDocument.createElement('div');
   this.renderCall = false;
   rootElement.insertBefore(this.container, rootElement.firstChild);
 
-  if ((0, _rootInstance.isRootInstance)(this)) {
-    (0, _mixed._injectProductInfo)(userSettings.licenseKey, rootElement);
+  if (isRootInstance(this)) {
+    _injectProductInfo(userSettings.licenseKey, rootElement);
   }
 
-  this.guid = "ht_".concat((0, _string.randomString)()); // this is the namespace for global events
+  this.guid = "ht_".concat(randomString()); // this is the namespace for global events
 
   /**
    * Instance of index mapper which is responsible for managing the column indexes.
@@ -260,7 +204,7 @@ function Core(rootElement, userSettings) {
    * @type {IndexMapper}
    */
 
-  this.columnIndexMapper = new _translations.IndexMapper();
+  this.columnIndexMapper = new IndexMapper();
   /**
    * Instance of index mapper which is responsible for managing the row indexes.
    *
@@ -269,8 +213,8 @@ function Core(rootElement, userSettings) {
    * @type {IndexMapper}
    */
 
-  this.rowIndexMapper = new _translations.IndexMapper();
-  dataSource = new _dataSource.default(instance);
+  this.rowIndexMapper = new IndexMapper();
+  dataSource = new DataSource(instance);
 
   if (!this.rootElement.id || this.rootElement.id.substring(0, 3) === 'ht_') {
     this.rootElement.id = this.guid; // if root element does not have an id, assign a random id
@@ -279,19 +223,19 @@ function Core(rootElement, userSettings) {
   var visualToRenderableCoords = function visualToRenderableCoords(coords) {
     var visualRow = coords.row,
         visualColumn = coords.col;
-    return new _src.CellCoords( // We just store indexes for rows and columns without headers.
+    return new CellCoords( // We just store indexes for rows and columns without headers.
     visualRow >= 0 ? instance.rowIndexMapper.getRenderableFromVisualIndex(visualRow) : visualRow, visualColumn >= 0 ? instance.columnIndexMapper.getRenderableFromVisualIndex(visualColumn) : visualColumn);
   };
 
   var renderableToVisualCoords = function renderableToVisualCoords(coords) {
     var renderableRow = coords.row,
         renderableColumn = coords.col;
-    return new _src.CellCoords( // We just store indexes for rows and columns without headers.
+    return new CellCoords( // We just store indexes for rows and columns without headers.
     renderableRow >= 0 ? instance.rowIndexMapper.getVisualFromRenderableIndex(renderableRow) : renderableRow, renderableColumn >= 0 ? instance.columnIndexMapper.getVisualFromRenderableIndex(renderableColumn) : renderableColumn // eslint-disable-line max-len
     );
   };
 
-  var selection = new _selection.Selection(tableMeta, {
+  var selection = new Selection(tableMeta, {
     countCols: function countCols() {
       return instance.countCols();
     },
@@ -346,7 +290,7 @@ function Core(rootElement, userSettings) {
     }
   });
   this.selection.addLocalHook('afterSetRangeEnd', function (cellCoords) {
-    var preventScrolling = (0, _object.createObjectPropListener)(false);
+    var preventScrolling = createObjectPropListener(false);
 
     var selectionRange = _this.selection.getSelectedRange();
 
@@ -397,15 +341,15 @@ function Core(rootElement, userSettings) {
 
 
     if (isSelectedByRowHeader && isSelectedByColumnHeader) {
-      (0, _element.addClass)(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
+      addClass(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
     } else if (isSelectedByRowHeader) {
-      (0, _element.removeClass)(_this.rootElement, 'ht__selection--columns');
-      (0, _element.addClass)(_this.rootElement, 'ht__selection--rows');
+      removeClass(_this.rootElement, 'ht__selection--columns');
+      addClass(_this.rootElement, 'ht__selection--rows');
     } else if (isSelectedByColumnHeader) {
-      (0, _element.removeClass)(_this.rootElement, 'ht__selection--rows');
-      (0, _element.addClass)(_this.rootElement, 'ht__selection--columns');
+      removeClass(_this.rootElement, 'ht__selection--rows');
+      addClass(_this.rootElement, 'ht__selection--columns');
     } else {
-      (0, _element.removeClass)(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
+      removeClass(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
     }
 
     _this._refreshBorders(null);
@@ -444,7 +388,7 @@ function Core(rootElement, userSettings) {
 
     _this._refreshBorders();
 
-    (0, _element.removeClass)(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
+    removeClass(_this.rootElement, ['ht__selection--rows', 'ht__selection--columns']);
 
     _this.runHooks('afterDeselect');
   });
@@ -498,7 +442,7 @@ function Core(rootElement, userSettings) {
           return indexA > indexB ? 1 : -1;
         }); // Normalize the {index, amount} groups into bigger groups.
 
-        var normalizedIndexes = (0, _array.arrayReduce)(sortedIndexes, function (acc, _ref6) {
+        var normalizedIndexes = arrayReduce(sortedIndexes, function (acc, _ref6) {
           var _ref7 = _slicedToArray(_ref6, 2),
               groupIndex = _ref7[0],
               groupAmount = _ref7[1];
@@ -534,7 +478,7 @@ function Core(rootElement, userSettings) {
           } // eslint-disable-next-line no-param-reassign
 
 
-          index = (0, _mixed.isDefined)(index) ? index : numberOfSourceRows;
+          index = isDefined(index) ? index : numberOfSourceRows;
           delta = datamap.createRow(index, amount, source);
 
           if (delta) {
@@ -544,7 +488,7 @@ function Core(rootElement, userSettings) {
             var currentFromRow = currentFromRange === null || currentFromRange === void 0 ? void 0 : currentFromRange.row; // Moving down the selection (when it exist). It should be present on the "old" row.
             // TODO: The logic here should be handled by selection module.
 
-            if ((0, _mixed.isDefined)(currentFromRow) && currentFromRow >= index) {
+            if (isDefined(currentFromRow) && currentFromRow >= index) {
               var _currentSelectedRange = currentSelectedRange.to,
                   currentToRow = _currentSelectedRange.row,
                   currentToColumn = _currentSelectedRange.col;
@@ -558,8 +502,8 @@ function Core(rootElement, userSettings) {
 
               selection.getSelectedRange().pop(); // I can't use transforms as they don't work in negative indexes.
 
-              selection.setRangeStartOnly(new _src.CellCoords(currentFromRow + delta, currentFromColumn), true);
-              selection.setRangeEnd(new _src.CellCoords(currentToRow + delta, currentToColumn)); // will call render() internally
+              selection.setRangeStartOnly(new CellCoords(currentFromRow + delta, currentFromColumn), true);
+              selection.setRangeEnd(new CellCoords(currentToRow + delta, currentToColumn)); // will call render() internally
             } else {
               instance._refreshBorders(); // it will call render and prepare methods
 
@@ -589,7 +533,7 @@ function Core(rootElement, userSettings) {
             // TODO: The logic here should be handled by selection module.
 
 
-            if ((0, _mixed.isDefined)(_currentFromColumn) && _currentFromColumn >= index) {
+            if (isDefined(_currentFromColumn) && _currentFromColumn >= index) {
               var _currentSelectedRange3 = _currentSelectedRange2.to,
                   _currentToRow = _currentSelectedRange3.row,
                   _currentToColumn = _currentSelectedRange3.col;
@@ -603,8 +547,8 @@ function Core(rootElement, userSettings) {
 
               selection.getSelectedRange().pop(); // I can't use transforms as they don't work in negative indexes.
 
-              selection.setRangeStartOnly(new _src.CellCoords(_currentFromRow, _currentFromColumn + delta), true);
-              selection.setRangeEnd(new _src.CellCoords(_currentToRow, _currentToColumn + delta)); // will call render() internally
+              selection.setRangeStartOnly(new CellCoords(_currentFromRow, _currentFromColumn + delta), true);
+              selection.setRangeEnd(new CellCoords(_currentToRow, _currentToColumn + delta)); // will call render() internally
             } else {
               instance._refreshBorders(); // it will call render and prepare methods
 
@@ -617,12 +561,12 @@ function Core(rootElement, userSettings) {
           var removeRow = function removeRow(indexes) {
             var offset = 0; // Normalize the {index, amount} groups into bigger groups.
 
-            (0, _array.arrayEach)(indexes, function (_ref8) {
+            arrayEach(indexes, function (_ref8) {
               var _ref9 = _slicedToArray(_ref8, 2),
                   groupIndex = _ref9[0],
                   groupAmount = _ref9[1];
 
-              var calcIndex = (0, _mixed.isEmpty)(groupIndex) ? instance.countRows() - 1 : Math.max(groupIndex - offset, 0); // If the 'index' is an integer decrease it by 'offset' otherwise pass it through to make the value
+              var calcIndex = isEmpty(groupIndex) ? instance.countRows() - 1 : Math.max(groupIndex - offset, 0); // If the 'index' is an integer decrease it by 'offset' otherwise pass it through to make the value
               // compatible with datamap.removeCol method.
 
               if (Number.isInteger(groupIndex)) {
@@ -673,12 +617,12 @@ function Core(rootElement, userSettings) {
           var removeCol = function removeCol(indexes) {
             var offset = 0; // Normalize the {index, amount} groups into bigger groups.
 
-            (0, _array.arrayEach)(indexes, function (_ref10) {
+            arrayEach(indexes, function (_ref10) {
               var _ref11 = _slicedToArray(_ref10, 2),
                   groupIndex = _ref11[0],
                   groupAmount = _ref11[1];
 
-              var calcIndex = (0, _mixed.isEmpty)(groupIndex) ? instance.countCols() - 1 : Math.max(groupIndex - offset, 0);
+              var calcIndex = isEmpty(groupIndex) ? instance.countCols() - 1 : Math.max(groupIndex - offset, 0);
               var physicalColumnIndex = instance.toPhysicalColumn(calcIndex); // If the 'index' is an integer decrease it by 'offset' otherwise pass it through to make the value
               // compatible with datamap.removeCol method.
 
@@ -805,7 +749,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (selection.isSelected()) {
-        (0, _array.arrayEach)(selection.selectedRange, function (range) {
+        arrayEach(selection.selectedRange, function (range) {
           var selectionChanged = false;
           var fromRow = range.from.row;
           var fromCol = range.from.col;
@@ -896,7 +840,7 @@ function Core(rootElement, userSettings) {
           repeatCol = end ? end.col - start.col + 1 : 0;
           repeatRow = end ? end.row - start.row + 1 : 0; // eslint-disable-next-line no-param-reassign
 
-          input = (0, _data.translateRowsToColumns)(input);
+          input = translateRowsToColumns(input);
 
           for (c = 0, clen = input.length, cmax = Math.max(clen, repeatCol); c < cmax; c++) {
             if (c < clen) {
@@ -1043,7 +987,7 @@ function Core(rootElement, userSettings) {
                 var result = instance.runHooks('beforeAutofillInsidePopulate', index, direction, input, deltas, {}, selected);
 
                 if (result) {
-                  value = (0, _mixed.isUndefined)(result.value) ? value : result.value;
+                  value = isUndefined(result.value) ? value : result.value;
                 }
               }
 
@@ -1056,12 +1000,12 @@ function Core(rootElement, userSettings) {
                 if (orgValue === null || _typeof(orgValue) !== 'object') {
                   pushData = false;
                 } else {
-                  var orgValueSchema = (0, _object.duckSchema)(Array.isArray(orgValue) ? orgValue : orgValue[0] || orgValue);
-                  var valueSchema = (0, _object.duckSchema)(Array.isArray(value) ? value : value[0] || value);
+                  var orgValueSchema = duckSchema(Array.isArray(orgValue) ? orgValue : orgValue[0] || orgValue);
+                  var valueSchema = duckSchema(Array.isArray(value) ? value : value[0] || value);
                   /* eslint-disable max-depth */
 
-                  if ((0, _object.isObjectEqual)(orgValueSchema, valueSchema)) {
-                    value = (0, _object.deepClone)(value);
+                  if (isObjectEqual(orgValueSchema, valueSchema)) {
+                    value = deepClone(value);
                   } else {
                     pushData = false;
                   }
@@ -1095,14 +1039,14 @@ function Core(rootElement, userSettings) {
    */
 
   function setLanguage(languageCode) {
-    var normalizedLanguageCode = (0, _utils.normalizeLanguageCode)(languageCode);
+    var normalizedLanguageCode = normalizeLanguageCode(languageCode);
 
-    if ((0, _registry4.hasLanguageDictionary)(normalizedLanguageCode)) {
+    if (hasLanguageDictionary(normalizedLanguageCode)) {
       instance.runHooks('beforeLanguageChange', normalizedLanguageCode);
       globalMeta.language = normalizedLanguageCode;
       instance.runHooks('afterLanguageChange', normalizedLanguageCode);
     } else {
-      (0, _utils.warnUserAboutLanguageRegistration)(languageCode);
+      warnUserAboutLanguageRegistration(languageCode);
     }
   }
   /**
@@ -1118,28 +1062,28 @@ function Core(rootElement, userSettings) {
     var element = className === 'className' ? instance.rootElement : instance.table;
 
     if (firstRun) {
-      (0, _element.addClass)(element, classSettings);
+      addClass(element, classSettings);
     } else {
       var globalMetaSettingsArray = [];
       var settingsArray = [];
 
       if (globalMeta[className]) {
-        globalMetaSettingsArray = Array.isArray(globalMeta[className]) ? globalMeta[className] : (0, _array.stringToArray)(globalMeta[className]);
+        globalMetaSettingsArray = Array.isArray(globalMeta[className]) ? globalMeta[className] : stringToArray(globalMeta[className]);
       }
 
       if (classSettings) {
-        settingsArray = Array.isArray(classSettings) ? classSettings : (0, _array.stringToArray)(classSettings);
+        settingsArray = Array.isArray(classSettings) ? classSettings : stringToArray(classSettings);
       }
 
-      var classNameToRemove = (0, _array.getDifferenceOfArrays)(globalMetaSettingsArray, settingsArray);
-      var classNameToAdd = (0, _array.getDifferenceOfArrays)(settingsArray, globalMetaSettingsArray);
+      var classNameToRemove = getDifferenceOfArrays(globalMetaSettingsArray, settingsArray);
+      var classNameToAdd = getDifferenceOfArrays(settingsArray, globalMetaSettingsArray);
 
       if (classNameToRemove.length) {
-        (0, _element.removeClass)(element, classNameToRemove);
+        removeClass(element, classNameToRemove);
       }
 
       if (classNameToAdd.length) {
-        (0, _element.addClass)(element, classNameToAdd);
+        addClass(element, classNameToAdd);
       }
     }
 
@@ -1150,13 +1094,13 @@ function Core(rootElement, userSettings) {
     dataSource.setData(tableMeta.data);
     instance.runHooks('beforeInit');
 
-    if ((0, _browser.isMobileBrowser)() || (0, _browser.isIpadOS)()) {
-      (0, _element.addClass)(instance.rootElement, 'mobile');
+    if (isMobileBrowser() || isIpadOS()) {
+      addClass(instance.rootElement, 'mobile');
     }
 
     this.updateSettings(tableMeta, true);
-    this.view = new _tableView.default(this);
-    editorManager = _editorManager.default.getInstance(instance, tableMeta, selection);
+    this.view = new TableView(this);
+    editorManager = EditorManager.getInstance(instance, tableMeta, selection);
     instance.runHooks('init');
     this.forceFullRender = true; // used when data was changed
 
@@ -1292,7 +1236,7 @@ function Core(rootElement, userSettings) {
                 var cell = instance.getCell(cellPropertiesReference.visualRow, cellPropertiesReference.visualCol);
 
                 if (cell !== null) {
-                  (0, _element.removeClass)(cell, tableMeta.invalidCellClassName);
+                  removeClass(cell, tableMeta.invalidCellClassName);
                 } // index -= 1;
 
               }
@@ -1386,7 +1330,7 @@ function Core(rootElement, userSettings) {
     instance.runHooks('afterChange', changes, source || 'edit');
     var activeEditor = instance.getActiveEditor();
 
-    if (activeEditor && (0, _mixed.isDefined)(activeEditor.refreshValue)) {
+    if (activeEditor && isDefined(activeEditor.refreshValue)) {
       activeEditor.refreshValue();
     }
   }
@@ -1430,7 +1374,7 @@ function Core(rootElement, userSettings) {
       callback(valid);
     }
 
-    if ((0, _mixed.isRegExp)(validator)) {
+    if (isRegExp(validator)) {
       validator = function (expression) {
         return function (cellValue, validatorCallback) {
           validatorCallback(expression.test(cellValue));
@@ -1438,7 +1382,7 @@ function Core(rootElement, userSettings) {
       }(validator);
     }
 
-    if ((0, _function.isFunction)(validator)) {
+    if (isFunction(validator)) {
       // eslint-disable-next-line no-param-reassign
       value = instance.runHooks('beforeValidate', value, cellProperties.visualRow, cellProperties.prop, source); // To provide consistent behaviour, validation should be always asynchronous
 
@@ -1520,7 +1464,7 @@ function Core(rootElement, userSettings) {
       var oldV = dataSource.getAtCell(this.toPhysicalRow(input[i][0]), input[i][1]);
       var newV = input[i][2];
 
-      if (newV && typeof newV === 'string' && (0, _parseNumber.isFloat)(newV)) {
+      if (newV && typeof newV === 'string' && isFloat(newV)) {
         newV = parseFloat(newV);
       } else if (newV && typeof newV === 'string' && Number.isInteger(newV)) {
         newV = parseInt(newV, 10);
@@ -1661,8 +1605,8 @@ function Core(rootElement, userSettings) {
       throw new Error('populateFromArray parameter `input` must be an array of arrays'); // API changed in 0.9-beta2, let's check if you use it correctly
     }
 
-    var c = typeof endRow === 'number' ? new _src.CellCoords(endRow, endCol) : null;
-    return grid.populateFromArray(new _src.CellCoords(row, column), input, c, source, method, direction, deltas);
+    var c = typeof endRow === 'number' ? new CellCoords(endRow, endCol) : null;
+    return grid.populateFromArray(new CellCoords(row, column), input, c, source, method, direction, deltas);
   };
   /**
    * Adds/removes data from the column. This method works the same as Array.splice for arrays (see {@link DataMap#spliceCol}).
@@ -1726,7 +1670,7 @@ function Core(rootElement, userSettings) {
   this.getSelected = function () {
     // https://github.com/handsontable/handsontable/issues/44  //cjl
     if (selection.isSelected()) {
-      return (0, _array.arrayMap)(selection.getSelectedRange(), function (_ref12) {
+      return arrayMap(selection.getSelectedRange(), function (_ref12) {
         var from = _ref12.from,
             to = _ref12.to;
         return [from.row, from.col, to.row, to.col];
@@ -1810,11 +1754,11 @@ function Core(rootElement, userSettings) {
     }
 
     var changes = [];
-    (0, _array.arrayEach)(selection.getSelectedRange(), function (cellRange) {
+    arrayEach(selection.getSelectedRange(), function (cellRange) {
       var topLeft = cellRange.getTopLeftCorner();
       var bottomRight = cellRange.getBottomRightCorner();
-      (0, _number.rangeEach)(topLeft.row, bottomRight.row, function (row) {
-        (0, _number.rangeEach)(topLeft.col, bottomRight.col, function (column) {
+      rangeEach(topLeft.row, bottomRight.row, function (row) {
+        rangeEach(topLeft.col, bottomRight.col, function (column) {
           if (!_this2.getCellMeta(row, column).readOnly) {
             changes.push([row, column, null]);
           }
@@ -2203,7 +2147,7 @@ function Core(rootElement, userSettings) {
   this.loadData = function (data, source) {
     if (Array.isArray(tableMeta.dataSchema)) {
       instance.dataType = 'array';
-    } else if ((0, _function.isFunction)(tableMeta.dataSchema)) {
+    } else if (isFunction(tableMeta.dataSchema)) {
       instance.dataType = 'function';
     } else {
       instance.dataType = 'object';
@@ -2214,7 +2158,7 @@ function Core(rootElement, userSettings) {
     }
 
     data = instance.runHooks('beforeLoadData', data, firstRun, source);
-    datamap = new _index.DataMap(instance, data, tableMeta);
+    datamap = new DataMap(instance, data, tableMeta);
 
     if (_typeof(data) === 'object' && data !== null) {
       if (!(data.push && data.splice)) {
@@ -2233,10 +2177,10 @@ function Core(rootElement, userSettings) {
 
       for (r = 0, rlen = tableMeta.startRows; r < rlen; r++) {
         if ((instance.dataType === 'object' || instance.dataType === 'function') && tableMeta.dataSchema) {
-          row = (0, _object.deepClone)(dataSchema);
+          row = deepClone(dataSchema);
           data.push(row);
         } else if (instance.dataType === 'array') {
-          row = (0, _object.deepClone)(dataSchema[0]);
+          row = deepClone(dataSchema[0]);
           data.push(row);
         } else {
           row = [];
@@ -2289,7 +2233,7 @@ function Core(rootElement, userSettings) {
 
     if (Array.isArray(columnsSettings)) {
       finalNrOfColumns = columnsSettings.length;
-    } else if ((0, _function.isFunction)(columnsSettings)) {
+    } else if (isFunction(columnsSettings)) {
       if (instance.dataType === 'array') {
         var nrOfSourceColumns = this.countSourceCols();
 
@@ -2303,10 +2247,10 @@ function Core(rootElement, userSettings) {
         finalNrOfColumns = datamap.colToPropCache.length;
       } // In some cases we need to check columns length from the schema, i.e. `data` may be empty.
 
-    } else if ((0, _mixed.isDefined)(tableMeta.dataSchema)) {
+    } else if (isDefined(tableMeta.dataSchema)) {
       var schema = datamap.getSchema(); // Schema may be defined as an array of objects. Each object will define column.
 
-      finalNrOfColumns = Array.isArray(schema) ? schema.length : (0, _object.deepObjectSize)(schema);
+      finalNrOfColumns = Array.isArray(schema) ? schema.length : deepObjectSize(schema);
     } else {
       // We init index mappers by length of source data to provide indexes also for skipped indexes.
       finalNrOfColumns = this.countSourceCols();
@@ -2342,11 +2286,11 @@ function Core(rootElement, userSettings) {
 
 
   this.getData = function (row, column, row2, column2) {
-    if ((0, _mixed.isUndefined)(row)) {
+    if (isUndefined(row)) {
       return datamap.getAll();
     }
 
-    return datamap.getRange(new _src.CellCoords(row, column), new _src.CellCoords(row2, column2), datamap.DESTINATION_RENDERER);
+    return datamap.getRange(new CellCoords(row, column), new CellCoords(row2, column2), datamap.DESTINATION_RENDERER);
   };
   /**
    * Returns a string value of the selected range. Each column is separated by tab, each row is separated by a new
@@ -2363,7 +2307,7 @@ function Core(rootElement, userSettings) {
 
 
   this.getCopyableText = function (startRow, startCol, endRow, endCol) {
-    return datamap.getCopyableText(new _src.CellCoords(startRow, startCol), new _src.CellCoords(endRow, endCol));
+    return datamap.getCopyableText(new CellCoords(startRow, startCol), new CellCoords(endRow, endCol));
   };
   /**
    * Returns the data's copyable value at specified `row` and `column` index (see {@link DataMap#getCopyable}).
@@ -2425,15 +2369,15 @@ function Core(rootElement, userSettings) {
     var i;
     var j;
 
-    if ((0, _mixed.isDefined)(settings.rows)) {
+    if (isDefined(settings.rows)) {
       throw new Error('The "rows" setting is no longer supported. Do you mean startRows, minRows or maxRows?');
     }
 
-    if ((0, _mixed.isDefined)(settings.cols)) {
+    if (isDefined(settings.cols)) {
       throw new Error('The "cols" setting is no longer supported. Do you mean startCols, minCols or maxCols?');
     }
 
-    if ((0, _mixed.isDefined)(settings.ganttChart)) {
+    if (isDefined(settings.ganttChart)) {
       throw new Error('Since 8.0.0 the "ganttChart" setting is no longer supported.');
     } // eslint-disable-next-line no-restricted-syntax
 
@@ -2452,12 +2396,12 @@ function Core(rootElement, userSettings) {
       } else if (i === 'tableClassName' && instance.table) {
         setClassName('tableClassName', settings.tableClassName);
         instance.view.wt.wtOverlays.syncOverlayTableClassNames();
-      } else if (_pluginHooks.default.getSingleton().isRegistered(i) || _pluginHooks.default.getSingleton().isDeprecated(i)) {
-        if ((0, _function.isFunction)(settings[i]) || Array.isArray(settings[i])) {
+      } else if (Hooks.getSingleton().isRegistered(i) || Hooks.getSingleton().isDeprecated(i)) {
+        if (isFunction(settings[i]) || Array.isArray(settings[i])) {
           settings[i].initialHook = true;
           instance.addHook(i, settings[i]);
         }
-      } else if (!init && (0, _object.hasOwnProperty)(settings, i)) {
+      } else if (!init && hasOwnProperty(settings, i)) {
         // Update settings
         globalMeta[i] = settings[i];
       }
@@ -2477,7 +2421,7 @@ function Core(rootElement, userSettings) {
     var clen = instance.countCols();
     var columnSetting = tableMeta.columns; // Init columns constructors configuration
 
-    if (columnSetting && (0, _function.isFunction)(columnSetting)) {
+    if (columnSetting && isFunction(columnSetting)) {
       columnsAsFunc = true;
     } // Clear cell meta cache
 
@@ -2501,8 +2445,8 @@ function Core(rootElement, userSettings) {
       }
     }
 
-    if ((0, _mixed.isDefined)(settings.cell)) {
-      (0, _object.objectEach)(settings.cell, function (cell) {
+    if (isDefined(settings.cell)) {
+      objectEach(settings.cell, function (cell) {
         instance.setCellMetaObject(cell.row, cell.col, cell);
       });
     }
@@ -2516,7 +2460,7 @@ function Core(rootElement, userSettings) {
 
     var height = settings.height;
 
-    if ((0, _function.isFunction)(height)) {
+    if (isFunction(height)) {
       height = height();
     }
 
@@ -2545,7 +2489,7 @@ function Core(rootElement, userSettings) {
     if (typeof settings.width !== 'undefined') {
       var width = settings.width;
 
-      if ((0, _function.isFunction)(width)) {
+      if (isFunction(width)) {
         width = width();
       }
 
@@ -2590,7 +2534,7 @@ function Core(rootElement, userSettings) {
     var sel = instance.getSelectedLast();
 
     if (tableMeta.getValue) {
-      if ((0, _function.isFunction)(tableMeta.getValue)) {
+      if (isFunction(tableMeta.getValue)) {
         return tableMeta.getValue.call(instance);
       } else if (sel) {
         return instance.getData()[sel[0][0]][tableMeta.getValue];
@@ -2696,7 +2640,7 @@ function Core(rootElement, userSettings) {
       return null;
     }
 
-    return instance.view.getCellAtCoords(new _src.CellCoords(renderableRowIndex, renderableColumnIndex), topmost);
+    return instance.view.getCellAtCoords(new CellCoords(renderableRowIndex, renderableColumnIndex), topmost);
   };
   /**
    * Returns the coordinates of the cell, provided as a HTML table cell element.
@@ -2733,7 +2677,7 @@ function Core(rootElement, userSettings) {
       visualColumn = this.columnIndexMapper.getVisualFromRenderableIndex(renderableColumn);
     }
 
-    return new _src.CellCoords(visualRow, visualColumn);
+    return new CellCoords(visualRow, visualColumn);
   };
   /**
    * Returns the property name that corresponds with the given column index (see {@link DataMap#colToProp}).
@@ -2875,7 +2819,7 @@ function Core(rootElement, userSettings) {
   this.getDataAtCol = function (column) {
     var _ref13;
 
-    return (_ref13 = []).concat.apply(_ref13, _toConsumableArray(datamap.getRange(new _src.CellCoords(0, column), new _src.CellCoords(tableMeta.data.length - 1, column), datamap.DESTINATION_RENDERER)));
+    return (_ref13 = []).concat.apply(_ref13, _toConsumableArray(datamap.getRange(new CellCoords(0, column), new CellCoords(tableMeta.data.length - 1, column), datamap.DESTINATION_RENDERER)));
   };
   /**
    * Given the object property name (e.g. `'first.name'` or `'0'`), returns an array of column's values from the table data.
@@ -2892,7 +2836,7 @@ function Core(rootElement, userSettings) {
   this.getDataAtProp = function (prop) {
     var _ref14;
 
-    var range = datamap.getRange(new _src.CellCoords(0, datamap.propToCol(prop)), new _src.CellCoords(tableMeta.data.length - 1, datamap.propToCol(prop)), datamap.DESTINATION_RENDERER);
+    var range = datamap.getRange(new CellCoords(0, datamap.propToCol(prop)), new CellCoords(tableMeta.data.length - 1, datamap.propToCol(prop)), datamap.DESTINATION_RENDERER);
     return (_ref14 = []).concat.apply(_ref14, _toConsumableArray(range));
   };
   /**
@@ -2919,7 +2863,7 @@ function Core(rootElement, userSettings) {
     if (row === void 0) {
       data = dataSource.getData();
     } else {
-      data = dataSource.getByRange(new _src.CellCoords(row, column), new _src.CellCoords(row2, column2));
+      data = dataSource.getByRange(new CellCoords(row, column), new CellCoords(row2, column2));
     }
 
     return data;
@@ -2948,7 +2892,7 @@ function Core(rootElement, userSettings) {
     if (row === void 0) {
       data = dataSource.getData(true);
     } else {
-      data = dataSource.getByRange(new _src.CellCoords(row, column), new _src.CellCoords(row2, column2), true);
+      data = dataSource.getByRange(new CellCoords(row, column), new CellCoords(row2, column2), true);
     }
 
     return data;
@@ -2989,7 +2933,7 @@ function Core(rootElement, userSettings) {
     var changesForHook = [];
 
     if (isThereAnySetSourceListener) {
-      (0, _array.arrayEach)(input, function (_ref15) {
+      arrayEach(input, function (_ref15) {
         var _ref16 = _slicedToArray(_ref15, 3),
             changeRow = _ref16[0],
             changeProp = _ref16[1],
@@ -3000,7 +2944,7 @@ function Core(rootElement, userSettings) {
       });
     }
 
-    (0, _array.arrayEach)(input, function (_ref17) {
+    arrayEach(input, function (_ref17) {
       var _ref18 = _slicedToArray(_ref17, 3),
           changeRow = _ref18[0],
           changeProp = _ref18[1],
@@ -3016,7 +2960,7 @@ function Core(rootElement, userSettings) {
     this.render();
     var activeEditor = instance.getActiveEditor();
 
-    if (activeEditor && (0, _mixed.isDefined)(activeEditor.refreshValue)) {
+    if (activeEditor && isDefined(activeEditor.refreshValue)) {
       activeEditor.refreshValue();
     }
   };
@@ -3065,7 +3009,7 @@ function Core(rootElement, userSettings) {
 
 
   this.getDataAtRow = function (row) {
-    var data = datamap.getRange(new _src.CellCoords(row, 0), new _src.CellCoords(row, this.countCols() - 1), datamap.DESTINATION_RENDERER);
+    var data = datamap.getRange(new CellCoords(row, 0), new CellCoords(row, this.countCols() - 1), datamap.DESTINATION_RENDERER);
     return data[0] || [];
   };
   /**
@@ -3105,9 +3049,9 @@ function Core(rootElement, userSettings) {
     }
 
     var type = 'mixed';
-    (0, _number.rangeEach)(Math.max(Math.min(rowStart, rowEnd), 0), Math.max(rowStart, rowEnd), function (row) {
+    rangeEach(Math.max(Math.min(rowStart, rowEnd), 0), Math.max(rowStart, rowEnd), function (row) {
       var isTypeEqual = true;
-      (0, _number.rangeEach)(Math.max(Math.min(columnStart, columnEnd), 0), Math.max(columnStart, columnEnd), function (column) {
+      rangeEach(Math.max(Math.min(columnStart, columnEnd), 0), Math.max(columnStart, columnEnd), function (column) {
         var cellType = _this3.getCellMeta(row, column);
 
         currentType = cellType.type;
@@ -3182,9 +3126,9 @@ function Core(rootElement, userSettings) {
     }
 
     if (cellMetaRows.length > 0) {
-      (0, _array.arrayEach)(cellMetaRows.reverse(), function (cellMetaRow) {
+      arrayEach(cellMetaRows.reverse(), function (cellMetaRow) {
         metaManager.createRow(_this4.toPhysicalRow(visualIndex));
-        (0, _array.arrayEach)(cellMetaRow, function (cellMeta, columnIndex) {
+        arrayEach(cellMetaRow, function (cellMeta, columnIndex) {
           return _this4.setCellMetaObject(visualIndex, columnIndex, cellMeta);
         });
       });
@@ -3205,7 +3149,7 @@ function Core(rootElement, userSettings) {
     var _this5 = this;
 
     if (_typeof(prop) === 'object') {
-      (0, _object.objectEach)(prop, function (value, key) {
+      objectEach(prop, function (value, key) {
         _this5.setCellMeta(row, column, key, value);
       });
     }
@@ -3293,7 +3237,7 @@ function Core(rootElement, userSettings) {
     cellProperties.instance = instance;
     instance.runHooks('beforeGetCellMeta', row, column, cellProperties); // for `type` added or changed in beforeGetCellMeta
 
-    if (instance.hasHook('beforeGetCellMeta') && (0, _object.hasOwnProperty)(cellProperties, 'type')) {
+    if (instance.hasHook('beforeGetCellMeta') && hasOwnProperty(cellProperties, 'type')) {
       metaManager.updateCellMeta(physicalRow, physicalColumn, {
         type: cellProperties.type
       });
@@ -3336,7 +3280,7 @@ function Core(rootElement, userSettings) {
     return !(instance.dataType === 'object' || tableMeta.columns);
   };
 
-  var rendererLookup = (0, _data.cellMethodLookupFactory)('renderer');
+  var rendererLookup = cellMethodLookupFactory('renderer');
   /**
    * Returns the cell renderer function by given `row` and `column` arguments.
    *
@@ -3355,7 +3299,7 @@ function Core(rootElement, userSettings) {
    */
 
   this.getCellRenderer = function (row, column) {
-    return (0, _registry2.getRenderer)(rendererLookup.call(this, row, column));
+    return getRenderer(rendererLookup.call(this, row, column));
   };
   /**
    * Returns the cell editor class by the provided `row` and `column` arguments.
@@ -3375,8 +3319,8 @@ function Core(rootElement, userSettings) {
    */
 
 
-  this.getCellEditor = (0, _data.cellMethodLookupFactory)('editor');
-  var validatorLookup = (0, _data.cellMethodLookupFactory)('validator');
+  this.getCellEditor = cellMethodLookupFactory('editor');
+  var validatorLookup = cellMethodLookupFactory('validator');
   /**
    * Returns the cell validator by `row` and `column`.
    *
@@ -3398,7 +3342,7 @@ function Core(rootElement, userSettings) {
     var validator = validatorLookup.call(this, row, column);
 
     if (typeof validator === 'string') {
-      validator = (0, _registry3.getValidator)(validator);
+      validator = getValidator(validator);
     }
 
     return validator;
@@ -3562,12 +3506,12 @@ function Core(rootElement, userSettings) {
 
     if (physicalRow === void 0) {
       rowHeader = [];
-      (0, _number.rangeEach)(instance.countRows() - 1, function (i) {
+      rangeEach(instance.countRows() - 1, function (i) {
         rowHeader.push(instance.getRowHeader(i));
       });
     } else if (Array.isArray(rowHeader) && rowHeader[physicalRow] !== void 0) {
       rowHeader = rowHeader[physicalRow];
-    } else if ((0, _function.isFunction)(rowHeader)) {
+    } else if (isFunction(rowHeader)) {
       rowHeader = rowHeader(physicalRow);
     } else if (rowHeader && typeof rowHeader !== 'string' && typeof rowHeader !== 'number') {
       rowHeader = physicalRow + 1;
@@ -3642,7 +3586,7 @@ function Core(rootElement, userSettings) {
         var index = 0;
 
         for (; index < columnsLen; index++) {
-          if ((0, _function.isFunction)(tableMeta.columns) && tableMeta.columns(index)) {
+          if (isFunction(tableMeta.columns) && tableMeta.columns(index)) {
             arr.push(index);
           }
         }
@@ -3655,16 +3599,16 @@ function Core(rootElement, userSettings) {
 
       if (tableMeta.colHeaders === false) {
         result = null;
-      } else if (tableMeta.columns && (0, _function.isFunction)(tableMeta.columns) && tableMeta.columns(prop) && tableMeta.columns(prop).title) {
+      } else if (tableMeta.columns && isFunction(tableMeta.columns) && tableMeta.columns(prop) && tableMeta.columns(prop).title) {
         result = tableMeta.columns(prop).title;
       } else if (tableMeta.columns && tableMeta.columns[physicalColumn] && tableMeta.columns[physicalColumn].title) {
         result = tableMeta.columns[physicalColumn].title;
       } else if (Array.isArray(tableMeta.colHeaders) && tableMeta.colHeaders[physicalColumn] !== void 0) {
         result = tableMeta.colHeaders[physicalColumn];
-      } else if ((0, _function.isFunction)(tableMeta.colHeaders)) {
+      } else if (isFunction(tableMeta.colHeaders)) {
         result = tableMeta.colHeaders(physicalColumn);
       } else if (tableMeta.colHeaders && typeof tableMeta.colHeaders !== 'string' && typeof tableMeta.colHeaders !== 'number') {
-        result = (0, _data.spreadsheetColumnLabel)(columnIndex); // see #1458
+        result = spreadsheetColumnLabel(columnIndex); // see #1458
       }
     }
 
@@ -3732,7 +3676,7 @@ function Core(rootElement, userSettings) {
     width = instance.runHooks('modifyColWidth', width, column);
 
     if (width === void 0) {
-      width = _src.ViewportColumnsCalculator.DEFAULT_WIDTH;
+      width = ViewportColumnsCalculator.DEFAULT_WIDTH;
     }
 
     return width;
@@ -3908,7 +3852,7 @@ function Core(rootElement, userSettings) {
   this.countEmptyRows = function () {
     var ending = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     var emptyRows = 0;
-    (0, _number.rangeEachReverse)(instance.countRows() - 1, function (visualIndex) {
+    rangeEachReverse(instance.countRows() - 1, function (visualIndex) {
       if (instance.isEmptyRow(visualIndex)) {
         emptyRows += 1;
       } else if (ending === true) {
@@ -3936,7 +3880,7 @@ function Core(rootElement, userSettings) {
     }
 
     var emptyColumns = 0;
-    (0, _number.rangeEachReverse)(instance.countCols() - 1, function (visualIndex) {
+    rangeEachReverse(instance.countCols() - 1, function (visualIndex) {
       if (instance.isEmptyCol(visualIndex)) {
         emptyColumns += 1;
       } else if (ending === true) {
@@ -4008,7 +3952,7 @@ function Core(rootElement, userSettings) {
     var scrollToCell = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
     var changeListener = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : true;
 
-    if ((0, _mixed.isUndefined)(row) || (0, _mixed.isUndefined)(column)) {
+    if (isUndefined(row) || isUndefined(column)) {
       return false;
     }
 
@@ -4202,7 +4146,7 @@ function Core(rootElement, userSettings) {
     var isColumnInteger = Number.isInteger(renderableColumn);
 
     if (isRowInteger && isColumnInteger) {
-      return instance.view.scrollViewport(new _src.CellCoords(renderableRow, renderableColumn), snapToTop, snapToRight, snapToBottom, snapToLeft);
+      return instance.view.scrollViewport(new CellCoords(renderableRow, renderableColumn), snapToTop, snapToRight, snapToBottom, snapToLeft);
     }
 
     if (isRowInteger && isColumnInteger === false) {
@@ -4240,9 +4184,9 @@ function Core(rootElement, userSettings) {
 
     dataSource = null;
     metaManager.clearCache();
-    (0, _keyStateObserver.stopObserving)();
+    keyStateStopObserving();
 
-    if ((0, _rootInstance.isRootInstance)(instance)) {
+    if (isRootInstance(instance)) {
       var licenseInfo = this.rootDocument.querySelector('#hot-display-license-info');
 
       if (licenseInfo) {
@@ -4250,7 +4194,7 @@ function Core(rootElement, userSettings) {
       }
     }
 
-    (0, _element.empty)(instance.rootElement);
+    empty(instance.rootElement);
     eventManager.destroy();
 
     if (editorManager) {
@@ -4271,12 +4215,10 @@ function Core(rootElement, userSettings) {
       pluginsRegistry.clear();
       instance.runHooks('afterDestroy');
     }, true);
-
-    _pluginHooks.default.getSingleton().destroy(instance);
-
-    (0, _object.objectEach)(instance, function (property, key, obj) {
+    Hooks.getSingleton().destroy(instance);
+    objectEach(instance, function (property, key, obj) {
       // replace instance methods with post mortem
-      if ((0, _function.isFunction)(property)) {
+      if (isFunction(property)) {
         obj[key] = postMortem(key);
       } else if (key !== 'guid') {
         // replace instance properties with null (restores memory)
@@ -4336,7 +4278,7 @@ function Core(rootElement, userSettings) {
 
 
   this.getPlugin = function (pluginName) {
-    var unifiedPluginName = (0, _string.toUpperCaseFirst)(pluginName); // Workaround for the UndoRedo plugin which, currently doesn't follow the plugin architecture.
+    var unifiedPluginName = toUpperCaseFirst(pluginName); // Workaround for the UndoRedo plugin which, currently doesn't follow the plugin architecture.
 
     if (unifiedPluginName === 'UndoRedo') {
       return this.undoRedo;
@@ -4390,7 +4332,7 @@ function Core(rootElement, userSettings) {
 
 
   this.addHook = function (key, callback) {
-    _pluginHooks.default.getSingleton().add(key, callback, instance);
+    Hooks.getSingleton().add(key, callback, instance);
   };
   /**
    * Check if for a specified hook name there are added listeners (only for this Handsontable instance). All available
@@ -4410,7 +4352,7 @@ function Core(rootElement, userSettings) {
 
 
   this.hasHook = function (key) {
-    return _pluginHooks.default.getSingleton().has(key, instance);
+    return Hooks.getSingleton().has(key, instance);
   };
   /**
    * Adds listener to specified hook name (only for this Handsontable instance). After the listener is triggered,
@@ -4429,7 +4371,7 @@ function Core(rootElement, userSettings) {
 
 
   this.addHookOnce = function (key, callback) {
-    _pluginHooks.default.getSingleton().once(key, callback, instance);
+    Hooks.getSingleton().once(key, callback, instance);
   };
   /**
    * Removes the hook listener previously registered with {@link Core#addHook}.
@@ -4448,7 +4390,7 @@ function Core(rootElement, userSettings) {
 
 
   this.removeHook = function (key, callback) {
-    _pluginHooks.default.getSingleton().remove(key, callback, instance);
+    Hooks.getSingleton().remove(key, callback, instance);
   };
   /**
    * Run the callbacks for the hook provided in the `key` argument using the parameters given in the other arguments.
@@ -4476,7 +4418,7 @@ function Core(rootElement, userSettings) {
 
 
   this.runHooks = function (key, p1, p2, p3, p4, p5, p6) {
-    return _pluginHooks.default.getSingleton().run(instance, key, p1, p2, p3, p4, p5, p6);
+    return Hooks.getSingleton().run(instance, key, p1, p2, p3, p4, p5, p6);
   };
   /**
    * Get language phrase for specified dictionary key.
@@ -4491,7 +4433,7 @@ function Core(rootElement, userSettings) {
 
 
   this.getTranslatedPhrase = function (dictionaryKey, extraArguments) {
-    return (0, _registry4.getTranslatedPhrase)(tableMeta.language, dictionaryKey, extraArguments);
+    return getTranslatedPhrase(tableMeta.language, dictionaryKey, extraArguments);
   };
   /**
    * Converts instance into outerHTML of HTMLTableElement.
@@ -4504,7 +4446,7 @@ function Core(rootElement, userSettings) {
 
 
   this.toHTML = function () {
-    return (0, _parseTable.instanceToHTML)(_this);
+    return instanceToHTML(_this);
   };
   /**
    * Converts instance into HTMLTableElement.
@@ -4519,7 +4461,7 @@ function Core(rootElement, userSettings) {
   this.toTableElement = function () {
     var tempElement = _this.rootDocument.createElement('div');
 
-    tempElement.insertAdjacentHTML('afterbegin', (0, _parseTable.instanceToHTML)(_this));
+    tempElement.insertAdjacentHTML('afterbegin', instanceToHTML(_this));
     return tempElement.firstElementChild;
   };
 
@@ -4551,7 +4493,7 @@ function Core(rootElement, userSettings) {
 
 
   this._clearTimeouts = function () {
-    (0, _array.arrayEach)(this.timeouts, function (handler) {
+    arrayEach(this.timeouts, function (handler) {
       clearTimeout(handler);
     });
   };
@@ -4575,7 +4517,7 @@ function Core(rootElement, userSettings) {
 
 
   this._clearImmediates = function () {
-    (0, _array.arrayEach)(this.immediates, function (handler) {
+    arrayEach(this.immediates, function (handler) {
       clearImmediate(handler);
     });
   };
@@ -4599,10 +4541,9 @@ function Core(rootElement, userSettings) {
     }
   };
 
-  (0, _registry.getPluginsNames)().forEach(function (pluginName) {
-    var PluginClass = (0, _registry.getPlugin)(pluginName);
+  getPluginsNames().forEach(function (pluginName) {
+    var PluginClass = getPlugin(pluginName);
     pluginsRegistry.addItem(pluginName, new PluginClass(_this));
   });
-
-  _pluginHooks.default.getSingleton().run(instance, 'construct');
+  Hooks.getSingleton().run(instance, 'construct');
 }

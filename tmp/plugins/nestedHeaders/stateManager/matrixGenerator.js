@@ -1,28 +1,18 @@
-"use strict";
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.symbol.js");
-
-exports.__esModule = true;
-exports.generateMatrix = generateMatrix;
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-var _array = require("../../../helpers/array");
-
-var _utils = require("./utils");
-
 var _excluded = ["crossHiddenColumns"];
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.symbol.js";
+
+/* eslint-disable jsdoc/require-description-complete-sentence */
+import { arrayEach } from "../../../helpers/array.mjs";
+import { createDefaultHeaderSettings, createPlaceholderHeaderSettings } from "./utils.mjs";
 /**
  * A function that dump a tree structure into multidimensional array. That structure is
  * later processed by header renderers to modify TH elements to achieve a proper
@@ -53,9 +43,10 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
  * @param {TreeNode[]} headerRoots An array of root nodes.
  * @returns {Array[]}
  */
-function generateMatrix(headerRoots) {
+
+export function generateMatrix(headerRoots) {
   var matrix = [];
-  (0, _array.arrayEach)(headerRoots, function (rootNode) {
+  arrayEach(headerRoots, function (rootNode) {
     rootNode.walkDown(function (node) {
       var nodeData = node.data;
       var origColspan = nodeData.origColspan,
@@ -69,7 +60,7 @@ function generateMatrix(headerRoots) {
         var isColumnHidden = crossHiddenColumns.includes(i);
 
         if (isColumnHidden || isRootSettingsFound) {
-          colspanHeaderLayer.push((0, _utils.createPlaceholderHeaderSettings)(nodeData));
+          colspanHeaderLayer.push(createPlaceholderHeaderSettings(nodeData));
         } else {
           var headerRootSettings = createHeaderSettings(nodeData);
           headerRootSettings.isRoot = true;
@@ -88,10 +79,9 @@ function generateMatrix(headerRoots) {
  * @returns {object}
  */
 
-
 function createHeaderSettings(nodeData) {
   // For the matrix module we do not need to export "crossHiddenColumns" key. It's redundant here.
-  var _createDefaultHeaderS = (0, _utils.createDefaultHeaderSettings)(nodeData),
+  var _createDefaultHeaderS = createDefaultHeaderSettings(nodeData),
       crossHiddenColumns = _createDefaultHeaderS.crossHiddenColumns,
       headerRootSettings = _objectWithoutProperties(_createDefaultHeaderS, _excluded);
 

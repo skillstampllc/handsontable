@@ -1,18 +1,11 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _object = require("../../../helpers/object");
-
-var _utils = require("../utils");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { extend } from "../../../helpers/object.mjs";
+import { expandMetaType } from "../utils.mjs";
 /**
  * The table meta object is a layer that keeps all settings of the Handsontable that was passed in
  * the constructor. That layer contains all default settings inherited from the GlobalMeta layer
@@ -38,6 +31,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *                    │ (instance)  │
  *                    +-------------+.
  */
+
 var TableMeta = /*#__PURE__*/function () {
   function TableMeta(globalMeta) {
     _classCallCheck(this, TableMeta);
@@ -72,12 +66,12 @@ var TableMeta = /*#__PURE__*/function () {
   }, {
     key: "updateMeta",
     value: function updateMeta(settings) {
-      (0, _object.extend)(this.meta, settings);
-      (0, _object.extend)(this.meta, (0, _utils.expandMetaType)(settings.type, settings));
+      extend(this.meta, settings);
+      extend(this.meta, expandMetaType(settings.type, settings));
     }
   }]);
 
   return TableMeta;
 }();
 
-exports.default = TableMeta;
+export { TableMeta as default };

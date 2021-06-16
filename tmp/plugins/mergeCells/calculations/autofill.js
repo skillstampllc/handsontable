@@ -1,36 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-var _object = require("../../../helpers/object");
-
-var _src = require("../../../3rdparty/walkontable/src");
-
-var _array = require("../../../helpers/array");
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -43,12 +10,27 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { extend } from "../../../helpers/object.mjs";
+import { CellCoords, CellRange } from "../../../3rdparty/walkontable/src/index.mjs";
+import { arrayEach } from "../../../helpers/array.mjs";
 /**
  * Class responsible for all of the Autofill-related operations on merged cells.
  *
@@ -56,6 +38,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @plugin MergeCells
  * @util
  */
+
 var AutofillCalculations = /*#__PURE__*/function () {
   function AutofillCalculations(plugin) {
     _classCallCheck(this, AutofillCalculations);
@@ -221,7 +204,7 @@ var AutofillCalculations = /*#__PURE__*/function () {
         this.currentFillData = {};
       }
 
-      (0, _object.extend)(this.currentFillData, updateObject);
+      extend(this.currentFillData, updateObject);
     }
     /**
      * Get the "length" of the drag area.
@@ -362,7 +345,7 @@ var AutofillCalculations = /*#__PURE__*/function () {
         default:
       }
 
-      (0, _array.arrayEach)(mergedCellArray, function (currentCollection) {
+      arrayEach(mergedCellArray, function (currentCollection) {
         if (currentCollection[inclusionFunctionName](endOfDragRecreationIndex) && currentCollection.isFarther(farthestCollection, direction)) {
           farthestCollection = currentCollection;
         }
@@ -486,7 +469,7 @@ var AutofillCalculations = /*#__PURE__*/function () {
         min: null,
         max: null
       };
-      (0, _array.arrayEach)(changes, function (change) {
+      arrayEach(changes, function (change) {
         var rowIndex = change[0];
 
         var columnIndex = _this.plugin.hot.propToCol(change[1]);
@@ -538,9 +521,9 @@ var AutofillCalculations = /*#__PURE__*/function () {
           dragAreaEndRow = _dragArea3[2],
           dragAreaEndColumn = _dragArea3[3];
 
-      var topLeft = new _src.CellCoords(dragAreaStartRow, dragAreaStartColumn);
-      var bottomRight = new _src.CellCoords(dragAreaEndRow, dragAreaEndColumn);
-      var dragRange = new _src.CellRange(topLeft, topLeft, bottomRight);
+      var topLeft = new CellCoords(dragAreaStartRow, dragAreaStartColumn);
+      var bottomRight = new CellCoords(dragAreaEndRow, dragAreaEndColumn);
+      var dragRange = new CellRange(topLeft, topLeft, bottomRight);
       return !!this.mergedCellsCollection.getWithinRange(dragRange, true);
     }
   }]);
@@ -548,5 +531,4 @@ var AutofillCalculations = /*#__PURE__*/function () {
   return AutofillCalculations;
 }();
 
-var _default = AutofillCalculations;
-exports.default = _default;
+export default AutofillCalculations;

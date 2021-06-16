@@ -1,20 +1,11 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _constants = require("./constants");
-
-var _viewSizeSet = _interopRequireDefault(require("./viewSizeSet"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { WORKING_SPACE_TOP, WORKING_SPACE_BOTTOM } from "./constants.mjs";
+import ViewSizeSet from "./viewSizeSet.mjs";
 /**
  * Executive model for each table renderer. It's responsible for injecting DOM nodes in a
  * specified order and adjusting the number of elements in the root node.
@@ -23,6 +14,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * @class {OrderView}
  */
+
 var OrderView = /*#__PURE__*/function () {
   function OrderView(rootNode, nodesPool, childNodeType) {
     _classCallCheck(this, OrderView);
@@ -46,7 +38,7 @@ var OrderView = /*#__PURE__*/function () {
      * @type {ViewSizeSet}
      */
 
-    this.sizeSet = new _viewSizeSet.default();
+    this.sizeSet = new ViewSizeSet();
     /**
      * Node type which the order view will manage while rendering the DOM elements.
      *
@@ -154,7 +146,7 @@ var OrderView = /*#__PURE__*/function () {
         while (element) {
           if (element.tagName === this.childNodeType) {
             childElementCount += 1;
-          } else if (sizeSet.isPlaceOn(_constants.WORKING_SPACE_TOP)) {
+          } else if (sizeSet.isPlaceOn(WORKING_SPACE_TOP)) {
             break;
           }
 
@@ -188,7 +180,7 @@ var OrderView = /*#__PURE__*/function () {
       while (childElementCount < nextSize) {
         var newNode = this.nodesPool();
 
-        if (!isShared || isShared && sizeSet.isPlaceOn(_constants.WORKING_SPACE_BOTTOM)) {
+        if (!isShared || isShared && sizeSet.isPlaceOn(WORKING_SPACE_BOTTOM)) {
           rootNode.appendChild(newNode);
         } else {
           rootNode.insertBefore(newNode, rootNode.firstChild);
@@ -197,7 +189,7 @@ var OrderView = /*#__PURE__*/function () {
         childElementCount += 1;
       }
 
-      var isSharedPlacedOnTop = isShared && sizeSet.isPlaceOn(_constants.WORKING_SPACE_TOP);
+      var isSharedPlacedOnTop = isShared && sizeSet.isPlaceOn(WORKING_SPACE_TOP);
 
       while (childElementCount > nextSize) {
         rootNode.removeChild(isSharedPlacedOnTop ? rootNode.firstChild : rootNode.lastChild);
@@ -216,7 +208,7 @@ var OrderView = /*#__PURE__*/function () {
           sizeSet = this.sizeSet;
       var visualIndex = this.visualIndex;
 
-      if (this.isSharedViewSet() && sizeSet.isPlaceOn(_constants.WORKING_SPACE_BOTTOM)) {
+      if (this.isSharedViewSet() && sizeSet.isPlaceOn(WORKING_SPACE_BOTTOM)) {
         visualIndex += sizeSet.sharedSize.nextSize;
       }
 
@@ -244,4 +236,4 @@ var OrderView = /*#__PURE__*/function () {
   return OrderView;
 }();
 
-exports.default = OrderView;
+export { OrderView as default };

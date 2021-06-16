@@ -1,37 +1,18 @@
-"use strict";
-
-exports.__esModule = true;
-exports.toUpperCaseFirst = toUpperCaseFirst;
-exports.equalsIgnoreCase = equalsIgnoreCase;
-exports.randomString = randomString;
-exports.isPercentValue = isPercentValue;
-exports.substitute = substitute;
-exports.stripTags = stripTags;
-exports.sanitize = sanitize;
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
-var _dompurify = _interopRequireDefault(require("dompurify"));
-
-var _mixed = require("./mixed");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
+import DOMPurify from 'dompurify';
+import { stringify } from "./mixed.mjs";
 /**
  * Convert string to upper case first letter.
  *
  * @param {string} string String to convert.
  * @returns {string}
  */
-function toUpperCaseFirst(string) {
+
+export function toUpperCaseFirst(string) {
   return string[0].toUpperCase() + string.substr(1);
 }
 /**
@@ -41,8 +22,7 @@ function toUpperCaseFirst(string) {
  * @returns {boolean}
  */
 
-
-function equalsIgnoreCase() {
+export function equalsIgnoreCase() {
   var unique = [];
 
   for (var _len = arguments.length, strings = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -53,7 +33,7 @@ function equalsIgnoreCase() {
 
   while (length) {
     length -= 1;
-    var string = (0, _mixed.stringify)(strings[length]).toLowerCase();
+    var string = stringify(strings[length]).toLowerCase();
 
     if (unique.indexOf(string) === -1) {
       unique.push(string);
@@ -68,8 +48,7 @@ function equalsIgnoreCase() {
  * @returns {string} Returns 16-long character random string (eq. `'92b1bfc74ec4'`).
  */
 
-
-function randomString() {
+export function randomString() {
   /**
    * @returns {string}
    */
@@ -86,8 +65,7 @@ function randomString() {
  * @returns {boolean}
  */
 
-
-function isPercentValue(value) {
+export function isPercentValue(value) {
   return /^([0-9][0-9]?%$)|(^100%$)/.test(value);
 }
 /**
@@ -99,8 +77,7 @@ function isPercentValue(value) {
  * @returns {string}
  */
 
-
-function substitute(template) {
+export function substitute(template) {
   var variables = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   return "".concat(template).replace(/(?:\\)?\[([^[\]]+)]/g, function (match, name) {
     if (match.charAt(0) === '\\') {
@@ -117,8 +94,7 @@ function substitute(template) {
  * @returns {string}
  */
 
-
-function stripTags(string) {
+export function stripTags(string) {
   return sanitize("".concat(string), {
     ALLOWED_TAGS: []
   });
@@ -131,7 +107,6 @@ function stripTags(string) {
  * @returns {string}
  */
 
-
-function sanitize(string, options) {
-  return _dompurify.default.sanitize(string, options);
+export function sanitize(string, options) {
+  return DOMPurify.sanitize(string, options);
 }

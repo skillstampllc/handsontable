@@ -1,24 +1,11 @@
-"use strict";
-
-exports.__esModule = true;
-exports.parse = parse;
-exports.stringify = stringify;
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.match.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.string.starts-with.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.fill.js");
-
-require("core-js/modules/es.array.index-of.js");
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.match.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.string.starts-with.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.array.fill.js";
+import "core-js/modules/es.array.index-of.js";
 
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -43,7 +30,7 @@ var regNextEmptyCell = /^\t/;
  * @returns {Array}
  */
 
-function parse(str) {
+export function parse(str) {
   var arr = [['']];
 
   if (str.length === 0) {
@@ -115,8 +102,7 @@ function parse(str) {
  * @returns {string}
  */
 
-
-function stringify(arr) {
+export function stringify(arr) {
   var r;
   var rLen;
   var c;

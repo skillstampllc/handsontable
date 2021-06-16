@@ -1,8 +1,3 @@
-"use strict";
-
-exports.__esModule = true;
-exports.getNormalizedDate = getNormalizedDate;
-
 /**
  * Get normalized Date object for the ISO formatted date strings.
  * Natively, the date object parsed from a ISO 8601 string will be offsetted by the timezone difference, which may result in returning a wrong date.
@@ -11,7 +6,7 @@ exports.getNormalizedDate = getNormalizedDate;
  * @param {string} dateString String representing the date.
  * @returns {Date} The proper Date object.
  */
-function getNormalizedDate(dateString) {
+export function getNormalizedDate(dateString) {
   var nativeDate = new Date(dateString); // NaN if dateString is not in ISO format
 
   if (!isNaN(new Date("".concat(dateString, "T00:00")).getDate())) {

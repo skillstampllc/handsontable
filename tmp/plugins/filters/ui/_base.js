@@ -1,47 +1,4 @@
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.string.starts-with.js");
-
-var _object = require("../../../helpers/object");
-
-var _localHooks = _interopRequireDefault(require("../../../mixins/localHooks"));
-
-var _eventManager = _interopRequireDefault(require("../../../eventManager"));
-
-var _element = require("../../../helpers/dom/element");
-
-var _array = require("../../../helpers/array");
-
-var C = _interopRequireWildcard(require("../../../i18n/constants"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.string.starts-with.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -49,6 +6,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { clone, extend, mixin, objectEach } from "../../../helpers/object.mjs";
+import localHooks from "../../../mixins/localHooks.mjs";
+import EventManager from "../../../eventManager.mjs";
+import { addClass } from "../../../helpers/dom/element.mjs";
+import { arrayEach } from "../../../helpers/array.mjs";
+import * as C from "../../../i18n/constants.mjs";
 var STATE_BUILT = 'built';
 var STATE_BUILDING = 'building';
 var EVENTS_TO_REGISTER = ['click', 'input', 'keydown', 'keypress', 'keyup', 'focus', 'blur', 'change'];
@@ -73,14 +36,14 @@ var BaseUI = /*#__PURE__*/function () {
      * @type {EventManager}
      */
 
-    this.eventManager = new _eventManager.default(this);
+    this.eventManager = new EventManager(this);
     /**
      * List of element options.
      *
      * @type {object}
      */
 
-    this.options = (0, _object.extend)(BaseUI.DEFAULTS, options);
+    this.options = extend(BaseUI.DEFAULTS, options);
     /**
      * Build root DOM element.
      *
@@ -191,16 +154,16 @@ var BaseUI = /*#__PURE__*/function () {
       }
 
       if (this.options.className) {
-        (0, _element.addClass)(this._element, this.options.className);
+        addClass(this._element, this.options.className);
       }
 
       if (this.options.children.length) {
-        (0, _array.arrayEach)(this.options.children, function (element) {
+        arrayEach(this.options.children, function (element) {
           return _this._element.appendChild(element.element);
         });
       } else if (this.options.wrapIt) {
         var element = this.hot.rootDocument.createElement(this.options.tagName);
-        (0, _object.objectEach)(this.options, function (value, key) {
+        objectEach(this.options, function (value, key) {
           if (element[key] !== void 0 && key !== 'className' && key !== 'tagName' && key !== 'children') {
             element[key] = _this.translateIfPossible(value);
           }
@@ -208,11 +171,11 @@ var BaseUI = /*#__PURE__*/function () {
 
         this._element.appendChild(element);
 
-        (0, _array.arrayEach)(EVENTS_TO_REGISTER, function (eventName) {
+        arrayEach(EVENTS_TO_REGISTER, function (eventName) {
           return registerEvent(element, eventName);
         });
       } else {
-        (0, _array.arrayEach)(EVENTS_TO_REGISTER, function (eventName) {
+        arrayEach(EVENTS_TO_REGISTER, function (eventName) {
           return registerEvent(_this._element, eventName);
         });
       }
@@ -275,7 +238,7 @@ var BaseUI = /*#__PURE__*/function () {
   }], [{
     key: "DEFAULTS",
     get: function get() {
-      return (0, _object.clone)({
+      return clone({
         className: '',
         value: '',
         tagName: 'div',
@@ -288,6 +251,5 @@ var BaseUI = /*#__PURE__*/function () {
   return BaseUI;
 }();
 
-(0, _object.mixin)(BaseUI, _localHooks.default);
-var _default = BaseUI;
-exports.default = _default;
+mixin(BaseUI, localHooks);
+export default BaseUI;

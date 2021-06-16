@@ -1,108 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.getParent = getParent;
-exports.getFrameElement = getFrameElement;
-exports.getParentWindow = getParentWindow;
-exports.hasAccessToParentWindow = hasAccessToParentWindow;
-exports.closest = closest;
-exports.closestDown = closestDown;
-exports.isChildOf = isChildOf;
-exports.index = index;
-exports.overlayContainsElement = overlayContainsElement;
-exports.hasClass = hasClass;
-exports.addClass = addClass;
-exports.removeClass = removeClass;
-exports.removeTextNodes = removeTextNodes;
-exports.empty = empty;
-exports.fastInnerHTML = fastInnerHTML;
-exports.fastInnerText = fastInnerText;
-exports.isVisible = isVisible;
-exports.offset = offset;
-exports.getWindowScrollTop = getWindowScrollTop;
-exports.getWindowScrollLeft = getWindowScrollLeft;
-exports.getScrollTop = getScrollTop;
-exports.getScrollLeft = getScrollLeft;
-exports.getScrollableElement = getScrollableElement;
-exports.getTrimmingContainer = getTrimmingContainer;
-exports.getStyle = getStyle;
-exports.matchesCSSRules = matchesCSSRules;
-exports.getComputedStyle = getComputedStyle;
-exports.outerWidth = outerWidth;
-exports.outerHeight = outerHeight;
-exports.innerHeight = innerHeight;
-exports.innerWidth = innerWidth;
-exports.addEvent = addEvent;
-exports.removeEvent = removeEvent;
-exports.getCaretPosition = getCaretPosition;
-exports.getSelectionEndPosition = getSelectionEndPosition;
-exports.getSelectionText = getSelectionText;
-exports.clearTextSelection = clearTextSelection;
-exports.setCaretPosition = setCaretPosition;
-exports.getScrollbarWidth = getScrollbarWidth;
-exports.hasVerticalScrollbar = hasVerticalScrollbar;
-exports.hasHorizontalScrollbar = hasHorizontalScrollbar;
-exports.setOverlayPosition = setOverlayPosition;
-exports.getCssTransform = getCssTransform;
-exports.resetCssTransform = resetCssTransform;
-exports.isInput = isInput;
-exports.isOutsideInput = isOutsideInput;
-exports.selectElementIfAllowed = selectElementIfAllowed;
-exports.isDetached = isDetached;
-exports.HTML_CHARACTERS = void 0;
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.regexp.constructor.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.string.trim.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.array.concat.js");
-
-var _feature = require("../feature");
-
-var _browser = require("../browser");
-
-var _string = require("../string");
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -115,6 +10,32 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.regexp.constructor.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.string.trim.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.function.name.js";
+import { hasCaptionProblem, isClassListSupported, isTextContentSupported, isGetComputedStyleSupported } from "../feature.mjs";
+import { isSafari, isIE9 } from "../browser.mjs";
+import { sanitize } from "../string.mjs";
 /**
  * Get the parent of the specified node in the DOM tree.
  *
@@ -122,7 +43,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * @param {number} [level=0] Traversing deep level.
  * @returns {HTMLElement|null}
  */
-function getParent(element) {
+
+export function getParent(element) {
   var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   var iteration = -1;
   var parent = null;
@@ -151,8 +73,7 @@ function getParent(element) {
  * @returns {HTMLIFrameElement|null}
  */
 
-
-function getFrameElement(frame) {
+export function getFrameElement(frame) {
   return Object.getPrototypeOf(frame.parent) && frame.frameElement;
 }
 /**
@@ -162,8 +83,7 @@ function getFrameElement(frame) {
  * @returns {Window|null}
  */
 
-
-function getParentWindow(frame) {
+export function getParentWindow(frame) {
   return getFrameElement(frame) && frame.parent;
 }
 /**
@@ -173,8 +93,7 @@ function getParentWindow(frame) {
  * @returns {boolean}
  */
 
-
-function hasAccessToParentWindow(frame) {
+export function hasAccessToParentWindow(frame) {
   return !!Object.getPrototypeOf(frame.parent);
 }
 /**
@@ -187,8 +106,7 @@ function hasAccessToParentWindow(frame) {
  * @returns {Node|null}
  */
 
-
-function closest(element) {
+export function closest(element) {
   var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   var until = arguments.length > 2 ? arguments[2] : undefined;
   var _Node = Node,
@@ -226,8 +144,7 @@ function closest(element) {
  * @returns {HTMLElement|null}
  */
 
-
-function closestDown(element, nodes, until) {
+export function closestDown(element, nodes, until) {
   var matched = [];
   var elementToCheck = element;
 
@@ -259,8 +176,7 @@ function closestDown(element, nodes, until) {
  * @returns {boolean}
  */
 
-
-function isChildOf(child, parent) {
+export function isChildOf(child, parent) {
   var node = child.parentNode;
   var queriedParents = [];
 
@@ -294,8 +210,7 @@ function isChildOf(child, parent) {
  * @returns {number}
  */
 
-
-function index(element) {
+export function index(element) {
   var i = 0;
   var elementToCheck = element;
 
@@ -317,8 +232,7 @@ function index(element) {
  * @returns {boolean}
  */
 
-
-function overlayContainsElement(overlayType, element, root) {
+export function overlayContainsElement(overlayType, element, root) {
   var overlayElement = root.parentElement.querySelector(".ht_clone_".concat(overlayType));
   return overlayElement ? overlayElement.contains(element) : null;
 }
@@ -344,7 +258,7 @@ function filterEmptyClassNames(classNames) {
   });
 }
 
-if ((0, _feature.isClassListSupported)()) {
+if (isClassListSupported()) {
   var isSupportMultipleClassesArg = function isSupportMultipleClassesArg(rootDocument) {
     var element = rootDocument.createElement('div');
     element.classList.add('test', 'test2');
@@ -474,7 +388,7 @@ if ((0, _feature.isClassListSupported)()) {
  */
 
 
-function hasClass(element, className) {
+export function hasClass(element, className) {
   return _hasClass(element, className);
 }
 /**
@@ -484,8 +398,7 @@ function hasClass(element, className) {
  * @param {string|Array} className Class name as string or array of strings.
  */
 
-
-function addClass(element, className) {
+export function addClass(element, className) {
   _addClass(element, className);
 }
 /**
@@ -495,16 +408,14 @@ function addClass(element, className) {
  * @param {string|Array} className Class name as string or array of strings.
  */
 
-
-function removeClass(element, className) {
+export function removeClass(element, className) {
   _removeClass(element, className);
 }
 /**
  * @param {HTMLElement} element An element from the text is removed.
  */
 
-
-function removeTextNodes(element) {
+export function removeTextNodes(element) {
   if (element.nodeType === 3) {
     element.parentNode.removeChild(element); // bye text nodes!
   } else if (['TABLE', 'THEAD', 'TBODY', 'TFOOT', 'TR'].indexOf(element.nodeName) > -1) {
@@ -524,8 +435,7 @@ function removeTextNodes(element) {
  * @param {HTMLElement} element An element to clear.
  */
 
-
-function empty(element) {
+export function empty(element) {
   var child;
   /* eslint-disable no-cond-assign */
 
@@ -533,8 +443,7 @@ function empty(element) {
     element.removeChild(child);
   }
 }
-
-var HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
+export var HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
 /**
  * Insert content into element trying avoid innerHTML method.
  *
@@ -543,13 +452,11 @@ var HTML_CHARACTERS = /(<(.*)>|&(.*);)/;
  * @param {boolean} [sanitizeContent=true] If `true`, the content will be sanitized before writing to the element.
  */
 
-exports.HTML_CHARACTERS = HTML_CHARACTERS;
-
-function fastInnerHTML(element, content) {
+export function fastInnerHTML(element, content) {
   var sanitizeContent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
   if (HTML_CHARACTERS.test(content)) {
-    element.innerHTML = sanitizeContent ? (0, _string.sanitize)(content) : content;
+    element.innerHTML = sanitizeContent ? sanitize(content) : content;
   } else {
     fastInnerText(element, content);
   }
@@ -561,13 +468,12 @@ function fastInnerHTML(element, content) {
  * @param {string} content The text to write.
  */
 
-
-function fastInnerText(element, content) {
+export function fastInnerText(element, content) {
   var child = element.firstChild;
 
   if (child && child.nodeType === 3 && child.nextSibling === null) {
     // fast lane - replace existing text node
-    if (_feature.isTextContentSupported) {
+    if (isTextContentSupported) {
       // http://jsperf.com/replace-text-vs-reuse
       child.textContent = content;
     } else {
@@ -587,8 +493,7 @@ function fastInnerText(element, content) {
  * @returns {boolean}
  */
 
-
-function isVisible(element) {
+export function isVisible(element) {
   var documentElement = element.ownerDocument.documentElement;
   var next = element;
 
@@ -630,8 +535,7 @@ function isVisible(element) {
  * @returns {object} Returns object with `top` and `left` props.
  */
 
-
-function offset(element) {
+export function offset(element) {
   var rootDocument = element.ownerDocument;
   var rootWindow = rootDocument.defaultView;
   var documentElement = rootDocument.documentElement;
@@ -641,7 +545,7 @@ function offset(element) {
   var lastElem;
   var box;
 
-  if ((0, _feature.hasCaptionProblem)() && elementToCheck.firstChild && elementToCheck.firstChild.nodeName === 'CAPTION') {
+  if (hasCaptionProblem() && elementToCheck.firstChild && elementToCheck.firstChild.nodeName === 'CAPTION') {
     // fixes problem with Firefox ignoring <caption> in TABLE offset (see also export outerHeight)
     // http://jsperf.com/offset-vs-getboundingclientrect/8
     box = elementToCheck.getBoundingClientRect();
@@ -687,8 +591,7 @@ function offset(element) {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function getWindowScrollTop() {
+export function getWindowScrollTop() {
   var rootWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
   var res = rootWindow.scrollY;
 
@@ -707,8 +610,7 @@ function getWindowScrollTop() {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function getWindowScrollLeft() {
+export function getWindowScrollLeft() {
   var rootWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
   var res = rootWindow.scrollX;
 
@@ -728,8 +630,7 @@ function getWindowScrollLeft() {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function getScrollTop(element) {
+export function getScrollTop(element) {
   var rootWindow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window;
 
   if (element === rootWindow) {
@@ -747,8 +648,7 @@ function getScrollTop(element) {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function getScrollLeft(element) {
+export function getScrollLeft(element) {
   var rootWindow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window;
 
   if (element === rootWindow) {
@@ -764,8 +664,7 @@ function getScrollLeft(element) {
  * @returns {HTMLElement} Element's scrollable parent.
  */
 
-
-function getScrollableElement(element) {
+export function getScrollableElement(element) {
   var rootDocument = element.ownerDocument;
   var rootWindow = rootDocument ? rootDocument.defaultView : void 0;
 
@@ -775,7 +674,7 @@ function getScrollableElement(element) {
   }
 
   var props = ['auto', 'scroll'];
-  var supportedGetComputedStyle = (0, _feature.isGetComputedStyleSupported)();
+  var supportedGetComputedStyle = isGetComputedStyleSupported();
   var el = element.parentNode;
 
   while (el && el.style && rootDocument.body !== el) {
@@ -819,8 +718,7 @@ function getScrollableElement(element) {
  * @returns {HTMLElement} Base element's trimming parent.
  */
 
-
-function getTrimmingContainer(base) {
+export function getTrimmingContainer(base) {
   var rootDocument = base.ownerDocument;
   var rootWindow = rootDocument.defaultView;
   var el = base.parentNode;
@@ -855,8 +753,7 @@ function getTrimmingContainer(base) {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function getStyle(element, prop) {
+export function getStyle(element, prop) {
   var rootWindow = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : window;
 
   if (!element) {
@@ -891,8 +788,7 @@ function getStyle(element, prop) {
  * @returns {boolean}
  */
 
-
-function matchesCSSRules(element, rule) {
+export function matchesCSSRules(element, rule) {
   var selectorText = rule.selectorText;
   var result = false;
 
@@ -915,8 +811,7 @@ function matchesCSSRules(element, rule) {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function getComputedStyle(element) {
+export function getComputedStyle(element) {
   var rootWindow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window;
   return element.currentStyle || rootWindow.getComputedStyle(element);
 }
@@ -927,8 +822,7 @@ function getComputedStyle(element) {
  * @returns {number} Element's outer width.
  */
 
-
-function outerWidth(element) {
+export function outerWidth(element) {
   return Math.ceil(element.getBoundingClientRect().width);
 }
 /**
@@ -938,9 +832,8 @@ function outerWidth(element) {
  * @returns {number} Element's outer height.
  */
 
-
-function outerHeight(element) {
-  if ((0, _feature.hasCaptionProblem)() && element.firstChild && element.firstChild.nodeName === 'CAPTION') {
+export function outerHeight(element) {
+  if (hasCaptionProblem() && element.firstChild && element.firstChild.nodeName === 'CAPTION') {
     // fixes problem with Firefox ignoring <caption> in TABLE.offsetHeight
     // jQuery (1.10.1) still has this unsolved
     // may be better to just switch to getBoundingClientRect
@@ -960,8 +853,7 @@ function outerHeight(element) {
  * @returns {number} Element's inner height.
  */
 
-
-function innerHeight(element) {
+export function innerHeight(element) {
   return element.clientHeight || element.innerHeight;
 }
 /**
@@ -971,8 +863,7 @@ function innerHeight(element) {
  * @returns {number} Element's inner width.
  */
 
-
-function innerWidth(element) {
+export function innerWidth(element) {
   return element.clientWidth || element.innerWidth;
 }
 /**
@@ -981,8 +872,7 @@ function innerWidth(element) {
  * @param {Function} callback The callback to add.
  */
 
-
-function addEvent(element, event, callback) {
+export function addEvent(element, event, callback) {
   element.addEventListener(event, callback, false);
 }
 /**
@@ -991,8 +881,7 @@ function addEvent(element, event, callback) {
  * @param {Function} callback The function reference to remove.
  */
 
-
-function removeEvent(element, event, callback) {
+export function removeEvent(element, event, callback) {
   element.removeEventListener(event, callback, false);
 }
 /**
@@ -1003,8 +892,7 @@ function removeEvent(element, event, callback) {
  * @returns {number}
  */
 
-
-function getCaretPosition(el) {
+export function getCaretPosition(el) {
   var rootDocument = el.ownerDocument;
 
   if (el.selectionStart) {
@@ -1034,8 +922,7 @@ function getCaretPosition(el) {
  * @returns {number}
  */
 
-
-function getSelectionEndPosition(el) {
+export function getSelectionEndPosition(el) {
   var rootDocument = el.ownerDocument;
 
   if (el.selectionEnd) {
@@ -1062,8 +949,7 @@ function getSelectionEndPosition(el) {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function getSelectionText() {
+export function getSelectionText() {
   var rootWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
   var rootDocument = rootWindow.document;
   var text = '';
@@ -1083,8 +969,7 @@ function getSelectionText() {
  */
 // eslint-disable-next-line no-restricted-globals
 
-
-function clearTextSelection() {
+export function clearTextSelection() {
   var rootWindow = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
   var rootDocument = rootWindow.document; // http://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
 
@@ -1110,8 +995,7 @@ function clearTextSelection() {
  * @param {number} endPos The selection end position.
  */
 
-
-function setCaretPosition(element, pos, endPos) {
+export function setCaretPosition(element, pos, endPos) {
   if (endPos === void 0) {
     endPos = pos;
   }
@@ -1130,7 +1014,6 @@ function setCaretPosition(element, pos, endPos) {
     }
   }
 }
-
 var cachedScrollbarWidth;
 /**
  * Helper to calculate scrollbar width.
@@ -1178,7 +1061,7 @@ function walkontableCalculateScrollbarWidth() {
 // eslint-disable-next-line no-restricted-globals
 
 
-function getScrollbarWidth() {
+export function getScrollbarWidth() {
   var rootDocument = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
 
   if (cachedScrollbarWidth === void 0) {
@@ -1194,8 +1077,7 @@ function getScrollbarWidth() {
  * @returns {boolean}
  */
 
-
-function hasVerticalScrollbar(element) {
+export function hasVerticalScrollbar(element) {
   return element.offsetWidth !== element.clientWidth;
 }
 /**
@@ -1205,8 +1087,7 @@ function hasVerticalScrollbar(element) {
  * @returns {boolean}
  */
 
-
-function hasHorizontalScrollbar(element) {
+export function hasHorizontalScrollbar(element) {
   return element.offsetHeight !== element.clientHeight;
 }
 /**
@@ -1217,12 +1098,11 @@ function hasHorizontalScrollbar(element) {
  * @param {number} top The top position of the overlay.
  */
 
-
-function setOverlayPosition(overlayElem, left, top) {
-  if ((0, _browser.isIE9)()) {
+export function setOverlayPosition(overlayElem, left, top) {
+  if (isIE9()) {
     overlayElem.style.top = top;
     overlayElem.style.left = left;
-  } else if ((0, _browser.isSafari)()) {
+  } else if (isSafari()) {
     overlayElem.style['-webkit-transform'] = "translate3d(".concat(left, ",").concat(top, ",0)");
     overlayElem.style['-webkit-transform'] = "translate3d(".concat(left, ",").concat(top, ",0)");
   } else {
@@ -1234,8 +1114,7 @@ function setOverlayPosition(overlayElem, left, top) {
  * @returns {number|Array}
  */
 
-
-function getCssTransform(element) {
+export function getCssTransform(element) {
   var transform;
 
   if (element.style.transform && (transform = element.style.transform) !== '') {
@@ -1250,8 +1129,7 @@ function getCssTransform(element) {
  * @param {HTMLElement} element An element to process.
  */
 
-
-function resetCssTransform(element) {
+export function resetCssTransform(element) {
   if (element.style.transform && element.style.transform !== '') {
     element.style.transform = '';
   } else if (element.style['-webkit-transform'] && element.style['-webkit-transform'] !== '') {
@@ -1266,8 +1144,7 @@ function resetCssTransform(element) {
  * @returns {boolean}
  */
 
-
-function isInput(element) {
+export function isInput(element) {
   var inputs = ['INPUT', 'SELECT', 'TEXTAREA'];
   return element && (inputs.indexOf(element.nodeName) > -1 || element.contentEditable === 'true');
 }
@@ -1279,8 +1156,7 @@ function isInput(element) {
  * @returns {boolean}
  */
 
-
-function isOutsideInput(element) {
+export function isOutsideInput(element) {
   return isInput(element) && element.hasAttribute('data-hot-input') === false;
 }
 /**
@@ -1289,8 +1165,7 @@ function isOutsideInput(element) {
  * @param {HTMLElement} element - DOM element.
  */
 
-
-function selectElementIfAllowed(element) {
+export function selectElementIfAllowed(element) {
   var activeElement = element.ownerDocument.activeElement;
 
   if (!isOutsideInput(activeElement)) {
@@ -1304,7 +1179,6 @@ function selectElementIfAllowed(element) {
  * @returns {boolean} `true` if the element is detached, `false` otherwise.
  */
 
-
-function isDetached(element) {
+export function isDetached(element) {
   return !element.parentNode;
 }

@@ -1,10 +1,1 @@
-"use strict";
-
-exports.__esModule = true;
-exports.MergeCells = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-var _mergeCells = require("./mergeCells");
-
-exports.PLUGIN_KEY = _mergeCells.PLUGIN_KEY;
-exports.PLUGIN_PRIORITY = _mergeCells.PLUGIN_PRIORITY;
-exports.MergeCells = _mergeCells.MergeCells;
+export { PLUGIN_KEY, PLUGIN_PRIORITY, MergeCells } from "./mergeCells.mjs";

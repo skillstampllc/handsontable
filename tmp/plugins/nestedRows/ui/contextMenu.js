@@ -1,49 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.splice.js");
-
-var _number = require("../../../helpers/number");
-
-var _array = require("../../../helpers/array");
-
-var C = _interopRequireWildcard(require("../../../i18n/constants"));
-
-var _base = _interopRequireDefault(require("./_base"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65,6 +20,22 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import { rangeEach } from "../../../helpers/number.mjs";
+import { arrayEach } from "../../../helpers/array.mjs";
+import * as C from "../../../i18n/constants.mjs";
+import BaseUI from "./_base.mjs";
 var privatePool = new WeakMap();
 /**
  * Class responsible for the Context Menu entries for the Nested Rows plugin.
@@ -159,9 +130,9 @@ var ContextMenuUI = /*#__PURE__*/function (_BaseUI) {
       }, {
         name: '---------'
       }];
-      (0, _number.rangeEach)(0, defaultOptions.items.length - 1, function (i) {
+      rangeEach(0, defaultOptions.items.length - 1, function (i) {
         if (i === 0) {
-          (0, _array.arrayEach)(newEntries, function (val, j) {
+          arrayEach(newEntries, function (val, j) {
             defaultOptions.items.splice(i + j, 0, val);
           });
           return false;
@@ -181,7 +152,7 @@ var ContextMenuUI = /*#__PURE__*/function (_BaseUI) {
     key: "modifyRowInsertingOptions",
     value: function modifyRowInsertingOptions(defaultOptions) {
       var priv = privatePool.get(this);
-      (0, _number.rangeEach)(0, defaultOptions.items.length - 1, function (i) {
+      rangeEach(0, defaultOptions.items.length - 1, function (i) {
         var option = priv[defaultOptions.items[i].key];
 
         if (option !== null && option !== void 0) {
@@ -193,7 +164,6 @@ var ContextMenuUI = /*#__PURE__*/function (_BaseUI) {
   }]);
 
   return ContextMenuUI;
-}(_base.default);
+}(BaseUI);
 
-var _default = ContextMenuUI;
-exports.default = _default;
+export default ContextMenuUI;

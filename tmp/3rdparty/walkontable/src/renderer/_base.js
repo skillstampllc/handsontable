@@ -1,23 +1,16 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _nodesPool = _interopRequireDefault(require("./../utils/nodesPool"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import NodesPool from "./../utils/nodesPool.mjs";
 /**
  * Base renderer class, abstract logic for specialized renderers.
  *
  * @class BaseRenderer
  */
+
 var BaseRenderer = /*#__PURE__*/function () {
   function BaseRenderer(nodeType, rootNode) {
     _classCallCheck(this, BaseRenderer);
@@ -30,7 +23,7 @@ var BaseRenderer = /*#__PURE__*/function () {
      *
      * @type {NodesPool|null}
      */
-    this.nodesPool = typeof nodeType === 'string' ? new _nodesPool.default(nodeType) : null;
+    this.nodesPool = typeof nodeType === 'string' ? new NodesPool(nodeType) : null;
     /**
      * Node type which the renderer will manage while building the table (eg. 'TD', 'TR', 'TH').
      *
@@ -95,4 +88,4 @@ var BaseRenderer = /*#__PURE__*/function () {
   return BaseRenderer;
 }();
 
-exports.default = BaseRenderer;
+export { BaseRenderer as default };

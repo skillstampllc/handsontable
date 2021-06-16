@@ -1,28 +1,18 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _array = require("../../../helpers/array");
-
-var _object = require("../../../helpers/object");
-
-var _localHooks = _interopRequireDefault(require("../../../mixins/localHooks"));
-
-var _translations = require("../../../translations");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { arrayEach } from "../../../helpers/array.mjs";
+import { mixin } from "../../../helpers/object.mjs";
+import localHooks from "../../../mixins/localHooks.mjs";
+import { LinkedPhysicalIndexToValueMap as IndexToValueMap } from "../../../translations/index.mjs";
 /**
  * @plugin Filters
  * @class BaseComponent
  */
+
 var BaseComponent = /*#__PURE__*/function () {
   function BaseComponent(hotInstance, _ref) {
     var id = _ref.id,
@@ -71,7 +61,7 @@ var BaseComponent = /*#__PURE__*/function () {
      * @type {LinkedPhysicalIndexToValueMap|null}
      */
 
-    this.state = stateless ? null : this.hot.columnIndexMapper.registerMap(this.stateId, new _translations.LinkedPhysicalIndexToValueMap());
+    this.state = stateless ? null : this.hot.columnIndexMapper.registerMap(this.stateId, new IndexToValueMap());
   }
   /**
    * Reset elements to its initial state.
@@ -81,7 +71,7 @@ var BaseComponent = /*#__PURE__*/function () {
   _createClass(BaseComponent, [{
     key: "reset",
     value: function reset() {
-      (0, _array.arrayEach)(this.elements, function (ui) {
+      arrayEach(this.elements, function (ui) {
         return ui.reset();
       });
     }
@@ -171,7 +161,7 @@ var BaseComponent = /*#__PURE__*/function () {
     value: function destroy() {
       this.hot.columnIndexMapper.unregisterMap(this.stateId);
       this.clearLocalHooks();
-      (0, _array.arrayEach)(this.elements, function (ui) {
+      arrayEach(this.elements, function (ui) {
         return ui.destroy();
       });
       this.state = null;
@@ -183,6 +173,5 @@ var BaseComponent = /*#__PURE__*/function () {
   return BaseComponent;
 }();
 
-(0, _object.mixin)(BaseComponent, _localHooks.default);
-var _default = BaseComponent;
-exports.default = _default;
+mixin(BaseComponent, localHooks);
+export default BaseComponent;

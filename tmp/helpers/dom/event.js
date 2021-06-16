@@ -1,17 +1,9 @@
-"use strict";
-
-exports.__esModule = true;
-exports.stopImmediatePropagation = stopImmediatePropagation;
-exports.isImmediatePropagationStopped = isImmediatePropagationStopped;
-exports.isRightClick = isRightClick;
-exports.isLeftClick = isLeftClick;
-
 /**
  * Prevent other listeners of the same event from being called.
  *
  * @param {Event} event The mouse event object.
  */
-function stopImmediatePropagation(event) {
+export function stopImmediatePropagation(event) {
   event.isImmediatePropagationEnabled = false;
   event.cancelBubble = true;
 }
@@ -22,8 +14,7 @@ function stopImmediatePropagation(event) {
  * @returns {boolean}
  */
 
-
-function isImmediatePropagationStopped(event) {
+export function isImmediatePropagationStopped(event) {
   return event.isImmediatePropagationEnabled === false;
 }
 /**
@@ -33,8 +24,7 @@ function isImmediatePropagationStopped(event) {
  * @returns {boolean}
  */
 
-
-function isRightClick(event) {
+export function isRightClick(event) {
   return event.button === 2;
 }
 /**
@@ -44,7 +34,6 @@ function isRightClick(event) {
  * @returns {boolean}
  */
 
-
-function isLeftClick(event) {
+export function isLeftClick(event) {
   return event.button === 0;
 }

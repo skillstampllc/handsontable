@@ -1,43 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.ManualColumnFreeze = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-var _base = require("../base");
-
-var _freezeColumn = _interopRequireDefault(require("./contextMenuItem/freezeColumn"));
-
-var _unfreezeColumn = _interopRequireDefault(require("./contextMenuItem/unfreezeColumn"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63,10 +24,24 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var PLUGIN_KEY = 'manualColumnFreeze';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 110;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import { BasePlugin } from "../base/index.mjs";
+import freezeColumnItem from "./contextMenuItem/freezeColumn.mjs";
+import unfreezeColumnItem from "./contextMenuItem/unfreezeColumn.mjs";
+export var PLUGIN_KEY = 'manualColumnFreeze';
+export var PLUGIN_PRIORITY = 110;
 var privatePool = new WeakMap();
 /**
  * This plugin allows to manually "freeze" and "unfreeze" a column using an entry in the Context Menu or using API.
@@ -81,7 +56,7 @@ var privatePool = new WeakMap();
  * @plugin ManualColumnFreeze
  */
 
-var ManualColumnFreeze = /*#__PURE__*/function (_BasePlugin) {
+export var ManualColumnFreeze = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualColumnFreeze, _BasePlugin);
 
   var _super = _createSuper(ManualColumnFreeze);
@@ -214,7 +189,7 @@ var ManualColumnFreeze = /*#__PURE__*/function (_BasePlugin) {
     value: function addContextMenuEntry(options) {
       options.items.push({
         name: '---------'
-      }, (0, _freezeColumn.default)(this), (0, _unfreezeColumn.default)(this));
+      }, freezeColumnItem(this), unfreezeColumnItem(this));
     }
     /**
      * Prevents moving the columns from/to fixed area.
@@ -258,6 +233,4 @@ var ManualColumnFreeze = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ManualColumnFreeze;
-}(_base.BasePlugin);
-
-exports.ManualColumnFreeze = ManualColumnFreeze;
+}(BasePlugin);

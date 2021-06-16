@@ -1,41 +1,18 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.DropdownEditor = exports.EDITOR_TYPE = void 0;
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _autocompleteEditor = require("../autocompleteEditor");
-
-var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -61,15 +38,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var EDITOR_TYPE = 'dropdown';
+import { AutocompleteEditor } from "../autocompleteEditor/index.mjs";
+import Hooks from "../../pluginHooks.mjs";
+export var EDITOR_TYPE = 'dropdown';
 /**
  * @private
  * @class DropdownEditor
  */
 
-exports.EDITOR_TYPE = EDITOR_TYPE;
-
-var DropdownEditor = /*#__PURE__*/function (_AutocompleteEditor) {
+export var DropdownEditor = /*#__PURE__*/function (_AutocompleteEditor) {
   _inherits(DropdownEditor, _AutocompleteEditor);
 
   var _super = _createSuper(DropdownEditor);
@@ -105,11 +82,8 @@ var DropdownEditor = /*#__PURE__*/function (_AutocompleteEditor) {
   }]);
 
   return DropdownEditor;
-}(_autocompleteEditor.AutocompleteEditor);
-
-exports.DropdownEditor = DropdownEditor;
-
-_pluginHooks.default.getSingleton().add('beforeValidate', function (value, row, col) {
+}(AutocompleteEditor);
+Hooks.getSingleton().add('beforeValidate', function (value, row, col) {
   var cellMeta = this.getCellMeta(row, this.propToCol(col));
 
   if (cellMeta.editor === DropdownEditor) {

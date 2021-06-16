@@ -1,20 +1,10 @@
-"use strict";
-
-exports.__esModule = true;
-exports.AutocompleteCellType = exports.CELL_TYPE = void 0;
-
-var _autocompleteEditor = require("../../editors/autocompleteEditor");
-
-var _autocompleteRenderer = require("../../renderers/autocompleteRenderer");
-
-var _autocompleteValidator = require("../../validators/autocompleteValidator");
-
-var CELL_TYPE = 'autocomplete';
-exports.CELL_TYPE = CELL_TYPE;
-var AutocompleteCellType = {
+import { AutocompleteEditor } from "../../editors/autocompleteEditor/index.mjs";
+import { autocompleteRenderer } from "../../renderers/autocompleteRenderer/index.mjs";
+import { autocompleteValidator } from "../../validators/autocompleteValidator/index.mjs";
+export var CELL_TYPE = 'autocomplete';
+export var AutocompleteCellType = {
   CELL_TYPE: CELL_TYPE,
-  editor: _autocompleteEditor.AutocompleteEditor,
-  renderer: _autocompleteRenderer.autocompleteRenderer,
-  validator: _autocompleteValidator.autocompleteValidator
+  editor: AutocompleteEditor,
+  renderer: autocompleteRenderer,
+  validator: autocompleteValidator
 };
-exports.AutocompleteCellType = AutocompleteCellType;

@@ -1,22 +1,9 @@
-"use strict";
-
-exports.__esModule = true;
-exports.autocompleteRenderer = autocompleteRenderer;
-exports.RENDERER_TYPE = void 0;
-
-var _htmlRenderer = require("../htmlRenderer");
-
-var _textRenderer = require("../textRenderer");
-
-var _src = require("../../3rdparty/walkontable/src");
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _element = require("../../helpers/dom/element");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RENDERER_TYPE = 'autocomplete';
+import { htmlRenderer } from "../htmlRenderer/index.mjs";
+import { textRenderer } from "../textRenderer/index.mjs";
+import { CellCoords } from "../../3rdparty/walkontable/src/index.mjs";
+import EventManager from "../../eventManager.mjs";
+import { addClass, hasClass } from "../../helpers/dom/element.mjs";
+export var RENDERER_TYPE = 'autocomplete';
 /**
  * Autocomplete renderer.
  *
@@ -30,11 +17,9 @@ var RENDERER_TYPE = 'autocomplete';
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-exports.RENDERER_TYPE = RENDERER_TYPE;
-
-function autocompleteRenderer(instance, TD, row, col, prop, value, cellProperties) {
+export function autocompleteRenderer(instance, TD, row, col, prop, value, cellProperties) {
   var rootDocument = instance.rootDocument;
-  var rendererFunc = cellProperties.allowHtml ? _htmlRenderer.htmlRenderer : _textRenderer.textRenderer;
+  var rendererFunc = cellProperties.allowHtml ? htmlRenderer : textRenderer;
   var ARROW = rootDocument.createElement('DIV');
   ARROW.className = 'htAutocompleteArrow';
   ARROW.appendChild(rootDocument.createTextNode(String.fromCharCode(9660)));
@@ -48,14 +33,14 @@ function autocompleteRenderer(instance, TD, row, col, prop, value, cellPropertie
   }
 
   TD.insertBefore(ARROW, TD.firstChild);
-  (0, _element.addClass)(TD, 'htAutocomplete');
+  addClass(TD, 'htAutocomplete');
 
   if (!instance.acArrowListener) {
-    var eventManager = new _eventManager.default(instance); // not very elegant but easy and fast
+    var eventManager = new EventManager(instance); // not very elegant but easy and fast
 
     instance.acArrowListener = function (event) {
-      if ((0, _element.hasClass)(event.target, 'htAutocompleteArrow')) {
-        instance.view.wt.getSetting('onCellDblClick', null, new _src.CellCoords(row, col), TD);
+      if (hasClass(event.target, 'htAutocompleteArrow')) {
+        instance.view.wt.getSetting('onCellDblClick', null, new CellCoords(row, col), TD);
       }
     };
 
@@ -66,5 +51,4 @@ function autocompleteRenderer(instance, TD, row, col, prop, value, cellPropertie
     });
   }
 }
-
 autocompleteRenderer.RENDERER_TYPE = RENDERER_TYPE;

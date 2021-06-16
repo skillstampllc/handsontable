@@ -1,57 +1,19 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.DropdownMenu = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _base = require("../base");
-
-var _array = require("../../helpers/array");
-
-var _commandExecutor = _interopRequireDefault(require("../contextMenu/commandExecutor"));
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _element = require("../../helpers/dom/element");
-
-var _itemsFactory = _interopRequireDefault(require("../contextMenu/itemsFactory"));
-
-var _menu = _interopRequireDefault(require("../contextMenu/menu"));
-
-var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
-
-var _predefinedItems = require("../contextMenu/predefinedItems");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77,20 +39,22 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-_pluginHooks.default.getSingleton().register('afterDropdownMenuDefaultOptions');
-
-_pluginHooks.default.getSingleton().register('beforeDropdownMenuShow');
-
-_pluginHooks.default.getSingleton().register('afterDropdownMenuShow');
-
-_pluginHooks.default.getSingleton().register('afterDropdownMenuHide');
-
-_pluginHooks.default.getSingleton().register('afterDropdownMenuExecute');
-
-var PLUGIN_KEY = 'dropdownMenu';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 230;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+import { BasePlugin } from "../base/index.mjs";
+import { arrayEach } from "../../helpers/array.mjs";
+import CommandExecutor from "../contextMenu/commandExecutor.mjs";
+import EventManager from "../../eventManager.mjs";
+import { hasClass } from "../../helpers/dom/element.mjs";
+import ItemsFactory from "../contextMenu/itemsFactory.mjs";
+import Menu from "../contextMenu/menu.mjs";
+import Hooks from "../../pluginHooks.mjs";
+import { COLUMN_LEFT, COLUMN_RIGHT, REMOVE_COLUMN, CLEAR_COLUMN, READ_ONLY, ALIGNMENT, SEPARATOR } from "../contextMenu/predefinedItems.mjs";
+Hooks.getSingleton().register('afterDropdownMenuDefaultOptions');
+Hooks.getSingleton().register('beforeDropdownMenuShow');
+Hooks.getSingleton().register('afterDropdownMenuShow');
+Hooks.getSingleton().register('afterDropdownMenuHide');
+Hooks.getSingleton().register('afterDropdownMenuExecute');
+export var PLUGIN_KEY = 'dropdownMenu';
+export var PLUGIN_PRIORITY = 230;
 var BUTTON_CLASS_NAME = 'changeType';
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -133,7 +97,7 @@ var BUTTON_CLASS_NAME = 'changeType';
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
 
-var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
+export var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
   _inherits(DropdownMenu, _BasePlugin);
 
   var _super = _createSuper(DropdownMenu);
@@ -151,7 +115,7 @@ var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
      * @type {EventManager}
      */
 
-    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
+    _this.eventManager = new EventManager(_assertThisInitialized(_this));
     /**
      * Instance of {@link CommandExecutor}.
      *
@@ -159,7 +123,7 @@ var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
      * @type {CommandExecutor}
      */
 
-    _this.commandExecutor = new _commandExecutor.default(_this.hot);
+    _this.commandExecutor = new CommandExecutor(_this.hot);
     /**
      * Instance of {@link ItemsFactory}.
      *
@@ -212,7 +176,7 @@ var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.itemsFactory = new _itemsFactory.default(this.hot, DropdownMenu.DEFAULT_ITEMS);
+      this.itemsFactory = new ItemsFactory(this.hot, DropdownMenu.DEFAULT_ITEMS);
       var settings = this.hot.getSettings()[PLUGIN_KEY];
       var predefinedItems = {
         items: this.itemsFactory.getItems(settings)
@@ -236,7 +200,7 @@ var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
           _this2.menu.destroy();
         }
 
-        _this2.menu = new _menu.default(_this2.hot, {
+        _this2.menu = new Menu(_this2.hot, {
           className: 'htDropdownMenu',
           keepInViewport: true,
           container: settings.uiContainer || _this2.hot.rootDocument.body
@@ -269,7 +233,7 @@ var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
         }); // Register all commands. Predefined and added by user or by plugins
 
 
-        (0, _array.arrayEach)(menuItems, function (command) {
+        arrayEach(menuItems, function (command) {
           return _this2.commandExecutor.registerCommand(command.key, command);
         });
       });
@@ -426,7 +390,7 @@ var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
     value: function onTableClick(event) {
       event.stopPropagation();
 
-      if ((0, _element.hasClass)(event.target, BUTTON_CLASS_NAME) && !this.menu.isOpened()) {
+      if (hasClass(event.target, BUTTON_CLASS_NAME) && !this.menu.isOpened()) {
         var offsetTop = 0;
         var offsetLeft = 0;
 
@@ -575,14 +539,12 @@ var DropdownMenu = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "DEFAULT_ITEMS",
     get: function get() {
-      return [_predefinedItems.COLUMN_LEFT, _predefinedItems.COLUMN_RIGHT, _predefinedItems.SEPARATOR, _predefinedItems.REMOVE_COLUMN, _predefinedItems.SEPARATOR, _predefinedItems.CLEAR_COLUMN, _predefinedItems.SEPARATOR, _predefinedItems.READ_ONLY, _predefinedItems.SEPARATOR, _predefinedItems.ALIGNMENT];
+      return [COLUMN_LEFT, COLUMN_RIGHT, SEPARATOR, REMOVE_COLUMN, SEPARATOR, CLEAR_COLUMN, SEPARATOR, READ_ONLY, SEPARATOR, ALIGNMENT];
     }
   }]);
 
   return DropdownMenu;
-}(_base.BasePlugin);
-
-exports.DropdownMenu = DropdownMenu;
+}(BasePlugin);
 DropdownMenu.SEPARATOR = {
-  name: _predefinedItems.SEPARATOR
+  name: SEPARATOR
 };

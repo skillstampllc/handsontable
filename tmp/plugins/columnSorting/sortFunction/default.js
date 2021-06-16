@@ -1,13 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.compareFunctionFactory = compareFunctionFactory;
-exports.COLUMN_DATA_TYPE = void 0;
-
-var _mixed = require("../../../helpers/mixed");
-
-var _sortService = require("../sortService");
-
+import { isEmpty } from "../../../helpers/mixed.mjs";
+import { DO_NOT_SWAP, FIRST_BEFORE_SECOND, FIRST_AFTER_SECOND } from "../sortService/index.mjs";
 /**
  * Default sorting compare function factory. Method get as parameters `sortOrder` and `columnMeta` and return compare function.
  *
@@ -16,7 +8,8 @@ var _sortService = require("../sortService");
  * @param {object} columnPluginSettings Plugin settings for the column.
  * @returns {Function} The compare function.
  */
-function compareFunctionFactory(sortOrder, columnMeta, columnPluginSettings) {
+
+export function compareFunctionFactory(sortOrder, columnMeta, columnPluginSettings) {
   return function (value, nextValue) {
     var sortEmptyCells = columnPluginSettings.sortEmptyCells;
 
@@ -29,51 +22,49 @@ function compareFunctionFactory(sortOrder, columnMeta, columnPluginSettings) {
     }
 
     if (value === nextValue) {
-      return _sortService.DO_NOT_SWAP;
+      return DO_NOT_SWAP;
     }
 
-    if ((0, _mixed.isEmpty)(value)) {
-      if ((0, _mixed.isEmpty)(nextValue)) {
-        return _sortService.DO_NOT_SWAP;
+    if (isEmpty(value)) {
+      if (isEmpty(nextValue)) {
+        return DO_NOT_SWAP;
       } // Just fist value is empty and `sortEmptyCells` option was set
 
 
       if (sortEmptyCells) {
-        return sortOrder === 'asc' ? _sortService.FIRST_BEFORE_SECOND : _sortService.FIRST_AFTER_SECOND;
+        return sortOrder === 'asc' ? FIRST_BEFORE_SECOND : FIRST_AFTER_SECOND;
       }
 
-      return _sortService.FIRST_AFTER_SECOND;
+      return FIRST_AFTER_SECOND;
     }
 
-    if ((0, _mixed.isEmpty)(nextValue)) {
+    if (isEmpty(nextValue)) {
       // Just second value is empty and `sortEmptyCells` option was set
       if (sortEmptyCells) {
-        return sortOrder === 'asc' ? _sortService.FIRST_AFTER_SECOND : _sortService.FIRST_BEFORE_SECOND;
+        return sortOrder === 'asc' ? FIRST_AFTER_SECOND : FIRST_BEFORE_SECOND;
       }
 
-      return _sortService.FIRST_BEFORE_SECOND;
+      return FIRST_BEFORE_SECOND;
     }
 
     if (isNaN(value) && !isNaN(nextValue)) {
-      return sortOrder === 'asc' ? _sortService.FIRST_AFTER_SECOND : _sortService.FIRST_BEFORE_SECOND;
+      return sortOrder === 'asc' ? FIRST_AFTER_SECOND : FIRST_BEFORE_SECOND;
     } else if (!isNaN(value) && isNaN(nextValue)) {
-      return sortOrder === 'asc' ? _sortService.FIRST_BEFORE_SECOND : _sortService.FIRST_AFTER_SECOND;
+      return sortOrder === 'asc' ? FIRST_BEFORE_SECOND : FIRST_AFTER_SECOND;
     } else if (!(isNaN(value) || isNaN(nextValue))) {
       value = parseFloat(value);
       nextValue = parseFloat(nextValue);
     }
 
     if (value < nextValue) {
-      return sortOrder === 'asc' ? _sortService.FIRST_BEFORE_SECOND : _sortService.FIRST_AFTER_SECOND;
+      return sortOrder === 'asc' ? FIRST_BEFORE_SECOND : FIRST_AFTER_SECOND;
     }
 
     if (value > nextValue) {
-      return sortOrder === 'asc' ? _sortService.FIRST_AFTER_SECOND : _sortService.FIRST_BEFORE_SECOND;
+      return sortOrder === 'asc' ? FIRST_AFTER_SECOND : FIRST_BEFORE_SECOND;
     }
 
-    return _sortService.DO_NOT_SWAP;
+    return DO_NOT_SWAP;
   };
 }
-
-var COLUMN_DATA_TYPE = 'default';
-exports.COLUMN_DATA_TYPE = COLUMN_DATA_TYPE;
+export var COLUMN_DATA_TYPE = 'default';

@@ -1,27 +1,15 @@
-"use strict";
+import { compareFunctionFactory as defaultSort, COLUMN_DATA_TYPE as DEFAULT_DATA_TYPE } from "../sortFunction/default.mjs";
+import { compareFunctionFactory as numericSort, COLUMN_DATA_TYPE as NUMERIC_DATA_TYPE } from "../sortFunction/numeric.mjs";
+import { compareFunctionFactory as checkboxSort, COLUMN_DATA_TYPE as CHECKBOX_DATA_TYPE } from "../sortFunction/checkbox.mjs";
+import { compareFunctionFactory as dateSort, COLUMN_DATA_TYPE as DATE_DATA_TYPE } from "../sortFunction/date.mjs";
+import staticRegister from "../../../utils/staticRegister.mjs";
 
-exports.__esModule = true;
-exports.getCompareFunctionFactory = getCompareFunctionFactory;
-exports.getRootComparator = exports.registerRootComparator = void 0;
-
-var _default = require("../sortFunction/default");
-
-var _numeric = require("../sortFunction/numeric");
-
-var _checkbox = require("../sortFunction/checkbox");
-
-var _date = require("../sortFunction/date");
-
-var _staticRegister3 = _interopRequireDefault(require("../../../utils/staticRegister"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _staticRegister = (0, _staticRegister3.default)('sorting.compareFunctionFactory'),
+var _staticRegister = staticRegister('sorting.compareFunctionFactory'),
     registerCompareFunctionFactory = _staticRegister.register,
     getGloballyCompareFunctionFactory = _staticRegister.getItem,
     hasGloballyCompareFunctionFactory = _staticRegister.hasItem;
 
-var _staticRegister2 = (0, _staticRegister3.default)('sorting.mainSortComparator'),
+var _staticRegister2 = staticRegister('sorting.mainSortComparator'),
     registerRootComparator = _staticRegister2.register,
     getRootComparator = _staticRegister2.getItem;
 /**
@@ -32,18 +20,15 @@ var _staticRegister2 = (0, _staticRegister3.default)('sorting.mainSortComparator
  */
 
 
-exports.getRootComparator = getRootComparator;
-exports.registerRootComparator = registerRootComparator;
-
-function getCompareFunctionFactory(type) {
+export function getCompareFunctionFactory(type) {
   if (hasGloballyCompareFunctionFactory(type)) {
     return getGloballyCompareFunctionFactory(type);
   }
 
-  return getGloballyCompareFunctionFactory(_default.COLUMN_DATA_TYPE);
+  return getGloballyCompareFunctionFactory(DEFAULT_DATA_TYPE);
 }
-
-registerCompareFunctionFactory(_numeric.COLUMN_DATA_TYPE, _numeric.compareFunctionFactory);
-registerCompareFunctionFactory(_checkbox.COLUMN_DATA_TYPE, _checkbox.compareFunctionFactory);
-registerCompareFunctionFactory(_date.COLUMN_DATA_TYPE, _date.compareFunctionFactory);
-registerCompareFunctionFactory(_default.COLUMN_DATA_TYPE, _default.compareFunctionFactory);
+registerCompareFunctionFactory(NUMERIC_DATA_TYPE, numericSort);
+registerCompareFunctionFactory(CHECKBOX_DATA_TYPE, checkboxSort);
+registerCompareFunctionFactory(DATE_DATA_TYPE, dateSort);
+registerCompareFunctionFactory(DEFAULT_DATA_TYPE, defaultSort);
+export { registerRootComparator, getRootComparator };

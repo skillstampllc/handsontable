@@ -1,23 +1,4 @@
-"use strict";
-
-exports.__esModule = true;
-exports.Overlay = void 0;
-
-require("core-js/modules/es.array.index-of.js");
-
-var _element = require("./../../../../helpers/dom/element");
-
-var _object = require("./../../../../helpers/object");
-
-var _array = require("./../../../../helpers/array");
-
-var _console = require("./../../../../helpers/console");
-
-var _eventManager = _interopRequireDefault(require("./../../../../eventManager"));
-
-var _constants = require("./constants");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.index-of.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25,20 +6,27 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { getScrollableElement, getTrimmingContainer } from "./../../../../helpers/dom/element.mjs";
+import { defineGetter } from "./../../../../helpers/object.mjs";
+import { arrayEach } from "./../../../../helpers/array.mjs";
+import { warn } from "./../../../../helpers/console.mjs";
+import EventManager from "./../../../../eventManager.mjs";
+import { CLONE_TYPES, CLONE_TOP, CLONE_LEFT } from "./constants.mjs";
 /**
  * Creates an overlay over the original Walkontable instance. The overlay renders the clone of the original Walkontable
  * and (optionally) implements behavior needed for native horizontal and vertical scrolling.
  *
  * @class Overlay
  */
-var Overlay = /*#__PURE__*/function () {
+
+export var Overlay = /*#__PURE__*/function () {
   /**
    * @param {Walkontable} wotInstance The Walkontable instance.
    */
   function Overlay(wotInstance) {
     _classCallCheck(this, Overlay);
 
-    (0, _object.defineGetter)(this, 'wot', wotInstance, {
+    defineGetter(this, 'wot', wotInstance, {
       writable: false
     });
     var _this$wot$wtTable = this.wot.wtTable,
@@ -56,7 +44,7 @@ var Overlay = /*#__PURE__*/function () {
     this.spreader = spreader;
     this.holder = holder;
     this.wtRootElement = wtRootElement;
-    this.trimmingContainer = (0, _element.getTrimmingContainer)(this.hider.parentNode.parentNode);
+    this.trimmingContainer = getTrimmingContainer(this.hider.parentNode.parentNode);
     this.updateStateOfRendering();
   }
   /**
@@ -97,7 +85,7 @@ var Overlay = /*#__PURE__*/function () {
   }, {
     key: "updateTrimmingContainer",
     value: function updateTrimmingContainer() {
-      this.trimmingContainer = (0, _element.getTrimmingContainer)(this.hider.parentNode.parentNode);
+      this.trimmingContainer = getTrimmingContainer(this.hider.parentNode.parentNode);
     }
     /**
      * Update the main scrollable element.
@@ -113,7 +101,7 @@ var Overlay = /*#__PURE__*/function () {
       if (rootWindow.getComputedStyle(wtTable.wtRootElement.parentNode).getPropertyValue('overflow') === 'hidden') {
         this.mainTableScrollableElement = this.wot.wtTable.holder;
       } else {
-        this.mainTableScrollableElement = (0, _element.getScrollableElement)(wtTable.TABLE);
+        this.mainTableScrollableElement = getScrollableElement(wtTable.TABLE);
       }
     }
     /**
@@ -130,7 +118,7 @@ var Overlay = /*#__PURE__*/function () {
     key: "getRelativeCellPosition",
     value: function getRelativeCellPosition(element, rowIndex, columnIndex) {
       if (this.clone.wtTable.holder.contains(element) === false) {
-        (0, _console.warn)("The provided element is not a child of the ".concat(this.type, " overlay"));
+        warn("The provided element is not a child of the ".concat(this.type, " overlay"));
         return;
       }
 
@@ -244,7 +232,7 @@ var Overlay = /*#__PURE__*/function () {
   }, {
     key: "makeClone",
     value: function makeClone(direction) {
-      if (_constants.CLONE_TYPES.indexOf(direction) === -1) {
+      if (CLONE_TYPES.indexOf(direction) === -1) {
         throw new Error("Clone type \"".concat(direction, "\" is not supported."));
       }
 
@@ -266,12 +254,12 @@ var Overlay = /*#__PURE__*/function () {
       tableParent.appendChild(clone);
       var preventOverflow = this.wot.getSetting('preventOverflow');
 
-      if (preventOverflow === true || preventOverflow === 'horizontal' && this.type === _constants.CLONE_TOP || preventOverflow === 'vertical' && this.type === _constants.CLONE_LEFT) {
+      if (preventOverflow === true || preventOverflow === 'horizontal' && this.type === CLONE_TOP || preventOverflow === 'vertical' && this.type === CLONE_LEFT) {
         this.mainTableScrollableElement = rootWindow;
       } else if (rootWindow.getComputedStyle(tableParent).getPropertyValue('overflow') === 'hidden') {
         this.mainTableScrollableElement = wtTable.holder;
       } else {
-        this.mainTableScrollableElement = (0, _element.getScrollableElement)(wtTable.TABLE);
+        this.mainTableScrollableElement = getScrollableElement(wtTable.TABLE);
       } // Create a new instance of the Walkontable class
 
 
@@ -318,7 +306,7 @@ var Overlay = /*#__PURE__*/function () {
       var holderStyle = holder.style;
       var hidderStyle = hider.style;
       var rootStyle = holder.parentNode.style;
-      (0, _array.arrayEach)([holderStyle, hidderStyle, rootStyle], function (style) {
+      arrayEach([holderStyle, hidderStyle, rootStyle], function (style) {
         style.width = '';
         style.height = '';
       });
@@ -330,11 +318,9 @@ var Overlay = /*#__PURE__*/function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      new _eventManager.default(this.clone).destroy();
+      new EventManager(this.clone).destroy();
     }
   }]);
 
   return Overlay;
 }();
-
-exports.Overlay = Overlay;

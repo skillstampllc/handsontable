@@ -1,13 +1,4 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.string.pad-start.js");
-
-var _object = require("../../../helpers/object");
-
-var _string = require("../../../helpers/string");
+import "core-js/modules/es.string.pad-start.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15,10 +6,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { extend, clone } from "../../../helpers/object.mjs";
+import { substitute } from "../../../helpers/string.mjs";
 /**
  * @plugin ExportFile
  * @private
  */
+
 var BaseType = /*#__PURE__*/function () {
   function BaseType(dataProvider, options) {
     _classCallCheck(this, BaseType);
@@ -49,12 +43,12 @@ var BaseType = /*#__PURE__*/function () {
   _createClass(BaseType, [{
     key: "_mergeOptions",
     value: function _mergeOptions(options) {
-      var _options = (0, _object.clone)(this.constructor.DEFAULT_OPTIONS);
+      var _options = clone(this.constructor.DEFAULT_OPTIONS);
 
       var date = new Date();
-      _options = (0, _object.extend)((0, _object.clone)(BaseType.DEFAULT_OPTIONS), _options);
-      _options = (0, _object.extend)(_options, options);
-      _options.filename = (0, _string.substitute)(_options.filename, {
+      _options = extend(clone(BaseType.DEFAULT_OPTIONS), _options);
+      _options = extend(_options, options);
+      _options.filename = substitute(_options.filename, {
         YYYY: date.getFullYear(),
         MM: "".concat(date.getMonth() + 1).padStart(2, '0'),
         DD: "".concat(date.getDate()).padStart(2, '0')
@@ -88,5 +82,4 @@ var BaseType = /*#__PURE__*/function () {
   return BaseType;
 }();
 
-var _default = BaseType;
-exports.default = _default;
+export default BaseType;

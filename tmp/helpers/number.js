@@ -1,30 +1,13 @@
-"use strict";
-
-exports.__esModule = true;
-exports.isNumeric = isNumeric;
-exports.rangeEach = rangeEach;
-exports.rangeEachReverse = rangeEachReverse;
-exports.valueAccordingPercent = valueAccordingPercent;
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.regexp.to-string.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -35,7 +18,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
  * @param {*} value The value to check.
  * @returns {boolean}
  */
-function isNumeric(value) {
+export function isNumeric(value) {
   /* eslint-disable */
   var t = _typeof(value);
 
@@ -49,8 +32,7 @@ function isNumeric(value) {
  * @param {Function} [iteratee] The function invoked per iteration.
  */
 
-
-function rangeEach(rangeFrom, rangeTo, iteratee) {
+export function rangeEach(rangeFrom, rangeTo, iteratee) {
   var index = -1;
 
   if (typeof rangeTo === 'function') {
@@ -74,8 +56,7 @@ function rangeEach(rangeFrom, rangeTo, iteratee) {
  * @param {Function} [iteratee] The function invoked per iteration.
  */
 
-
-function rangeEachReverse(rangeFrom, rangeTo, iteratee) {
+export function rangeEachReverse(rangeFrom, rangeTo, iteratee) {
   var index = rangeFrom + 1;
 
   if (typeof rangeTo === 'function') {
@@ -97,8 +78,7 @@ function rangeEachReverse(rangeFrom, rangeTo, iteratee) {
  * @returns {Number}
  */
 
-
-function valueAccordingPercent(value, percent) {
+export function valueAccordingPercent(value, percent) {
   percent = parseInt(percent.toString().replace('%', ''), 10);
   percent = parseInt(value * percent / 100, 10);
   return percent;

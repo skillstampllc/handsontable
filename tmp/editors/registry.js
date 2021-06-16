@@ -1,34 +1,17 @@
-"use strict";
-
-exports.__esModule = true;
-exports.RegisteredEditor = RegisteredEditor;
-exports.getEditorInstance = exports._getEditorInstance = _getEditorInstance;
-exports.registerEditor = _register;
-exports.getEditor = _getItem;
-exports.getRegisteredEditors = exports.getRegisteredEditorNames = exports.hasEditor = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-var _pluginHooks = _interopRequireDefault(require("../pluginHooks"));
-
-var _staticRegister2 = _interopRequireDefault(require("../utils/staticRegister"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 /**
  * Utility to register editors and common namespace for keeping reference to all editor classes.
  */
+import Hooks from "../pluginHooks.mjs";
+import staticRegister from "../utils/staticRegister.mjs";
 var registeredEditorClasses = new WeakMap();
 
-var _staticRegister = (0, _staticRegister2.default)('editors'),
+var _staticRegister = staticRegister('editors'),
     register = _staticRegister.register,
     getItem = _staticRegister.getItem,
     hasItem = _staticRegister.hasItem,
@@ -39,11 +22,7 @@ var _staticRegister = (0, _staticRegister2.default)('editors'),
  */
 
 
-exports.getRegisteredEditors = getValues;
-exports.getRegisteredEditorNames = getNames;
-exports.hasEditor = hasItem;
-
-function RegisteredEditor(editorClass) {
+export function RegisteredEditor(editorClass) {
   var instances = {};
   var Clazz = editorClass;
 
@@ -59,7 +38,7 @@ function RegisteredEditor(editorClass) {
     return instances[hotInstance.guid];
   };
 
-  _pluginHooks.default.getSingleton().add('afterDestroy', function () {
+  Hooks.getSingleton().add('afterDestroy', function () {
     instances[this.guid] = null;
   });
 }
@@ -71,8 +50,7 @@ function RegisteredEditor(editorClass) {
  * @returns {Function} Returns instance of editor.
  */
 
-
-function _getEditorInstance(name, hotInstance) {
+export function _getEditorInstance(name, hotInstance) {
   var editor;
 
   if (typeof name === 'function') {
@@ -99,7 +77,6 @@ function _getEditorInstance(name, hotInstance) {
  * @param {string} name Editor identification.
  * @returns {Function} Returns editor class.
  */
-
 
 function _getItem(name) {
   if (!hasItem(name)) {
@@ -130,3 +107,5 @@ function _register(name, editorClass) {
 
   registeredEditorClasses.set(editorClass, editorWrapper);
 }
+
+export { _register as registerEditor, _getItem as getEditor, _getEditorInstance as getEditorInstance, hasItem as hasEditor, getNames as getRegisteredEditorNames, getValues as getRegisteredEditors };

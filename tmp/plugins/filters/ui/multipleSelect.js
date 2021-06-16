@@ -1,75 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-var _element = require("../../../helpers/dom/element");
-
-var _object = require("../../../helpers/object");
-
-var _array = require("../../../helpers/array");
-
-var _unicode = require("../../../helpers/unicode");
-
-var _function = require("../../../helpers/function");
-
-var _data = require("../../../helpers/data");
-
-var C = _interopRequireWildcard(require("../../../i18n/constants"));
-
-var _event = require("../../../helpers/dom/event");
-
-var _base = _interopRequireDefault(require("./_base"));
-
-var _input = _interopRequireDefault(require("./input"));
-
-var _link = _interopRequireDefault(require("./link"));
-
-var _utils = require("../utils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -107,6 +36,36 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import { addClass, getScrollbarWidth } from "../../../helpers/dom/element.mjs";
+import { clone, extend } from "../../../helpers/object.mjs";
+import { arrayFilter, arrayMap, arrayEach } from "../../../helpers/array.mjs";
+import { isKey } from "../../../helpers/unicode.mjs";
+import { partial } from "../../../helpers/function.mjs";
+import { dataRowToChangesArray } from "../../../helpers/data.mjs";
+import * as C from "../../../i18n/constants.mjs";
+import { stopImmediatePropagation } from "../../../helpers/dom/event.mjs";
+import BaseUI from "./_base.mjs";
+import InputUI from "./input.mjs";
+import LinkUI from "./link.mjs";
+import { createArrayAssertion } from "../utils.mjs";
 var privatePool = new WeakMap();
 /**
  * @class MultipleSelectUI
@@ -123,7 +82,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
 
     _classCallCheck(this, MultipleSelectUI);
 
-    _this = _super.call(this, hotInstance, (0, _object.extend)(MultipleSelectUI.DEFAULTS, options));
+    _this = _super.call(this, hotInstance, extend(MultipleSelectUI.DEFAULTS, options));
     privatePool.set(_assertThisInitialized(_this), {});
     /**
      * Input element.
@@ -131,7 +90,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
      * @type {InputUI}
      */
 
-    _this.searchInput = new _input.default(_this.hot, {
+    _this.searchInput = new InputUI(_this.hot, {
       placeholder: C.FILTERS_BUTTONS_PLACEHOLDER_SEARCH,
       className: 'htUIMultipleSelectSearch'
     });
@@ -141,7 +100,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
      * @type {BaseUI}
      */
 
-    _this.selectAllUI = new _link.default(_this.hot, {
+    _this.selectAllUI = new LinkUI(_this.hot, {
       textContent: C.FILTERS_BUTTONS_SELECT_ALL,
       className: 'htUISelectAll'
     });
@@ -151,7 +110,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
      * @type {BaseUI}
      */
 
-    _this.clearAllUI = new _link.default(_this.hot, {
+    _this.clearAllUI = new LinkUI(_this.hot, {
       textContent: C.FILTERS_BUTTONS_CLEAR,
       className: 'htUIClearAll'
     });
@@ -258,7 +217,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
 
       var rootDocument = this.hot.rootDocument;
       var itemsBoxWrapper = rootDocument.createElement('div');
-      var selectionControl = new _base.default(this.hot, {
+      var selectionControl = new BaseUI(this.hot, {
         className: 'htUISelectionControls',
         children: [this.selectAllUI, this.clearAllUI]
       });
@@ -278,7 +237,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
           _this3.itemsBox.destroy();
         }
 
-        (0, _element.addClass)(wrapper, 'htUIMultipleSelectHot'); // Construct and initialise a new Handsontable
+        addClass(wrapper, 'htUIMultipleSelectHot'); // Construct and initialise a new Handsontable
 
         _this3.itemsBox = new _this3.hot.constructor(wrapper, {
           data: _this3.items,
@@ -298,7 +257,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
           height: 110,
           // Workaround for #151.
           colWidths: function colWidths() {
-            return _this3.itemsBox.container.scrollWidth - (0, _element.getScrollbarWidth)(rootDocument);
+            return _this3.itemsBox.container.scrollWidth - getScrollbarWidth(rootDocument);
           },
           copyPaste: false,
           disableVisualSelection: 'area',
@@ -385,7 +344,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
       if (value === '') {
         filteredItems = _toConsumableArray(this.items);
       } else {
-        filteredItems = (0, _array.arrayFilter)(this.items, function (item) {
+        filteredItems = arrayFilter(this.items, function (item) {
           return "".concat(item.value).toLowerCase().indexOf(value) >= 0;
         });
       }
@@ -403,10 +362,10 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
     key: "onInputKeyDown",
     value: function onInputKeyDown(event) {
       this.runLocalHooks('keydown', event, this);
-      var isKeyCode = (0, _function.partial)(_unicode.isKey, event.keyCode);
+      var isKeyCode = partial(isKey, event.keyCode);
 
       if (isKeyCode('ARROW_DOWN|TAB') && !this.itemsBox.isListening()) {
-        (0, _event.stopImmediatePropagation)(event);
+        stopImmediatePropagation(event);
         this.itemsBox.listen();
         this.itemsBox.selectCell(0, 0);
       }
@@ -421,7 +380,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
   }, {
     key: "onItemsBoxBeforeKeyDown",
     value: function onItemsBoxBeforeKeyDown(event) {
-      var isKeyCode = (0, _function.partial)(_unicode.isKey, event.keyCode);
+      var isKeyCode = partial(isKey, event.keyCode);
 
       if (isKeyCode('ESCAPE')) {
         this.runLocalHooks('keydown', event, this);
@@ -429,7 +388,7 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
 
 
       if (!isKeyCode('ARROW_UP|ARROW_DOWN|ARROW_LEFT|ARROW_RIGHT|TAB|SPACE|ENTER')) {
-        (0, _event.stopImmediatePropagation)(event);
+        stopImmediatePropagation(event);
         this.itemsBox.unlisten();
         this.itemsBox.deselectCell();
         this.searchInput.focus();
@@ -447,9 +406,9 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
     value: function onSelectAllClick(event) {
       var changes = [];
       event.preventDefault();
-      (0, _array.arrayEach)(this.itemsBox.getSourceData(), function (row, rowIndex) {
+      arrayEach(this.itemsBox.getSourceData(), function (row, rowIndex) {
         row.checked = true;
-        changes.push((0, _data.dataRowToChangesArray)(row, rowIndex)[0]);
+        changes.push(dataRowToChangesArray(row, rowIndex)[0]);
       });
       this.itemsBox.setSourceDataAtCell(changes);
     }
@@ -465,16 +424,16 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
     value: function onClearAllClick(event) {
       var changes = [];
       event.preventDefault();
-      (0, _array.arrayEach)(this.itemsBox.getSourceData(), function (row, rowIndex) {
+      arrayEach(this.itemsBox.getSourceData(), function (row, rowIndex) {
         row.checked = false;
-        changes.push((0, _data.dataRowToChangesArray)(row, rowIndex)[0]);
+        changes.push(dataRowToChangesArray(row, rowIndex)[0]);
       });
       this.itemsBox.setSourceDataAtCell(changes);
     }
   }], [{
     key: "DEFAULTS",
     get: function get() {
-      return (0, _object.clone)({
+      return clone({
         className: 'htUIMultipleSelect',
         value: []
       });
@@ -482,9 +441,9 @@ var MultipleSelectUI = /*#__PURE__*/function (_BaseUI) {
   }]);
 
   return MultipleSelectUI;
-}(_base.default);
+}(BaseUI);
 
-var _default = MultipleSelectUI;
+export default MultipleSelectUI;
 /**
  * Pick up object items based on selected values.
  *
@@ -493,11 +452,9 @@ var _default = MultipleSelectUI;
  * @returns {Array}
  */
 
-exports.default = _default;
-
 function valueToItems(availableItems, selectedValue) {
-  var arrayAssertion = (0, _utils.createArrayAssertion)(selectedValue);
-  return (0, _array.arrayMap)(availableItems, function (item) {
+  var arrayAssertion = createArrayAssertion(selectedValue);
+  return arrayMap(availableItems, function (item) {
     item.checked = arrayAssertion(item.value);
     return item;
   });
@@ -512,7 +469,7 @@ function valueToItems(availableItems, selectedValue) {
 
 function itemsToValue(availableItems) {
   var items = [];
-  (0, _array.arrayEach)(availableItems, function (item) {
+  arrayEach(availableItems, function (item) {
     if (item.checked) {
       items.push(item.value);
     }

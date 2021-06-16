@@ -1,59 +1,22 @@
-"use strict";
-
-exports.__esModule = true;
-exports.to2dArray = to2dArray;
-exports.extendArray = extendArray;
-exports.pivot = pivot;
-exports.arrayReduce = arrayReduce;
-exports.arrayFilter = arrayFilter;
-exports.arrayMap = arrayMap;
-exports.arrayEach = arrayEach;
-exports.arraySum = arraySum;
-exports.arrayMax = arrayMax;
-exports.arrayMin = arrayMin;
-exports.arrayAvg = arrayAvg;
-exports.arrayFlatten = arrayFlatten;
-exports.arrayUnique = arrayUnique;
-exports.getDifferenceOfArrays = getDifferenceOfArrays;
-exports.getIntersectionOfArrays = getIntersectionOfArrays;
-exports.getUnionOfArrays = getUnionOfArrays;
-exports.stringToArray = stringToArray;
-exports.dynamicSort = dynamicSort;
-exports.dynamicSortMultiple = dynamicSortMultiple;
-exports.binarySearch = binarySearch;
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
 
 /**
  * @param {Array} arr An array to process.
  */
-function to2dArray(arr) {
+export function to2dArray(arr) {
   var ilen = arr.length;
   var i = 0;
 
@@ -67,8 +30,7 @@ function to2dArray(arr) {
  * @param {Array} extension The data to extend from.
  */
 
-
-function extendArray(arr, extension) {
+export function extendArray(arr, extension) {
   var ilen = extension.length;
   var i = 0;
 
@@ -82,8 +44,7 @@ function extendArray(arr, extension) {
  * @returns {Array}
  */
 
-
-function pivot(arr) {
+export function pivot(arr) {
   var pivotedArr = [];
 
   if (!arr || arr.length === 0 || !arr[0] || arr[0].length === 0) {
@@ -118,8 +79,7 @@ function pivot(arr) {
  * @returns {*} Returns the accumulated value.
  */
 
-
-function arrayReduce(array, iteratee, accumulator, initFromArray) {
+export function arrayReduce(array, iteratee, accumulator, initFromArray) {
   var index = -1;
   var iterable = array;
   var result = accumulator;
@@ -155,8 +115,7 @@ function arrayReduce(array, iteratee, accumulator, initFromArray) {
  * @returns {Array} Returns the new filtered array.
  */
 
-
-function arrayFilter(array, predicate) {
+export function arrayFilter(array, predicate) {
   var index = 0;
   var iterable = array;
 
@@ -190,8 +149,7 @@ function arrayFilter(array, predicate) {
  * @returns {Array} Returns the new filtered array.
  */
 
-
-function arrayMap(array, iteratee) {
+export function arrayMap(array, iteratee) {
   var index = 0;
   var iterable = array;
 
@@ -223,8 +181,7 @@ function arrayMap(array, iteratee) {
  * @returns {Array} Returns `array`.
  */
 
-
-function arrayEach(array, iteratee) {
+export function arrayEach(array, iteratee) {
   var index = 0;
   var iterable = array;
 
@@ -251,8 +208,7 @@ function arrayEach(array, iteratee) {
  * @returns {number} Returns calculated sum value.
  */
 
-
-function arraySum(array) {
+export function arraySum(array) {
   return arrayReduce(array, function (a, b) {
     return a + b;
   }, 0);
@@ -265,8 +221,7 @@ function arraySum(array) {
  * @returns {number} Returns the highest value from an array.
  */
 
-
-function arrayMax(array) {
+export function arrayMax(array) {
   return arrayReduce(array, function (a, b) {
     return a > b ? a : b;
   }, Array.isArray(array) ? array[0] : void 0);
@@ -279,8 +234,7 @@ function arrayMax(array) {
  * @returns {number} Returns the lowest value from an array.
  */
 
-
-function arrayMin(array) {
+export function arrayMin(array) {
   return arrayReduce(array, function (a, b) {
     return a < b ? a : b;
   }, Array.isArray(array) ? array[0] : void 0);
@@ -292,8 +246,7 @@ function arrayMin(array) {
  * @returns {number} Returns calculated average value.
  */
 
-
-function arrayAvg(array) {
+export function arrayAvg(array) {
   if (!array.length) {
     return 0;
   }
@@ -307,8 +260,7 @@ function arrayAvg(array) {
  * @returns {Array}
  */
 
-
-function arrayFlatten(array) {
+export function arrayFlatten(array) {
   return arrayReduce(array, function (initial, value) {
     return initial.concat(Array.isArray(value) ? arrayFlatten(value) : value);
   }, []);
@@ -320,8 +272,7 @@ function arrayFlatten(array) {
  * @returns {Array}
  */
 
-
-function arrayUnique(array) {
+export function arrayUnique(array) {
   var unique = [];
   arrayEach(array, function (value) {
     if (unique.indexOf(value) === -1) {
@@ -337,8 +288,7 @@ function arrayUnique(array) {
  * @returns {Array} Returns the difference between arrays.
  */
 
-
-function getDifferenceOfArrays() {
+export function getDifferenceOfArrays() {
   for (var _len = arguments.length, arrays = new Array(_len), _key = 0; _key < _len; _key++) {
     arrays[_key] = arguments[_key];
   }
@@ -362,8 +312,7 @@ function getDifferenceOfArrays() {
  * @returns {Array} Returns elements that exists in every array.
  */
 
-
-function getIntersectionOfArrays() {
+export function getIntersectionOfArrays() {
   for (var _len2 = arguments.length, arrays = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
     arrays[_key2] = arguments[_key2];
   }
@@ -387,8 +336,7 @@ function getIntersectionOfArrays() {
  * @returns {Array} Returns the elements that exist in any of the arrays, without duplicates.
  */
 
-
-function getUnionOfArrays() {
+export function getUnionOfArrays() {
   for (var _len3 = arguments.length, arrays = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
     arrays[_key3] = arguments[_key3];
   }
@@ -415,8 +363,7 @@ function getUnionOfArrays() {
  * @returns {string[]} Returns array of string or empty array.
  */
 
-
-function stringToArray(value) {
+export function stringToArray(value) {
   var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
   return value.split(delimiter);
 }
@@ -425,8 +372,7 @@ function stringToArray(value) {
  * @returns {function(*, *): number}
  */
 
-
-function dynamicSort(property) {
+export function dynamicSort(property) {
   return function (obj1, obj2) {
     if (obj1[property] > obj2[property]) {
       return 1;
@@ -442,8 +388,7 @@ function dynamicSort(property) {
  * @returns {function(*=, *=): number}
  */
 
-
-function dynamicSortMultiple() {
+export function dynamicSortMultiple() {
   for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
     args[_key4] = arguments[_key4];
   }
@@ -477,8 +422,7 @@ function dynamicSortMultiple() {
  * @returns {null|*}
  */
 
-
-function binarySearch(sortedArray, row, col) {
+export function binarySearch(sortedArray, row, col) {
   var start = 0;
   var end = sortedArray.length - 1;
 

@@ -1,12 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _array = require("./../helpers/array");
-
-var _object = require("./../helpers/object");
-
+import { arrayEach } from "./../helpers/array.mjs";
+import { defineGetter, objectEach } from "./../helpers/object.mjs";
 var MIXIN_NAME = 'hooksRefRegisterer';
 /**
  * Mixin object to extend objects functionality for auto registering hooks in an Handsontable instance.
@@ -47,7 +40,7 @@ var hooksRefRegisterer = {
   removeHooksByKey: function removeHooksByKey(key) {
     var _this = this;
 
-    (0, _array.arrayEach)(this._hooksStorage[key] || [], function (callback) {
+    arrayEach(this._hooksStorage[key] || [], function (callback) {
       _this.hot.removeHook(key, callback);
     });
   },
@@ -58,15 +51,14 @@ var hooksRefRegisterer = {
   clearHooks: function clearHooks() {
     var _this2 = this;
 
-    (0, _object.objectEach)(this._hooksStorage, function (callbacks, name) {
+    objectEach(this._hooksStorage, function (callbacks, name) {
       return _this2.removeHooksByKey(name);
     });
     this._hooksStorage = {};
   }
 };
-(0, _object.defineGetter)(hooksRefRegisterer, 'MIXIN_NAME', MIXIN_NAME, {
+defineGetter(hooksRefRegisterer, 'MIXIN_NAME', MIXIN_NAME, {
   writable: false,
   enumerable: false
 });
-var _default = hooksRefRegisterer;
-exports.default = _default;
+export default hooksRefRegisterer;

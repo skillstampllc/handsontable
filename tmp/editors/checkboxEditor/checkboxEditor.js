@@ -1,33 +1,15 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.CheckboxEditor = exports.EDITOR_TYPE = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _baseEditor = require("../baseEditor");
-
-var _element = require("../../helpers/dom/element");
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -49,15 +31,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var EDITOR_TYPE = 'checkbox';
+import { BaseEditor } from "../baseEditor/index.mjs";
+import { hasClass } from "../../helpers/dom/element.mjs";
+export var EDITOR_TYPE = 'checkbox';
 /**
  * @private
  * @class CheckboxEditor
  */
 
-exports.EDITOR_TYPE = EDITOR_TYPE;
-
-var CheckboxEditor = /*#__PURE__*/function (_BaseEditor) {
+export var CheckboxEditor = /*#__PURE__*/function (_BaseEditor) {
   _inherits(CheckboxEditor, _BaseEditor);
 
   var _super = _createSuper(CheckboxEditor);
@@ -77,7 +59,7 @@ var CheckboxEditor = /*#__PURE__*/function (_BaseEditor) {
       if (event && event.type === 'mouseup') {
         var checkbox = this.TD.querySelector('input[type="checkbox"]');
 
-        if (!(0, _element.hasClass)(checkbox, 'htBadValue')) {
+        if (!hasClass(checkbox, 'htBadValue')) {
           checkbox.click();
         }
       }
@@ -111,6 +93,4 @@ var CheckboxEditor = /*#__PURE__*/function (_BaseEditor) {
   }]);
 
   return CheckboxEditor;
-}(_baseEditor.BaseEditor);
-
-exports.CheckboxEditor = CheckboxEditor;
+}(BaseEditor);

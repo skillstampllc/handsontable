@@ -1,15 +1,6 @@
-"use strict";
+import staticRegister from "../utils/staticRegister.mjs";
 
-exports.__esModule = true;
-exports.registerValidator = _register;
-exports.getValidator = _getItem;
-exports.getRegisteredValidators = exports.getRegisteredValidatorNames = exports.hasValidator = void 0;
-
-var _staticRegister2 = _interopRequireDefault(require("../utils/staticRegister"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _staticRegister = (0, _staticRegister2.default)('validators'),
+var _staticRegister = staticRegister('validators'),
     register = _staticRegister.register,
     getItem = _staticRegister.getItem,
     hasItem = _staticRegister.hasItem,
@@ -22,10 +13,6 @@ var _staticRegister = (0, _staticRegister2.default)('validators'),
  * @returns {Function} Returns validator function.
  */
 
-
-exports.getRegisteredValidators = getValues;
-exports.getRegisteredValidatorNames = getNames;
-exports.hasValidator = hasItem;
 
 function _getItem(name) {
   if (typeof name === 'function') {
@@ -54,3 +41,5 @@ function _register(name, validator) {
 
   register(name, validator);
 }
+
+export { _register as registerValidator, _getItem as getValidator, hasItem as hasValidator, getNames as getRegisteredValidatorNames, getValues as getRegisteredValidators };

@@ -1,59 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.ManualRowResize = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/web.timers.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-var _base = require("../base");
-
-var _element = require("../../helpers/dom/element");
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _array = require("../../helpers/array");
-
-var _number = require("../../helpers/number");
-
-var _translations = require("../../translations");
-
-var _src = require("../../3rdparty/walkontable/src");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -79,11 +24,33 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-// Developer note! Whenever you make a change in this file, make an analogous change in manualColumnResize.js
-var PLUGIN_KEY = 'manualRowResize';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 30;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/web.timers.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import { BasePlugin } from "../base/index.mjs";
+import { addClass, closest, hasClass, removeClass, outerWidth, isDetached } from "../../helpers/dom/element.mjs";
+import EventManager from "../../eventManager.mjs";
+import { arrayEach } from "../../helpers/array.mjs";
+import { rangeEach } from "../../helpers/number.mjs";
+import { PhysicalIndexToValueMap as IndexToValueMap } from "../../translations/index.mjs";
+import { ViewportRowsCalculator } from "../../3rdparty/walkontable/src/index.mjs"; // Developer note! Whenever you make a change in this file, make an analogous change in manualColumnResize.js
+
+export var PLUGIN_KEY = 'manualRowResize';
+export var PLUGIN_PRIORITY = 30;
 var PERSISTENT_STATE_KEY = 'manualRowHeights';
 var privatePool = new WeakMap();
 /**
@@ -98,7 +65,7 @@ var privatePool = new WeakMap();
  * @plugin ManualRowResize
  */
 
-var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
+export var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualRowResize, _BasePlugin);
 
   var _super = _createSuper(ManualRowResize);
@@ -120,7 +87,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
     _this.startOffset = null;
     _this.handle = rootDocument.createElement('DIV');
     _this.guide = rootDocument.createElement('DIV');
-    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
+    _this.eventManager = new EventManager(_assertThisInitialized(_this));
     _this.pressed = null;
     _this.dblclick = 0;
     _this.autoresizeTimeout = null;
@@ -139,8 +106,8 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
     privatePool.set(_assertThisInitialized(_this), {
       config: void 0
     });
-    (0, _element.addClass)(_this.handle, 'manualRowResizer');
-    (0, _element.addClass)(_this.guide, 'manualRowResizerGuide');
+    addClass(_this.handle, 'manualRowResizer');
+    addClass(_this.guide, 'manualRowResizerGuide');
     return _this;
   }
   /**
@@ -169,7 +136,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.rowHeightsMap = new _translations.PhysicalIndexToValueMap();
+      this.rowHeightsMap = new IndexToValueMap();
       this.rowHeightsMap.addLocalHook('init', function () {
         return _this2.onMapInit();
       });
@@ -245,7 +212,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
     key: "setManualSize",
     value: function setManualSize(row, height) {
       var physicalRow = this.hot.toPhysicalRow(row);
-      var newHeight = Math.max(height, _src.ViewportRowsCalculator.DEFAULT_HEIGHT);
+      var newHeight = Math.max(height, ViewportRowsCalculator.DEFAULT_HEIGHT);
       this.rowHeightsMap.setValueAtIndex(physicalRow, newHeight);
       return newHeight;
     }
@@ -271,7 +238,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      var headerWidth = (0, _element.outerWidth)(this.currentTH);
+      var headerWidth = outerWidth(this.currentTH);
       var box = this.currentTH.getBoundingClientRect(); // Read "fixedRowsTop" and "fixedRowsBottom" through the Walkontable as in that context, the fixed
       // rows are modified (reduced by the number of hidden rows) by TableView module.
 
@@ -297,11 +264,11 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
 
       if (this.hot.selection.isSelected() && isFullRowSelected) {
         var selectionRanges = this.hot.getSelectedRange();
-        (0, _array.arrayEach)(selectionRanges, function (selectionRange) {
+        arrayEach(selectionRanges, function (selectionRange) {
           var fromRow = selectionRange.getTopLeftCorner().row;
           var toRow = selectionRange.getBottomLeftCorner().row; // Add every selected row for resize action.
 
-          (0, _number.rangeEach)(fromRow, toRow, function (rowIndex) {
+          rangeEach(fromRow, toRow, function (rowIndex) {
             if (!_this3.selectedRows.includes(rowIndex)) {
               _this3.selectedRows.push(rowIndex);
             }
@@ -341,11 +308,11 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "setupGuidePosition",
     value: function setupGuidePosition() {
-      var handleWidth = parseInt((0, _element.outerWidth)(this.handle), 10);
+      var handleWidth = parseInt(outerWidth(this.handle), 10);
       var handleRightPosition = parseInt(this.handle.style.left, 10) + handleWidth;
       var maximumVisibleElementWidth = parseInt(this.hot.view.maximumVisibleElementWidth(0), 10);
-      (0, _element.addClass)(this.handle, 'active');
-      (0, _element.addClass)(this.guide, 'active');
+      addClass(this.handle, 'active');
+      addClass(this.guide, 'active');
       this.guide.style.top = this.handle.style.top;
       this.guide.style.left = "".concat(handleRightPosition, "px");
       this.guide.style.width = "".concat(maximumVisibleElementWidth - handleWidth, "px");
@@ -371,8 +338,8 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "hideHandleAndGuide",
     value: function hideHandleAndGuide() {
-      (0, _element.removeClass)(this.handle, 'active');
-      (0, _element.removeClass)(this.guide, 'active');
+      removeClass(this.handle, 'active');
+      removeClass(this.guide, 'active');
     }
     /**
      * Checks if provided element is considered as a row header.
@@ -387,7 +354,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
     value: function checkIfRowHeader(element) {
       var _element$parentNode, _element$parentNode$p;
 
-      var thElement = (0, _element.closest)(element, ['TH'], this.hot.rootElement);
+      var thElement = closest(element, ['TH'], this.hot.rootElement);
       return thElement && ((_element$parentNode = element.parentNode) === null || _element$parentNode === void 0 ? void 0 : (_element$parentNode$p = _element$parentNode.parentNode) === null || _element$parentNode$p === void 0 ? void 0 : _element$parentNode$p.tagName) === 'TBODY';
     }
     /**
@@ -443,7 +410,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
     value: function onMouseOver(event) {
       // Workaround for #6926 - if the `event.target` is temporarily detached, we can skip this callback and wait for
       // the next `onmouseover`.
-      if ((0, _element.isDetached)(event.target)) {
+      if (isDetached(event.target)) {
         return;
       }
 
@@ -500,12 +467,12 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
         var selectedRowsLength = this.selectedRows.length;
 
         if (selectedRowsLength > 1) {
-          (0, _array.arrayEach)(this.selectedRows, function (selectedRow) {
+          arrayEach(this.selectedRows, function (selectedRow) {
             resize(selectedRow);
           });
           render();
         } else {
-          (0, _array.arrayEach)(this.selectedRows, function (selectedRow) {
+          arrayEach(this.selectedRows, function (selectedRow) {
             resize(selectedRow, true);
           });
         }
@@ -526,7 +493,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
     value: function onMouseDown(event) {
       var _this5 = this;
 
-      if ((0, _element.hasClass)(event.target, 'manualRowResizer')) {
+      if (hasClass(event.target, 'manualRowResizer')) {
         this.setupHandlePosition(this.currentTH);
         this.setupGuidePosition();
         this.pressed = true;
@@ -558,7 +525,7 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
 
       if (this.pressed) {
         this.currentHeight = this.startHeight + (event.pageY - this.startY);
-        (0, _array.arrayEach)(this.selectedRows, function (selectedRow) {
+        arrayEach(this.selectedRows, function (selectedRow) {
           _this6.newSize = _this6.setManualSize(selectedRow, _this6.currentHeight);
         });
         this.refreshHandlePosition();
@@ -608,12 +575,12 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
           var selectedRowsLength = this.selectedRows.length;
 
           if (selectedRowsLength > 1) {
-            (0, _array.arrayEach)(this.selectedRows, function (selectedRow) {
+            arrayEach(this.selectedRows, function (selectedRow) {
               runHooks(selectedRow);
             });
             render();
           } else {
-            (0, _array.arrayEach)(this.selectedRows, function (selectedRow) {
+            arrayEach(this.selectedRows, function (selectedRow) {
               runHooks(selectedRow, true);
             });
           }
@@ -727,6 +694,4 @@ var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ManualRowResize;
-}(_base.BasePlugin);
-
-exports.ManualRowResize = ManualRowResize;
+}(BasePlugin);

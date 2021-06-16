@@ -1,14 +1,4 @@
-"use strict";
-
-exports.__esModule = true;
-exports.getListenersCounter = getListenersCounter;
-exports.default = void 0;
-
-require("core-js/modules/es.array.splice.js");
-
-var _feature = require("./helpers/feature");
-
-var _event = require("./helpers/dom/event");
+import "core-js/modules/es.array.splice.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16,11 +6,14 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { isPassiveEventSupported } from "./helpers/feature.mjs";
+import { stopImmediatePropagation as _stopImmediatePropagation } from "./helpers/dom/event.mjs";
 /**
  * Counter which tracks unregistered listeners (useful for detecting memory leaks).
  *
  * @type {number}
  */
+
 var listenersCounter = 0;
 /**
  * Event DOM manager for internal use in Handsontable.
@@ -70,7 +63,7 @@ var EventManager = /*#__PURE__*/function () {
         callback.call(this, extendEvent(event));
       }
 
-      if (typeof options !== 'boolean' && !(0, _feature.isPassiveEventSupported)()) {
+      if (typeof options !== 'boolean' && !isPassiveEventSupported()) {
         options = false;
       }
 
@@ -246,19 +239,18 @@ function extendEvent(event) {
 
   event.stopImmediatePropagation = function () {
     nativeStopImmediatePropagation.apply(this);
-    (0, _event.stopImmediatePropagation)(this);
+
+    _stopImmediatePropagation(this);
   };
 
   return event;
 }
 
-var _default = EventManager;
+export default EventManager;
 /**
  * @returns {number}
  */
 
-exports.default = _default;
-
-function getListenersCounter() {
+export function getListenersCounter() {
   return listenersCounter;
 }

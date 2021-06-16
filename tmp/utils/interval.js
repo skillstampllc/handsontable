@@ -1,14 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.parseDelay = parseDelay;
-exports.default = void 0;
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
-var _feature = require("./../helpers/feature");
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16,10 +7,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { requestAnimationFrame, cancelAnimationFrame } from "./../helpers/feature.mjs";
 /**
  * @class Interval
  * @util
  */
+
 var Interval = /*#__PURE__*/function () {
   function Interval(func, delay) {
     var _this = this;
@@ -84,7 +77,7 @@ var Interval = /*#__PURE__*/function () {
       if (this.stopped) {
         this._then = Date.now();
         this.stopped = false;
-        this.timer = (0, _feature.requestAnimationFrame)(this._callback);
+        this.timer = requestAnimationFrame(this._callback);
       }
 
       return this;
@@ -100,7 +93,7 @@ var Interval = /*#__PURE__*/function () {
     value: function stop() {
       if (!this.stopped) {
         this.stopped = true;
-        (0, _feature.cancelAnimationFrame)(this.timer);
+        cancelAnimationFrame(this.timer);
         this.timer = null;
       }
 
@@ -115,7 +108,7 @@ var Interval = /*#__PURE__*/function () {
   }, {
     key: "__callback",
     value: function __callback() {
-      this.timer = (0, _feature.requestAnimationFrame)(this._callback);
+      this.timer = requestAnimationFrame(this._callback);
 
       if (this.delay) {
         var now = Date.now();
@@ -139,7 +132,7 @@ var Interval = /*#__PURE__*/function () {
   return Interval;
 }();
 
-var _default = Interval;
+export default Interval;
 /**
  * Convert delay from string format to milliseconds.
  *
@@ -147,9 +140,7 @@ var _default = Interval;
  * @returns {number}
  */
 
-exports.default = _default;
-
-function parseDelay(delay) {
+export function parseDelay(delay) {
   var result = delay;
 
   if (typeof result === 'string' && /fps$/.test(result)) {

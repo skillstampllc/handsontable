@@ -1,59 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.LinkedPhysicalIndexToValueMap = void 0;
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.array.splice.js");
-
-var _indexMap = require("./indexMap");
-
-var _physicallyIndexed = require("./utils/physicallyIndexed");
-
-var _indexesSequence = require("./utils/indexesSequence");
-
-var _actionsOnIndexes = require("./utils/actionsOnIndexes");
-
-var _function = require("../../helpers/function");
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -66,6 +11,27 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -93,13 +59,19 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+import { IndexMap } from "./indexMap.mjs";
+import { getListWithRemovedItems, getListWithInsertedItems } from "./utils/physicallyIndexed.mjs";
+import { getListWithRemovedItems as getListWithoutIndexes } from "./utils/indexesSequence.mjs";
+import { getDecreasedIndexes, getIncreasedIndexes } from "./utils/actionsOnIndexes.mjs";
+import { isFunction } from "../../helpers/function.mjs";
 /**
  * Map for storing mappings from an physical index to a value. Those entries are linked and stored in a certain order.
  *
  * It does not update stored values on remove/add row or column action. Otherwise, order of entries is updated after
  * such changes.
  */
-var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
+
+export var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   _inherits(LinkedPhysicalIndexToValueMap, _IndexMap);
 
   var _super = _createSuper(LinkedPhysicalIndexToValueMap);
@@ -189,9 +161,9 @@ var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   }, {
     key: "clearValue",
     value: function clearValue(physicalIndex) {
-      this.orderOfIndexes = (0, _indexesSequence.getListWithRemovedItems)(this.orderOfIndexes, [physicalIndex]);
+      this.orderOfIndexes = getListWithoutIndexes(this.orderOfIndexes, [physicalIndex]);
 
-      if ((0, _function.isFunction)(this.initValueOrFn)) {
+      if (isFunction(this.initValueOrFn)) {
         _get(_getPrototypeOf(LinkedPhysicalIndexToValueMap.prototype), "setValueAtIndex", this).call(this, physicalIndex, this.initValueOrFn(physicalIndex));
       } else {
         _get(_getPrototypeOf(LinkedPhysicalIndexToValueMap.prototype), "setValueAtIndex", this).call(this, physicalIndex, this.initValueOrFn);
@@ -236,8 +208,8 @@ var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   }, {
     key: "insert",
     value: function insert(insertionIndex, insertedIndexes) {
-      this.indexedValues = (0, _physicallyIndexed.getListWithInsertedItems)(this.indexedValues, insertionIndex, insertedIndexes, this.initValueOrFn);
-      this.orderOfIndexes = (0, _actionsOnIndexes.getIncreasedIndexes)(this.orderOfIndexes, insertedIndexes);
+      this.indexedValues = getListWithInsertedItems(this.indexedValues, insertionIndex, insertedIndexes, this.initValueOrFn);
+      this.orderOfIndexes = getIncreasedIndexes(this.orderOfIndexes, insertedIndexes);
 
       _get(_getPrototypeOf(LinkedPhysicalIndexToValueMap.prototype), "insert", this).call(this, insertionIndex, insertedIndexes);
     }
@@ -251,9 +223,9 @@ var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   }, {
     key: "remove",
     value: function remove(removedIndexes) {
-      this.indexedValues = (0, _physicallyIndexed.getListWithRemovedItems)(this.indexedValues, removedIndexes);
-      this.orderOfIndexes = (0, _indexesSequence.getListWithRemovedItems)(this.orderOfIndexes, removedIndexes);
-      this.orderOfIndexes = (0, _actionsOnIndexes.getDecreasedIndexes)(this.orderOfIndexes, removedIndexes);
+      this.indexedValues = getListWithRemovedItems(this.indexedValues, removedIndexes);
+      this.orderOfIndexes = getListWithoutIndexes(this.orderOfIndexes, removedIndexes);
+      this.orderOfIndexes = getDecreasedIndexes(this.orderOfIndexes, removedIndexes);
 
       _get(_getPrototypeOf(LinkedPhysicalIndexToValueMap.prototype), "remove", this).call(this, removedIndexes);
     }
@@ -275,6 +247,4 @@ var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   }]);
 
   return LinkedPhysicalIndexToValueMap;
-}(_indexMap.IndexMap);
-
-exports.LinkedPhysicalIndexToValueMap = LinkedPhysicalIndexToValueMap;
+}(IndexMap);

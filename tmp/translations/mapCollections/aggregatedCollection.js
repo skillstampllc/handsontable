@@ -1,35 +1,15 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.AggregatedCollection = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _mapCollection = require("./mapCollection");
-
-var _array = require("../../helpers/array");
-
-var _mixed = require("../../helpers/mixed");
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -51,11 +31,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { MapCollection } from "./mapCollection.mjs";
+import { arrayMap } from "../../helpers/array.mjs";
+import { isDefined } from "../../helpers/mixed.mjs";
 /**
  * Collection of maps. This collection aggregate maps with the same type of values. Values from the registered maps
  * can be used to calculate a single result for particular index.
  */
-var AggregatedCollection = /*#__PURE__*/function (_MapCollection) {
+
+export var AggregatedCollection = /*#__PURE__*/function (_MapCollection) {
   _inherits(AggregatedCollection, _MapCollection);
 
   var _super = _createSuper(AggregatedCollection);
@@ -117,7 +101,7 @@ var AggregatedCollection = /*#__PURE__*/function (_MapCollection) {
       // +---------+----------+-------+-------+-------+----------+
 
 
-      var mapsValuesMatrix = (0, _array.arrayMap)(this.get(), function (map) {
+      var mapsValuesMatrix = arrayMap(this.get(), function (map) {
         return map.getValues();
       }); // Below variable stores values for every particular index. Example describing situation when we have 2 registered maps,
       // with length equal to 5.
@@ -135,7 +119,7 @@ var AggregatedCollection = /*#__PURE__*/function (_MapCollection) {
       // +---------+----------+----------+
 
       var indexesValuesMatrix = [];
-      var mapsLength = (0, _mixed.isDefined)(mapsValuesMatrix[0]) && mapsValuesMatrix[0].length || 0;
+      var mapsLength = isDefined(mapsValuesMatrix[0]) && mapsValuesMatrix[0].length || 0;
 
       for (var index = 0; index < mapsLength; index += 1) {
         var valuesForIndex = [];
@@ -147,7 +131,7 @@ var AggregatedCollection = /*#__PURE__*/function (_MapCollection) {
         indexesValuesMatrix.push(valuesForIndex);
       }
 
-      return (0, _array.arrayMap)(indexesValuesMatrix, this.aggregationFunction);
+      return arrayMap(indexesValuesMatrix, this.aggregationFunction);
     }
     /**
      * Get merged value for particular index.
@@ -161,7 +145,7 @@ var AggregatedCollection = /*#__PURE__*/function (_MapCollection) {
     key: "getMergedValueAtIndex",
     value: function getMergedValueAtIndex(index, readFromCache) {
       var valueAtIndex = this.getMergedValues(readFromCache)[index];
-      return (0, _mixed.isDefined)(valueAtIndex) ? valueAtIndex : this.fallbackValue;
+      return isDefined(valueAtIndex) ? valueAtIndex : this.fallbackValue;
     }
     /**
      * Rebuild cache for the collection.
@@ -175,6 +159,4 @@ var AggregatedCollection = /*#__PURE__*/function (_MapCollection) {
   }]);
 
   return AggregatedCollection;
-}(_mapCollection.MapCollection);
-
-exports.AggregatedCollection = AggregatedCollection;
+}(MapCollection);

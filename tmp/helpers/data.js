@@ -1,44 +1,17 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.spreadsheetColumnLabel = spreadsheetColumnLabel;
-exports.spreadsheetColumnIndex = spreadsheetColumnIndex;
-exports.createSpreadsheetData = createSpreadsheetData;
-exports.createSpreadsheetObjectData = createSpreadsheetObjectData;
-exports.createEmptySpreadsheetData = createEmptySpreadsheetData;
-exports.translateRowsToColumns = translateRowsToColumns;
-exports.cellMethodLookupFactory = cellMethodLookupFactory;
-exports.dataRowToChangesArray = dataRowToChangesArray;
-exports.countFirstRowKeys = countFirstRowKeys;
-exports.isArrayOfArrays = isArrayOfArrays;
-exports.isArrayOfObjects = isArrayOfObjects;
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.object.keys.js");
-
-var _registry = require("./../cellTypes/registry");
-
-var _object = require("./object");
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import { getCellType } from "./../cellTypes/registry.mjs";
+import { deepObjectSize, hasOwnProperty, isObject } from "./object.mjs";
 var COLUMN_LABEL_BASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var COLUMN_LABEL_BASE_LENGTH = COLUMN_LABEL_BASE.length;
 /**
@@ -48,7 +21,7 @@ var COLUMN_LABEL_BASE_LENGTH = COLUMN_LABEL_BASE.length;
  * @returns {string}
  */
 
-function spreadsheetColumnLabel(index) {
+export function spreadsheetColumnLabel(index) {
   var dividend = index + 1;
   var columnLabel = '';
   var modulo;
@@ -68,8 +41,7 @@ function spreadsheetColumnLabel(index) {
  * @returns {number}
  */
 
-
-function spreadsheetColumnIndex(label) {
+export function spreadsheetColumnIndex(label) {
   var result = 0;
 
   if (label) {
@@ -89,8 +61,7 @@ function spreadsheetColumnIndex(label) {
  * @returns {Array}
  */
 
-
-function createSpreadsheetData() {
+export function createSpreadsheetData() {
   var rows = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
   var columns = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 4;
   var _rows = [];
@@ -117,8 +88,7 @@ function createSpreadsheetData() {
  * @returns {Array}
  */
 
-
-function createSpreadsheetObjectData() {
+export function createSpreadsheetObjectData() {
   var rows = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
   var colCount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 4;
   var _rows = [];
@@ -145,8 +115,7 @@ function createSpreadsheetObjectData() {
  * @returns {Array}
  */
 
-
-function createEmptySpreadsheetData(rows, columns) {
+export function createEmptySpreadsheetData(rows, columns) {
   var data = [];
   var row;
 
@@ -167,8 +136,7 @@ function createEmptySpreadsheetData(rows, columns) {
  * @returns {Array}
  */
 
-
-function translateRowsToColumns(input) {
+export function translateRowsToColumns(input) {
   var output = [];
   var i;
   var ilen;
@@ -207,8 +175,7 @@ function translateRowsToColumns(input) {
  * @returns {Function}
  */
 
-
-function cellMethodLookupFactory(methodName, allowUndefined) {
+export function cellMethodLookupFactory(methodName, allowUndefined) {
   var isUndefinedAllowed = typeof allowUndefined === 'undefined' ? true : allowUndefined;
   return function cellMethodLookup(row, col) {
     return function getMethodFromProperties(properties) {
@@ -216,18 +183,18 @@ function cellMethodLookupFactory(methodName, allowUndefined) {
         return; // method or property not found
       }
 
-      if ((0, _object.hasOwnProperty)(properties, methodName) && properties[methodName] !== void 0) {
+      if (hasOwnProperty(properties, methodName) && properties[methodName] !== void 0) {
         // check if it is own and is not empty
         return properties[methodName]; // method defined directly
-      } else if ((0, _object.hasOwnProperty)(properties, 'type') && properties.type) {
+      } else if (hasOwnProperty(properties, 'type') && properties.type) {
         // check if it is own and is not empty
         if (typeof properties.type !== 'string') {
           throw new Error('Cell "type" must be a string');
         }
 
-        var type = (0, _registry.getCellType)(properties.type);
+        var type = getCellType(properties.type);
 
-        if ((0, _object.hasOwnProperty)(type, methodName)) {
+        if (hasOwnProperty(type, methodName)) {
           return type[methodName]; // method defined in type.
         } else if (isUndefinedAllowed) {
           return; // method does not defined in type (eg. validator), returns undefined
@@ -247,8 +214,7 @@ function cellMethodLookupFactory(methodName, allowUndefined) {
  * @returns {Array} Array of changes (in a form of an array).
  */
 
-
-function dataRowToChangesArray(dataRow) {
+export function dataRowToChangesArray(dataRow) {
   var rowOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   var dataRows = dataRow;
   var changesArray = [];
@@ -278,15 +244,14 @@ function dataRowToChangesArray(dataRow) {
  * @returns {number} Number of keys in the first row of the dataset.
  */
 
-
-function countFirstRowKeys(data) {
+export function countFirstRowKeys(data) {
   var result = 0;
 
   if (Array.isArray(data)) {
     if (data[0] && Array.isArray(data[0])) {
       result = data[0].length;
-    } else if (data[0] && (0, _object.isObject)(data[0])) {
-      result = (0, _object.deepObjectSize)(data[0]);
+    } else if (data[0] && isObject(data[0])) {
+      result = deepObjectSize(data[0]);
     }
   }
 
@@ -299,8 +264,7 @@ function countFirstRowKeys(data) {
  * @returns {boolean} `true` if data is an array of arrays, `false` otherwise.
  */
 
-
-function isArrayOfArrays(data) {
+export function isArrayOfArrays(data) {
   return !!(Array.isArray(data) && data.length && data.every(function (el) {
     return Array.isArray(el);
   }));
@@ -312,8 +276,7 @@ function isArrayOfArrays(data) {
  * @returns {boolean} `true` if data is an array of objects, `false` otherwise.
  */
 
-
-function isArrayOfObjects(data) {
+export function isArrayOfObjects(data) {
   return !!(Array.isArray(data) && data.length && data.every(function (el) {
     return _typeof(el) === 'object' && !Array.isArray(el) && el !== null;
   }));

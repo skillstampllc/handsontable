@@ -1,13 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.getDecreasedIndexes = getDecreasedIndexes;
-exports.getIncreasedIndexes = getIncreasedIndexes;
-
-require("core-js/modules/es.array.filter.js");
-
-var _array = require("../../../helpers/array");
-
+import "core-js/modules/es.array.filter.js";
+import { arrayMap } from "../../../helpers/array.mjs";
 /**
  * Transform mappings after removal.
  *
@@ -16,8 +8,9 @@ var _array = require("../../../helpers/array");
  * @param {Array} removedIndexes List of removed indexes.
  * @returns {Array} List with decreased indexes.
  */
-function getDecreasedIndexes(indexedValues, removedIndexes) {
-  return (0, _array.arrayMap)(indexedValues, function (index) {
+
+export function getDecreasedIndexes(indexedValues, removedIndexes) {
+  return arrayMap(indexedValues, function (index) {
     return index - removedIndexes.filter(function (removedIndex) {
       return removedIndex < index;
     }).length;
@@ -32,11 +25,10 @@ function getDecreasedIndexes(indexedValues, removedIndexes) {
  * @returns {Array} List with increased indexes.
  */
 
-
-function getIncreasedIndexes(indexedValues, insertedIndexes) {
+export function getIncreasedIndexes(indexedValues, insertedIndexes) {
   var firstInsertedIndex = insertedIndexes[0];
   var amountOfIndexes = insertedIndexes.length;
-  return (0, _array.arrayMap)(indexedValues, function (index) {
+  return arrayMap(indexedValues, function (index) {
     if (index >= firstInsertedIndex) {
       return index + amountOfIndexes;
     }

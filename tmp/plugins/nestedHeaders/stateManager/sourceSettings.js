@@ -1,39 +1,16 @@
-"use strict";
-
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.object.get-own-property-descriptors.js");
-
-exports.__esModule = true;
-exports.default = exports.HEADER_CONFIGURABLE_PROPS = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-var _object = require("../../../helpers/object");
-
-var _array = require("../../../helpers/array");
-
-var _settingsNormalizer = require("./settingsNormalizer");
-
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.get-own-property-descriptors.js";
 var _excluded = ["row", "col"];
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -61,12 +38,16 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
+import { extend, isObject } from "../../../helpers/object.mjs";
+import { arrayEach } from "../../../helpers/array.mjs";
+import { normalizeSettings } from "./settingsNormalizer.mjs";
 /**
  * List of properties which are configurable. That properties can be changed using public API.
  *
  * @type {string[]}
  */
-var HEADER_CONFIGURABLE_PROPS = ['label', 'collapsible'];
+
+export var HEADER_CONFIGURABLE_PROPS = ['label', 'collapsible'];
 /**
  * The class manages and normalizes settings passed by the developer
  * into the nested headers plugin. The SourceSettings class is a
@@ -75,8 +56,6 @@ var HEADER_CONFIGURABLE_PROPS = ['label', 'collapsible'];
  * @class SourceSettings
  * @plugin NestedHeaders
  */
-
-exports.HEADER_CONFIGURABLE_PROPS = HEADER_CONFIGURABLE_PROPS;
 
 var _data = /*#__PURE__*/new WeakMap();
 
@@ -127,7 +106,7 @@ var SourceSettings = /*#__PURE__*/function () {
     value: function setData() {
       var nestedHeadersSettings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-      _classPrivateFieldSet(this, _data, (0, _settingsNormalizer.normalizeSettings)(nestedHeadersSettings, _classPrivateFieldGet(this, _columnsLimit)));
+      _classPrivateFieldSet(this, _data, normalizeSettings(nestedHeadersSettings, _classPrivateFieldGet(this, _columnsLimit)));
 
       _classPrivateFieldSet(this, _dataLength, _classPrivateFieldGet(this, _data).length);
     }
@@ -154,7 +133,7 @@ var SourceSettings = /*#__PURE__*/function () {
     value: function mergeWith(additionalSettings) {
       var _this = this;
 
-      (0, _array.arrayEach)(additionalSettings, function (_ref) {
+      arrayEach(additionalSettings, function (_ref) {
         var row = _ref.row,
             col = _ref.col,
             rest = _objectWithoutProperties(_ref, _excluded);
@@ -162,7 +141,7 @@ var SourceSettings = /*#__PURE__*/function () {
         var headerSettings = _this.getHeaderSettings(row, col);
 
         if (headerSettings !== null) {
-          (0, _object.extend)(headerSettings, rest, HEADER_CONFIGURABLE_PROPS);
+          extend(headerSettings, rest, HEADER_CONFIGURABLE_PROPS);
         }
       });
     }
@@ -178,12 +157,12 @@ var SourceSettings = /*#__PURE__*/function () {
   }, {
     key: "map",
     value: function map(callback) {
-      (0, _array.arrayEach)(_classPrivateFieldGet(this, _data), function (header) {
-        (0, _array.arrayEach)(header, function (headerSettings) {
+      arrayEach(_classPrivateFieldGet(this, _data), function (header) {
+        arrayEach(header, function (headerSettings) {
           var propsToExtend = callback(_objectSpread({}, headerSettings));
 
-          if ((0, _object.isObject)(propsToExtend)) {
-            (0, _object.extend)(headerSettings, propsToExtend, HEADER_CONFIGURABLE_PROPS);
+          if (isObject(propsToExtend)) {
+            extend(headerSettings, propsToExtend, HEADER_CONFIGURABLE_PROPS);
           }
         });
       });
@@ -305,4 +284,4 @@ var SourceSettings = /*#__PURE__*/function () {
   return SourceSettings;
 }();
 
-exports.default = SourceSettings;
+export { SourceSettings as default };

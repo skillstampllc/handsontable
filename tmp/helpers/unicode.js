@@ -1,26 +1,10 @@
-"use strict";
-
-exports.__esModule = true;
-exports.isPrintableChar = isPrintableChar;
-exports.isMetaKey = isMetaKey;
-exports.isCtrlKey = isCtrlKey;
-exports.isCtrlMetaKey = isCtrlMetaKey;
-exports.isKey = isKey;
-exports.KEY_CODES = void 0;
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
-
-var _array = require("./array");
-
-var KEY_CODES = {
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import { arrayEach } from "./array.mjs";
+export var KEY_CODES = {
   MOUSE_LEFT: 1,
   MOUSE_RIGHT: 3,
   MOUSE_MIDDLE: 2,
@@ -78,9 +62,7 @@ var KEY_CODES = {
  * @returns {boolean}
  */
 
-exports.KEY_CODES = KEY_CODES;
-
-function isPrintableChar(keyCode) {
+export function isPrintableChar(keyCode) {
   return keyCode === 32 || // space
   keyCode >= 48 && keyCode <= 57 || // 0-9
   keyCode >= 96 && keyCode <= 111 || // numpad
@@ -94,8 +76,7 @@ function isPrintableChar(keyCode) {
  * @returns {boolean}
  */
 
-
-function isMetaKey(keyCode) {
+export function isMetaKey(keyCode) {
   var metaKeys = [KEY_CODES.ARROW_DOWN, KEY_CODES.ARROW_UP, KEY_CODES.ARROW_LEFT, KEY_CODES.ARROW_RIGHT, KEY_CODES.HOME, KEY_CODES.END, KEY_CODES.DELETE, KEY_CODES.BACKSPACE, KEY_CODES.F1, KEY_CODES.F2, KEY_CODES.F3, KEY_CODES.F4, KEY_CODES.F5, KEY_CODES.F6, KEY_CODES.F7, KEY_CODES.F8, KEY_CODES.F9, KEY_CODES.F10, KEY_CODES.F11, KEY_CODES.F12, KEY_CODES.TAB, KEY_CODES.PAGE_DOWN, KEY_CODES.PAGE_UP, KEY_CODES.ENTER, KEY_CODES.ESCAPE, KEY_CODES.SHIFT, KEY_CODES.CAPS_LOCK, KEY_CODES.ALT];
   return metaKeys.indexOf(keyCode) !== -1;
 }
@@ -107,8 +88,7 @@ function isMetaKey(keyCode) {
  * @returns {boolean}
  */
 
-
-function isCtrlKey(keyCode) {
+export function isCtrlKey(keyCode) {
   var keys = [];
 
   if (navigator.platform.includes('Mac')) {
@@ -127,8 +107,7 @@ function isCtrlKey(keyCode) {
  * @returns {boolean}
  */
 
-
-function isCtrlMetaKey(keyCode) {
+export function isCtrlMetaKey(keyCode) {
   return [KEY_CODES.CONTROL, KEY_CODES.COMMAND_LEFT, KEY_CODES.COMMAND_RIGHT, KEY_CODES.COMMAND_FIREFOX].includes(keyCode);
 }
 /**
@@ -137,11 +116,10 @@ function isCtrlMetaKey(keyCode) {
  * @returns {boolean}
  */
 
-
-function isKey(keyCode, baseCode) {
+export function isKey(keyCode, baseCode) {
   var keys = baseCode.split('|');
   var result = false;
-  (0, _array.arrayEach)(keys, function (key) {
+  arrayEach(keys, function (key) {
     if (keyCode === KEY_CODES[key]) {
       result = true;
       return false;

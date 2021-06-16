@@ -1,10 +1,4 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _object = require("../../../../../helpers/object");
-
+import { defineGetter } from "../../../../../helpers/object.mjs";
 var MIXIN_NAME = 'stickyRowsTop';
 /**
  * Mixin for the subclasses of `Table` with implementations of
@@ -80,9 +74,8 @@ var stickyRowsTop = {
     return this.getRenderedRowsCount();
   }
 };
-(0, _object.defineGetter)(stickyRowsTop, 'MIXIN_NAME', MIXIN_NAME, {
+defineGetter(stickyRowsTop, 'MIXIN_NAME', MIXIN_NAME, {
   writable: false,
   enumerable: false
 });
-var _default = stickyRowsTop;
-exports.default = _default;
+export default stickyRowsTop;

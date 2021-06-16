@@ -1,17 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-var _object = require("../../helpers/object");
-
-var _array = require("../../helpers/array");
-
-var _predefinedItems = require("./predefinedItems");
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.index-of.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19,12 +7,16 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { objectEach, isObject, extend } from "../../helpers/object.mjs";
+import { arrayEach } from "../../helpers/array.mjs";
+import { SEPARATOR, ITEMS, predefinedItems } from "./predefinedItems.mjs";
 /**
  * Predefined items class factory for menu items.
  *
  * @class ItemsFactory
  * @plugin ContextMenu
  */
+
 var ItemsFactory = /*#__PURE__*/function () {
   function ItemsFactory(hotInstance) {
     var orderPattern = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -32,7 +24,7 @@ var ItemsFactory = /*#__PURE__*/function () {
     _classCallCheck(this, ItemsFactory);
 
     this.hot = hotInstance;
-    this.predefinedItems = (0, _predefinedItems.predefinedItems)();
+    this.predefinedItems = predefinedItems();
     this.defaultOrderPattern = orderPattern;
   }
   /**
@@ -49,12 +41,12 @@ var ItemsFactory = /*#__PURE__*/function () {
 
       var items = {};
       this.defaultOrderPattern.length = 0;
-      (0, _object.objectEach)(predefinedItemsCollection, function (value, key) {
+      objectEach(predefinedItemsCollection, function (value, key) {
         var menuItemKey = '';
 
-        if (value.name === _predefinedItems.SEPARATOR) {
-          items[_predefinedItems.SEPARATOR] = value;
-          menuItemKey = _predefinedItems.SEPARATOR; // Menu item added as a property to array
+        if (value.name === SEPARATOR) {
+          items[SEPARATOR] = value;
+          menuItemKey = SEPARATOR; // Menu item added as a property to array
         } else if (isNaN(parseInt(key, 10))) {
           value.key = value.key === void 0 ? key : value.key;
           items[key] = value;
@@ -107,16 +99,16 @@ function _getItems() {
     pattern = defaultPattern;
   }
 
-  if ((0, _object.isObject)(pattern)) {
-    (0, _object.objectEach)(pattern, function (value, key) {
+  if (isObject(pattern)) {
+    objectEach(pattern, function (value, key) {
       var item = items[typeof value === 'string' ? value : key];
 
       if (!item) {
         item = value;
       }
 
-      if ((0, _object.isObject)(value)) {
-        (0, _object.extend)(item, value);
+      if (isObject(value)) {
+        extend(item, value);
       } else if (typeof item === 'string') {
         item = {
           name: item
@@ -130,10 +122,10 @@ function _getItems() {
       result.push(item);
     });
   } else {
-    (0, _array.arrayEach)(pattern, function (name, key) {
+    arrayEach(pattern, function (name, key) {
       var item = items[name]; // Item deleted from settings `allowInsertRow: false` etc.
 
-      if (!item && _predefinedItems.ITEMS.indexOf(name) >= 0) {
+      if (!item && ITEMS.indexOf(name) >= 0) {
         return;
       }
 
@@ -144,8 +136,8 @@ function _getItems() {
         };
       }
 
-      if ((0, _object.isObject)(name)) {
-        (0, _object.extend)(item, name);
+      if (isObject(name)) {
+        extend(item, name);
       }
 
       if (item.key === void 0) {
@@ -159,5 +151,4 @@ function _getItems() {
   return result;
 }
 
-var _default = ItemsFactory;
-exports.default = _default;
+export default ItemsFactory;

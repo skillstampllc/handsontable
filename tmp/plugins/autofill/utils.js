@@ -1,22 +1,9 @@
-"use strict";
-
-exports.__esModule = true;
-exports.getDeltas = getDeltas;
-exports.getDragDirectionAndRange = getDragDirectionAndRange;
-exports.getMappedFillHandleSetting = getMappedFillHandleSetting;
-exports.DIRECTIONS = void 0;
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.object.keys.js");
-
-var _object = require("../../helpers/object");
-
-var _mixed = require("../../helpers/mixed");
-
-var _src = require("../../3rdparty/walkontable/src");
-
-var DIRECTIONS = {
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.object.keys.js";
+import { isObject } from "../../helpers/object.mjs";
+import { isDefined } from "../../helpers/mixed.mjs";
+import { CellCoords } from "../../3rdparty/walkontable/src/index.mjs";
+export var DIRECTIONS = {
   horizontal: 'horizontal',
   vertical: 'vertical'
 };
@@ -30,9 +17,7 @@ var DIRECTIONS = {
  * @returns {Array}
  */
 
-exports.DIRECTIONS = DIRECTIONS;
-
-function getDeltas(start, end, data, direction) {
+export function getDeltas(start, end, data, direction) {
   var rowsLength = data.length;
   var columnsLength = data ? data[0].length : 0;
   var deltas = [];
@@ -74,28 +59,27 @@ function getDeltas(start, end, data, direction) {
  * @returns {{direction: string, start: CellCoords, end: CellCoords}}
  */
 
-
-function getDragDirectionAndRange(startSelection, endSelection) {
+export function getDragDirectionAndRange(startSelection, endSelection) {
   var startOfDragCoords;
   var endOfDragCoords;
   var directionOfDrag;
 
   if (endSelection[0] === startSelection[0] && endSelection[1] < startSelection[1]) {
     directionOfDrag = 'left';
-    startOfDragCoords = new _src.CellCoords(endSelection[0], endSelection[1]);
-    endOfDragCoords = new _src.CellCoords(endSelection[2], startSelection[1] - 1);
+    startOfDragCoords = new CellCoords(endSelection[0], endSelection[1]);
+    endOfDragCoords = new CellCoords(endSelection[2], startSelection[1] - 1);
   } else if (endSelection[2] === startSelection[2] && endSelection[0] === startSelection[0] && endSelection[3] > startSelection[3]) {
     directionOfDrag = 'right';
-    startOfDragCoords = new _src.CellCoords(endSelection[0], startSelection[3] + 1);
-    endOfDragCoords = new _src.CellCoords(endSelection[2], endSelection[3]);
+    startOfDragCoords = new CellCoords(endSelection[0], startSelection[3] + 1);
+    endOfDragCoords = new CellCoords(endSelection[2], endSelection[3]);
   } else if (endSelection[0] < startSelection[0] && endSelection[1] === startSelection[1]) {
     directionOfDrag = 'up';
-    startOfDragCoords = new _src.CellCoords(endSelection[0], endSelection[1]);
-    endOfDragCoords = new _src.CellCoords(startSelection[0] - 1, endSelection[3]);
+    startOfDragCoords = new CellCoords(endSelection[0], endSelection[1]);
+    endOfDragCoords = new CellCoords(startSelection[0] - 1, endSelection[3]);
   } else if (endSelection[2] > startSelection[2] && endSelection[1] === startSelection[1]) {
     directionOfDrag = 'down';
-    startOfDragCoords = new _src.CellCoords(startSelection[2] + 1, endSelection[1]);
-    endOfDragCoords = new _src.CellCoords(endSelection[2], endSelection[3]);
+    startOfDragCoords = new CellCoords(startSelection[2] + 1, endSelection[1]);
+    endOfDragCoords = new CellCoords(endSelection[2], endSelection[3]);
   }
 
   if (startOfDragCoords) {
@@ -121,15 +105,14 @@ function getDragDirectionAndRange(startSelection, endSelection) {
  * about FillHandle in more useful way.
  */
 
-
-function getMappedFillHandleSetting(fillHandle) {
+export function getMappedFillHandleSetting(fillHandle) {
   var mappedSettings = {};
 
   if (fillHandle === true) {
     mappedSettings.directions = Object.keys(DIRECTIONS);
     mappedSettings.autoInsertRow = true;
-  } else if ((0, _object.isObject)(fillHandle)) {
-    if ((0, _mixed.isDefined)(fillHandle.autoInsertRow)) {
+  } else if (isObject(fillHandle)) {
+    if (isDefined(fillHandle.autoInsertRow)) {
       // autoInsertRow for horizontal direction will be always false
       if (fillHandle.direction === DIRECTIONS.horizontal) {
         mappedSettings.autoInsertRow = false;
@@ -140,7 +123,7 @@ function getMappedFillHandleSetting(fillHandle) {
       mappedSettings.autoInsertRow = false;
     }
 
-    if ((0, _mixed.isDefined)(fillHandle.direction)) {
+    if (isDefined(fillHandle.direction)) {
       mappedSettings.directions = [fillHandle.direction];
     } else {
       mappedSettings.directions = Object.keys(DIRECTIONS);

@@ -1,28 +1,15 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-var _mixed = require("../../helpers/mixed");
-
-var _object = require("../../helpers/object");
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+import { isEmpty } from "../../helpers/mixed.mjs";
+import { isObjectEqual } from "../../helpers/object.mjs";
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
 /**
@@ -98,7 +85,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
  */
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
-var _default = function _default() {
+
+export default (function () {
   return {
     /**
      * License key for commercial version of Handsontable.
@@ -1142,10 +1130,10 @@ var _default = function _default() {
       for (col = 0, colLen = this.countCols(); col < colLen; col++) {
         value = this.getDataAtCell(row, col);
 
-        if ((0, _mixed.isEmpty)(value) === false) {
+        if (isEmpty(value) === false) {
           if (_typeof(value) === 'object') {
             meta = this.getCellMeta(row, col);
-            return (0, _object.isObjectEqual)(this.getSchema()[meta.prop], value);
+            return isObjectEqual(this.getSchema()[meta.prop], value);
           }
 
           return false;
@@ -1179,7 +1167,7 @@ var _default = function _default() {
       for (row = 0, rowLen = this.countRows(); row < rowLen; row++) {
         value = this.getDataAtCell(row, col);
 
-        if ((0, _mixed.isEmpty)(value) === false) {
+        if (isEmpty(value) === false) {
           return false;
         }
       }
@@ -2930,6 +2918,4 @@ var _default = function _default() {
      */
     nestedRows: void 0
   };
-};
-
-exports.default = _default;
+});

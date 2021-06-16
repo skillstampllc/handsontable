@@ -1,23 +1,6 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.number.is-integer.js");
-
-require("core-js/modules/es.number.constructor.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-var _object = require("./helpers/object");
-
-var _data = require("./helpers/data");
-
-var _array = require("./helpers/array");
-
-var _number = require("./helpers/number");
-
-var _function = require("./helpers/function");
+import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
+import "core-js/modules/web.dom-collections.for-each.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25,10 +8,16 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { createObjectPropListener, getProperty, isObject, objectEach, setProperty } from "./helpers/object.mjs";
+import { countFirstRowKeys as _countFirstRowKeys } from "./helpers/data.mjs";
+import { arrayEach } from "./helpers/array.mjs";
+import { rangeEach } from "./helpers/number.mjs";
+import { isFunction } from "./helpers/function.mjs";
 /**
  * @class DataSource
  * @private
  */
+
 var DataSource = /*#__PURE__*/function () {
   function DataSource(hotInstance) {
     var dataSource = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -124,7 +113,7 @@ var DataSource = /*#__PURE__*/function () {
       var _this = this;
 
       var result = [];
-      (0, _array.arrayEach)(this.data, function (row, rowIndex) {
+      arrayEach(this.data, function (row, rowIndex) {
         var value = _this.getAtCell(rowIndex, column);
 
         result.push(value);
@@ -162,11 +151,11 @@ var DataSource = /*#__PURE__*/function () {
           });
         } else {
           // Only the columns from the provided range
-          (0, _number.rangeEach)(startColumn, endColumn, function (column) {
+          rangeEach(startColumn, endColumn, function (column) {
             newDataRow[column - startColumn] = _this2.getAtPhysicalCell(row, column, dataRow);
           });
         }
-      } else if ((0, _object.isObject)(dataRow) || (0, _function.isFunction)(dataRow)) {
+      } else if (isObject(dataRow) || isFunction(dataRow)) {
         if (toArray) {
           newDataRow = [];
         } else {
@@ -176,7 +165,7 @@ var DataSource = /*#__PURE__*/function () {
         if (!getAllProps || toArray) {
           var rangeStart = 0;
           var rangeEnd = this.countFirstRowKeys() - 1;
-          (0, _number.rangeEach)(rangeStart, rangeEnd, function (column) {
+          rangeEach(rangeStart, rangeEnd, function (column) {
             var prop = _this2.colToProp(column);
 
             if (column >= (startColumn || rangeStart) && column <= (endColumn || rangeEnd) && !Number.isInteger(prop)) {
@@ -185,13 +174,13 @@ var DataSource = /*#__PURE__*/function () {
               if (toArray) {
                 newDataRow.push(cellValue);
               } else {
-                (0, _object.setProperty)(newDataRow, prop, cellValue);
+                setProperty(newDataRow, prop, cellValue);
               }
             }
           });
         } else {
-          (0, _object.objectEach)(dataRow, function (value, prop) {
-            (0, _object.setProperty)(newDataRow, prop, _this2.getAtPhysicalCell(row, prop, dataRow));
+          objectEach(dataRow, function (value, prop) {
+            setProperty(newDataRow, prop, _this2.getAtPhysicalCell(row, prop, dataRow));
           });
         }
       }
@@ -215,7 +204,7 @@ var DataSource = /*#__PURE__*/function () {
       }
 
       if (this.hot.hasHook('modifySourceData')) {
-        var valueHolder = (0, _object.createObjectPropListener)(value);
+        var valueHolder = createObjectPropListener(value);
         this.hot.runHooks('modifySourceData', row, this.propToCol(column), valueHolder, 'set');
 
         if (valueHolder.isTouched()) {
@@ -225,7 +214,7 @@ var DataSource = /*#__PURE__*/function () {
 
       if (!Number.isInteger(column)) {
         // column argument is the prop name
-        (0, _object.setProperty)(this.data[row], column, value);
+        setProperty(this.data[row], column, value);
       } else {
         this.data[row][column] = value;
       }
@@ -247,7 +236,7 @@ var DataSource = /*#__PURE__*/function () {
 
       if (dataRow) {
         if (typeof column === 'string') {
-          result = (0, _object.getProperty)(dataRow, column);
+          result = getProperty(dataRow, column);
         } else if (typeof column === 'function') {
           result = column(dataRow);
         } else {
@@ -256,7 +245,7 @@ var DataSource = /*#__PURE__*/function () {
       }
 
       if (this.hot.hasHook('modifySourceData')) {
-        var valueHolder = (0, _object.createObjectPropListener)(result);
+        var valueHolder = createObjectPropListener(result);
         this.hot.runHooks('modifySourceData', row, this.colToProp(column), valueHolder, 'get');
 
         if (valueHolder.isTouched()) {
@@ -316,7 +305,7 @@ var DataSource = /*#__PURE__*/function () {
       }
 
       var result = [];
-      (0, _number.rangeEach)(startRow, endRow, function (currentRow) {
+      rangeEach(startRow, endRow, function (currentRow) {
         result.push(getAllProps ? _this3.getAtRow(currentRow, void 0, void 0, toArray) : _this3.getAtRow(currentRow, startCol, endCol, toArray));
       });
       return result;
@@ -349,7 +338,7 @@ var DataSource = /*#__PURE__*/function () {
   }, {
     key: "countFirstRowKeys",
     value: function countFirstRowKeys() {
-      return (0, _data.countFirstRowKeys)(this.data);
+      return _countFirstRowKeys(this.data);
     }
     /**
      * Destroy instance.
@@ -366,5 +355,4 @@ var DataSource = /*#__PURE__*/function () {
   return DataSource;
 }();
 
-var _default = DataSource;
-exports.default = _default;
+export default DataSource;

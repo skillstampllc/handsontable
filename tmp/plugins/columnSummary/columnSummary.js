@@ -1,61 +1,29 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.object.freeze.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.ColumnSummary = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _base = require("../base");
-
-var _object = require("../../helpers/object");
-
-var _endpoints = _interopRequireDefault(require("./endpoints"));
-
-var _templateLiteralTag = require("../../helpers/templateLiteralTag");
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.object.freeze.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 var _templateObject;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.string.replace.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -81,9 +49,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var PLUGIN_KEY = 'columnSummary';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 220;
+import { BasePlugin } from "../base/index.mjs";
+import { objectEach } from "../../helpers/object.mjs";
+import Endpoints from "./endpoints.mjs";
+import { toSingleLine } from "../../helpers/templateLiteralTag.mjs";
+export var PLUGIN_KEY = 'columnSummary';
+export var PLUGIN_PRIORITY = 220;
 /**
  * @plugin ColumnSummary
  *
@@ -119,9 +90,7 @@ var PLUGIN_PRIORITY = 220;
  * });
  */
 
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
-
-var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
+export var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ColumnSummary, _BasePlugin);
 
   var _super = _createSuper(ColumnSummary);
@@ -169,7 +138,7 @@ var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
       }
 
       this.settings = this.hot.getSettings()[PLUGIN_KEY];
-      this.endpoints = new _endpoints.default(this, this.settings);
+      this.endpoints = new Endpoints(this, this.settings);
       this.addHook('afterInit', function () {
         return _this2.onAfterInit.apply(_this2, arguments);
       });
@@ -298,7 +267,7 @@ var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
       var _this3 = this;
 
       var sum = 0;
-      (0, _object.objectEach)(endpoint.ranges, function (range) {
+      objectEach(endpoint.ranges, function (range) {
         sum += _this3.getPartialSum(range, endpoint.sourceColumn);
       });
       return sum;
@@ -350,7 +319,7 @@ var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
       var _this4 = this;
 
       var result = null;
-      (0, _object.objectEach)(endpoint.ranges, function (range) {
+      objectEach(endpoint.ranges, function (range) {
         var partialResult = _this4.getPartialMinMax(range, endpoint.sourceColumn, type);
 
         if (result === null && partialResult !== null) {
@@ -459,7 +428,7 @@ var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
 
       var result = 0;
       var ranges = endpoint.ranges;
-      (0, _object.objectEach)(ranges, function (range) {
+      objectEach(ranges, function (range) {
         var partial = range[1] === void 0 ? 1 : range[1] - range[0] + 1;
 
         var emptyCount = _this5.countEmpty(range, endpoint.sourceColumn);
@@ -519,7 +488,7 @@ var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
 
       if (isNaN(cellValue)) {
         if (!this.endpoints.currentEndpoint.suppressDataTypeErrors) {
-          throw new Error((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["ColumnSummary plugin: cell at (", ", ", ") is not in a \n          numeric format. Cannot do the calculation."], ["ColumnSummary plugin: cell at (", ", ", ") is not in a\\x20\n          numeric format. Cannot do the calculation."])), row, col));
+          throw new Error(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["ColumnSummary plugin: cell at (", ", ", ") is not in a \n          numeric format. Cannot do the calculation."], ["ColumnSummary plugin: cell at (", ", ", ") is not in a\\x20\n          numeric format. Cannot do the calculation."])), row, col));
         }
       }
 
@@ -580,6 +549,4 @@ var ColumnSummary = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ColumnSummary;
-}(_base.BasePlugin);
-
-exports.ColumnSummary = ColumnSummary;
+}(BasePlugin);

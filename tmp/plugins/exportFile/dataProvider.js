@@ -1,29 +1,13 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _number = require("../../helpers/number");
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -43,13 +27,14 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// Waiting for jshint >=2.9.0 where they added support for destructing
+import { rangeEach } from "../../helpers/number.mjs"; // Waiting for jshint >=2.9.0 where they added support for destructing
 // jshint ignore: start
 
 /**
  * @plugin ExportFile
  * @private
  */
+
 var DataProvider = /*#__PURE__*/function () {
   function DataProvider(hotInstance) {
     _classCallCheck(this, DataProvider);
@@ -99,14 +84,14 @@ var DataProvider = /*#__PURE__*/function () {
 
       var options = this.options;
       var data = [];
-      (0, _number.rangeEach)(startRow, endRow, function (rowIndex) {
+      rangeEach(startRow, endRow, function (rowIndex) {
         var row = [];
 
         if (!options.exportHiddenRows && _this._isHiddenRow(rowIndex)) {
           return;
         }
 
-        (0, _number.rangeEach)(startCol, endCol, function (colIndex) {
+        rangeEach(startCol, endCol, function (colIndex) {
           if (!options.exportHiddenColumns && _this._isHiddenColumn(colIndex)) {
             return;
           }
@@ -136,7 +121,7 @@ var DataProvider = /*#__PURE__*/function () {
             endRow = _this$_getDataRange2.endRow;
 
         var rowHeaders = this.hot.getRowHeader();
-        (0, _number.rangeEach)(startRow, endRow, function (row) {
+        rangeEach(startRow, endRow, function (row) {
           if (!_this2.options.exportHiddenRows && _this2._isHiddenRow(row)) {
             return;
           }
@@ -166,7 +151,7 @@ var DataProvider = /*#__PURE__*/function () {
             endCol = _this$_getDataRange3.endCol;
 
         var colHeaders = this.hot.getColHeader();
-        (0, _number.rangeEach)(startCol, endCol, function (column) {
+        rangeEach(startCol, endCol, function (column) {
           if (!_this3.options.exportHiddenColumns && _this3._isHiddenColumn(column)) {
             return;
           }
@@ -242,5 +227,4 @@ var DataProvider = /*#__PURE__*/function () {
   return DataProvider;
 }();
 
-var _default = DataProvider;
-exports.default = _default;
+export default DataProvider;

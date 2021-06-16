@@ -1,41 +1,20 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _src = require("./../../3rdparty/walkontable/src");
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -73,6 +52,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { Selection, CellCoords, CellRange } from "./../../3rdparty/walkontable/src/index.mjs";
+
 var VisualSelection = /*#__PURE__*/function (_Selection) {
   _inherits(VisualSelection, _Selection);
 
@@ -108,7 +89,7 @@ var VisualSelection = /*#__PURE__*/function (_Selection) {
     key: "add",
     value: function add(coords) {
       if (this.visualCellRange === null) {
-        this.visualCellRange = new _src.CellRange(coords);
+        this.visualCellRange = new CellRange(coords);
       } else {
         this.visualCellRange.expand(coords);
       }
@@ -160,7 +141,7 @@ var VisualSelection = /*#__PURE__*/function (_Selection) {
         return null;
       }
 
-      return new _src.CellCoords(nextVisibleRow, nextVisibleColumn);
+      return new CellCoords(nextVisibleRow, nextVisibleColumn);
     }
     /**
      * Searches the nearest visible row index, which is not hidden (is renderable).
@@ -267,7 +248,7 @@ var VisualSelection = /*#__PURE__*/function (_Selection) {
         return null;
       }
 
-      return [new _src.CellCoords(fromRangeVisualRow, fromRangeVisualColumn), new _src.CellCoords(toRangeVisualRow, toRangeVisualColumn)];
+      return [new CellCoords(fromRangeVisualRow, fromRangeVisualColumn), new CellCoords(toRangeVisualRow, toRangeVisualColumn)];
     }
     /**
      * Override internally stored visual indexes added by the Selection's `add` function. It should be executed
@@ -341,7 +322,7 @@ var VisualSelection = /*#__PURE__*/function (_Selection) {
         // We can't show selection visually now, but we found fist visible range in the broader cell range.
         if (this.cellRange === null) {
           var singleCellRangeRenderable = this.settings.visualToRenderableCoords(singleCellRangeVisual);
-          this.cellRange = new _src.CellRange(singleCellRangeRenderable);
+          this.cellRange = new CellRange(singleCellRangeRenderable);
         } // We set new highlight as it might change (for example, when showing/hiding some cells from the broader selection range)
         // TODO: It is also handled by the `MergeCells` plugin while adjusting already modified coordinates. Should it?
 
@@ -371,8 +352,8 @@ var VisualSelection = /*#__PURE__*/function (_Selection) {
           to = _this$cellRange.to;
       var isRowUndefined = from.row === null || to.row === null;
       var isColumnUndefined = from.col === null || to.col === null;
-      var topLeftCorner = new _src.CellCoords(isRowUndefined ? null : Math.min(from.row, to.row), isColumnUndefined ? null : Math.min(from.col, to.col));
-      var bottomRightCorner = new _src.CellCoords(isRowUndefined ? null : Math.max(from.row, to.row), isColumnUndefined ? null : Math.max(from.col, to.col));
+      var topLeftCorner = new CellCoords(isRowUndefined ? null : Math.min(from.row, to.row), isColumnUndefined ? null : Math.min(from.col, to.col));
+      var bottomRightCorner = new CellCoords(isRowUndefined ? null : Math.max(from.row, to.row), isColumnUndefined ? null : Math.max(from.col, to.col));
       return [topLeftCorner.row, topLeftCorner.col, bottomRightCorner.row, bottomRightCorner.col];
     }
     /**
@@ -404,7 +385,7 @@ var VisualSelection = /*#__PURE__*/function (_Selection) {
     value: function createRenderableCellRange(visualFromCoords, visualToCoords) {
       var renderableFromCoords = this.settings.visualToRenderableCoords(visualFromCoords);
       var renderableToCoords = this.settings.visualToRenderableCoords(visualToCoords);
-      return new _src.CellRange(renderableFromCoords, renderableFromCoords, renderableToCoords);
+      return new CellRange(renderableFromCoords, renderableFromCoords, renderableToCoords);
     }
     /**
      * It returns rows shift needed for searching visual row.
@@ -445,7 +426,6 @@ var VisualSelection = /*#__PURE__*/function (_Selection) {
   }]);
 
   return VisualSelection;
-}(_src.Selection);
+}(Selection);
 
-var _default = VisualSelection;
-exports.default = _default;
+export default VisualSelection;

@@ -1,65 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.Autofill = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _base = require("../base");
-
-var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
-
-var _element = require("../../helpers/dom/element");
-
-var _array = require("../../helpers/array");
-
-var _object = require("../../helpers/object");
-
-var _eventManager = _interopRequireDefault(require("../../eventManager"));
-
-var _src = require("../../3rdparty/walkontable/src");
-
-var _utils = require("./utils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -80,6 +19,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -105,16 +64,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-_pluginHooks.default.getSingleton().register('modifyAutofillRange');
-
-_pluginHooks.default.getSingleton().register('beforeAutofill');
-
-_pluginHooks.default.getSingleton().register('afterAutofill');
-
-var PLUGIN_KEY = 'autofill';
-exports.PLUGIN_KEY = PLUGIN_KEY;
-var PLUGIN_PRIORITY = 20;
-exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+import { BasePlugin } from "../base/index.mjs";
+import Hooks from "../../pluginHooks.mjs";
+import { offset, outerHeight, outerWidth } from "../../helpers/dom/element.mjs";
+import { arrayEach, arrayMap } from "../../helpers/array.mjs";
+import { isObjectEqual } from "../../helpers/object.mjs";
+import EventManager from "../../eventManager.mjs";
+import { CellCoords, CellRange } from "../../3rdparty/walkontable/src/index.mjs";
+import { getDeltas, getDragDirectionAndRange, DIRECTIONS, getMappedFillHandleSetting } from "./utils.mjs";
+Hooks.getSingleton().register('modifyAutofillRange');
+Hooks.getSingleton().register('beforeAutofill');
+Hooks.getSingleton().register('afterAutofill');
+export var PLUGIN_KEY = 'autofill';
+export var PLUGIN_PRIORITY = 20;
 var INSERT_ROW_ALTER_ACTION_NAME = 'insert_row';
 var INTERVAL_FOR_ADDING_ROW = 200;
 /**
@@ -130,7 +92,7 @@ var INTERVAL_FOR_ADDING_ROW = 200;
  * @plugin Autofill
  */
 
-var Autofill = /*#__PURE__*/function (_BasePlugin) {
+export var Autofill = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Autofill, _BasePlugin);
 
   var _super = _createSuper(Autofill);
@@ -148,7 +110,7 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
      * @type {EventManager}
      */
 
-    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
+    _this.eventManager = new EventManager(_assertThisInitialized(_this));
     /**
      * Specifies if adding new row started.
      *
@@ -291,7 +253,7 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
       var copyableRows = [];
       var copyableColumns = [];
       var data = [];
-      (0, _array.arrayEach)(copyableRanges, function (range) {
+      arrayEach(copyableRanges, function (range) {
         for (var visualRow = range.startRow; visualRow <= range.endRow; visualRow += 1) {
           if (copyableRows.indexOf(visualRow) === -1) {
             copyableRows.push(visualRow);
@@ -304,9 +266,9 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
           }
         }
       });
-      (0, _array.arrayEach)(copyableRows, function (row) {
+      arrayEach(copyableRows, function (row) {
         var rowSet = [];
-        (0, _array.arrayEach)(copyableColumns, function (column) {
+        arrayEach(copyableColumns, function (column) {
           rowSet.push(_this3.hot.getCopyableData(row, column));
         });
         data.push(rowSet);
@@ -348,7 +310,7 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
       var cornersOfSelectedCells = [topLeftCorner.row, topLeftCorner.col, bottomRightCorner.row, bottomRightCorner.col];
       var cornersOfSelectionAndDragAreas = this.hot.runHooks('modifyAutofillRange', [Math.min(topLeftCorner.row, fillStartRow), Math.min(topLeftCorner.col, fillStartColumn), Math.max(bottomRightCorner.row, fillEndRow), Math.max(bottomRightCorner.col, fillEndColumn)], cornersOfSelectedCells);
 
-      var _getDragDirectionAndR = (0, _utils.getDragDirectionAndRange)(cornersOfSelectedCells, cornersOfSelectionAndDragAreas),
+      var _getDragDirectionAndR = getDragDirectionAndRange(cornersOfSelectedCells, cornersOfSelectionAndDragAreas),
           directionOfDrag = _getDragDirectionAndR.directionOfDrag,
           startOfDragCoords = _getDragDirectionAndR.startOfDragCoords,
           endOfDragCoords = _getDragDirectionAndR.endOfDragCoords;
@@ -356,7 +318,7 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
       if (startOfDragCoords && startOfDragCoords.row > -1 && startOfDragCoords.col > -1) {
         var selectionData = this.getSelectionData();
         var sourceRange = selectionRangeLast.clone();
-        var targetRange = new _src.CellRange(startOfDragCoords, startOfDragCoords, endOfDragCoords);
+        var targetRange = new CellRange(startOfDragCoords, startOfDragCoords, endOfDragCoords);
         var beforeAutofillHookResult = this.hot.runHooks('beforeAutofill', selectionData, sourceRange, targetRange, directionOfDrag);
 
         if (beforeAutofillHookResult === false) {
@@ -373,8 +335,8 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
         var sourceFrom = sourceRange.from,
             sourceTo = sourceRange.to;
         var refData = this.hot.getData(sourceFrom.row, sourceFrom.col, sourceTo.row, sourceTo.col);
-        var hasFillDataChanged = !(0, _object.isObjectEqual)(refData, beforeAutofillHookResult);
-        var deltas = (0, _utils.getDeltas)(startOfDragCoords, endOfDragCoords, selectionData, directionOfDrag);
+        var hasFillDataChanged = !isObjectEqual(refData, beforeAutofillHookResult);
+        var deltas = getDeltas(startOfDragCoords, endOfDragCoords, selectionData, directionOfDrag);
         var fillData = beforeAutofillHookResult;
         var res = beforeAutofillHookResult;
 
@@ -450,20 +412,20 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
       var bottomRightCorner = currentSelection.getBottomRightCorner();
       var coords = coordsOfSelection;
 
-      if (this.directions.includes(_utils.DIRECTIONS.vertical) && this.directions.includes(_utils.DIRECTIONS.horizontal)) {
+      if (this.directions.includes(DIRECTIONS.vertical) && this.directions.includes(DIRECTIONS.horizontal)) {
         var topLeftCorner = currentSelection.getTopLeftCorner();
 
         if (bottomRightCorner.col <= coordsOfSelection.col || topLeftCorner.col >= coordsOfSelection.col) {
-          coords = new _src.CellCoords(bottomRightCorner.row, coordsOfSelection.col);
+          coords = new CellCoords(bottomRightCorner.row, coordsOfSelection.col);
         }
 
         if (bottomRightCorner.row < coordsOfSelection.row || topLeftCorner.row > coordsOfSelection.row) {
-          coords = new _src.CellCoords(coordsOfSelection.row, bottomRightCorner.col);
+          coords = new CellCoords(coordsOfSelection.row, bottomRightCorner.col);
         }
-      } else if (this.directions.includes(_utils.DIRECTIONS.vertical)) {
-        coords = new _src.CellCoords(coordsOfSelection.row, bottomRightCorner.col);
-      } else if (this.directions.includes(_utils.DIRECTIONS.horizontal)) {
-        coords = new _src.CellCoords(bottomRightCorner.row, coordsOfSelection.col);
+      } else if (this.directions.includes(DIRECTIONS.vertical)) {
+        coords = new CellCoords(coordsOfSelection.row, bottomRightCorner.col);
+      } else if (this.directions.includes(DIRECTIONS.horizontal)) {
+        coords = new CellCoords(bottomRightCorner.row, coordsOfSelection.col);
       } else {
         // wrong direction
         return;
@@ -570,7 +532,7 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "addSelectionFromStartAreaToSpecificRowIndex",
     value: function addSelectionFromStartAreaToSpecificRowIndex(selectStartArea, rowIndex) {
-      this.hot.selection.highlight.getFill().clear().add(new _src.CellCoords(selectStartArea[0], selectStartArea[1])).add(new _src.CellCoords(rowIndex, selectStartArea[3])).commit();
+      this.hot.selection.highlight.getFill().clear().add(new CellCoords(selectStartArea[0], selectStartArea[1])).add(new CellCoords(rowIndex, selectStartArea[3])).commit();
     }
     /**
      * Sets selection based on passed corners.
@@ -584,7 +546,7 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
     value: function setSelection(cornersOfArea) {
       var _this$hot;
 
-      (_this$hot = this.hot).selectCell.apply(_this$hot, _toConsumableArray((0, _array.arrayMap)(cornersOfArea, function (index) {
+      (_this$hot = this.hot).selectCell.apply(_this$hot, _toConsumableArray(arrayMap(cornersOfArea, function (index) {
         return Math.max(index, 0);
       })).concat([false, false]));
     }
@@ -645,8 +607,8 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
     key: "getIfMouseWasDraggedOutside",
     value: function getIfMouseWasDraggedOutside(event) {
       var documentElement = this.hot.rootDocument.documentElement;
-      var tableBottom = (0, _element.offset)(this.hot.table).top - (this.hot.rootWindow.pageYOffset || documentElement.scrollTop) + (0, _element.outerHeight)(this.hot.table);
-      var tableRight = (0, _element.offset)(this.hot.table).left - (this.hot.rootWindow.pageXOffset || documentElement.scrollLeft) + (0, _element.outerWidth)(this.hot.table);
+      var tableBottom = offset(this.hot.table).top - (this.hot.rootWindow.pageYOffset || documentElement.scrollTop) + outerHeight(this.hot.table);
+      var tableRight = offset(this.hot.table).left - (this.hot.rootWindow.pageXOffset || documentElement.scrollLeft) + outerWidth(this.hot.table);
       return event.clientY > tableBottom && event.clientX <= tableRight;
     }
     /**
@@ -773,7 +735,7 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "mapSettings",
     value: function mapSettings() {
-      var mappedSettings = (0, _utils.getMappedFillHandleSetting)(this.hot.getSettings().fillHandle);
+      var mappedSettings = getMappedFillHandleSetting(this.hot.getSettings().fillHandle);
       this.directions = mappedSettings.directions;
       this.autoInsertRow = mappedSettings.autoInsertRow;
     }
@@ -799,6 +761,4 @@ var Autofill = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return Autofill;
-}(_base.BasePlugin);
-
-exports.Autofill = Autofill;
+}(BasePlugin);

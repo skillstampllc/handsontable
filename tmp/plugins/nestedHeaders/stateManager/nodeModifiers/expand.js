@@ -1,28 +1,13 @@
-"use strict";
-
-exports.__esModule = true;
-exports.expandNode = expandNode;
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.set.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-var _array = require("../../../../helpers/array");
-
-var _collapse = require("./collapse");
-
-var _tree = require("./utils/tree");
-
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import { arrayEach } from "../../../../helpers/array.mjs";
+import { collapseNode } from "./collapse.mjs";
+import { getFirstChildProperty, isNodeReflectsFirstChildColspan, traverseHiddenNodeColumnIndexes } from "./utils/tree.mjs";
 /**
  * Expanding a node is a process where the processing node is expanded to
  * its original colspan width. To restore an original state of all node
@@ -39,7 +24,8 @@ var _tree = require("./utils/tree");
  *                    - colspanCompensation: The number of colspan by
  *                      which the processed node colspan was increased.
  */
-function expandNode(nodeToProcess) {
+
+export function expandNode(nodeToProcess) {
   var nodeData = nodeToProcess.data,
       nodeChilds = nodeToProcess.childs;
 
@@ -51,7 +37,7 @@ function expandNode(nodeToProcess) {
     };
   }
 
-  var isNodeReflected = (0, _tree.isNodeReflectsFirstChildColspan)(nodeToProcess);
+  var isNodeReflected = isNodeReflectsFirstChildColspan(nodeToProcess);
 
   if (isNodeReflected) {
     return expandNode(nodeChilds[0]);
@@ -63,7 +49,7 @@ function expandNode(nodeToProcess) {
   var colspanCompensation = 0;
 
   if (allLeavesExceptMostLeft.length > 0) {
-    (0, _array.arrayEach)(allLeavesExceptMostLeft, function (node) {
+    arrayEach(allLeavesExceptMostLeft, function (node) {
       // Restore original state of the collapsed headers.
       node.replaceTreeWith(node.data.clonedTree);
       node.data.clonedTree = null;
@@ -71,7 +57,7 @@ function expandNode(nodeToProcess) {
       // the colspan width of all its children.
 
       colspanCompensation += leafData.colspan;
-      (0, _tree.traverseHiddenNodeColumnIndexes)(node, function (gridColumnIndex) {
+      traverseHiddenNodeColumnIndexes(node, function (gridColumnIndex) {
         affectedColumns.add(gridColumnIndex);
       });
     });
@@ -96,13 +82,13 @@ function expandNode(nodeToProcess) {
     if (data.colspan >= data.origColspan) {
       data.colspan = data.origColspan;
       data.isCollapsed = false;
-    } else if ((0, _tree.isNodeReflectsFirstChildColspan)(node)) {
-      data.isCollapsed = (0, _tree.getFirstChildProperty)(node, 'isCollapsed');
+    } else if (isNodeReflectsFirstChildColspan(node)) {
+      data.isCollapsed = getFirstChildProperty(node, 'isCollapsed');
     }
   });
   return {
     rollbackModification: function rollbackModification() {
-      return (0, _collapse.collapseNode)(nodeToProcess);
+      return collapseNode(nodeToProcess);
     },
     affectedColumns: Array.from(affectedColumns),
     colspanCompensation: colspanCompensation

@@ -1,8 +1,3 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -28,5 +23,4 @@ var BaseUI = function BaseUI(pluginInstance, hotInstance) {
   this.plugin = pluginInstance;
 };
 
-var _default = BaseUI;
-exports.default = _default;
+export default BaseUI;

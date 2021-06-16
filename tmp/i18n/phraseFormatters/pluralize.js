@@ -1,11 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = pluralize;
-
-require("core-js/modules/es.number.is-integer.js");
-
-require("core-js/modules/es.number.constructor.js");
+import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
 
 /**
  * Try to choose plural form from available phrase propositions.
@@ -15,7 +9,7 @@ require("core-js/modules/es.number.constructor.js");
  *
  * @returns {string|Array} One particular phrase if it's possible, list of unchanged phrase propositions otherwise.
  */
-function pluralize(phrasePropositions, pluralForm) {
+export default function pluralize(phrasePropositions, pluralForm) {
   var isPluralizable = Array.isArray(phrasePropositions) && Number.isInteger(pluralForm);
 
   if (isPluralizable) {

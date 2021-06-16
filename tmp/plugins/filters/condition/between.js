@@ -1,46 +1,13 @@
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-exports.__esModule = true;
-exports.condition = condition;
-exports.CONDITION_NAME = void 0;
-
-var C = _interopRequireWildcard(require("../../../i18n/constants"));
-
-var _conditionRegisterer = require("../conditionRegisterer");
-
-var _after = require("./date/after");
-
-var _before = require("./date/before");
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -54,7 +21,11 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var CONDITION_NAME = 'between';
+import * as C from "../../../i18n/constants.mjs";
+import { registerCondition, getCondition } from "../conditionRegisterer.mjs";
+import { CONDITION_NAME as CONDITION_DATE_AFTER } from "./date/after.mjs";
+import { CONDITION_NAME as CONDITION_DATE_BEFORE } from "./date/before.mjs";
+export var CONDITION_NAME = 'between';
 /**
  * @param {object} dataRow The object which holds and describes the single cell value.
  * @param {Array} inputValues An array of values to compare with.
@@ -63,9 +34,7 @@ var CONDITION_NAME = 'between';
  * @returns {boolean}
  */
 
-exports.CONDITION_NAME = CONDITION_NAME;
-
-function condition(dataRow, _ref) {
+export function condition(dataRow, _ref) {
   var _ref2 = _slicedToArray(_ref, 2),
       from = _ref2[0],
       to = _ref2[1];
@@ -81,15 +50,14 @@ function condition(dataRow, _ref) {
     fromValue = Math.min(_from, _to);
     toValue = Math.max(_from, _to);
   } else if (dataRow.meta.type === 'date') {
-    var dateBefore = (0, _conditionRegisterer.getCondition)(_before.CONDITION_NAME, [toValue]);
-    var dateAfter = (0, _conditionRegisterer.getCondition)(_after.CONDITION_NAME, [fromValue]);
+    var dateBefore = getCondition(CONDITION_DATE_BEFORE, [toValue]);
+    var dateAfter = getCondition(CONDITION_DATE_AFTER, [fromValue]);
     return dateBefore(dataRow) && dateAfter(dataRow);
   }
 
   return dataRow.value >= fromValue && dataRow.value <= toValue;
 }
-
-(0, _conditionRegisterer.registerCondition)(CONDITION_NAME, condition, {
+registerCondition(CONDITION_NAME, condition, {
   name: C.FILTERS_CONDITIONS_BETWEEN,
   inputsCount: 2,
   showOperators: true

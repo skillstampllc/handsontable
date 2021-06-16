@@ -1,22 +1,12 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _src = require("./../3rdparty/walkontable/src");
-
-var _object = require("../helpers/object");
-
-var _localHooks = _interopRequireDefault(require("./../mixins/localHooks"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { CellCoords } from "./../3rdparty/walkontable/src/index.mjs";
+import { mixin } from "../helpers/object.mjs";
+import localHooks from "./../mixins/localHooks.mjs";
 /**
  * The Transformation class implements algorithms for transforming coordinates based on current settings
  * passed to the Handsontable.
@@ -26,6 +16,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class Transformation
  * @util
  */
+
 var Transformation = /*#__PURE__*/function () {
   function Transformation(range, options) {
     _classCallCheck(this, Transformation);
@@ -59,7 +50,7 @@ var Transformation = /*#__PURE__*/function () {
   _createClass(Transformation, [{
     key: "transformStart",
     value: function transformStart(rowDelta, colDelta, force) {
-      var delta = new _src.CellCoords(rowDelta, colDelta);
+      var delta = new CellCoords(rowDelta, colDelta);
       var highlightCoords = this.range.current().highlight;
 
       var _this$options$visualT = this.options.visualToRenderableCoords(highlightCoords),
@@ -106,7 +97,7 @@ var Transformation = /*#__PURE__*/function () {
           delta.col = totalCols - 1;
         }
 
-        var coords = new _src.CellCoords(renderableRow + delta.row, renderableColumn + delta.col);
+        var coords = new CellCoords(renderableRow + delta.row, renderableColumn + delta.col);
         rowTransformDir = 0;
         colTransformDir = 0;
 
@@ -143,7 +134,7 @@ var Transformation = /*#__PURE__*/function () {
   }, {
     key: "transformEnd",
     value: function transformEnd(rowDelta, colDelta) {
-      var delta = new _src.CellCoords(rowDelta, colDelta);
+      var delta = new CellCoords(rowDelta, colDelta);
       var cellRange = this.range.current();
       var visualCoords = cellRange.to;
       var rowTransformDir = 0;
@@ -163,7 +154,7 @@ var Transformation = /*#__PURE__*/function () {
             rowTo = _this$options$visualT3.row,
             colTo = _this$options$visualT3.col;
 
-        var coords = new _src.CellCoords(rowTo + delta.row, colTo + delta.col);
+        var coords = new CellCoords(rowTo + delta.row, colTo + delta.col);
         rowTransformDir = 0;
         colTransformDir = 0;
 
@@ -194,6 +185,5 @@ var Transformation = /*#__PURE__*/function () {
   return Transformation;
 }();
 
-(0, _object.mixin)(Transformation, _localHooks.default);
-var _default = Transformation;
-exports.default = _default;
+mixin(Transformation, localHooks);
+export default Transformation;

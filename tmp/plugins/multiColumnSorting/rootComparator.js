@@ -1,29 +1,13 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.function.name.js");
-
-exports.__esModule = true;
-exports.rootComparator = rootComparator;
-
-require("core-js/modules/es.array.slice.js");
-
-var _sortService = require("../columnSorting/sortService");
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.function.name.js";
 
 function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
 
@@ -37,6 +21,7 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import { getCompareFunctionFactory, DO_NOT_SWAP } from "../columnSorting/sortService/index.mjs";
 /**
  * Sort comparator handled by conventional sort algorithm.
  *
@@ -44,7 +29,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  * @param {Array} columnMetas Column meta objects.
  * @returns {Function}
  */
-function rootComparator(sortingOrders, columnMetas) {
+
+export function rootComparator(sortingOrders, columnMetas) {
   return function (rowIndexWithValues, nextRowIndexWithValues) {
     // We sort array of arrays. Single array is in form [rowIndex, ...values].
     // We compare just values, stored at second index of array.
@@ -60,10 +46,10 @@ function rootComparator(sortingOrders, columnMetas) {
       var value = values[column];
       var nextValue = nextValues[column];
       var pluginSettings = columnMeta.multiColumnSorting;
-      var compareFunctionFactory = pluginSettings.compareFunctionFactory ? pluginSettings.compareFunctionFactory : (0, _sortService.getCompareFunctionFactory)(columnMeta.type);
+      var compareFunctionFactory = pluginSettings.compareFunctionFactory ? pluginSettings.compareFunctionFactory : getCompareFunctionFactory(columnMeta.type);
       var compareResult = compareFunctionFactory(sortingOrder, columnMeta, pluginSettings)(value, nextValue);
 
-      if (compareResult === _sortService.DO_NOT_SWAP) {
+      if (compareResult === DO_NOT_SWAP) {
         var nextSortedColumn = column + 1;
 
         if (typeof columnMetas[nextSortedColumn] !== 'undefined') {

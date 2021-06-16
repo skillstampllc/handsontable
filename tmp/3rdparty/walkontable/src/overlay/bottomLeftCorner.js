@@ -1,39 +1,15 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-exports.__esModule = true;
-exports.BottomLeftCornerOverlay = void 0;
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-var _element = require("./../../../../helpers/dom/element");
-
-var _bottomLeftCorner = _interopRequireDefault(require("./../table/bottomLeftCorner"));
-
-var _base = require("./_base");
-
-var _constants = require("./constants");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
@@ -57,10 +33,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import { getScrollbarWidth, outerHeight, outerWidth, resetCssTransform } from "./../../../../helpers/dom/element.mjs";
+import BottomLeftCornerOverlayTable from "./../table/bottomLeftCorner.mjs";
+import { Overlay } from "./_base.mjs";
+import { CLONE_BOTTOM_LEFT_CORNER } from "./constants.mjs";
 /**
  * @class TopLeftCornerOverlay
  */
-var BottomLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
+
+export var BottomLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
   _inherits(BottomLeftCornerOverlay, _Overlay);
 
   var _super = _createSuper(BottomLeftCornerOverlay);
@@ -74,7 +55,7 @@ var BottomLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
     _classCallCheck(this, BottomLeftCornerOverlay);
 
     _this = _super.call(this, wotInstance);
-    _this.clone = _this.makeClone(_constants.CLONE_BOTTOM_LEFT_CORNER);
+    _this.clone = _this.makeClone(CLONE_BOTTOM_LEFT_CORNER);
     return _this;
   }
   /**
@@ -93,7 +74,7 @@ var BottomLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
         args[_key] = arguments[_key];
       }
 
-      return _construct(_bottomLeftCorner.default, args);
+      return _construct(BottomLeftCornerOverlayTable, args);
     }
     /**
      * Checks if overlay should be fully rendered.
@@ -155,12 +136,12 @@ var BottomLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
         overlayRoot.style.left = finalLeft;
         overlayRoot.style.bottom = finalBottom;
       } else {
-        (0, _element.resetCssTransform)(overlayRoot);
+        resetCssTransform(overlayRoot);
         this.repositionOverlay();
       }
 
-      var tableHeight = (0, _element.outerHeight)(this.clone.wtTable.TABLE);
-      var tableWidth = (0, _element.outerWidth)(this.clone.wtTable.TABLE);
+      var tableHeight = outerHeight(this.clone.wtTable.TABLE);
+      var tableWidth = outerWidth(this.clone.wtTable.TABLE);
 
       if (!this.wot.wtTable.hasDefinedSize()) {
         tableHeight = 0;
@@ -181,7 +162,7 @@ var BottomLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
           wtTable = _this$wot2.wtTable,
           rootDocument = _this$wot2.rootDocument;
       var cloneRoot = this.clone.wtTable.holder.parentNode;
-      var scrollbarWidth = (0, _element.getScrollbarWidth)(rootDocument);
+      var scrollbarWidth = getScrollbarWidth(rootDocument);
 
       if (wtTable.holder.clientHeight === wtTable.holder.offsetHeight) {
         scrollbarWidth = 0;
@@ -192,11 +173,9 @@ var BottomLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
   }], [{
     key: "OVERLAY_NAME",
     get: function get() {
-      return _constants.CLONE_BOTTOM_LEFT_CORNER;
+      return CLONE_BOTTOM_LEFT_CORNER;
     }
   }]);
 
   return BottomLeftCornerOverlay;
-}(_base.Overlay);
-
-exports.BottomLeftCornerOverlay = BottomLeftCornerOverlay;
+}(Overlay);

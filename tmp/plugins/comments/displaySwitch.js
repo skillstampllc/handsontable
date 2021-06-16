@@ -1,17 +1,4 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/web.timers.js");
-
-var _function = require("../../helpers/function");
-
-var _object = require("../../helpers/object");
-
-var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import "core-js/modules/web.timers.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19,6 +6,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { debounce } from "../../helpers/function.mjs";
+import { mixin } from "../../helpers/object.mjs";
+import localHooks from "../../mixins/localHooks.mjs";
 var DEFAULT_DISPLAY_DELAY = 250;
 var DEFAULT_HIDE_DELAY = 250;
 /**
@@ -107,7 +97,7 @@ var DisplaySwitch = /*#__PURE__*/function () {
       var _this2 = this;
 
       var displayDelay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_DISPLAY_DELAY;
-      this.showDebounced = (0, _function.debounce)(function (range) {
+      this.showDebounced = debounce(function (range) {
         if (_this2.wasLastActionShow) {
           _this2.runLocalHooks('show', range.from.row, range.from.col);
         }
@@ -127,6 +117,5 @@ var DisplaySwitch = /*#__PURE__*/function () {
   return DisplaySwitch;
 }();
 
-(0, _object.mixin)(DisplaySwitch, _localHooks.default);
-var _default = DisplaySwitch;
-exports.default = _default;
+mixin(DisplaySwitch, localHooks);
+export default DisplaySwitch;

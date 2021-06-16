@@ -1,43 +1,4 @@
-"use strict";
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-require("core-js/modules/es.object.set-prototype-of.js");
-
-require("core-js/modules/es.object.get-prototype-of.js");
-
-require("core-js/modules/es.reflect.construct.js");
-
-require("core-js/modules/es.reflect.get.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.string.link.js");
-
-var _object = require("../../../helpers/object");
-
-var _base = _interopRequireDefault(require("./_base"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63,6 +24,22 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.string.link.js";
+import "core-js/modules/es.object.set-prototype-of.js";
+import "core-js/modules/es.object.get-prototype-of.js";
+import "core-js/modules/es.reflect.construct.js";
+import "core-js/modules/es.reflect.get.js";
+import "core-js/modules/es.object.get-own-property-descriptor.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
+import { clone, extend } from "../../../helpers/object.mjs";
+import BaseUI from "./_base.mjs";
 var privatePool = new WeakMap();
 /**
  * @class LinkUI
@@ -79,7 +56,7 @@ var LinkUI = /*#__PURE__*/function (_BaseUI) {
 
     _classCallCheck(this, LinkUI);
 
-    _this = _super.call(this, hotInstance, (0, _object.extend)(LinkUI.DEFAULTS, options));
+    _this = _super.call(this, hotInstance, extend(LinkUI.DEFAULTS, options));
     privatePool.set(_assertThisInitialized(_this), {});
     return _this;
   }
@@ -112,7 +89,7 @@ var LinkUI = /*#__PURE__*/function (_BaseUI) {
   }], [{
     key: "DEFAULTS",
     get: function get() {
-      return (0, _object.clone)({
+      return clone({
         href: '#',
         tagName: 'a'
       });
@@ -120,7 +97,6 @@ var LinkUI = /*#__PURE__*/function (_BaseUI) {
   }]);
 
   return LinkUI;
-}(_base.default);
+}(BaseUI);
 
-var _default = LinkUI;
-exports.default = _default;
+export default LinkUI;

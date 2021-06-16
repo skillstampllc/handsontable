@@ -1,48 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.from.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.object.values.js");
-
-var _element = require("./../../../helpers/dom/element");
-
-var _border = _interopRequireDefault(require("./border"));
-
-var _coords = _interopRequireDefault(require("./cell/coords"));
-
-var _range = _interopRequireDefault(require("./cell/range"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -55,6 +10,22 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import "core-js/modules/es.array.includes.js";
+import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/web.dom-collections.for-each.js";
+import "core-js/modules/es.object.values.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.from.js";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63,9 +34,14 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import { addClass, hasClass } from "./../../../helpers/dom/element.mjs";
+import Border from "./border.mjs";
+import CellCoords from "./cell/coords.mjs";
+import CellRange from "./cell/range.mjs";
 /**
  * @class Selection
  */
+
 var Selection = /*#__PURE__*/function () {
   /**
    * @param {object} settings The selection settings object.
@@ -93,7 +69,7 @@ var Selection = /*#__PURE__*/function () {
     key: "getBorder",
     value: function getBorder(wotInstance) {
       if (!this.instanceBorders[wotInstance.guid]) {
-        this.instanceBorders[wotInstance.guid] = new _border.default(wotInstance, this.settings);
+        this.instanceBorders[wotInstance.guid] = new Border(wotInstance, this.settings);
       }
 
       return this.instanceBorders[wotInstance.guid];
@@ -120,7 +96,7 @@ var Selection = /*#__PURE__*/function () {
     key: "add",
     value: function add(coords) {
       if (this.isEmpty()) {
-        this.cellRange = new _range.default(coords);
+        this.cellRange = new CellRange(coords);
       } else {
         this.cellRange.expand(coords);
       }
@@ -194,7 +170,7 @@ var Selection = /*#__PURE__*/function () {
     key: "addClassAtCoords",
     value: function addClassAtCoords(wotInstance, sourceRow, sourceColumn, className) {
       var markIntersections = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-      var TD = wotInstance.wtTable.getCell(new _coords.default(sourceRow, sourceColumn));
+      var TD = wotInstance.wtTable.getCell(new CellCoords(sourceRow, sourceColumn));
 
       if (_typeof(TD) === 'object') {
         var cellClassName = className;
@@ -207,7 +183,7 @@ var Selection = /*#__PURE__*/function () {
           }
         }
 
-        (0, _element.addClass)(TD, cellClassName);
+        addClass(TD, cellClassName);
       }
 
       return this;
@@ -239,7 +215,7 @@ var Selection = /*#__PURE__*/function () {
         index -= 1;
         var previousClassName = index === 0 ? baseClassName : "".concat(baseClassName, "-").concat(index);
 
-        if ((0, _element.hasClass)(element, previousClassName)) {
+        if (hasClass(element, previousClassName)) {
           var currentLayer = index + 1;
           className = "".concat(baseClassName, "-").concat(currentLayer);
         } else {
@@ -320,7 +296,7 @@ var Selection = /*#__PURE__*/function () {
                 TH = wotInstance.wtTable.getColumnHeader(newSourceCol, headerLevel);
               }
 
-              (0, _element.addClass)(TH, newClasses);
+              addClass(TH, newClasses);
             }
 
             selectionColumnCursor += 1;
@@ -367,7 +343,7 @@ var Selection = /*#__PURE__*/function () {
                 _TH = wotInstance.wtTable.getRowHeader(newSourceRow, _headerLevel);
               }
 
-              (0, _element.addClass)(_TH, _newClasses);
+              addClass(_TH, _newClasses);
             }
 
             selectionRowCursor += 1;
@@ -427,5 +403,4 @@ var Selection = /*#__PURE__*/function () {
   return Selection;
 }();
 
-var _default = Selection;
-exports.default = _default;
+export default Selection;

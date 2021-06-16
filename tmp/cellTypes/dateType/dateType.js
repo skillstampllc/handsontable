@@ -1,21 +1,11 @@
-"use strict";
-
-exports.__esModule = true;
-exports.DateCellType = exports.CELL_TYPE = void 0;
-
-var _dateEditor = require("../../editors/dateEditor");
-
-var _autocompleteRenderer = require("../../renderers/autocompleteRenderer");
-
-var _dateValidator = require("../../validators/dateValidator");
-
-var CELL_TYPE = 'date';
-exports.CELL_TYPE = CELL_TYPE;
-var DateCellType = {
+import { DateEditor } from "../../editors/dateEditor/index.mjs";
+import { autocompleteRenderer } from "../../renderers/autocompleteRenderer/index.mjs";
+import { dateValidator } from "../../validators/dateValidator/index.mjs";
+export var CELL_TYPE = 'date';
+export var DateCellType = {
   CELL_TYPE: CELL_TYPE,
-  editor: _dateEditor.DateEditor,
+  editor: DateEditor,
   // displays small gray arrow on right side of the cell
-  renderer: _autocompleteRenderer.autocompleteRenderer,
-  validator: _dateValidator.dateValidator
+  renderer: autocompleteRenderer,
+  validator: dateValidator
 };
-exports.DateCellType = DateCellType;

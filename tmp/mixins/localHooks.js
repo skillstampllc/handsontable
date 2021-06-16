@@ -1,12 +1,5 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _array = require("./../helpers/array");
-
-var _object = require("./../helpers/object");
-
+import { arrayEach } from "./../helpers/array.mjs";
+import { defineGetter } from "./../helpers/object.mjs";
 var MIXIN_NAME = 'localHooks';
 /**
  * Mixin object to extend objects functionality for local hooks.
@@ -51,7 +44,7 @@ var localHooks = {
     }
 
     if (this._localHooks[key]) {
-      (0, _array.arrayEach)(this._localHooks[key], function (callback) {
+      arrayEach(this._localHooks[key], function (callback) {
         return callback.apply(_this, params);
       });
     }
@@ -67,9 +60,8 @@ var localHooks = {
     return this;
   }
 };
-(0, _object.defineGetter)(localHooks, 'MIXIN_NAME', MIXIN_NAME, {
+defineGetter(localHooks, 'MIXIN_NAME', MIXIN_NAME, {
   writable: false,
   enumerable: false
 });
-var _default = localHooks;
-exports.default = _default;
+export default localHooks;

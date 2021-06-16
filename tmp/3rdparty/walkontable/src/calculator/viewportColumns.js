@@ -1,26 +1,15 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-var _constants = require("./constants");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import { RENDER_TYPE, FULLY_VISIBLE_TYPE } from "./constants.mjs";
 var privatePool = new WeakMap();
 /**
  * Calculates indexes of columns to render OR columns that are visible.
@@ -124,14 +113,14 @@ var ViewportColumnsCalculator = /*#__PURE__*/function () {
       for (var i = 0; i < totalColumns; i++) {
         columnWidth = this._getColumnWidth(i);
 
-        if (sum <= scrollOffset && calculationType !== _constants.FULLY_VISIBLE_TYPE) {
+        if (sum <= scrollOffset && calculationType !== FULLY_VISIBLE_TYPE) {
           this.startColumn = i;
         } // +1 pixel for row header width compensation for horizontal scroll > 0
 
 
         var compensatedViewportWidth = scrollOffset > 0 ? viewportWidth + 1 : viewportWidth;
 
-        if (sum >= scrollOffset && sum + (calculationType === _constants.FULLY_VISIBLE_TYPE ? columnWidth : 0) <= scrollOffset + compensatedViewportWidth) {
+        if (sum >= scrollOffset && sum + (calculationType === FULLY_VISIBLE_TYPE ? columnWidth : 0) <= scrollOffset + compensatedViewportWidth) {
           // eslint-disable-line max-len
           if (this.startColumn === null || this.startColumn === void 0) {
             this.startColumn = i;
@@ -143,7 +132,7 @@ var ViewportColumnsCalculator = /*#__PURE__*/function () {
         startPositions.push(sum);
         sum += columnWidth;
 
-        if (calculationType !== _constants.FULLY_VISIBLE_TYPE) {
+        if (calculationType !== FULLY_VISIBLE_TYPE) {
           this.endColumn = i;
         }
 
@@ -159,7 +148,7 @@ var ViewportColumnsCalculator = /*#__PURE__*/function () {
         while (this.startColumn > 0) {
           var viewportSum = startPositions[this.endColumn] + columnWidth - startPositions[this.startColumn - 1];
 
-          if (viewportSum <= viewportWidth || calculationType !== _constants.FULLY_VISIBLE_TYPE) {
+          if (viewportSum <= viewportWidth || calculationType !== FULLY_VISIBLE_TYPE) {
             this.startColumn -= 1;
           }
 
@@ -169,7 +158,7 @@ var ViewportColumnsCalculator = /*#__PURE__*/function () {
         }
       }
 
-      if (calculationType === _constants.RENDER_TYPE && this.startColumn !== null && overrideFn) {
+      if (calculationType === RENDER_TYPE && this.startColumn !== null && overrideFn) {
         overrideFn(this);
       }
 
@@ -343,5 +332,4 @@ var ViewportColumnsCalculator = /*#__PURE__*/function () {
   return ViewportColumnsCalculator;
 }();
 
-var _default = ViewportColumnsCalculator;
-exports.default = _default;
+export default ViewportColumnsCalculator;

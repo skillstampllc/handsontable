@@ -1,10 +1,1 @@
-"use strict";
-
-exports.__esModule = true;
-exports.ColumnSorting = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
-
-var _columnSorting = require("./columnSorting");
-
-exports.PLUGIN_KEY = _columnSorting.PLUGIN_KEY;
-exports.PLUGIN_PRIORITY = _columnSorting.PLUGIN_PRIORITY;
-exports.ColumnSorting = _columnSorting.ColumnSorting;
+export { PLUGIN_KEY, PLUGIN_PRIORITY, ColumnSorting } from "./columnSorting.mjs";
