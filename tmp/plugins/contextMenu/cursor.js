@@ -1,23 +1,28 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _element = require("../../helpers/dom/element");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { getWindowScrollLeft, getWindowScrollTop } from "../../helpers/dom/element.mjs";
 /**
  * Helper class for checking if element will fit at the desired side of cursor.
  *
  * @class Cursor
  * @plugin ContextMenu
  */
-
 var Cursor = /*#__PURE__*/function () {
   function Cursor(object, rootWindow) {
     _classCallCheck(this, Cursor);
 
-    var windowScrollTop = getWindowScrollTop(rootWindow);
-    var windowScrollLeft = getWindowScrollLeft(rootWindow);
+    var windowScrollTop = (0, _element.getWindowScrollTop)(rootWindow);
+    var windowScrollLeft = (0, _element.getWindowScrollLeft)(rootWindow);
     var top;
     var topRelative;
     var left;
@@ -130,4 +135,5 @@ var Cursor = /*#__PURE__*/function () {
   return Cursor;
 }();
 
-export default Cursor;
+var _default = Cursor;
+exports.default = _default;

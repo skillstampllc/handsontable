@@ -1,15 +1,39 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.TopOverlay = void 0;
+
+var _element = require("./../../../../helpers/dom/element");
+
+var _top = _interopRequireDefault(require("./../table/top"));
+
+var _base = require("./_base");
+
+var _constants = require("./constants");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
@@ -35,15 +59,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-import { addClass, getScrollbarWidth, getScrollTop, getWindowScrollLeft, hasClass, outerHeight, removeClass, setOverlayPosition, resetCssTransform } from "./../../../../helpers/dom/element.mjs";
-import TopOverlayTable from "./../table/top.mjs";
-import { Overlay } from "./_base.mjs";
-import { CLONE_TOP } from "./constants.mjs";
 /**
  * @class TopOverlay
  */
-
-export var TopOverlay = /*#__PURE__*/function (_Overlay) {
+var TopOverlay = /*#__PURE__*/function (_Overlay) {
   _inherits(TopOverlay, _Overlay);
 
   var _super = _createSuper(TopOverlay);
@@ -60,7 +79,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
 
     _defineProperty(_assertThisInitialized(_this), "cachedFixedRowsTop", -1);
 
-    _this.clone = _this.makeClone(CLONE_TOP);
+    _this.clone = _this.makeClone(_constants.CLONE_TOP);
     _this.cachedFixedRowsTop = _this.wot.getSetting('fixedRowsTop');
     return _this;
   }
@@ -80,7 +99,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
         args[_key] = arguments[_key];
       }
 
-      return _construct(TopOverlayTable, args);
+      return _construct(_top.default, args);
     }
     /**
      * Checks if overlay should be fully rendered.
@@ -143,10 +162,10 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
 
         headerPosition = finalTop;
         finalTop += 'px';
-        setOverlayPosition(overlayRoot, finalLeft, finalTop);
+        (0, _element.setOverlayPosition)(overlayRoot, finalLeft, finalTop);
       } else {
         headerPosition = this.getScrollPosition();
-        resetCssTransform(overlayRoot);
+        (0, _element.resetCssTransform)(overlayRoot);
       }
 
       var positionChanged = this.adjustHeaderBordersPosition(headerPosition, skipInnerBorderAdjusting);
@@ -167,7 +186,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
       var result = false;
 
       if (this.mainTableScrollableElement === rootWindow && rootWindow.scrollY !== pos) {
-        rootWindow.scrollTo(getWindowScrollLeft(rootWindow), pos);
+        rootWindow.scrollTo((0, _element.getWindowScrollLeft)(rootWindow), pos);
         result = true;
       } else if (this.mainTableScrollableElement.scrollTop !== pos) {
         this.mainTableScrollableElement.scrollTop = pos;
@@ -236,7 +255,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
           wtTable = _this$wot.wtTable,
           rootDocument = _this$wot.rootDocument,
           rootWindow = _this$wot.rootWindow;
-      var scrollbarWidth = getScrollbarWidth(rootDocument);
+      var scrollbarWidth = (0, _element.getScrollbarWidth)(rootDocument);
       var overlayRoot = this.clone.wtTable.holder.parentNode;
       var overlayRootStyle = overlayRoot.style;
       var preventOverflow = this.wot.getSetting('preventOverflow');
@@ -255,7 +274,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
       }
 
       this.clone.wtTable.holder.style.width = overlayRootStyle.width;
-      var tableHeight = outerHeight(this.clone.wtTable.TABLE);
+      var tableHeight = (0, _element.outerHeight)(this.clone.wtTable.TABLE);
 
       if (!this.wot.wtTable.hasDefinedSize()) {
         tableHeight = 0;
@@ -336,7 +355,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
       var scrollbarCompensation = 0;
 
       if (bottomEdge && mainHolder.offsetHeight !== mainHolder.clientHeight) {
-        scrollbarCompensation = getScrollbarWidth(wot.rootDocument);
+        scrollbarCompensation = (0, _element.getScrollbarWidth)(wot.rootDocument);
       }
 
       if (bottomEdge) {
@@ -377,7 +396,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
   }, {
     key: "getScrollPosition",
     value: function getScrollPosition() {
-      return getScrollTop(this.mainTableScrollableElement, this.wot.rootWindow);
+      return (0, _element.getScrollTop)(this.mainTableScrollableElement, this.wot.rootWindow);
     }
     /**
      * Adds css classes to hide the header border's header (cell-selection border hiding issue).
@@ -395,9 +414,9 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
       var totalColumns = this.wot.getSetting('totalColumns');
 
       if (totalColumns) {
-        removeClass(masterParent, 'emptyColumns');
+        (0, _element.removeClass)(masterParent, 'emptyColumns');
       } else {
-        addClass(masterParent, 'emptyColumns');
+        (0, _element.addClass)(masterParent, 'emptyColumns');
       }
 
       var positionChanged = false;
@@ -408,14 +427,14 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
         var columnHeaders = this.wot.getSetting('columnHeaders');
 
         if ((areFixedRowsTopChanged || fixedRowsTop === 0) && columnHeaders.length > 0) {
-          var previousState = hasClass(masterParent, 'innerBorderTop');
+          var previousState = (0, _element.hasClass)(masterParent, 'innerBorderTop');
           this.cachedFixedRowsTop = this.wot.getSetting('fixedRowsTop');
 
           if (position || this.wot.getSetting('totalRows') === 0) {
-            addClass(masterParent, 'innerBorderTop');
+            (0, _element.addClass)(masterParent, 'innerBorderTop');
             positionChanged = !previousState;
           } else {
-            removeClass(masterParent, 'innerBorderTop');
+            (0, _element.removeClass)(masterParent, 'innerBorderTop');
             positionChanged = previousState;
           }
         }
@@ -437,7 +456,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
   }], [{
     key: "OVERLAY_NAME",
     get: function get() {
-      return CLONE_TOP;
+      return _constants.CLONE_TOP;
     }
     /**
      * Cached value which holds the previous value of the `fixedRowsTop` option.
@@ -449,4 +468,6 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
   }]);
 
   return TopOverlay;
-}(Overlay);
+}(_base.Overlay);
+
+exports.TopOverlay = TopOverlay;

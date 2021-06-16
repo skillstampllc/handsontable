@@ -1,16 +1,36 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.function.name.js";
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.getListWithInsertedItems = getListWithInsertedItems;
+exports.getListWithRemovedItems = getListWithRemovedItems;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+var _array = require("../../../helpers/array");
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -24,7 +44,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-import { arrayFilter } from "../../../helpers/array.mjs";
 /**
  * Insert new items to the list.
  *
@@ -34,8 +53,7 @@ import { arrayFilter } from "../../../helpers/array.mjs";
  * @param {Array} insertedIndexes List of inserted indexes.
  * @returns {Array} List with new mappings.
  */
-
-export function getListWithInsertedItems(indexedValues, insertionIndex, insertedIndexes) {
+function getListWithInsertedItems(indexedValues, insertionIndex, insertedIndexes) {
   return [].concat(_toConsumableArray(indexedValues.slice(0, insertionIndex)), _toConsumableArray(insertedIndexes), _toConsumableArray(indexedValues.slice(insertionIndex)));
 }
 /**
@@ -47,8 +65,9 @@ export function getListWithInsertedItems(indexedValues, insertionIndex, inserted
  * @returns {Array} Reduced list of mappings.
  */
 
-export function getListWithRemovedItems(indexedValues, removedIndexes) {
-  return arrayFilter(indexedValues, function (index) {
+
+function getListWithRemovedItems(indexedValues, removedIndexes) {
+  return (0, _array.arrayFilter)(indexedValues, function (index) {
     return removedIndexes.includes(index) === false;
   });
 }

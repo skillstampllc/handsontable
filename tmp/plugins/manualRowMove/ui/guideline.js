@@ -1,17 +1,39 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = _interopRequireDefault(require("./_base"));
+
+var _element = require("../../../helpers/dom/element");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,8 +59,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import BaseUI from "./_base.mjs";
-import { addClass } from "../../../helpers/dom/element.mjs";
 var CSS_CLASSNAME = 'ht__manualRowMove--guideline';
 /**
  * @class GuidelineUI
@@ -65,11 +85,12 @@ var GuidelineUI = /*#__PURE__*/function (_BaseUI) {
     function build() {
       _get(_getPrototypeOf(GuidelineUI.prototype), "build", this).call(this);
 
-      addClass(this._element, CSS_CLASSNAME);
+      (0, _element.addClass)(this._element, CSS_CLASSNAME);
     }
   }]);
 
   return GuidelineUI;
-}(BaseUI);
+}(_base.default);
 
-export default GuidelineUI;
+var _default = GuidelineUI;
+exports.default = _default;

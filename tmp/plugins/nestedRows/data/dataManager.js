@@ -1,3 +1,42 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.slice.js");
+
+var _number = require("../../../helpers/number");
+
+var _object = require("../../../helpers/object");
+
+var _array = require("../../../helpers/array");
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -12,37 +51,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.function.name.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { rangeEach } from "../../../helpers/number.mjs";
-import { objectEach } from "../../../helpers/object.mjs";
-import { arrayEach } from "../../../helpers/array.mjs";
 /**
  * Class responsible for making data operations.
  *
  * @class
  * @private
  */
-
 var DataManager = /*#__PURE__*/function () {
   function DataManager(nestedRowsPlugin, hotInstance) {
     _classCallCheck(this, DataManager);
@@ -154,7 +174,7 @@ var DataManager = /*#__PURE__*/function () {
         rows: [],
         nodeInfo: new WeakMap()
       };
-      rangeEach(0, this.data.length - 1, function (i) {
+      (0, _number.rangeEach)(0, this.data.length - 1, function (i) {
         _this.cacheNode(_this.data[i], 0, null);
       });
     }
@@ -186,7 +206,7 @@ var DataManager = /*#__PURE__*/function () {
       });
 
       if (this.hasChildren(node)) {
-        arrayEach(node.__children, function (elem) {
+        (0, _array.arrayEach)(node.__children, function (elem) {
           _this2.cacheNode(elem, level + 1, node);
         });
       }
@@ -253,7 +273,7 @@ var DataManager = /*#__PURE__*/function () {
       readNodesCount += 1;
 
       if (parentObj.__children) {
-        arrayEach(parentObj.__children, function (val) {
+        (0, _array.arrayEach)(parentObj.__children, function (val) {
           _this3.parentReference.set(val, rootLevel ? null : parentObj);
 
           readNodesCount = _this3.readTreeNodes(val, readNodesCount, neededIndex, neededObject);
@@ -291,7 +311,7 @@ var DataManager = /*#__PURE__*/function () {
     key: "mockNode",
     value: function mockNode() {
       var fakeNode = {};
-      objectEach(this.data[0], function (val, key) {
+      (0, _object.objectEach)(this.data[0], function (val, key) {
         fakeNode[key] = null;
       });
       return fakeNode;
@@ -371,7 +391,7 @@ var DataManager = /*#__PURE__*/function () {
         return 0;
       }
 
-      arrayEach(parentNode.__children, function (elem) {
+      (0, _array.arrayEach)(parentNode.__children, function (elem) {
         rowCount += 1;
 
         if (elem.__children) {
@@ -637,12 +657,12 @@ var DataManager = /*#__PURE__*/function () {
       var rowObjects = [];
 
       if (Array.isArray(elements)) {
-        rangeEach(elements[0], elements[2], function (i) {
+        (0, _number.rangeEach)(elements[0], elements[2], function (i) {
           var translatedIndex = _this5.translateTrimmedRow(i);
 
           rowObjects.push(_this5.getDataObject(translatedIndex));
         });
-        rangeEach(0, rowObjects.length - 2, function (i) {
+        (0, _number.rangeEach)(0, rowObjects.length - 2, function (i) {
           _this5.detachFromParent(rowObjects[i], false);
         });
         element = rowObjects[rowObjects.length - 1];
@@ -702,10 +722,10 @@ var DataManager = /*#__PURE__*/function () {
 
       // TODO: why are the first 2 arguments not used?
       var elementsToRemove = [];
-      arrayEach(logicRows, function (elem) {
+      (0, _array.arrayEach)(logicRows, function (elem) {
         elementsToRemove.push(_this6.getDataObject(elem));
       });
-      arrayEach(elementsToRemove, function (elem) {
+      (0, _array.arrayEach)(elementsToRemove, function (elem) {
         var indexWithinParent = _this6.getRowIndexWithinParent(elem);
 
         var tempParent = _this6.getRowParent(elem);
@@ -879,4 +899,5 @@ var DataManager = /*#__PURE__*/function () {
   return DataManager;
 }();
 
-export default DataManager;
+var _default = DataManager;
+exports.default = _default;

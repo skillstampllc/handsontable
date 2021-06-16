@@ -1,3 +1,9 @@
+"use strict";
+
+exports.__esModule = true;
+exports.createDefaultHeaderSettings = createDefaultHeaderSettings;
+exports.createPlaceholderHeaderSettings = createPlaceholderHeaderSettings;
+
 /**
  * @typedef {object} DefaultHeaderSettings
  * @property {string} label The name/label of the column header.
@@ -23,7 +29,7 @@
  * @param {DefaultHeaderSettings} initialValues The initial values for the header settings object.
  * @returns {DefaultHeaderSettings}
  */
-export function createDefaultHeaderSettings() {
+function createDefaultHeaderSettings() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$label = _ref.label,
       label = _ref$label === void 0 ? '' : _ref$label,
@@ -64,7 +70,8 @@ export function createDefaultHeaderSettings() {
  * @returns {object}
  */
 
-export function createPlaceholderHeaderSettings() {
+
+function createPlaceholderHeaderSettings() {
   return {
     label: '',
     isPlaceholder: true

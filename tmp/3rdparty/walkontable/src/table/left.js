@@ -1,15 +1,39 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _table = _interopRequireDefault(require("../table"));
+
+var _calculatedRows = _interopRequireDefault(require("./mixin/calculatedRows"));
+
+var _stickyColumnsLeft = _interopRequireDefault(require("./mixin/stickyColumnsLeft"));
+
+var _object = require("./../../../../helpers/object");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27,14 +51,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import Table from "../table.mjs";
-import calculatedRows from "./mixin/calculatedRows.mjs";
-import stickyColumnsLeft from "./mixin/stickyColumnsLeft.mjs";
-import { mixin } from "./../../../../helpers/object.mjs";
 /**
  * Subclass of `Table` that provides the helper methods relevant to LeftOverlay, implemented through mixins.
  */
-
 var LeftOverlayTable = /*#__PURE__*/function (_Table) {
   _inherits(LeftOverlayTable, _Table);
 
@@ -47,8 +66,9 @@ var LeftOverlayTable = /*#__PURE__*/function (_Table) {
   }
 
   return LeftOverlayTable;
-}(Table);
+}(_table.default);
 
-mixin(LeftOverlayTable, calculatedRows);
-mixin(LeftOverlayTable, stickyColumnsLeft);
-export default LeftOverlayTable;
+(0, _object.mixin)(LeftOverlayTable, _calculatedRows.default);
+(0, _object.mixin)(LeftOverlayTable, _stickyColumnsLeft.default);
+var _default = LeftOverlayTable;
+exports.default = _default;

@@ -1,3 +1,8 @@
+"use strict";
+
+exports.__esModule = true;
+exports.arrayDiff = arrayDiff;
+
 /**
  * An array diff implementation. The function iterates through the arrays and depends
  * on the diff results, collect the changes as a list of the objects.
@@ -9,7 +14,7 @@
  * @param {Array} newArray The new array to compare with.
  * @returns {Array}
  */
-export function arrayDiff(baseArray, newArray) {
+function arrayDiff(baseArray, newArray) {
   var changes = [];
   var i = 0;
   var j = 0;

@@ -1,14 +1,34 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.sort.js";
-import { getComparisonFunction } from "../../helpers/feature.mjs";
-import { arrayUnique, arrayEach } from "../../helpers/array.mjs";
-var sortCompare = getComparisonFunction();
+"use strict";
+
+exports.__esModule = true;
+exports.sortComparison = sortComparison;
+exports.toVisualValue = toVisualValue;
+exports.createArrayAssertion = createArrayAssertion;
+exports.toEmptyString = toEmptyString;
+exports.unifyColumnValues = unifyColumnValues;
+exports.intersectValues = intersectValues;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.sort.js");
+
+var _feature = require("../../helpers/feature");
+
+var _array = require("../../helpers/array");
+
+var sortCompare = (0, _feature.getComparisonFunction)();
 /**
  * Comparison function for sorting purposes.
  *
@@ -17,7 +37,7 @@ var sortCompare = getComparisonFunction();
  * @returns {number} Returns number from -1 to 1.
  */
 
-export function sortComparison(a, b) {
+function sortComparison(a, b) {
   if (typeof a === 'number' && typeof b === 'number') {
     return a - b;
   }
@@ -32,7 +52,8 @@ export function sortComparison(a, b) {
  * @returns {*}
  */
 
-export function toVisualValue(value, defaultEmptyValue) {
+
+function toVisualValue(value, defaultEmptyValue) {
   var visualValue = value;
 
   if (visualValue === '') {
@@ -41,6 +62,7 @@ export function toVisualValue(value, defaultEmptyValue) {
 
   return visualValue;
 }
+
 var SUPPORT_SET_CONSTRUCTOR = new Set([1]).has(1);
 var SUPPORT_FAST_DEDUPE = SUPPORT_SET_CONSTRUCTOR && typeof Array.from === 'function';
 /**
@@ -50,7 +72,7 @@ var SUPPORT_FAST_DEDUPE = SUPPORT_SET_CONSTRUCTOR && typeof Array.from === 'func
  * @returns {Function}
  */
 
-export function createArrayAssertion(initialData) {
+function createArrayAssertion(initialData) {
   var dataset = initialData;
 
   if (SUPPORT_SET_CONSTRUCTOR) {
@@ -77,7 +99,8 @@ export function createArrayAssertion(initialData) {
  * @returns {string}
  */
 
-export function toEmptyString(value) {
+
+function toEmptyString(value) {
   return value === null || value === void 0 ? '' : value;
 }
 /**
@@ -87,13 +110,14 @@ export function toEmptyString(value) {
  * @returns {Array}
  */
 
-export function unifyColumnValues(values) {
+
+function unifyColumnValues(values) {
   var unifiedValues = values;
 
   if (SUPPORT_FAST_DEDUPE) {
     unifiedValues = Array.from(new Set(unifiedValues));
   } else {
-    unifiedValues = arrayUnique(unifiedValues);
+    unifiedValues = (0, _array.arrayUnique)(unifiedValues);
   }
 
   unifiedValues = unifiedValues.sort(function (a, b) {
@@ -119,7 +143,8 @@ export function unifyColumnValues(values) {
  * @returns {Array}
  */
 
-export function intersectValues(base, selected, defaultEmptyValue, callback) {
+
+function intersectValues(base, selected, defaultEmptyValue, callback) {
   var result = [];
   var same = base === selected;
   var selectedItemsAssertion;
@@ -128,7 +153,7 @@ export function intersectValues(base, selected, defaultEmptyValue, callback) {
     selectedItemsAssertion = createArrayAssertion(selected);
   }
 
-  arrayEach(base, function (value) {
+  (0, _array.arrayEach)(base, function (value) {
     var checked = false;
 
     if (same || selectedItemsAssertion(value)) {

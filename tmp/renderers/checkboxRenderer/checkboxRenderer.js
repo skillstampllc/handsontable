@@ -1,28 +1,56 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.regexp.to-string.js";
-import "core-js/modules/web.timers.js";
-import { baseRenderer } from "../baseRenderer/index.mjs";
-import EventManager from "../../eventManager.mjs";
-import { empty, addClass } from "../../helpers/dom/element.mjs";
-import { stopImmediatePropagation, isImmediatePropagationStopped } from "../../helpers/dom/event.mjs";
-import { partial } from "../../helpers/function.mjs";
-import { equalsIgnoreCase } from "../../helpers/string.mjs";
-import { isEmpty } from "../../helpers/mixed.mjs";
-import { isKey } from "../../helpers/unicode.mjs";
-import Hooks from "../../pluginHooks.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.checkboxRenderer = checkboxRenderer;
+exports.RENDERER_TYPE = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/web.timers.js");
+
+var _baseRenderer = require("../baseRenderer");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _element = require("../../helpers/dom/element");
+
+var _event = require("../../helpers/dom/event");
+
+var _function = require("../../helpers/function");
+
+var _string = require("../../helpers/string");
+
+var _mixed = require("../../helpers/mixed");
+
+var _unicode = require("../../helpers/unicode");
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var isListeningKeyDownEvent = new WeakMap();
 var isCheckboxListenerAdded = new WeakMap();
 var BAD_VALUE_CLASS = 'htBadValue';
 var ATTR_ROW = 'data-row';
 var ATTR_COLUMN = 'data-col';
-export var RENDERER_TYPE = 'checkbox';
-Hooks.getSingleton().add('modifyAutoColumnSizeSeed', function (bundleSeed, cellMeta, cellValue) {
+var RENDERER_TYPE = 'checkbox';
+exports.RENDERER_TYPE = RENDERER_TYPE;
+
+_pluginHooks.default.getSingleton().add('modifyAutoColumnSizeSeed', function (bundleSeed, cellMeta, cellValue) {
   var label = cellMeta.label,
       type = cellMeta.type,
       row = cellMeta.row,
@@ -63,9 +91,12 @@ Hooks.getSingleton().add('modifyAutoColumnSizeSeed', function (bundleSeed, cellM
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-export function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
+
+function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
   var rootDocument = instance.rootDocument;
-  baseRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
+
+  _baseRenderer.baseRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
+
   registerEvents(instance);
   var input = createInput(rootDocument);
   var labelOptions = cellProperties.label;
@@ -79,18 +110,18 @@ export function checkboxRenderer(instance, TD, row, col, prop, value, cellProper
     cellProperties.uncheckedTemplate = false;
   }
 
-  empty(TD); // TODO identify under what circumstances this line can be removed
+  (0, _element.empty)(TD); // TODO identify under what circumstances this line can be removed
 
-  if (value === cellProperties.checkedTemplate || equalsIgnoreCase(value, cellProperties.checkedTemplate)) {
+  if (value === cellProperties.checkedTemplate || (0, _string.equalsIgnoreCase)(value, cellProperties.checkedTemplate)) {
     input.checked = true;
-  } else if (value === cellProperties.uncheckedTemplate || equalsIgnoreCase(value, cellProperties.uncheckedTemplate)) {
+  } else if (value === cellProperties.uncheckedTemplate || (0, _string.equalsIgnoreCase)(value, cellProperties.uncheckedTemplate)) {
     input.checked = false;
-  } else if (isEmpty(value)) {
+  } else if ((0, _mixed.isEmpty)(value)) {
     // default value
-    addClass(input, 'noValue');
+    (0, _element.addClass)(input, 'noValue');
   } else {
     input.style.display = 'none';
-    addClass(input, BAD_VALUE_CLASS);
+    (0, _element.addClass)(input, BAD_VALUE_CLASS);
     badValue = true;
   }
 
@@ -151,15 +182,15 @@ export function checkboxRenderer(instance, TD, row, col, prop, value, cellProper
   function onBeforeKeyDown(event) {
     var toggleKeys = 'SPACE|ENTER';
     var switchOffKeys = 'DELETE|BACKSPACE';
-    var isKeyCode = partial(isKey, event.keyCode);
+    var isKeyCode = (0, _function.partial)(_unicode.isKey, event.keyCode);
 
     if (!instance.getSettings().enterBeginsEditing && isKeyCode('ENTER')) {
       return;
     }
 
-    if (isKeyCode("".concat(toggleKeys, "|").concat(switchOffKeys)) && !isImmediatePropagationStopped(event)) {
+    if (isKeyCode("".concat(toggleKeys, "|").concat(switchOffKeys)) && !(0, _event.isImmediatePropagationStopped)(event)) {
       eachSelectedCheckboxCell(function () {
-        stopImmediatePropagation(event);
+        (0, _event.stopImmediatePropagation)(event);
         event.preventDefault();
       });
     }
@@ -285,6 +316,7 @@ export function checkboxRenderer(instance, TD, row, col, prop, value, cellProper
     }
   }
 }
+
 checkboxRenderer.RENDERER_TYPE = RENDERER_TYPE;
 /**
  * Register checkbox listeners.
@@ -298,7 +330,7 @@ function registerEvents(instance) {
 
   if (!eventManager) {
     var rootElement = instance.rootElement;
-    eventManager = new EventManager(instance);
+    eventManager = new _eventManager.default(instance);
     eventManager.addEventListener(rootElement, 'click', function (event) {
       return onClick(event, instance);
     });

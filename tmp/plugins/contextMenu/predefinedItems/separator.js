@@ -1,9 +1,16 @@
-export var KEY = '---------';
+"use strict";
+
+exports.__esModule = true;
+exports.default = separatorItem;
+exports.KEY = void 0;
+var KEY = '---------';
 /**
  * @returns {object}
  */
 
-export default function separatorItem() {
+exports.KEY = KEY;
+
+function separatorItem() {
   return {
     name: KEY
   };

@@ -1,4 +1,57 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.ManualColumnResize = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/web.timers.js");
+
+var _base = require("../base");
+
+var _element = require("../../helpers/dom/element");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _array = require("../../helpers/array");
+
+var _number = require("../../helpers/number");
+
+var _translations = require("../../translations");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,32 +77,11 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/web.timers.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import { BasePlugin } from "../base/index.mjs";
-import { addClass, closest, hasClass, removeClass, outerHeight, isDetached } from "../../helpers/dom/element.mjs";
-import EventManager from "../../eventManager.mjs";
-import { arrayEach } from "../../helpers/array.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { PhysicalIndexToValueMap as IndexToValueMap } from "../../translations/index.mjs"; // Developer note! Whenever you make a change in this file, make an analogous change in manualRowResize.js
-
-export var PLUGIN_KEY = 'manualColumnResize';
-export var PLUGIN_PRIORITY = 130;
+// Developer note! Whenever you make a change in this file, make an analogous change in manualRowResize.js
+var PLUGIN_KEY = 'manualColumnResize';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 130;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var PERSISTENT_STATE_KEY = 'manualColumnWidths';
 var privatePool = new WeakMap();
 /**
@@ -64,7 +96,7 @@ var privatePool = new WeakMap();
  * @plugin ManualColumnResize
  */
 
-export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
+var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ManualColumnResize, _BasePlugin);
 
   var _super = _createSuper(ManualColumnResize);
@@ -86,7 +118,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
     _this.startOffset = null;
     _this.handle = rootDocument.createElement('DIV');
     _this.guide = rootDocument.createElement('DIV');
-    _this.eventManager = new EventManager(_assertThisInitialized(_this));
+    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
     _this.pressed = null;
     _this.dblclick = 0;
     _this.autoresizeTimeout = null;
@@ -105,8 +137,8 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
     privatePool.set(_assertThisInitialized(_this), {
       config: void 0
     });
-    addClass(_this.handle, 'manualColumnResizer');
-    addClass(_this.guide, 'manualColumnResizerGuide');
+    (0, _element.addClass)(_this.handle, 'manualColumnResizer');
+    (0, _element.addClass)(_this.guide, 'manualColumnResizerGuide');
     return _this;
   }
   /**
@@ -135,7 +167,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.columnWidthsMap = new IndexToValueMap();
+      this.columnWidthsMap = new _translations.PhysicalIndexToValueMap();
       this.columnWidthsMap.addLocalHook('init', function () {
         return _this2.onMapInit();
       });
@@ -292,7 +324,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      var headerHeight = outerHeight(this.currentTH);
+      var headerHeight = (0, _element.outerHeight)(this.currentTH);
       var box = this.currentTH.getBoundingClientRect(); // Read "fixedColumnsLeft" through the Walkontable as in that context, the fixed columns
       // are modified (reduced by the number of hidden columns) by TableView module.
 
@@ -315,11 +347,11 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
 
       if (this.hot.selection.isSelected() && isFullColumnSelected) {
         var selectionRanges = this.hot.getSelectedRange();
-        arrayEach(selectionRanges, function (selectionRange) {
+        (0, _array.arrayEach)(selectionRanges, function (selectionRange) {
           var fromColumn = selectionRange.getTopLeftCorner().col;
           var toColumn = selectionRange.getBottomRightCorner().col; // Add every selected column for resize action.
 
-          rangeEach(fromColumn, toColumn, function (columnIndex) {
+          (0, _number.rangeEach)(fromColumn, toColumn, function (columnIndex) {
             if (!_this4.selectedCols.includes(columnIndex)) {
               _this4.selectedCols.push(columnIndex);
             }
@@ -359,11 +391,11 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "setupGuidePosition",
     value: function setupGuidePosition() {
-      var handleHeight = parseInt(outerHeight(this.handle), 10);
+      var handleHeight = parseInt((0, _element.outerHeight)(this.handle), 10);
       var handleBottomPosition = parseInt(this.handle.style.top, 10) + handleHeight;
       var maximumVisibleElementHeight = parseInt(this.hot.view.maximumVisibleElementHeight(0), 10);
-      addClass(this.handle, 'active');
-      addClass(this.guide, 'active');
+      (0, _element.addClass)(this.handle, 'active');
+      (0, _element.addClass)(this.guide, 'active');
       this.guide.style.top = "".concat(handleBottomPosition, "px");
       this.guide.style.left = this.handle.style.left;
       this.guide.style.height = "".concat(maximumVisibleElementHeight - handleHeight, "px");
@@ -389,8 +421,8 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "hideHandleAndGuide",
     value: function hideHandleAndGuide() {
-      removeClass(this.handle, 'active');
-      removeClass(this.guide, 'active');
+      (0, _element.removeClass)(this.handle, 'active');
+      (0, _element.removeClass)(this.guide, 'active');
     }
     /**
      * Checks if provided element is considered a column header.
@@ -403,7 +435,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "checkIfColumnHeader",
     value: function checkIfColumnHeader(element) {
-      return !!closest(element, ['THEAD'], this.hot.rootElement);
+      return !!(0, _element.closest)(element, ['THEAD'], this.hot.rootElement);
     }
     /**
      * Gets the TH element from the provided element.
@@ -438,7 +470,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
     value: function onMouseOver(event) {
       // Workaround for #6926 - if the `event.target` is temporarily detached, we can skip this callback and wait for
       // the next `onmouseover`.
-      if (isDetached(event.target)) {
+      if ((0, _element.isDetached)(event.target)) {
         return;
       }
 
@@ -507,12 +539,12 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
         var selectedColsLength = this.selectedCols.length;
 
         if (selectedColsLength > 1) {
-          arrayEach(this.selectedCols, function (selectedCol) {
+          (0, _array.arrayEach)(this.selectedCols, function (selectedCol) {
             resize(selectedCol);
           });
           render();
         } else {
-          arrayEach(this.selectedCols, function (selectedCol) {
+          (0, _array.arrayEach)(this.selectedCols, function (selectedCol) {
             resize(selectedCol, true);
           });
         }
@@ -533,7 +565,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
     value: function onMouseDown(event) {
       var _this6 = this;
 
-      if (hasClass(event.target, 'manualColumnResizer')) {
+      if ((0, _element.hasClass)(event.target, 'manualColumnResizer')) {
         this.setupHandlePosition(this.currentTH);
         this.setupGuidePosition();
         this.pressed = true;
@@ -565,7 +597,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
 
       if (this.pressed) {
         this.currentWidth = this.startWidth + (event.pageX - this.startX);
-        arrayEach(this.selectedCols, function (selectedCol) {
+        (0, _array.arrayEach)(this.selectedCols, function (selectedCol) {
           _this7.newSize = _this7.setManualSize(selectedCol, _this7.currentWidth);
         });
         this.refreshHandlePosition();
@@ -615,12 +647,12 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
           var selectedColsLength = this.selectedCols.length;
 
           if (selectedColsLength > 1) {
-            arrayEach(this.selectedCols, function (selectedCol) {
+            (0, _array.arrayEach)(this.selectedCols, function (selectedCol) {
               resize(selectedCol);
             });
             render();
           } else {
-            arrayEach(this.selectedCols, function (selectedCol) {
+            (0, _array.arrayEach)(this.selectedCols, function (selectedCol) {
               resize(selectedCol, true);
             });
           }
@@ -735,4 +767,6 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ManualColumnResize;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.ManualColumnResize = ManualColumnResize;

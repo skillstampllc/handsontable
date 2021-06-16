@@ -1,6 +1,21 @@
-import "core-js/modules/es.array.concat.js";
-import { hasOwnProperty, isObject } from "../../helpers/object.mjs";
-import { arrayEach } from "../../helpers/array.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.createId = createId;
+exports.createDefaultCustomBorder = createDefaultCustomBorder;
+exports.createSingleEmptyBorder = createSingleEmptyBorder;
+exports.createDefaultHtBorder = createDefaultHtBorder;
+exports.createEmptyBorders = createEmptyBorders;
+exports.extendDefaultBorder = extendDefaultBorder;
+exports.checkSelectionBorders = checkSelectionBorders;
+exports.markSelected = markSelected;
+
+require("core-js/modules/es.array.concat.js");
+
+var _object = require("../../helpers/object");
+
+var _array = require("../../helpers/array");
+
 /**
  * Create separated id for borders for each cell.
  *
@@ -8,8 +23,7 @@ import { arrayEach } from "../../helpers/array.mjs";
  * @param {number} col Visual column index.
  * @returns {string}
  */
-
-export function createId(row, col) {
+function createId(row, col) {
   return "border_row".concat(row, "col").concat(col);
 }
 /**
@@ -18,7 +32,8 @@ export function createId(row, col) {
  * @returns {object} `{{width: number, color: string}}`.
  */
 
-export function createDefaultCustomBorder() {
+
+function createDefaultCustomBorder() {
   return {
     width: 1,
     color: '#000'
@@ -30,7 +45,8 @@ export function createDefaultCustomBorder() {
  * @returns {object} `{{hide: boolean}}`.
  */
 
-export function createSingleEmptyBorder() {
+
+function createSingleEmptyBorder() {
   return {
     hide: true
   };
@@ -41,7 +57,8 @@ export function createSingleEmptyBorder() {
  * @returns {object} `{{width: number, color: string, cornerVisible: boolean}}`.
  */
 
-export function createDefaultHtBorder() {
+
+function createDefaultHtBorder() {
   return {
     width: 1,
     color: '#000',
@@ -57,7 +74,8 @@ export function createDefaultHtBorder() {
  * `{{id: *, border: *, row: *, col: *, top: {hide: boolean}, right: {hide: boolean}, bottom: {hide: boolean}, left: {hide: boolean}}}`.
  */
 
-export function createEmptyBorders(row, col) {
+
+function createEmptyBorders(row, col) {
   return {
     id: createId(row, col),
     border: createDefaultHtBorder(),
@@ -75,14 +93,15 @@ export function createEmptyBorders(row, col) {
  * @returns {object}
  */
 
-export function extendDefaultBorder(defaultBorder, customBorder) {
-  if (hasOwnProperty(customBorder, 'border')) {
+
+function extendDefaultBorder(defaultBorder, customBorder) {
+  if ((0, _object.hasOwnProperty)(customBorder, 'border')) {
     defaultBorder.border = customBorder.border;
   }
 
-  if (hasOwnProperty(customBorder, 'top')) {
+  if ((0, _object.hasOwnProperty)(customBorder, 'top')) {
     if (customBorder.top) {
-      if (!isObject(customBorder.top)) {
+      if (!(0, _object.isObject)(customBorder.top)) {
         customBorder.top = createDefaultCustomBorder();
       }
 
@@ -93,9 +112,9 @@ export function extendDefaultBorder(defaultBorder, customBorder) {
     }
   }
 
-  if (hasOwnProperty(customBorder, 'right')) {
+  if ((0, _object.hasOwnProperty)(customBorder, 'right')) {
     if (customBorder.right) {
-      if (!isObject(customBorder.right)) {
+      if (!(0, _object.isObject)(customBorder.right)) {
         customBorder.right = createDefaultCustomBorder();
       }
 
@@ -106,9 +125,9 @@ export function extendDefaultBorder(defaultBorder, customBorder) {
     }
   }
 
-  if (hasOwnProperty(customBorder, 'bottom')) {
+  if ((0, _object.hasOwnProperty)(customBorder, 'bottom')) {
     if (customBorder.bottom) {
-      if (!isObject(customBorder.bottom)) {
+      if (!(0, _object.isObject)(customBorder.bottom)) {
         customBorder.bottom = createDefaultCustomBorder();
       }
 
@@ -119,9 +138,9 @@ export function extendDefaultBorder(defaultBorder, customBorder) {
     }
   }
 
-  if (hasOwnProperty(customBorder, 'left')) {
+  if ((0, _object.hasOwnProperty)(customBorder, 'left')) {
     if (customBorder.left) {
-      if (!isObject(customBorder.left)) {
+      if (!(0, _object.isObject)(customBorder.left)) {
         customBorder.left = createDefaultCustomBorder();
       }
 
@@ -142,9 +161,10 @@ export function extendDefaultBorder(defaultBorder, customBorder) {
  * @returns {boolean}
  */
 
-export function checkSelectionBorders(hot, direction) {
+
+function checkSelectionBorders(hot, direction) {
   var atLeastOneHasBorder = false;
-  arrayEach(hot.getSelectedRange(), function (range) {
+  (0, _array.arrayEach)(hot.getSelectedRange(), function (range) {
     range.forAll(function (r, c) {
       if (r < 0 || c < 0) {
         return;
@@ -154,7 +174,7 @@ export function checkSelectionBorders(hot, direction) {
 
       if (metaBorders) {
         if (direction) {
-          if (!hasOwnProperty(metaBorders[direction], 'hide') || metaBorders[direction].hide === false) {
+          if (!(0, _object.hasOwnProperty)(metaBorders[direction], 'hide') || metaBorders[direction].hide === false) {
             atLeastOneHasBorder = true;
             return false; // breaks forAll
           }
@@ -174,6 +194,7 @@ export function checkSelectionBorders(hot, direction) {
  * @returns {string}
  */
 
-export function markSelected(label) {
+
+function markSelected(label) {
   return "<span class=\"selected\">".concat(String.fromCharCode(10003), "</span>").concat(label); // workaround for https://github.com/handsontable/handsontable/issues/1946
 }

@@ -1,17 +1,33 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import { getDecreasedIndexes, getIncreasedIndexes } from "./actionsOnIndexes.mjs";
-import { getListWithInsertedItems as sequenceStrategyInsert, getListWithRemovedItems as sequenceStrategyRemove } from "./indexesSequence.mjs";
-import { getListWithInsertedItems as physicalStrategyInsert, getListWithRemovedItems as physicalStrategyRemove } from "./physicallyIndexed.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.alterUtilsFactory = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _actionsOnIndexes = require("./actionsOnIndexes");
+
+exports.getDecreasedIndexes = _actionsOnIndexes.getDecreasedIndexes;
+exports.getIncreasedIndexes = _actionsOnIndexes.getIncreasedIndexes;
+
+var _indexesSequence = require("./indexesSequence");
+
+var _physicallyIndexed = require("./physicallyIndexed");
+
 var alterStrategies = new Map([['indexesSequence', {
-  getListWithInsertedItems: sequenceStrategyInsert,
-  getListWithRemovedItems: sequenceStrategyRemove
+  getListWithInsertedItems: _indexesSequence.getListWithInsertedItems,
+  getListWithRemovedItems: _indexesSequence.getListWithRemovedItems
 }], ['physicallyIndexed', {
-  getListWithInsertedItems: physicalStrategyInsert,
-  getListWithRemovedItems: physicalStrategyRemove
+  getListWithInsertedItems: _physicallyIndexed.getListWithInsertedItems,
+  getListWithRemovedItems: _physicallyIndexed.getListWithRemovedItems
 }]]);
 
 var alterUtilsFactory = function alterUtilsFactory(indexationStrategy) {
@@ -22,4 +38,4 @@ var alterUtilsFactory = function alterUtilsFactory(indexationStrategy) {
   return alterStrategies.get(indexationStrategy);
 };
 
-export { getDecreasedIndexes, getIncreasedIndexes, alterUtilsFactory };
+exports.alterUtilsFactory = alterUtilsFactory;

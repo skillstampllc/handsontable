@@ -1,6 +1,15 @@
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+var _src = require("../../../3rdparty/walkontable/src");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,7 +17,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { CellCoords, CellRange } from "../../../3rdparty/walkontable/src/index.mjs";
 /**
  * Class responsible for all of the Selection-related operations on merged cells.
  *
@@ -16,7 +24,6 @@ import { CellCoords, CellRange } from "../../../3rdparty/walkontable/src/index.m
  * @plugin MergeCells
  * @util
  */
-
 var SelectionCalculations = /*#__PURE__*/function () {
   function SelectionCalculations(plugin) {
     _classCallCheck(this, SelectionCalculations);
@@ -112,7 +119,7 @@ var SelectionCalculations = /*#__PURE__*/function () {
   }, {
     key: "getUpdatedSelectionRange",
     value: function getUpdatedSelectionRange(oldSelectionRange, delta) {
-      return new CellRange(oldSelectionRange.highlight, oldSelectionRange.from, new CellCoords(oldSelectionRange.to.row + delta.row, oldSelectionRange.to.col + delta.col));
+      return new _src.CellRange(oldSelectionRange.highlight, oldSelectionRange.from, new _src.CellCoords(oldSelectionRange.to.row + delta.row, oldSelectionRange.to.col + delta.col));
     }
     /**
      * Generate an additional class name for the entirely-selected merged cells.
@@ -178,7 +185,7 @@ var SelectionCalculations = /*#__PURE__*/function () {
 
       for (var r = 0; r < mergedCell.rowspan; r += 1) {
         for (var c = 0; c < mergedCell.colspan; c += 1) {
-          mergedCellIndividualCoords.push(new CellCoords(mergedCell.row + r, mergedCell.col + c));
+          mergedCellIndividualCoords.push(new _src.CellCoords(mergedCell.row + r, mergedCell.col + c));
         }
       }
 
@@ -219,4 +226,5 @@ var SelectionCalculations = /*#__PURE__*/function () {
   return SelectionCalculations;
 }();
 
-export default SelectionCalculations;
+var _default = SelectionCalculations;
+exports.default = _default;

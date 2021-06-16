@@ -1,9 +1,18 @@
-import { PasswordEditor } from "../../editors/passwordEditor/index.mjs";
-import { passwordRenderer } from "../../renderers/passwordRenderer/index.mjs";
-export var CELL_TYPE = 'password';
-export var PasswordCellType = {
+"use strict";
+
+exports.__esModule = true;
+exports.PasswordCellType = exports.CELL_TYPE = void 0;
+
+var _passwordEditor = require("../../editors/passwordEditor");
+
+var _passwordRenderer = require("../../renderers/passwordRenderer");
+
+var CELL_TYPE = 'password';
+exports.CELL_TYPE = CELL_TYPE;
+var PasswordCellType = {
   CELL_TYPE: CELL_TYPE,
-  editor: PasswordEditor,
-  renderer: passwordRenderer,
+  editor: _passwordEditor.PasswordEditor,
+  renderer: _passwordRenderer.passwordRenderer,
   copyable: false
 };
+exports.PasswordCellType = PasswordCellType;

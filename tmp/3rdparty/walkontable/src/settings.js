@@ -1,15 +1,21 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _element = require("./../../../helpers/dom/element");
+
+var _object = require("./../../../helpers/object");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { fastInnerText } from "./../../../helpers/dom/element.mjs";
-import { objectEach } from "./../../../helpers/object.mjs";
 /**
  * @class Settings
  */
-
 var Settings = /*#__PURE__*/function () {
   /**
    * @param {Walkontable} wotInstance The Walkontable instance.
@@ -74,7 +80,7 @@ var Settings = /*#__PURE__*/function () {
       cellRenderer: function cellRenderer(row, column, TD) {
         var cellData = _this.getSetting('data', row, column);
 
-        fastInnerText(TD, cellData === void 0 || cellData === null ? '' : cellData);
+        (0, _element.fastInnerText)(TD, cellData === void 0 || cellData === null ? '' : cellData);
       },
       // columnWidth: 50,
       columnWidth: function columnWidth() {// return undefined means use default size for the rendered cell content
@@ -129,7 +135,7 @@ var Settings = /*#__PURE__*/function () {
     }; // reference to settings
 
     this.settings = {};
-    objectEach(this.defaults, function (value, key) {
+    (0, _object.objectEach)(this.defaults, function (value, key) {
       if (settings[key] !== void 0) {
         _this.settings[key] = settings[key];
       } else if (value === void 0) {
@@ -155,7 +161,7 @@ var Settings = /*#__PURE__*/function () {
 
       if (value === void 0) {
         // settings is object
-        objectEach(settings, function (settingValue, key) {
+        (0, _object.objectEach)(settings, function (settingValue, key) {
           _this2.settings[key] = settingValue;
         });
       } else {
@@ -206,4 +212,5 @@ var Settings = /*#__PURE__*/function () {
   return Settings;
 }();
 
-export default Settings;
+var _default = Settings;
+exports.default = _default;

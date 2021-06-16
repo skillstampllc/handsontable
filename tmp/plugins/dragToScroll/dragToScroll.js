@@ -1,17 +1,43 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.DragToScroll = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _event = require("../../helpers/dom/event");
+
+var _element = require("../../helpers/dom/element");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,12 +63,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import EventManager from "../../eventManager.mjs";
-import { isRightClick } from "../../helpers/dom/event.mjs";
-import { getParentWindow } from "../../helpers/dom/element.mjs";
-export var PLUGIN_KEY = 'dragToScroll';
-export var PLUGIN_PRIORITY = 100;
+var PLUGIN_KEY = 'dragToScroll';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 100;
 /**
  * @description
  * Plugin used to scroll Handsontable by selecting a cell and dragging outside of the visible viewport.
@@ -52,7 +75,9 @@ export var PLUGIN_PRIORITY = 100;
  * @plugin DragToScroll
  */
 
-export var DragToScroll = /*#__PURE__*/function (_BasePlugin) {
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
+var DragToScroll = /*#__PURE__*/function (_BasePlugin) {
   _inherits(DragToScroll, _BasePlugin);
 
   var _super = _createSuper(DragToScroll);
@@ -70,7 +95,7 @@ export var DragToScroll = /*#__PURE__*/function (_BasePlugin) {
      * @type {EventManager}
      */
 
-    _this.eventManager = new EventManager(_assertThisInitialized(_this));
+    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
     /**
      * Size of an element and its position relative to the viewport,
      * e.g. {bottom: 449, height: 441, left: 8, right: 814, top: 8, width: 806, x: 8, y:8}.
@@ -268,7 +293,7 @@ export var DragToScroll = /*#__PURE__*/function (_BasePlugin) {
         this.eventManager.addEventListener(frame.document, 'mousemove', function (event) {
           return _this3.onMouseMove(event);
         });
-        frame = getParentWindow(frame);
+        frame = (0, _element.getParentWindow)(frame);
       }
     }
     /**
@@ -292,7 +317,7 @@ export var DragToScroll = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "setupListening",
     value: function setupListening(event) {
-      if (isRightClick(event)) {
+      if ((0, _event.isRightClick)(event)) {
         return;
       }
 
@@ -357,4 +382,6 @@ export var DragToScroll = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return DragToScroll;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.DragToScroll = DragToScroll;

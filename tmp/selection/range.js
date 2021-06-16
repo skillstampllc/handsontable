@@ -1,12 +1,27 @@
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+var _src = require("./../3rdparty/walkontable/src");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -14,7 +29,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { CellRange } from "./../3rdparty/walkontable/src/index.mjs";
 /**
  * The SelectionRange class is a simple CellRanges collection designed for easy manipulation of the multiple
  * consecutive and non-consecutive selections.
@@ -22,7 +36,6 @@ import { CellRange } from "./../3rdparty/walkontable/src/index.mjs";
  * @class SelectionRange
  * @util
  */
-
 var SelectionRange = /*#__PURE__*/function () {
   function SelectionRange() {
     _classCallCheck(this, SelectionRange);
@@ -58,7 +71,7 @@ var SelectionRange = /*#__PURE__*/function () {
     key: "set",
     value: function set(coords) {
       this.clear();
-      this.ranges.push(new CellRange(coords));
+      this.ranges.push(new _src.CellRange(coords));
       return this;
     }
     /**
@@ -71,7 +84,7 @@ var SelectionRange = /*#__PURE__*/function () {
   }, {
     key: "add",
     value: function add(coords) {
-      this.ranges.push(new CellRange(coords));
+      this.ranges.push(new _src.CellRange(coords));
       return this;
     }
     /**
@@ -176,4 +189,5 @@ var SelectionRange = /*#__PURE__*/function () {
   return SelectionRange;
 }();
 
-export default SelectionRange;
+var _default = SelectionRange;
+exports.default = _default;

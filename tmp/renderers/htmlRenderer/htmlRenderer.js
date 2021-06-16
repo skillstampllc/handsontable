@@ -1,6 +1,14 @@
-import { baseRenderer } from "../baseRenderer/index.mjs";
-import { fastInnerHTML } from "../../helpers/dom/element.mjs";
-export var RENDERER_TYPE = 'html';
+"use strict";
+
+exports.__esModule = true;
+exports.htmlRenderer = htmlRenderer;
+exports.RENDERER_TYPE = void 0;
+
+var _baseRenderer = require("../baseRenderer");
+
+var _element = require("../../helpers/dom/element");
+
+var RENDERER_TYPE = 'html';
 /**
  * @private
  * @param {Core} instance The Handsontable instance.
@@ -12,8 +20,12 @@ export var RENDERER_TYPE = 'html';
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-export function htmlRenderer(instance, TD, row, col, prop, value, cellProperties) {
-  baseRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
-  fastInnerHTML(TD, value === null || value === void 0 ? '' : value, false);
+exports.RENDERER_TYPE = RENDERER_TYPE;
+
+function htmlRenderer(instance, TD, row, col, prop, value, cellProperties) {
+  _baseRenderer.baseRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
+
+  (0, _element.fastInnerHTML)(TD, value === null || value === void 0 ? '' : value, false);
 }
+
 htmlRenderer.RENDERER_TYPE = RENDERER_TYPE;

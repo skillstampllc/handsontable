@@ -1,21 +1,45 @@
+"use strict";
+
+exports.__esModule = true;
+exports.Renderer = void 0;
+
+var _rowHeaders = _interopRequireDefault(require("./rowHeaders"));
+
+exports.RowHeadersRenderer = _rowHeaders.default;
+
+var _columnHeaders = _interopRequireDefault(require("./columnHeaders"));
+
+exports.ColumnHeadersRenderer = _columnHeaders.default;
+
+var _colGroup = _interopRequireDefault(require("./colGroup"));
+
+exports.ColGroupRenderer = _colGroup.default;
+
+var _rows = _interopRequireDefault(require("./rows"));
+
+exports.RowsRenderer = _rows.default;
+
+var _cells = _interopRequireDefault(require("./cells"));
+
+exports.CellsRenderer = _cells.default;
+
+var _table = _interopRequireDefault(require("./table"));
+
+exports.TableRenderer = _table.default;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import RowHeadersRenderer from "./rowHeaders.mjs";
-import ColumnHeadersRenderer from "./columnHeaders.mjs";
-import ColGroupRenderer from "./colGroup.mjs";
-import RowsRenderer from "./rows.mjs";
-import CellsRenderer from "./cells.mjs";
-import TableRenderer from "./table.mjs";
 /**
  * Content renderer.
  *
  * @class Renderer
  */
-
 var Renderer = /*#__PURE__*/function () {
   function Renderer() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -34,15 +58,15 @@ var Renderer = /*#__PURE__*/function () {
      *
      * @type {TableRenderer}
      */
-    this.renderer = new TableRenderer(TABLE, {
+    this.renderer = new _table.default(TABLE, {
       cellRenderer: cellRenderer
     });
     this.renderer.setRenderers({
-      rowHeaders: new RowHeadersRenderer(),
-      columnHeaders: new ColumnHeadersRenderer(THEAD),
-      colGroup: new ColGroupRenderer(COLGROUP),
-      rows: new RowsRenderer(TBODY),
-      cells: new CellsRenderer()
+      rowHeaders: new _rowHeaders.default(),
+      columnHeaders: new _columnHeaders.default(THEAD),
+      colGroup: new _colGroup.default(COLGROUP),
+      rows: new _rows.default(TBODY),
+      cells: new _cells.default()
     });
     this.renderer.setAxisUtils(rowUtils, columnUtils);
   }
@@ -113,4 +137,4 @@ var Renderer = /*#__PURE__*/function () {
   return Renderer;
 }();
 
-export { RowHeadersRenderer, ColumnHeadersRenderer, ColGroupRenderer, RowsRenderer, CellsRenderer, TableRenderer, Renderer };
+exports.Renderer = Renderer;

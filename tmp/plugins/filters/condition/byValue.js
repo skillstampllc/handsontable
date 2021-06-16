@@ -1,13 +1,32 @@
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.condition = condition;
+exports.CONDITION_NAME = void 0;
+
+var _conditionRegisterer = require("../conditionRegisterer");
+
+var _utils = require("../utils");
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -21,9 +40,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import { registerCondition } from "../conditionRegisterer.mjs";
-import { createArrayAssertion } from "../utils.mjs";
-export var CONDITION_NAME = 'by_value';
+var CONDITION_NAME = 'by_value';
 /**
  * @param {object} dataRow The object which holds and describes the single cell value.
  * @param {Array} inputValues An array of values to compare with.
@@ -31,20 +48,23 @@ export var CONDITION_NAME = 'by_value';
  * @returns {boolean}
  */
 
-export function condition(dataRow, _ref) {
+exports.CONDITION_NAME = CONDITION_NAME;
+
+function condition(dataRow, _ref) {
   var _ref2 = _slicedToArray(_ref, 1),
       value = _ref2[0];
 
   return value(dataRow.value);
 }
-registerCondition(CONDITION_NAME, condition, {
+
+(0, _conditionRegisterer.registerCondition)(CONDITION_NAME, condition, {
   name: 'By value',
   inputsCount: 0,
   inputValuesDecorator: function inputValuesDecorator(_ref3) {
     var _ref4 = _slicedToArray(_ref3, 1),
         data = _ref4[0];
 
-    return [createArrayAssertion(data)];
+    return [(0, _utils.createArrayAssertion)(data)];
   },
   showOperators: false
 });

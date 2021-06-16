@@ -1,14 +1,45 @@
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.freeze.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.function.name.js";
+"use strict";
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.object.freeze.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.map.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.array.concat.js");
+
+var _mixed = require("../../../helpers/mixed");
+
+var _console = require("../../../helpers/console");
+
+var _templateLiteralTag = require("../../../helpers/templateLiteralTag");
+
+var _src = require("../../../3rdparty/walkontable/src");
 
 var _templateObject;
 
@@ -26,21 +57,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-import "core-js/modules/es.array.map.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.array.concat.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { isUndefined } from "../../../helpers/mixed.mjs";
-import { warn } from "../../../helpers/console.mjs";
-import { toSingleLine } from "../../../helpers/templateLiteralTag.mjs";
-import { CellCoords } from "../../../3rdparty/walkontable/src/index.mjs";
 /**
  * Helper class for the row-move-related operations.
  *
@@ -48,7 +70,6 @@ import { CellCoords } from "../../../3rdparty/walkontable/src/index.mjs";
  * @plugin NestedRows
  * @private
  */
-
 var RowMoveController = /*#__PURE__*/function () {
   function RowMoveController(plugin) {
     _classCallCheck(this, RowMoveController);
@@ -168,8 +189,8 @@ var RowMoveController = /*#__PURE__*/function () {
           movePossible = beforeMoveRowHookArgs.movePossible;
       var shouldTerminate = false;
 
-      if (isUndefined(dropIndex)) {
-        warn(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["Since version 8.0.0 of the Handsontable the 'moveRows' method isn't used for moving rows \n      when the NestedRows plugin is enabled. Please use the 'dragRows' method instead."], ["Since version 8.0.0 of the Handsontable the 'moveRows' method isn't used for moving rows\\x20\n      when the NestedRows plugin is enabled. Please use the 'dragRows' method instead."])))); // TODO: Trying to mock real work of the `ManualRowMove` plugin. It was blocked by returning `false` below.
+      if ((0, _mixed.isUndefined)(dropIndex)) {
+        (0, _console.warn)((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Since version 8.0.0 of the Handsontable the 'moveRows' method isn't used for moving rows \n      when the NestedRows plugin is enabled. Please use the 'dragRows' method instead."], ["Since version 8.0.0 of the Handsontable the 'moveRows' method isn't used for moving rows\\x20\n      when the NestedRows plugin is enabled. Please use the 'dragRows' method instead."])))); // TODO: Trying to mock real work of the `ManualRowMove` plugin. It was blocked by returning `false` below.
 
         this.hot.runHooks('afterRowMove', rows, finalIndex, dropIndex, movePossible, false);
         shouldTerminate = true;
@@ -331,8 +352,8 @@ var RowMoveController = /*#__PURE__*/function () {
 
       selection = this.hot.selection;
       lastColIndex = this.hot.countCols() - 1;
-      selection.setRangeStart(new CellCoords(startRow, 0));
-      selection.setRangeEnd(new CellCoords(endRow, lastColIndex), true);
+      selection.setRangeStart(new _src.CellCoords(startRow, 0));
+      selection.setRangeEnd(new _src.CellCoords(endRow, lastColIndex), true);
     } // TODO: Reimplementation of function which is inside the `ManualRowMove` plugin.
 
     /**
@@ -357,4 +378,4 @@ var RowMoveController = /*#__PURE__*/function () {
   return RowMoveController;
 }();
 
-export { RowMoveController as default };
+exports.default = RowMoveController;

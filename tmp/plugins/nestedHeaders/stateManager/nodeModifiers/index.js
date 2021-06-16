@@ -1,18 +1,31 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+"use strict";
+
+exports.__esModule = true;
+exports.triggerNodeModification = triggerNodeModification;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _collapse = require("./collapse");
+
+var _expand = require("./expand");
+
+var _hideColumn = require("./hideColumn");
+
+var _showColumn = require("./showColumn");
 
 /**
  * The NodeModifiers module is responsible for the modification of a tree structure
  * in a way to achieve new column headers state.
  */
-import { collapseNode } from "./collapse.mjs";
-import { expandNode } from "./expand.mjs";
-import { hideColumn } from "./hideColumn.mjs";
-import { showColumn } from "./showColumn.mjs";
-var availableModifiers = new Map([['collapse', collapseNode], ['expand', expandNode], ['hide-column', hideColumn], ['show-column', showColumn]]);
+var availableModifiers = new Map([['collapse', _collapse.collapseNode], ['expand', _expand.expandNode], ['hide-column', _hideColumn.hideColumn], ['show-column', _showColumn.showColumn]]);
 /**
  * An entry point for triggering a node modifiers. If the triggered action
  * does not exist the exception is thrown.
@@ -28,7 +41,7 @@ var availableModifiers = new Map([['collapse', collapseNode], ['expand', expandN
  * @returns {object}
  */
 
-export function triggerNodeModification(actionName, nodeToProcess, gridColumnIndex) {
+function triggerNodeModification(actionName, nodeToProcess, gridColumnIndex) {
   if (!availableModifiers.has(actionName)) {
     throw new Error("The node modifier action (\"".concat(actionName, "\") does not exist."));
   }

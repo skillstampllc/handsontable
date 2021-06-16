@@ -1,8 +1,15 @@
+"use strict";
+
+exports.__esModule = true;
+exports.baseRenderer = baseRenderer;
+exports.RENDERER_TYPE = void 0;
+
+var _element = require("../../helpers/dom/element");
+
 /**
  * Adds appropriate CSS class to table cell, based on cellProperties.
  */
-import { addClass, removeClass } from "../../helpers/dom/element.mjs";
-export var RENDERER_TYPE = 'base';
+var RENDERER_TYPE = 'base';
 /**
  * @param {Core} instance The Handsontable instance.
  * @param {HTMLTableCellElement} TD The rendered cell element.
@@ -13,12 +20,14 @@ export var RENDERER_TYPE = 'base';
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-export function baseRenderer(instance, TD, row, col, prop, value, cellProperties) {
+exports.RENDERER_TYPE = RENDERER_TYPE;
+
+function baseRenderer(instance, TD, row, col, prop, value, cellProperties) {
   var classesToAdd = [];
   var classesToRemove = [];
 
   if (cellProperties.className) {
-    addClass(TD, cellProperties.className);
+    (0, _element.addClass)(TD, cellProperties.className);
   }
 
   if (cellProperties.readOnly) {
@@ -39,7 +48,8 @@ export function baseRenderer(instance, TD, row, col, prop, value, cellProperties
     classesToAdd.push(cellProperties.placeholderCellClassName);
   }
 
-  removeClass(TD, classesToRemove);
-  addClass(TD, classesToAdd);
+  (0, _element.removeClass)(TD, classesToRemove);
+  (0, _element.addClass)(TD, classesToAdd);
 }
+
 baseRenderer.RENDERER_TYPE = RENDERER_TYPE;

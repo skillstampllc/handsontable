@@ -1,18 +1,33 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.from.js";
-import { isDefined } from "../../helpers/mixed.mjs";
-import { ASC_SORT_STATE, DESC_SORT_STATE } from "./utils.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.getClassesToAdd = getClassesToAdd;
+exports.getClassesToRemove = getClassesToRemove;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.from.js");
+
+var _mixed = require("../../helpers/mixed");
+
+var _utils = require("./utils");
+
 var HEADER_CLASS_ASC_SORT = 'ascending';
 var HEADER_CLASS_DESC_SORT = 'descending';
 var HEADER_CLASS_INDICATOR_DISABLED = 'indicatorDisabled';
 var HEADER_SORT_CLASS = 'columnSorting';
 var HEADER_ACTION_CLASS = 'sortAction';
-var orderToCssClass = new Map([[ASC_SORT_STATE, HEADER_CLASS_ASC_SORT], [DESC_SORT_STATE, HEADER_CLASS_DESC_SORT]]);
+var orderToCssClass = new Map([[_utils.ASC_SORT_STATE, HEADER_CLASS_ASC_SORT], [_utils.DESC_SORT_STATE, HEADER_CLASS_DESC_SORT]]);
 /**
  * Get CSS classes which should be added to particular column header.
  *
@@ -23,7 +38,7 @@ var orderToCssClass = new Map([[ASC_SORT_STATE, HEADER_CLASS_ASC_SORT], [DESC_SO
  * @returns {Array} Array of CSS classes.
  */
 
-export function getClassesToAdd(columnStatesManager, column, showSortIndicator, headerAction) {
+function getClassesToAdd(columnStatesManager, column, showSortIndicator, headerAction) {
   var cssClasses = [HEADER_SORT_CLASS];
 
   if (headerAction) {
@@ -37,7 +52,7 @@ export function getClassesToAdd(columnStatesManager, column, showSortIndicator, 
 
   var columnOrder = columnStatesManager.getSortOrderOfColumn(column);
 
-  if (isDefined(columnOrder)) {
+  if ((0, _mixed.isDefined)(columnOrder)) {
     cssClasses.push(orderToCssClass.get(columnOrder));
   }
 
@@ -49,6 +64,7 @@ export function getClassesToAdd(columnStatesManager, column, showSortIndicator, 
  * @returns {Array} Array of CSS classes.
  */
 
-export function getClassesToRemove() {
+
+function getClassesToRemove() {
   return Array.from(orderToCssClass.values()).concat(HEADER_ACTION_CLASS, HEADER_CLASS_INDICATOR_DISABLED, HEADER_SORT_CLASS);
 }

@@ -1,17 +1,43 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.HandsontableEditor = exports.EDITOR_TYPE = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _textEditor = require("../textEditor");
+
+var _element = require("../../helpers/dom/element");
+
+var _event = require("../../helpers/dom/event");
+
+var _unicode = require("../../helpers/unicode");
+
+var _object = require("../../helpers/object");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,18 +63,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { TextEditor } from "../textEditor/index.mjs";
-import { setCaretPosition } from "../../helpers/dom/element.mjs";
-import { stopImmediatePropagation, isImmediatePropagationStopped } from "../../helpers/dom/event.mjs";
-import { KEY_CODES } from "../../helpers/unicode.mjs";
-import { extend } from "../../helpers/object.mjs";
-export var EDITOR_TYPE = 'handsontable';
+var EDITOR_TYPE = 'handsontable';
 /**
  * @private
  * @class HandsontableEditor
  */
 
-export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
+exports.EDITOR_TYPE = EDITOR_TYPE;
+
+var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
   _inherits(HandsontableEditor, _TextEditor);
 
   var _super = _createSuper(HandsontableEditor);
@@ -88,7 +111,7 @@ export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
         this.htEditor.deselectCell();
       }
 
-      setCaretPosition(this.TEXTAREA, 0, this.TEXTAREA.value.length);
+      (0, _element.setCaretPosition)(this.TEXTAREA, 0, this.TEXTAREA.value.length);
     }
     /**
      * Closes the editor.
@@ -148,7 +171,7 @@ export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
       };
 
       if (this.cellProperties.handsontable) {
-        extend(options, cellProperties.handsontable);
+        (0, _object.extend)(options, cellProperties.handsontable);
       }
 
       this.htOptions = options;
@@ -240,7 +263,7 @@ export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
   }, {
     key: "onBeforeKeyDown",
     value: function onBeforeKeyDown(event) {
-      if (isImmediatePropagationStopped(event)) {
+      if ((0, _event.isImmediatePropagationStopped)(event)) {
         return;
       }
 
@@ -248,7 +271,7 @@ export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
       var rowToSelect;
       var selectedRow;
 
-      if (event.keyCode === KEY_CODES.ARROW_DOWN) {
+      if (event.keyCode === _unicode.KEY_CODES.ARROW_DOWN) {
         if (!innerHOT.getSelectedLast() && !innerHOT.flipped) {
           rowToSelect = 0;
         } else if (innerHOT.getSelectedLast()) {
@@ -260,7 +283,7 @@ export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
             rowToSelect = Math.min(lastRow, selectedRow + 1);
           }
         }
-      } else if (event.keyCode === KEY_CODES.ARROW_UP) {
+      } else if (event.keyCode === _unicode.KEY_CODES.ARROW_UP) {
         if (!innerHOT.getSelectedLast() && innerHOT.flipped) {
           rowToSelect = innerHOT.countRows() - 1;
         } else if (innerHOT.getSelectedLast()) {
@@ -283,7 +306,7 @@ export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
 
         if (innerHOT.getData().length) {
           event.preventDefault();
-          stopImmediatePropagation(event);
+          (0, _event.stopImmediatePropagation)(event);
           this.hot.listen();
           this.TEXTAREA.focus();
         }
@@ -299,4 +322,6 @@ export var HandsontableEditor = /*#__PURE__*/function (_TextEditor) {
   }]);
 
   return HandsontableEditor;
-}(TextEditor);
+}(_textEditor.TextEditor);
+
+exports.HandsontableEditor = HandsontableEditor;

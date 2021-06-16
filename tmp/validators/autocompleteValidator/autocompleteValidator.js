@@ -1,4 +1,9 @@
-export var VALIDATOR_TYPE = 'autocomplete';
+"use strict";
+
+exports.__esModule = true;
+exports.autocompleteValidator = autocompleteValidator;
+exports.VALIDATOR_TYPE = void 0;
+var VALIDATOR_TYPE = 'autocomplete';
 /**
  * The Autocomplete cell validator.
  *
@@ -7,7 +12,9 @@ export var VALIDATOR_TYPE = 'autocomplete';
  * @param {Function} callback Callback called with validation result.
  */
 
-export function autocompleteValidator(value, callback) {
+exports.VALIDATOR_TYPE = VALIDATOR_TYPE;
+
+function autocompleteValidator(value, callback) {
   var valueToValidate = value;
 
   if (valueToValidate === null || valueToValidate === void 0) {
@@ -29,6 +36,7 @@ export function autocompleteValidator(value, callback) {
     callback(true);
   }
 }
+
 autocompleteValidator.VALIDATOR_TYPE = VALIDATOR_TYPE;
 /**
  * Function responsible for validation of autocomplete value.

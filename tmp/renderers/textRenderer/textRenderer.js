@@ -1,8 +1,18 @@
-import "core-js/modules/es.string.trim.js";
-import { baseRenderer } from "../baseRenderer/index.mjs";
-import { empty, fastInnerText } from "../../helpers/dom/element.mjs";
-import { stringify } from "../../helpers/mixed.mjs";
-export var RENDERER_TYPE = 'text';
+"use strict";
+
+exports.__esModule = true;
+exports.textRenderer = textRenderer;
+exports.RENDERER_TYPE = void 0;
+
+require("core-js/modules/es.string.trim.js");
+
+var _baseRenderer = require("../baseRenderer");
+
+var _element = require("../../helpers/dom/element");
+
+var _mixed = require("../../helpers/mixed");
+
+var RENDERER_TYPE = 'text';
 /**
  * Default text renderer.
  *
@@ -16,22 +26,25 @@ export var RENDERER_TYPE = 'text';
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-export function textRenderer(instance, TD, row, col, prop, value, cellProperties) {
-  baseRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
+exports.RENDERER_TYPE = RENDERER_TYPE;
+
+function textRenderer(instance, TD, row, col, prop, value, cellProperties) {
+  _baseRenderer.baseRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
+
   var escaped = value;
 
   if (!escaped && cellProperties.placeholder) {
     escaped = cellProperties.placeholder;
   }
 
-  escaped = stringify(escaped);
+  escaped = (0, _mixed.stringify)(escaped);
 
   if (instance.getSettings().trimWhitespace) {
     escaped = escaped.trim();
   }
 
   if (cellProperties.rendererTemplate) {
-    empty(TD);
+    (0, _element.empty)(TD);
     var TEMPLATE = instance.rootDocument.createElement('TEMPLATE');
     TEMPLATE.setAttribute('bind', '{{}}');
     TEMPLATE.innerHTML = cellProperties.rendererTemplate;
@@ -40,7 +53,8 @@ export function textRenderer(instance, TD, row, col, prop, value, cellProperties
     TD.appendChild(TEMPLATE);
   } else {
     // this is faster than innerHTML. See: https://github.com/handsontable/handsontable/wiki/JavaScript-&-DOM-performance-tips
-    fastInnerText(TD, escaped);
+    (0, _element.fastInnerText)(TD, escaped);
   }
 }
+
 textRenderer.RENDERER_TYPE = RENDERER_TYPE;

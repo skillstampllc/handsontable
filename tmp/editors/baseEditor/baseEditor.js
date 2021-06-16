@@ -1,4 +1,49 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.BaseEditor = exports.EDITOR_STATE = exports.EDITOR_TYPE = void 0;
+
+require("core-js/modules/es.object.freeze.js");
+
+require("core-js/modules/es.string.trim.js");
+
+var _src = require("../../3rdparty/walkontable/src");
+
+var _mixed = require("../../helpers/mixed");
+
+var _object = require("../../helpers/object");
+
+var _hooksRefRegisterer = _interopRequireDefault(require("../../mixins/hooksRefRegisterer"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -32,27 +77,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import "core-js/modules/es.object.freeze.js";
-import "core-js/modules/es.string.trim.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
-import { CellCoords } from "../../3rdparty/walkontable/src/index.mjs";
-import { stringify } from "../../helpers/mixed.mjs";
-import { mixin } from "../../helpers/object.mjs";
-import hooksRefRegisterer from "../../mixins/hooksRefRegisterer.mjs";
-export var EDITOR_TYPE = 'base';
-export var EDITOR_STATE = Object.freeze({
+var EDITOR_TYPE = 'base';
+exports.EDITOR_TYPE = EDITOR_TYPE;
+var EDITOR_STATE = Object.freeze({
   VIRGIN: 'STATE_VIRGIN',
   // before editing
   EDITING: 'STATE_EDITING',
@@ -65,7 +92,9 @@ export var EDITOR_STATE = Object.freeze({
  * @class BaseEditor
  */
 
-export var BaseEditor = /*#__PURE__*/function () {
+exports.EDITOR_STATE = EDITOR_STATE;
+
+var BaseEditor = /*#__PURE__*/function () {
   /**
    * @param {Handsontable} instance A reference to the source instance of the Handsontable.
    */
@@ -330,12 +359,12 @@ export var BaseEditor = /*#__PURE__*/function () {
 
       var renderableRowIndex = hotInstance.rowIndexMapper.getRenderableFromVisualIndex(this.row);
       var renderableColumnIndex = hotInstance.columnIndexMapper.getRenderableFromVisualIndex(this.col);
-      hotInstance.view.scrollViewport(new CellCoords(renderableRowIndex, renderableColumnIndex));
+      hotInstance.view.scrollViewport(new _src.CellCoords(renderableRowIndex, renderableColumnIndex));
       this.state = EDITOR_STATE.EDITING; // Set the editor value only in the full edit mode. In other mode the focusable element has to be empty,
       // otherwise IME (editor for Asia users) doesn't work.
 
       if (this.isInFullEditMode()) {
-        var stringifiedInitialValue = typeof newInitialValue === 'string' ? newInitialValue : stringify(this.originalValue);
+        var stringifiedInitialValue = typeof newInitialValue === 'string' ? newInitialValue : (0, _mixed.stringify)(this.originalValue);
         this.setValue(stringifiedInitialValue);
       }
 
@@ -592,4 +621,6 @@ export var BaseEditor = /*#__PURE__*/function () {
 
   return BaseEditor;
 }();
-mixin(BaseEditor, hooksRefRegisterer);
+
+exports.BaseEditor = BaseEditor;
+(0, _object.mixin)(BaseEditor, _hooksRefRegisterer.default);

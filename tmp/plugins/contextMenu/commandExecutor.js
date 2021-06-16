@@ -1,6 +1,17 @@
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/es.array.join.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.array.join.js");
+
+var _array = require("../../helpers/array");
+
+var _object = require("../../helpers/object");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,15 +19,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { arrayEach } from "../../helpers/array.mjs";
-import { hasOwnProperty } from "../../helpers/object.mjs";
 /**
  * Command executor for ContextMenu.
  *
  * @class CommandExecutor
  * @plugin ContextMenu
  */
-
 var CommandExecutor = /*#__PURE__*/function () {
   function CommandExecutor(hotInstance) {
     _classCallCheck(this, CommandExecutor);
@@ -87,7 +95,7 @@ var CommandExecutor = /*#__PURE__*/function () {
         return;
       }
 
-      if (hasOwnProperty(command, 'submenu')) {
+      if ((0, _object.hasOwnProperty)(command, 'submenu')) {
         return;
       }
 
@@ -102,7 +110,7 @@ var CommandExecutor = /*#__PURE__*/function () {
       }
 
       params.unshift(commandSplit.join(':'));
-      arrayEach(callbacks, function (callback) {
+      (0, _array.arrayEach)(callbacks, function (callback) {
         return callback.apply(_this.hot, params);
       });
     }
@@ -119,7 +127,7 @@ var CommandExecutor = /*#__PURE__*/function () {
 
 function findSubCommand(subCommandName, subCommands) {
   var command;
-  arrayEach(subCommands, function (cmd) {
+  (0, _array.arrayEach)(subCommands, function (cmd) {
     var cmds = cmd.key ? cmd.key.split(':') : null;
 
     if (Array.isArray(cmds) && cmds[1] === subCommandName) {
@@ -130,4 +138,5 @@ function findSubCommand(subCommandName, subCommands) {
   return command;
 }
 
-export default CommandExecutor;
+var _default = CommandExecutor;
+exports.default = _default;

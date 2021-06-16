@@ -1,20 +1,47 @@
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.replace.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.reverse.js";
-import { arrayEach, arrayMap } from "../../helpers/array.mjs";
-import { hasClass } from "../../helpers/dom/element.mjs";
-import { KEY as SEPARATOR } from "./predefinedItems/separator.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.normalizeSelection = normalizeSelection;
+exports.isSeparator = isSeparator;
+exports.hasSubMenu = hasSubMenu;
+exports.isDisabled = isDisabled;
+exports.isSelectionDisabled = isSelectionDisabled;
+exports.getValidSelection = getValidSelection;
+exports.prepareVerticalAlignClass = prepareVerticalAlignClass;
+exports.prepareHorizontalAlignClass = prepareHorizontalAlignClass;
+exports.getAlignmentClasses = getAlignmentClasses;
+exports.align = align;
+exports.checkSelectionConsistency = checkSelectionConsistency;
+exports.markLabelAsSelected = markLabelAsSelected;
+exports.isItemHidden = isItemHidden;
+exports.filterSeparators = filterSeparators;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.reverse.js");
+
+var _array = require("../../helpers/array");
+
+var _element = require("../../helpers/dom/element");
+
+var _separator = require("./predefinedItems/separator");
+
 /**
  * @param {CellRange[]} selRanges An array of the cell ranges.
  * @returns {object[]}
  */
-
-export function normalizeSelection(selRanges) {
-  return arrayMap(selRanges, function (range) {
+function normalizeSelection(selRanges) {
+  return (0, _array.arrayMap)(selRanges, function (range) {
     return {
       start: range.getTopLeftCorner(),
       end: range.getBottomRightCorner()
@@ -26,39 +53,44 @@ export function normalizeSelection(selRanges) {
  * @returns {boolean}
  */
 
-export function isSeparator(cell) {
-  return hasClass(cell, 'htSeparator');
+
+function isSeparator(cell) {
+  return (0, _element.hasClass)(cell, 'htSeparator');
 }
 /**
  * @param {HTMLElement} cell The HTML cell element to check.
  * @returns {boolean}
  */
 
-export function hasSubMenu(cell) {
-  return hasClass(cell, 'htSubmenu');
+
+function hasSubMenu(cell) {
+  return (0, _element.hasClass)(cell, 'htSubmenu');
 }
 /**
  * @param {HTMLElement} cell The HTML cell element to check.
  * @returns {boolean}
  */
 
-export function isDisabled(cell) {
-  return hasClass(cell, 'htDisabled');
+
+function isDisabled(cell) {
+  return (0, _element.hasClass)(cell, 'htDisabled');
 }
 /**
  * @param {HTMLElement} cell The HTML cell element to check.
  * @returns {boolean}
  */
 
-export function isSelectionDisabled(cell) {
-  return hasClass(cell, 'htSelectionDisabled');
+
+function isSelectionDisabled(cell) {
+  return (0, _element.hasClass)(cell, 'htSelectionDisabled');
 }
 /**
  * @param {Core} hot The Handsontable instance.
  * @returns {Array[]|null}
  */
 
-export function getValidSelection(hot) {
+
+function getValidSelection(hot) {
   var selected = hot.getSelected();
 
   if (!selected) {
@@ -77,7 +109,8 @@ export function getValidSelection(hot) {
  * @returns {string}
  */
 
-export function prepareVerticalAlignClass(className, alignment) {
+
+function prepareVerticalAlignClass(className, alignment) {
   if (className.indexOf(alignment) !== -1) {
     return className;
   }
@@ -91,7 +124,8 @@ export function prepareVerticalAlignClass(className, alignment) {
  * @returns {string}
  */
 
-export function prepareHorizontalAlignClass(className, alignment) {
+
+function prepareHorizontalAlignClass(className, alignment) {
   if (className.indexOf(alignment) !== -1) {
     return className;
   }
@@ -105,9 +139,10 @@ export function prepareHorizontalAlignClass(className, alignment) {
  * @returns {object}
  */
 
-export function getAlignmentClasses(ranges, callback) {
+
+function getAlignmentClasses(ranges, callback) {
   var classes = {};
-  arrayEach(ranges, function (range) {
+  (0, _array.arrayEach)(ranges, function (range) {
     range.forAll(function (row, col) {
       // Alignment classes should only collected within cell ranges. We skip header coordinates.
       if (row >= 0 && col >= 0) {
@@ -129,8 +164,9 @@ export function getAlignmentClasses(ranges, callback) {
  * @param {Function} propertySetter The function which contains logic for added/removed alignment.
  */
 
-export function align(ranges, type, alignment, cellDescriptor, propertySetter) {
-  arrayEach(ranges, function (range) {
+
+function align(ranges, type, alignment, cellDescriptor, propertySetter) {
+  (0, _array.arrayEach)(ranges, function (range) {
     range.forAll(function (row, col) {
       // Alignment classes should only collected within cell ranges. We skip header coordinates.
       if (row >= 0 && col >= 0) {
@@ -147,6 +183,7 @@ export function align(ranges, type, alignment, cellDescriptor, propertySetter) {
  * @param {Function} cellDescriptor The function which fetches the cell meta object based in passed coordinates.
  * @param {Function} propertySetter The function which contains logic for added/removed alignment.
  */
+
 
 function applyAlignClassName(row, col, type, alignment, cellDescriptor, propertySetter) {
   var cellMeta = cellDescriptor(row, col);
@@ -169,11 +206,11 @@ function applyAlignClassName(row, col, type, alignment, cellDescriptor, property
  */
 
 
-export function checkSelectionConsistency(ranges, comparator) {
+function checkSelectionConsistency(ranges, comparator) {
   var result = false;
 
   if (Array.isArray(ranges)) {
-    arrayEach(ranges, function (range) {
+    (0, _array.arrayEach)(ranges, function (range) {
       range.forAll(function (row, col) {
         // Selection consistency should only check within cell ranges. We skip header coordinates.
         if (row >= 0 && col >= 0 && comparator(row, col)) {
@@ -192,7 +229,8 @@ export function checkSelectionConsistency(ranges, comparator) {
  * @returns {string}
  */
 
-export function markLabelAsSelected(label) {
+
+function markLabelAsSelected(label) {
   // workaround for https://github.com/handsontable/handsontable/issues/1946
   return "<span class=\"selected\">".concat(String.fromCharCode(10003), "</span>").concat(label);
 }
@@ -202,7 +240,8 @@ export function markLabelAsSelected(label) {
  * @returns {boolean}
  */
 
-export function isItemHidden(item, instance) {
+
+function isItemHidden(item, instance) {
   return !item.hidden || !(typeof item.hidden === 'function' && item.hidden.call(instance));
 }
 /**
@@ -210,6 +249,7 @@ export function isItemHidden(item, instance) {
  * @param {string} separator The string which identifies the context menu separator item.
  * @returns {object[]}
  */
+
 
 function shiftSeparators(items, separator) {
   var result = items.slice(0);
@@ -248,7 +288,7 @@ function popSeparators(items, separator) {
 
 function removeDuplicatedSeparators(items) {
   var result = [];
-  arrayEach(items, function (value, index) {
+  (0, _array.arrayEach)(items, function (value, index) {
     if (index > 0) {
       if (result[result.length - 1].name !== value.name) {
         result.push(value);
@@ -268,8 +308,8 @@ function removeDuplicatedSeparators(items) {
  */
 
 
-export function filterSeparators(items) {
-  var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : SEPARATOR;
+function filterSeparators(items) {
+  var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _separator.KEY;
   var result = items.slice(0);
   result = shiftSeparators(result, separator);
   result = popSeparators(result, separator);

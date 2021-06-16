@@ -1,16 +1,32 @@
-import "core-js/modules/web.timers.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.reverse.js";
-import { arrayReduce } from "./array.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.isFunction = isFunction;
+exports.throttle = throttle;
+exports.throttleAfterHits = throttleAfterHits;
+exports.debounce = debounce;
+exports.pipe = pipe;
+exports.partial = partial;
+exports.curry = curry;
+exports.curryRight = curryRight;
+
+require("core-js/modules/web.timers.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.reverse.js");
+
+var _array = require("./array");
+
 /**
  * Checks if given variable is function.
  *
  * @param {*} func Variable to check.
  * @returns {boolean}
  */
-
-export function isFunction(func) {
+function isFunction(func) {
   return typeof func === 'function';
 }
 /**
@@ -21,7 +37,8 @@ export function isFunction(func) {
  * @returns {Function}
  */
 
-export function throttle(func) {
+
+function throttle(func) {
   var wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
   var lastCalled = 0;
   var result = {
@@ -82,7 +99,8 @@ export function throttle(func) {
  * @returns {Function}
  */
 
-export function throttleAfterHits(func) {
+
+function throttleAfterHits(func) {
   var wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
   var hits = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
   var funcThrottle = throttle(func, wait);
@@ -125,7 +143,8 @@ export function throttleAfterHits(func) {
  * @returns {Function}
  */
 
-export function debounce(func) {
+
+function debounce(func) {
   var wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
   var lastTimer = null;
   var result;
@@ -161,7 +180,8 @@ export function debounce(func) {
  * @returns {Function}
  */
 
-export function pipe() {
+
+function pipe() {
   for (var _len4 = arguments.length, functions = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
     functions[_key4] = arguments[_key4];
   }
@@ -173,7 +193,7 @@ export function pipe() {
       args[_key5] = arguments[_key5];
     }
 
-    return arrayReduce(restFunc, function (acc, fn) {
+    return (0, _array.arrayReduce)(restFunc, function (acc, fn) {
       return fn(acc);
     }, firstFunc.apply(this, args));
   };
@@ -186,7 +206,8 @@ export function pipe() {
  * @returns {Function}
  */
 
-export function partial(func) {
+
+function partial(func) {
   for (var _len6 = arguments.length, params = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
     params[_key6 - 1] = arguments[_key6];
   }
@@ -222,7 +243,8 @@ export function partial(func) {
  * @returns {Function}
  */
 
-export function curry(func) {
+
+function curry(func) {
   var argsLength = func.length;
   /**
    * @param {*} argsSoFar The list of arguments passed during the function invocation.
@@ -273,7 +295,8 @@ export function curry(func) {
  * @returns {Function}
  */
 
-export function curryRight(func) {
+
+function curryRight(func) {
   var argsLength = func.length;
   /**
    * @param {*} argsSoFar The list of arguments passed during the function invocation.

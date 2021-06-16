@@ -1,5 +1,15 @@
-import "core-js/modules/es.array.index-of.js";
-import { CLONE_TYPES } from "./constants.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.registerOverlayOnce = registerOverlayOnce;
+exports.createOverlay = createOverlay;
+exports.hasOverlay = hasOverlay;
+exports.isOverlayTypeOf = isOverlayTypeOf;
+
+require("core-js/modules/es.array.index-of.js");
+
+var _constants = require("./constants");
+
 var registeredOverlays = {};
 /**
  * Register overlay class. If the Overlay under the same name is already registered
@@ -8,10 +18,10 @@ var registeredOverlays = {};
  * @param {Overlay} overlayClass Overlay class extended from base overlay class {@link Overlay}.
  */
 
-export function registerOverlayOnce(overlayClass) {
+function registerOverlayOnce(overlayClass) {
   var overlayName = overlayClass.OVERLAY_NAME;
 
-  if (CLONE_TYPES.indexOf(overlayName) === -1) {
+  if (_constants.CLONE_TYPES.indexOf(overlayName) === -1) {
     throw new Error("Unsupported overlay (".concat(overlayName, ")."));
   }
 
@@ -27,7 +37,8 @@ export function registerOverlayOnce(overlayClass) {
  * @returns {Overlay}
  */
 
-export function createOverlay(type, wot) {
+
+function createOverlay(type, wot) {
   return new registeredOverlays[type](wot);
 }
 /**
@@ -37,7 +48,8 @@ export function createOverlay(type, wot) {
  * @returns {boolean}
  */
 
-export function hasOverlay(type) {
+
+function hasOverlay(type) {
   return registeredOverlays[type] !== void 0;
 }
 /**
@@ -48,7 +60,8 @@ export function hasOverlay(type) {
  * @returns {boolean}
  */
 
-export function isOverlayTypeOf(overlay, type) {
+
+function isOverlayTypeOf(overlay, type) {
   if (!overlay || !registeredOverlays[type]) {
     return false;
   }

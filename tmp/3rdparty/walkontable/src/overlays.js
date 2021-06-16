@@ -1,5 +1,25 @@
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/web.timers.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/web.timers.js");
+
+var _element = require("./../../../helpers/dom/element");
+
+var _array = require("./../../../helpers/array");
+
+var _unicode = require("./../../../helpers/unicode");
+
+var _browser = require("./../../../helpers/browser");
+
+var _eventManager = _interopRequireDefault(require("./../../../eventManager"));
+
+var _overlay = require("./overlay");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7,17 +27,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { getScrollableElement, getScrollbarWidth } from "./../../../helpers/dom/element.mjs";
-import { arrayEach } from "./../../../helpers/array.mjs";
-import { isKey } from "./../../../helpers/unicode.mjs";
-import { isChrome } from "./../../../helpers/browser.mjs";
-import EventManager from "./../../../eventManager.mjs";
-import { CLONE_BOTTOM_LEFT_CORNER, CLONE_BOTTOM, CLONE_LEFT, CLONE_TOP_LEFT_CORNER, CLONE_TOP, LeftOverlay, TopOverlay, TopLeftCornerOverlay, BottomOverlay, BottomLeftCornerOverlay, registerOverlayOnce, createOverlay, hasOverlay } from "./overlay/index.mjs";
-registerOverlayOnce(BottomLeftCornerOverlay);
-registerOverlayOnce(BottomOverlay);
-registerOverlayOnce(LeftOverlay);
-registerOverlayOnce(TopLeftCornerOverlay);
-registerOverlayOnce(TopOverlay);
+(0, _overlay.registerOverlayOnce)(_overlay.BottomLeftCornerOverlay);
+(0, _overlay.registerOverlayOnce)(_overlay.BottomOverlay);
+(0, _overlay.registerOverlayOnce)(_overlay.LeftOverlay);
+(0, _overlay.registerOverlayOnce)(_overlay.TopLeftCornerOverlay);
+(0, _overlay.registerOverlayOnce)(_overlay.TopOverlay);
 /**
  * @class Overlays
  */
@@ -49,12 +63,12 @@ var Overlays = /*#__PURE__*/function () {
     var FALLBACK_BODY_LINE_HEIGHT = parseInt(rootWindow.getComputedStyle(rootDocument.body).fontSize, 10) * 1.2; // legacy support
 
     this.instance = this.wot;
-    this.eventManager = new EventManager(this.wot);
-    this.scrollbarSize = getScrollbarWidth(rootDocument);
+    this.eventManager = new _eventManager.default(this.wot);
+    this.scrollbarSize = (0, _element.getScrollbarWidth)(rootDocument);
     this.wot.update('scrollbarWidth', this.scrollbarSize);
     this.wot.update('scrollbarHeight', this.scrollbarSize);
     var isOverflowHidden = rootWindow.getComputedStyle(wtTable.wtRootElement.parentNode).getPropertyValue('overflow') === 'hidden';
-    this.scrollableElement = isOverflowHidden ? wtTable.holder : getScrollableElement(wtTable.TABLE);
+    this.scrollableElement = isOverflowHidden ? wtTable.holder : (0, _element.getScrollableElement)(wtTable.TABLE);
     this.topOverlay = void 0;
     this.bottomOverlay = void 0;
     this.leftOverlay = void 0;
@@ -91,10 +105,10 @@ var Overlays = /*#__PURE__*/function () {
       if (this.topOverlay) {
         syncScroll = this.topOverlay.updateStateOfRendering() || syncScroll;
       } else {
-        this.topOverlay = createOverlay(CLONE_TOP, this.wot);
+        this.topOverlay = (0, _overlay.createOverlay)(_overlay.CLONE_TOP, this.wot);
       }
 
-      if (!hasOverlay(CLONE_BOTTOM)) {
+      if (!(0, _overlay.hasOverlay)(_overlay.CLONE_BOTTOM)) {
         this.bottomOverlay = {
           needFullRender: false,
           updateStateOfRendering: function updateStateOfRendering() {
@@ -103,7 +117,7 @@ var Overlays = /*#__PURE__*/function () {
         };
       }
 
-      if (!hasOverlay(CLONE_BOTTOM_LEFT_CORNER)) {
+      if (!(0, _overlay.hasOverlay)(_overlay.CLONE_BOTTOM_LEFT_CORNER)) {
         this.bottomLeftCornerOverlay = {
           needFullRender: false,
           updateStateOfRendering: function updateStateOfRendering() {
@@ -115,20 +129,20 @@ var Overlays = /*#__PURE__*/function () {
       if (this.bottomOverlay) {
         syncScroll = this.bottomOverlay.updateStateOfRendering() || syncScroll;
       } else {
-        this.bottomOverlay = createOverlay(CLONE_BOTTOM, this.wot);
+        this.bottomOverlay = (0, _overlay.createOverlay)(_overlay.CLONE_BOTTOM, this.wot);
       }
 
       if (this.leftOverlay) {
         syncScroll = this.leftOverlay.updateStateOfRendering() || syncScroll;
       } else {
-        this.leftOverlay = createOverlay(CLONE_LEFT, this.wot);
+        this.leftOverlay = (0, _overlay.createOverlay)(_overlay.CLONE_LEFT, this.wot);
       }
 
       if (this.topOverlay.needFullRender && this.leftOverlay.needFullRender) {
         if (this.topLeftCornerOverlay) {
           syncScroll = this.topLeftCornerOverlay.updateStateOfRendering() || syncScroll;
         } else {
-          this.topLeftCornerOverlay = createOverlay(CLONE_TOP_LEFT_CORNER, this.wot);
+          this.topLeftCornerOverlay = (0, _overlay.createOverlay)(_overlay.CLONE_TOP_LEFT_CORNER, this.wot);
         }
       }
 
@@ -136,7 +150,7 @@ var Overlays = /*#__PURE__*/function () {
         if (this.bottomLeftCornerOverlay) {
           syncScroll = this.bottomLeftCornerOverlay.updateStateOfRendering() || syncScroll;
         } else {
-          this.bottomLeftCornerOverlay = createOverlay(CLONE_BOTTOM_LEFT_CORNER, this.wot);
+          this.bottomLeftCornerOverlay = (0, _overlay.createOverlay)(_overlay.CLONE_BOTTOM_LEFT_CORNER, this.wot);
         }
       }
 
@@ -216,7 +230,7 @@ var Overlays = /*#__PURE__*/function () {
         passive: isScrollOnWindow
       };
 
-      if (preventWheel || isHighPixelRatio || !isChrome()) {
+      if (preventWheel || isHighPixelRatio || !(0, _browser.isChrome)()) {
         this.eventManager.addEventListener(this.wot.wtTable.wtRootElement, 'wheel', function (event) {
           return _this.onCloneWheel(event, preventWheel);
         }, wheelEventOptions);
@@ -314,7 +328,7 @@ var Overlays = /*#__PURE__*/function () {
   }, {
     key: "onKeyDown",
     value: function onKeyDown(event) {
-      this.keyPressed = isKey(event.keyCode, 'ARROW_UP|ARROW_RIGHT|ARROW_DOWN|ARROW_LEFT');
+      this.keyPressed = (0, _unicode.isKey)(event.keyCode, 'ARROW_UP|ARROW_RIGHT|ARROW_DOWN|ARROW_LEFT');
     }
     /**
      * Key up listener.
@@ -461,7 +475,7 @@ var Overlays = /*#__PURE__*/function () {
       if (rootWindow.getComputedStyle(wtTable.wtRootElement.parentNode).getPropertyValue('overflow') === 'hidden') {
         this.scrollableElement = wtTable.holder;
       } else {
-        this.scrollableElement = getScrollableElement(wtTable.TABLE);
+        this.scrollableElement = (0, _element.getScrollableElement)(wtTable.TABLE);
       }
 
       this.registerListeners();
@@ -606,7 +620,7 @@ var Overlays = /*#__PURE__*/function () {
 
       var overlays = [this.topOverlay, this.leftOverlay, this.bottomOverlay, this.topLeftCornerOverlay, this.bottomLeftCornerOverlay];
       var result = null;
-      arrayEach(overlays, function (elem) {
+      (0, _array.arrayEach)(overlays, function (elem) {
         if (!elem) {
           return;
         }
@@ -627,7 +641,7 @@ var Overlays = /*#__PURE__*/function () {
     value: function syncOverlayTableClassNames() {
       var masterTable = this.instance.wtTable.TABLE;
       var overlays = [this.topOverlay, this.leftOverlay, this.bottomOverlay, this.topLeftCornerOverlay, this.bottomLeftCornerOverlay];
-      arrayEach(overlays, function (elem) {
+      (0, _array.arrayEach)(overlays, function (elem) {
         if (!elem) {
           return;
         }
@@ -640,4 +654,5 @@ var Overlays = /*#__PURE__*/function () {
   return Overlays;
 }();
 
-export default Overlays;
+var _default = Overlays;
+exports.default = _default;

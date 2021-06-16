@@ -1,21 +1,59 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.TextEditor = exports.EDITOR_TYPE = void 0;
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _baseEditor = require("../baseEditor");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _browser = require("../../helpers/browser");
+
+var _element = require("../../helpers/dom/element");
+
+var _event = require("../../helpers/dom/event");
+
+var _number = require("../../helpers/number");
+
+var _unicode = require("../../helpers/unicode");
+
+var _autoResize = require("../../3rdparty/autoResize");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41,23 +79,17 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BaseEditor, EDITOR_STATE } from "../baseEditor/index.mjs";
-import EventManager from "../../eventManager.mjs";
-import { isMobileBrowser, isIE, isEdge, isIOS } from "../../helpers/browser.mjs";
-import { addClass, getCaretPosition, getComputedStyle, getCssTransform, getScrollbarWidth, innerWidth, offset, resetCssTransform, setCaretPosition, hasVerticalScrollbar, hasHorizontalScrollbar, hasClass, removeClass } from "../../helpers/dom/element.mjs";
-import { stopImmediatePropagation, isImmediatePropagationStopped } from "../../helpers/dom/event.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { KEY_CODES } from "../../helpers/unicode.mjs";
-import { autoResize } from "../../3rdparty/autoResize/index.mjs";
 var EDITOR_VISIBLE_CLASS_NAME = 'ht_editor_visible';
 var EDITOR_HIDDEN_CLASS_NAME = 'ht_editor_hidden';
-export var EDITOR_TYPE = 'text';
+var EDITOR_TYPE = 'text';
 /**
  * @private
  * @class TextEditor
  */
 
-export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
+exports.EDITOR_TYPE = EDITOR_TYPE;
+
+var TextEditor = /*#__PURE__*/function (_BaseEditor) {
   _inherits(TextEditor, _BaseEditor);
 
   var _super = _createSuper(TextEditor);
@@ -78,7 +110,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
      * @type {EventManager}
      */
 
-    _this.eventManager = new EventManager(_assertThisInitialized(_this));
+    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
     /**
      * Autoresize instance. Automagically resizes editor after changes.
      *
@@ -86,7 +118,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
      * @type {autoResize}
      */
 
-    _this.autoResize = autoResize();
+    _this.autoResize = (0, _autoResize.autoResize)();
     /**
      * An TEXTAREA element.
      *
@@ -222,7 +254,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
           this.TEXTAREA.value = '';
         }
 
-        if (previousState !== EDITOR_STATE.FINISHED) {
+        if (previousState !== _baseEditor.EDITOR_STATE.FINISHED) {
           this.hideEditableElement();
         } // @TODO: The fragmentSelection functionality is conflicted with IME. For this feature
         // refocus has to be disabled (to make IME working).
@@ -230,7 +262,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
 
         var restoreFocus = !fragmentSelection;
 
-        if (restoreFocus && !isMobileBrowser()) {
+        if (restoreFocus && !(0, _browser.isMobileBrowser)()) {
           this.focus();
         }
       }
@@ -245,7 +277,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
   }, {
     key: "beginEditing",
     value: function beginEditing(newInitialValue, event) {
-      if (this.state !== EDITOR_STATE.VIRGIN) {
+      if (this.state !== _baseEditor.EDITOR_STATE.VIRGIN) {
         return;
       }
 
@@ -264,7 +296,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       // Using ".focus" browser automatically scroll into the focused element which
       // is undesire effect.
       this.TEXTAREA.select();
-      setCaretPosition(this.TEXTAREA, this.TEXTAREA.value.length);
+      (0, _element.setCaretPosition)(this.TEXTAREA, this.TEXTAREA.value.length);
     }
     /**
      * Creates an editor's elements and adds necessary CSS classnames.
@@ -278,19 +310,19 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       this.TEXTAREA.setAttribute('data-hot-input', ''); // Makes the element recognizable by Hot as its own component's element.
 
       this.TEXTAREA.tabIndex = -1;
-      addClass(this.TEXTAREA, 'handsontableInput');
+      (0, _element.addClass)(this.TEXTAREA, 'handsontableInput');
       this.textareaStyle = this.TEXTAREA.style;
       this.textareaStyle.width = 0;
       this.textareaStyle.height = 0;
       this.textareaStyle.overflowY = 'visible';
       this.TEXTAREA_PARENT = rootDocument.createElement('DIV');
-      addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
+      (0, _element.addClass)(this.TEXTAREA_PARENT, 'handsontableInputHolder');
 
-      if (hasClass(this.TEXTAREA_PARENT, this.layerClass)) {
-        removeClass(this.TEXTAREA_PARENT, this.layerClass);
+      if ((0, _element.hasClass)(this.TEXTAREA_PARENT, this.layerClass)) {
+        (0, _element.removeClass)(this.TEXTAREA_PARENT, this.layerClass);
       }
 
-      addClass(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME);
+      (0, _element.addClass)(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME);
       this.textareaParentStyle = this.TEXTAREA_PARENT.style;
       this.TEXTAREA_PARENT.appendChild(this.TEXTAREA);
       this.hot.rootElement.appendChild(this.TEXTAREA_PARENT);
@@ -304,7 +336,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
   }, {
     key: "hideEditableElement",
     value: function hideEditableElement() {
-      if (isIE() || isEdge()) {
+      if ((0, _browser.isIE)() || (0, _browser.isEdge)()) {
         this.textareaStyle.textIndent = '-99999px';
       }
 
@@ -312,11 +344,11 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       this.textareaParentStyle.opacity = '0';
       this.textareaParentStyle.height = '1px';
 
-      if (hasClass(this.TEXTAREA_PARENT, this.layerClass)) {
-        removeClass(this.TEXTAREA_PARENT, this.layerClass);
+      if ((0, _element.hasClass)(this.TEXTAREA_PARENT, this.layerClass)) {
+        (0, _element.removeClass)(this.TEXTAREA_PARENT, this.layerClass);
       }
 
-      addClass(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME);
+      (0, _element.addClass)(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME);
     }
     /**
      * Resets an editable element position.
@@ -336,25 +368,25 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       this.textareaStyle.overflowY = 'hidden';
       var childNodes = this.TEXTAREA_PARENT.childNodes;
       var hasClassHandsontableEditor = false;
-      rangeEach(childNodes.length - 1, function (index) {
+      (0, _number.rangeEach)(childNodes.length - 1, function (index) {
         var childNode = childNodes[index];
 
-        if (hasClass(childNode, 'handsontableEditor')) {
+        if ((0, _element.hasClass)(childNode, 'handsontableEditor')) {
           hasClassHandsontableEditor = true;
           return false;
         }
       });
 
-      if (hasClass(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME)) {
-        removeClass(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME);
+      if ((0, _element.hasClass)(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME)) {
+        (0, _element.removeClass)(this.TEXTAREA_PARENT, EDITOR_HIDDEN_CLASS_NAME);
       }
 
       if (hasClassHandsontableEditor) {
         this.layerClass = EDITOR_VISIBLE_CLASS_NAME;
-        addClass(this.TEXTAREA_PARENT, this.layerClass);
+        (0, _element.addClass)(this.TEXTAREA_PARENT, this.layerClass);
       } else {
         this.layerClass = this.getEditedCellsLayerClass();
-        addClass(this.TEXTAREA_PARENT, this.layerClass);
+        (0, _element.addClass)(this.TEXTAREA_PARENT, this.layerClass);
       }
     }
     /**
@@ -384,7 +416,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
     value: function refreshDimensions() {
       var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-      if (this.state !== EDITOR_STATE.EDITING && !force) {
+      if (this.state !== _baseEditor.EDITOR_STATE.EDITING && !force) {
         return;
       }
 
@@ -401,8 +433,8 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       var _this$hot$view$wt = this.hot.view.wt,
           wtOverlays = _this$hot$view$wt.wtOverlays,
           wtViewport = _this$hot$view$wt.wtViewport;
-      var currentOffset = offset(this.TD);
-      var containerOffset = offset(this.hot.rootElement);
+      var currentOffset = (0, _element.offset)(this.TD);
+      var containerOffset = (0, _element.offset)(this.hot.rootElement);
       var scrollableContainerTop = wtOverlays.topOverlay.holder;
       var scrollableContainerLeft = wtOverlays.leftOverlay.holder;
       var containerScrollTop = scrollableContainerTop !== this.hot.rootWindow ? scrollableContainerTop.scrollTop : 0;
@@ -419,23 +451,23 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
 
       switch (editorSection) {
         case 'top':
-          cssTransformOffset = getCssTransform(wtOverlays.topOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.topOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'left':
-          cssTransformOffset = getCssTransform(wtOverlays.leftOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.leftOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'top-left-corner':
-          cssTransformOffset = getCssTransform(wtOverlays.topLeftCornerOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.topLeftCornerOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'bottom-left-corner':
-          cssTransformOffset = getCssTransform(wtOverlays.bottomLeftCornerOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.bottomLeftCornerOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'bottom':
-          cssTransformOffset = getCssTransform(wtOverlays.bottomOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.bottomOverlay.clone.wtTable.holder.parentNode);
           break;
 
         default:
@@ -459,7 +491,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       if (cssTransformOffset && cssTransformOffset !== -1) {
         this.textareaParentStyle[cssTransformOffset[0]] = cssTransformOffset[1];
       } else {
-        resetCssTransform(this.TEXTAREA_PARENT);
+        (0, _element.resetCssTransform)(this.TEXTAREA_PARENT);
       }
 
       this.textareaParentStyle.top = "".concat(editTop, "px");
@@ -469,17 +501,17 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       var firstColumnOffset = wtViewport.columnsRenderCalculator.startPosition;
       var horizontalScrollPosition = wtOverlays.leftOverlay.getScrollPosition();
       var verticalScrollPosition = wtOverlays.topOverlay.getScrollPosition();
-      var scrollbarWidth = getScrollbarWidth(this.hot.rootDocument);
+      var scrollbarWidth = (0, _element.getScrollbarWidth)(this.hot.rootDocument);
       var cellTopOffset = this.TD.offsetTop + firstRowOffset - verticalScrollPosition;
       var cellLeftOffset = this.TD.offsetLeft + firstColumnOffset - horizontalScrollPosition;
-      var width = innerWidth(this.TD) - 8;
-      var actualVerticalScrollbarWidth = hasVerticalScrollbar(scrollableContainerTop) ? scrollbarWidth : 0;
-      var actualHorizontalScrollbarWidth = hasHorizontalScrollbar(scrollableContainerLeft) ? scrollbarWidth : 0;
+      var width = (0, _element.innerWidth)(this.TD) - 8;
+      var actualVerticalScrollbarWidth = (0, _element.hasVerticalScrollbar)(scrollableContainerTop) ? scrollbarWidth : 0;
+      var actualHorizontalScrollbarWidth = (0, _element.hasHorizontalScrollbar)(scrollableContainerLeft) ? scrollbarWidth : 0;
       var maxWidth = this.hot.view.maximumVisibleElementWidth(cellLeftOffset) - 9 - actualVerticalScrollbarWidth;
       var height = this.TD.scrollHeight + 1;
       var maxHeight = Math.max(this.hot.view.maximumVisibleElementHeight(cellTopOffset) - actualHorizontalScrollbarWidth, 23); // eslint-disable-line max-len
 
-      var cellComputedStyle = getComputedStyle(this.TD, this.hot.rootWindow);
+      var cellComputedStyle = (0, _element.getComputedStyle)(this.TD, this.hot.rootWindow);
       this.TEXTAREA.style.fontSize = cellComputedStyle.fontSize;
       this.TEXTAREA.style.fontFamily = cellComputedStyle.fontFamily;
       this.TEXTAREA.style.backgroundColor = backgroundColor;
@@ -510,7 +542,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
         return event.stopPropagation();
       });
 
-      if (isIOS()) {
+      if ((0, _browser.isIOS)()) {
         // on iOS after click "Done" the edit isn't hidden by default, so we need to handle it manually.
         this.eventManager.addEventListener(this.TEXTAREA, 'focusout', function () {
           return _this3.finishEditing(false);
@@ -567,56 +599,56 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       // catch CTRL but not right ALT (which in some systems triggers ALT+CTRL)
       var ctrlDown = (event.ctrlKey || event.metaKey) && !event.altKey; // Process only events that have been fired in the editor
 
-      if (event.target !== this.TEXTAREA || isImmediatePropagationStopped(event)) {
+      if (event.target !== this.TEXTAREA || (0, _event.isImmediatePropagationStopped)(event)) {
         return;
       }
 
       switch (event.keyCode) {
-        case KEY_CODES.ARROW_RIGHT:
+        case _unicode.KEY_CODES.ARROW_RIGHT:
           if (this.isInFullEditMode()) {
             if (!this.isWaiting() && !this.allowKeyEventPropagation(event.keyCode)) {
-              stopImmediatePropagation(event);
+              (0, _event.stopImmediatePropagation)(event);
             }
           }
 
           break;
 
-        case KEY_CODES.ARROW_LEFT:
+        case _unicode.KEY_CODES.ARROW_LEFT:
           if (this.isInFullEditMode()) {
             if (!this.isWaiting() && !this.allowKeyEventPropagation(event.keyCode)) {
-              stopImmediatePropagation(event);
+              (0, _event.stopImmediatePropagation)(event);
             }
           }
 
           break;
 
-        case KEY_CODES.ARROW_UP:
-        case KEY_CODES.ARROW_DOWN:
+        case _unicode.KEY_CODES.ARROW_UP:
+        case _unicode.KEY_CODES.ARROW_DOWN:
           if (this.isInFullEditMode()) {
             if (!this.isWaiting() && !this.allowKeyEventPropagation(event.keyCode)) {
-              stopImmediatePropagation(event);
+              (0, _event.stopImmediatePropagation)(event);
             }
           }
 
           break;
 
-        case KEY_CODES.ENTER:
+        case _unicode.KEY_CODES.ENTER:
           {
             var isMultipleSelection = this.hot.selection.isMultiple();
 
             if (ctrlDown && !isMultipleSelection || event.altKey) {
               // if ctrl+enter or alt+enter, add new line
               if (this.isOpened()) {
-                var caretPosition = getCaretPosition(this.TEXTAREA);
+                var caretPosition = (0, _element.getCaretPosition)(this.TEXTAREA);
                 var value = this.getValue();
                 var newValue = "".concat(value.slice(0, caretPosition), "\n").concat(value.slice(caretPosition));
                 this.setValue(newValue);
-                setCaretPosition(this.TEXTAREA, caretPosition + 1);
+                (0, _element.setCaretPosition)(this.TEXTAREA, caretPosition + 1);
               } else {
                 this.beginEditing("".concat(this.originalValue, "\n"));
               }
 
-              stopImmediatePropagation(event);
+              (0, _event.stopImmediatePropagation)(event);
             }
 
             event.preventDefault(); // don't add newline to field
@@ -624,11 +656,11 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
             break;
           }
 
-        case KEY_CODES.BACKSPACE:
-        case KEY_CODES.DELETE:
-        case KEY_CODES.HOME:
-        case KEY_CODES.END:
-          stopImmediatePropagation(event); // backspace, delete, home, end should only work locally when cell is edited (not in table context)
+        case _unicode.KEY_CODES.BACKSPACE:
+        case _unicode.KEY_CODES.DELETE:
+        case _unicode.KEY_CODES.HOME:
+        case _unicode.KEY_CODES.END:
+          (0, _event.stopImmediatePropagation)(event); // backspace, delete, home, end should only work locally when cell is edited (not in table context)
 
           break;
 
@@ -636,7 +668,7 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
           break;
       }
 
-      var arrowKeyCodes = [KEY_CODES.ARROW_UP, KEY_CODES.ARROW_RIGHT, KEY_CODES.ARROW_DOWN, KEY_CODES.ARROW_LEFT];
+      var arrowKeyCodes = [_unicode.KEY_CODES.ARROW_UP, _unicode.KEY_CODES.ARROW_RIGHT, _unicode.KEY_CODES.ARROW_DOWN, _unicode.KEY_CODES.ARROW_LEFT];
 
       if (arrowKeyCodes.indexOf(event.keyCode) === -1) {
         this.autoResize.resize(String.fromCharCode(event.keyCode));
@@ -650,4 +682,6 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
   }]);
 
   return TextEditor;
-}(BaseEditor);
+}(_baseEditor.BaseEditor);
+
+exports.TextEditor = TextEditor;

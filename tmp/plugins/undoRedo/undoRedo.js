@@ -1,4 +1,63 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+exports.__esModule = true;
+exports.default = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.find.js");
+
+require("core-js/modules/es.array.reduce.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.sort.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.concat.js");
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+var _array = require("../../helpers/array");
+
+var _number = require("../../helpers/number");
+
+var _object = require("../../helpers/object");
+
+var _event = require("../../helpers/dom/event");
+
+var _utils = require("../contextMenu/utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40,33 +99,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import "core-js/modules/es.array.find.js";
-import "core-js/modules/es.array.reduce.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import Hooks from "../../pluginHooks.mjs";
-import { arrayMap, arrayEach } from "../../helpers/array.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { inherit, deepClone } from "../../helpers/object.mjs";
-import { stopImmediatePropagation, isImmediatePropagationStopped } from "../../helpers/dom/event.mjs";
-import { align } from "../contextMenu/utils.mjs";
-export var PLUGIN_KEY = 'undoRedo';
+var PLUGIN_KEY = 'undoRedo';
 /**
  * @description
  * Handsontable UndoRedo plugin allows to undo and redo certain actions done in the table.
@@ -80,6 +113,8 @@ export var PLUGIN_KEY = 'undoRedo';
  * @plugin UndoRedo
  * @param {Core} instance The Handsontable instance.
  */
+
+exports.PLUGIN_KEY = PLUGIN_KEY;
 
 function UndoRedo(instance) {
   var plugin = this;
@@ -114,7 +149,7 @@ function UndoRedo(instance) {
         arr.push(_toConsumableArray(change));
         return arr;
       }, []);
-      arrayEach(clonedChanges, function (change) {
+      (0, _array.arrayEach)(clonedChanges, function (change) {
         change[1] = instance.propToCol(change[1]);
       });
       var selected = changesLen > 1 ? _this.getSelected() : [[clonedChanges[0][0], clonedChanges[0][1]]];
@@ -133,7 +168,7 @@ function UndoRedo(instance) {
       var originalData = plugin.instance.getSourceDataArray();
       var rowIndex = (originalData.length + index) % originalData.length;
       var physicalRowIndex = instance.toPhysicalRow(rowIndex);
-      var removedData = deepClone(originalData.slice(physicalRowIndex, physicalRowIndex + amount));
+      var removedData = (0, _object.deepClone)(originalData.slice(physicalRowIndex, physicalRowIndex + amount));
       return new UndoRedo.RemoveRowAction(rowIndex, removedData, instance.getSettings().fixedRowsBottom, instance.getSettings().fixedRowsTop);
     };
 
@@ -151,20 +186,20 @@ function UndoRedo(instance) {
       var removedData = [];
       var headers = [];
       var indexes = [];
-      rangeEach(originalData.length - 1, function (i) {
+      (0, _number.rangeEach)(originalData.length - 1, function (i) {
         var column = [];
         var origRow = originalData[i];
-        rangeEach(columnIndex, columnIndex + (amount - 1), function (j) {
+        (0, _number.rangeEach)(columnIndex, columnIndex + (amount - 1), function (j) {
           column.push(origRow[instance.toPhysicalColumn(j)]);
         });
         removedData.push(column);
       });
-      rangeEach(amount - 1, function (i) {
+      (0, _number.rangeEach)(amount - 1, function (i) {
         indexes.push(instance.toPhysicalColumn(columnIndex + i));
       });
 
       if (Array.isArray(instance.getSettings().colHeaders)) {
-        rangeEach(amount - 1, function (i) {
+        (0, _number.rangeEach)(amount - 1, function (i) {
           headers.push(instance.getSettings().colHeaders[instance.toPhysicalColumn(columnIndex + i)] || null);
         });
       }
@@ -279,7 +314,7 @@ UndoRedo.prototype.undo = function () {
     this.instance.runHooks('beforeUndoStackChange', doneActionsCopy);
     var action = this.doneActions.pop();
     this.instance.runHooks('afterUndoStackChange', doneActionsCopy, this.doneActions.slice());
-    var actionClone = deepClone(action);
+    var actionClone = (0, _object.deepClone)(action);
     var continueAction = this.instance.runHooks('beforeUndo', actionClone);
 
     if (continueAction === false) {
@@ -318,7 +353,7 @@ UndoRedo.prototype.redo = function () {
     this.instance.runHooks('beforeRedoStackChange', undoneActionsCopy);
     var action = this.undoneActions.pop();
     this.instance.runHooks('afterRedoStackChange', undoneActionsCopy, this.undoneActions.slice());
-    var actionClone = deepClone(action);
+    var actionClone = (0, _object.deepClone)(action);
     var continueAction = this.instance.runHooks('beforeRedo', actionClone);
 
     if (continueAction === false) {
@@ -458,10 +493,10 @@ UndoRedo.ChangeAction = function (changes, selected) {
   this.actionType = 'change';
 };
 
-inherit(UndoRedo.ChangeAction, UndoRedo.Action);
+(0, _object.inherit)(UndoRedo.ChangeAction, UndoRedo.Action);
 
 UndoRedo.ChangeAction.prototype.undo = function (instance, undoneCallback) {
-  var data = deepClone(this.changes);
+  var data = (0, _object.deepClone)(this.changes);
   var emptyRowsAtTheEnd = instance.countEmptyRows(true);
   var emptyColsAtTheEnd = instance.countEmptyCols(true);
 
@@ -492,7 +527,7 @@ UndoRedo.ChangeAction.prototype.undo = function (instance, undoneCallback) {
 };
 
 UndoRedo.ChangeAction.prototype.redo = function (instance, onFinishCallback) {
-  var data = deepClone(this.changes);
+  var data = (0, _object.deepClone)(this.changes);
 
   for (var i = 0, len = data.length; i < len; i++) {
     data[i].splice(2, 1);
@@ -520,7 +555,7 @@ UndoRedo.CreateRowAction = function (index, amount) {
   this.actionType = 'insert_row';
 };
 
-inherit(UndoRedo.CreateRowAction, UndoRedo.Action);
+(0, _object.inherit)(UndoRedo.CreateRowAction, UndoRedo.Action);
 
 UndoRedo.CreateRowAction.prototype.undo = function (instance, undoneCallback) {
   var rowCount = instance.countRows();
@@ -557,7 +592,7 @@ UndoRedo.RemoveRowAction = function (index, data, fixedRowsBottom, fixedRowsTop)
   this.fixedRowsTop = fixedRowsTop;
 };
 
-inherit(UndoRedo.RemoveRowAction, UndoRedo.Action);
+(0, _object.inherit)(UndoRedo.RemoveRowAction, UndoRedo.Action);
 
 UndoRedo.RemoveRowAction.prototype.undo = function (instance, undoneCallback) {
   var settings = instance.getSettings(); // Changing by the reference as `updateSettings` doesn't work the best.
@@ -588,7 +623,7 @@ UndoRedo.CreateColumnAction = function (index, amount) {
   this.actionType = 'insert_col';
 };
 
-inherit(UndoRedo.CreateColumnAction, UndoRedo.Action);
+(0, _object.inherit)(UndoRedo.CreateColumnAction, UndoRedo.Action);
 
 UndoRedo.CreateColumnAction.prototype.undo = function (instance, undoneCallback) {
   instance.addHookOnce('afterRemoveCol', undoneCallback);
@@ -625,7 +660,7 @@ UndoRedo.RemoveColumnAction = function (index, indexes, data, headers, columnPos
   this.fixedColumnsLeft = fixedColumnsLeft;
 };
 
-inherit(UndoRedo.RemoveColumnAction, UndoRedo.Action);
+(0, _object.inherit)(UndoRedo.RemoveColumnAction, UndoRedo.Action);
 
 UndoRedo.RemoveColumnAction.prototype.undo = function (instance, undoneCallback) {
   var _this2 = this;
@@ -643,14 +678,14 @@ UndoRedo.RemoveColumnAction.prototype.undo = function (instance, undoneCallback)
   var sortedData = [];
 
   for (var rowIndex = 0; rowIndex < removedDataLength; rowIndex++) {
-    sortedData.push(arrayMap(this.data[rowIndex], sortByIndexes));
+    sortedData.push((0, _array.arrayMap)(this.data[rowIndex], sortByIndexes));
   }
 
-  var sortedHeaders = arrayMap(this.headers, sortByIndexes);
+  var sortedHeaders = (0, _array.arrayMap)(this.headers, sortByIndexes);
   var changes = [];
   instance.alter('insert_col', this.indexes[0], this.indexes.length, 'UndoRedo.undo');
-  arrayEach(instance.getSourceDataArray(), function (rowData, rowIndex) {
-    arrayEach(ascendingIndexes, function (changedIndex, contiquesIndex) {
+  (0, _array.arrayEach)(instance.getSourceDataArray(), function (rowData, rowIndex) {
+    (0, _array.arrayEach)(ascendingIndexes, function (changedIndex, contiquesIndex) {
       rowData[changedIndex] = sortedData[rowIndex][contiquesIndex];
       changes.push([rowIndex, changedIndex, rowData[changedIndex]]);
     });
@@ -659,7 +694,7 @@ UndoRedo.RemoveColumnAction.prototype.undo = function (instance, undoneCallback)
   instance.columnIndexMapper.insertIndexes(ascendingIndexes[0], ascendingIndexes.length);
 
   if (typeof this.headers !== 'undefined') {
-    arrayEach(sortedHeaders, function (headerData, columnIndex) {
+    (0, _array.arrayEach)(sortedHeaders, function (headerData, columnIndex) {
       instance.getSettings().colHeaders[ascendingIndexes[columnIndex]] = headerData;
     });
   }
@@ -699,7 +734,7 @@ UndoRedo.CellAlignmentAction = function (stateBefore, range, type, alignment) {
 UndoRedo.CellAlignmentAction.prototype.undo = function (instance, undoneCallback) {
   var _this3 = this;
 
-  arrayEach(this.range, function (range) {
+  (0, _array.arrayEach)(this.range, function (range) {
     range.forAll(function (row, col) {
       // Alignment classes should only collected within cell ranges. We skip header coordinates.
       if (row >= 0 && col >= 0) {
@@ -712,7 +747,7 @@ UndoRedo.CellAlignmentAction.prototype.undo = function (instance, undoneCallback
 };
 
 UndoRedo.CellAlignmentAction.prototype.redo = function (instance, undoneCallback) {
-  align(this.range, this.type, this.alignment, function (row, col) {
+  (0, _utils.align)(this.range, this.type, this.alignment, function (row, col) {
     return instance.getCellMeta(row, col);
   }, function (row, col, key, value) {
     return instance.setCellMeta(row, col, key, value);
@@ -733,7 +768,7 @@ UndoRedo.FiltersAction = function (conditionsStack) {
   this.actionType = 'filter';
 };
 
-inherit(UndoRedo.FiltersAction, UndoRedo.Action);
+(0, _object.inherit)(UndoRedo.FiltersAction, UndoRedo.Action);
 
 UndoRedo.FiltersAction.prototype.undo = function (instance, undoneCallback) {
   var filters = instance.getPlugin('filters');
@@ -854,7 +889,7 @@ UndoRedo.RowMoveAction = function (rows, finalIndex) {
   this.finalIndex = finalIndex;
 };
 
-inherit(UndoRedo.RowMoveAction, UndoRedo.Action);
+(0, _object.inherit)(UndoRedo.RowMoveAction, UndoRedo.Action);
 
 UndoRedo.RowMoveAction.prototype.undo = function (instance, undoneCallback) {
   var _this6 = this;
@@ -927,7 +962,7 @@ UndoRedo.prototype.init = function () {
 
 
 function onBeforeKeyDown(event) {
-  if (isImmediatePropagationStopped(event)) {
+  if ((0, _event.isImmediatePropagationStopped)(event)) {
     return;
   }
 
@@ -954,11 +989,11 @@ function onBeforeKeyDown(event) {
   if (isRedoHotkey) {
     // CTRL + Y or CTRL + SHIFT + Z
     instance.undoRedo.redo();
-    stopImmediatePropagation(event);
+    (0, _event.stopImmediatePropagation)(event);
   } else if (keyCode === 90) {
     // CTRL + Z
     instance.undoRedo.undo();
-    stopImmediatePropagation(event);
+    (0, _event.stopImmediatePropagation)(event);
   }
 }
 /**
@@ -1053,7 +1088,8 @@ function removeExposedUndoRedoMethods(instance) {
   delete instance.clearUndo;
 }
 
-var hook = Hooks.getSingleton();
+var hook = _pluginHooks.default.getSingleton();
+
 hook.add('afterUpdateSettings', function () {
   this.getPlugin('undoRedo').init();
 });
@@ -1062,4 +1098,5 @@ hook.register('afterUndo');
 hook.register('beforeRedo');
 hook.register('afterRedo');
 UndoRedo.PLUGIN_KEY = PLUGIN_KEY;
-export default UndoRedo;
+var _default = UndoRedo;
+exports.default = _default;

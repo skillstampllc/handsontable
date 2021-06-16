@@ -1,5 +1,15 @@
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.number.to-fixed.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.number.to-fixed.js");
+
+var _array = require("../../helpers/array");
+
+var _console = require("../../helpers/console");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7,15 +17,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { arrayEach } from "../../helpers/array.mjs";
-import { warn } from "../../helpers/console.mjs";
 /**
  * Class used to make all endpoint-related operations.
  *
  * @class Endpoints
  * @plugin ColumnSummary
  */
-
 var Endpoints = /*#__PURE__*/function () {
   function Endpoints(plugin, settings) {
     _classCallCheck(this, Endpoints);
@@ -142,7 +149,7 @@ var Endpoints = /*#__PURE__*/function () {
         settingsArray = this.settings;
       }
 
-      arrayEach(settingsArray, function (val) {
+      (0, _array.arrayEach)(settingsArray, function (val) {
         var newEndpoint = {};
 
         _this.assignSetting(val, newEndpoint, 'ranges', [[0, _this.hot.countRows() - 1]]);
@@ -225,7 +232,7 @@ var Endpoints = /*#__PURE__*/function () {
 
       var type = action.indexOf('row') > -1 ? 'row' : 'col';
       var endpoints = this.getAllEndpoints();
-      arrayEach(endpoints, function (val) {
+      (0, _array.arrayEach)(endpoints, function (val) {
         if (type === 'row' && val.destinationRow >= index) {
           if (action === 'insert_row') {
             val.alterRowOffset = number;
@@ -282,7 +289,7 @@ var Endpoints = /*#__PURE__*/function () {
       var endpoints = this.getAllEndpoints();
       var rowMoving = action.indexOf('move_row') === 0;
       var placeOfAlteration = index;
-      arrayEach(endpoints, function (val) {
+      (0, _array.arrayEach)(endpoints, function (val) {
         if (type === 'row' && val.destinationRow >= placeOfAlteration) {
           val.alterRowOffset = multiplier * number;
         }
@@ -294,7 +301,7 @@ var Endpoints = /*#__PURE__*/function () {
       this.resetAllEndpoints(endpoints, !rowMoving);
 
       if (rowMoving) {
-        arrayEach(endpoints, function (endpoint) {
+        (0, _array.arrayEach)(endpoints, function (endpoint) {
           _this2.extendEndpointRanges(endpoint, placeOfAlteration, logicRows[0], logicRows.length);
 
           _this2.recreatePhysicalRanges(endpoint);
@@ -302,7 +309,7 @@ var Endpoints = /*#__PURE__*/function () {
           _this2.clearOffsetInformation(endpoint);
         });
       } else {
-        arrayEach(endpoints, function (endpoint) {
+        (0, _array.arrayEach)(endpoints, function (endpoint) {
           _this2.shiftEndpointCoordinates(endpoint, placeOfAlteration);
         });
       }
@@ -337,7 +344,7 @@ var Endpoints = /*#__PURE__*/function () {
   }, {
     key: "extendEndpointRanges",
     value: function extendEndpointRanges(endpoint, placeOfAlteration, previousPosition, offset) {
-      arrayEach(endpoint.ranges, function (range) {
+      (0, _array.arrayEach)(endpoint.ranges, function (range) {
         // is a range, not a single row
         if (range[1]) {
           if (placeOfAlteration >= range[0] && placeOfAlteration <= range[1]) {
@@ -372,7 +379,7 @@ var Endpoints = /*#__PURE__*/function () {
       var ranges = endpoint.ranges;
       var newRanges = [];
       var allIndexes = [];
-      arrayEach(ranges, function (range) {
+      (0, _array.arrayEach)(ranges, function (range) {
         var newRange = [];
 
         if (range[1]) {
@@ -385,9 +392,9 @@ var Endpoints = /*#__PURE__*/function () {
 
         allIndexes.push(newRange);
       });
-      arrayEach(allIndexes, function (range) {
+      (0, _array.arrayEach)(allIndexes, function (range) {
         var newRange = [];
-        arrayEach(range, function (coord, index) {
+        (0, _array.arrayEach)(range, function (coord, index) {
           if (index === 0) {
             newRange.push(coord);
           } else if (range[index] !== range[index - 1] + 1) {
@@ -418,8 +425,8 @@ var Endpoints = /*#__PURE__*/function () {
     value: function shiftEndpointCoordinates(endpoint, offsetStartIndex) {
       if (endpoint.alterRowOffset && endpoint.alterRowOffset !== 0) {
         endpoint.destinationRow += endpoint.alterRowOffset || 0;
-        arrayEach(endpoint.ranges, function (element) {
-          arrayEach(element, function (subElement, j) {
+        (0, _array.arrayEach)(endpoint.ranges, function (element) {
+          (0, _array.arrayEach)(element, function (subElement, j) {
             if (subElement >= offsetStartIndex) {
               element[j] += endpoint.alterRowOffset || 0;
             }
@@ -460,7 +467,7 @@ var Endpoints = /*#__PURE__*/function () {
       }
 
       this.cellsToSetCache = [];
-      arrayEach(endpoints, function (endpoint) {
+      (0, _array.arrayEach)(endpoints, function (endpoint) {
         _this4.resetEndpointValue(endpoint, useOffset);
       });
       this.hot.setDataAtCell(this.cellsToSetCache, 'ColumnSummary.reset');
@@ -476,7 +483,7 @@ var Endpoints = /*#__PURE__*/function () {
       var _this5 = this;
 
       this.cellsToSetCache = [];
-      arrayEach(this.getAllEndpoints(), function (value) {
+      (0, _array.arrayEach)(this.getAllEndpoints(), function (value) {
         _this5.currentEndpoint = value;
 
         _this5.plugin.calculate(value);
@@ -500,19 +507,19 @@ var Endpoints = /*#__PURE__*/function () {
 
       var needToRefresh = [];
       this.cellsToSetCache = [];
-      arrayEach(changes, function (value, key, changesObj) {
+      (0, _array.arrayEach)(changes, function (value, key, changesObj) {
         // if nothing changed, dont update anything
         if ("".concat(value[2] || '') === "".concat(value[3])) {
           return;
         }
 
-        arrayEach(_this6.getAllEndpoints(), function (endpoint, j) {
+        (0, _array.arrayEach)(_this6.getAllEndpoints(), function (endpoint, j) {
           if (_this6.hot.propToCol(changesObj[key][1]) === endpoint.sourceColumn && needToRefresh.indexOf(j) === -1) {
             needToRefresh.push(j);
           }
         });
       });
-      arrayEach(needToRefresh, function (value) {
+      (0, _array.arrayEach)(needToRefresh, function (value) {
         _this6.refreshEndpoint(_this6.getEndpoint(value));
       });
       this.hot.setDataAtCell(this.cellsToSetCache, 'ColumnSummary.reset');
@@ -613,11 +620,12 @@ var Endpoints = /*#__PURE__*/function () {
   }, {
     key: "throwOutOfBoundsWarning",
     value: function throwOutOfBoundsWarning() {
-      warn('One of the Column Summary plugins\' destination points you provided is beyond the table boundaries!');
+      (0, _console.warn)('One of the Column Summary plugins\' destination points you provided is beyond the table boundaries!');
     }
   }]);
 
   return Endpoints;
 }();
 
-export default Endpoints;
+var _default = Endpoints;
+exports.default = _default;

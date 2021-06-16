@@ -1,3 +1,60 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.BasePlugin = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.join.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.splice.js");
+
+var _object = require("../../helpers/object");
+
+var _array = require("../../helpers/array");
+
+var _registry = require("../registry");
+
+var _registry2 = require("../../cellTypes/registry");
+
+var _registry3 = require("../../editors/registry");
+
+var _registry4 = require("../../renderers/registry");
+
+var _registry5 = require("../../validators/registry");
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -16,34 +73,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
-import { defineGetter, objectEach } from "../../helpers/object.mjs";
-import { arrayEach } from "../../helpers/array.mjs";
-import { getPluginsNames, hasPlugin } from "../registry.mjs";
-import { hasCellType } from "../../cellTypes/registry.mjs";
-import { hasEditor } from "../../editors/registry.mjs";
-import { hasRenderer } from "../../renderers/registry.mjs";
-import { hasValidator } from "../../validators/registry.mjs";
-var DEPS_TYPE_CHECKERS = new Map([['plugin', hasPlugin], ['cell-type', hasCellType], ['editor', hasEditor], ['renderer', hasRenderer], ['validator', hasValidator]]);
-export var PLUGIN_KEY = 'base';
+var DEPS_TYPE_CHECKERS = new Map([['plugin', _registry.hasPlugin], ['cell-type', _registry2.hasCellType], ['editor', _registry3.hasEditor], ['renderer', _registry4.hasRenderer], ['validator', _registry5.hasValidator]]);
+var PLUGIN_KEY = 'base';
+exports.PLUGIN_KEY = PLUGIN_KEY;
 var privatePool = new WeakMap();
 var missingDependeciesMsgs = [];
 var initializedPlugins = null;
@@ -51,7 +83,7 @@ var initializedPlugins = null;
  * @util
  */
 
-export var BasePlugin = /*#__PURE__*/function () {
+var BasePlugin = /*#__PURE__*/function () {
   /**
    * @param {object} hotInstance Handsontable instance.
    */
@@ -65,7 +97,7 @@ export var BasePlugin = /*#__PURE__*/function () {
      *
      * @type {Core}
      */
-    defineGetter(this, 'hot', hotInstance, {
+    (0, _object.defineGetter)(this, 'hot', hotInstance, {
       writable: false
     });
     privatePool.set(this, {
@@ -121,7 +153,7 @@ export var BasePlugin = /*#__PURE__*/function () {
       }
 
       if (!initializedPlugins) {
-        initializedPlugins = getPluginsNames();
+        initializedPlugins = (0, _registry.getPluginsNames)();
       } // Workaround for the UndoRedo plugin which, currently doesn't follow the plugin architecture.
       // Without this line the `callOnPluginsReady` callback won't be triggered after all plugin
       // initialization.
@@ -204,7 +236,7 @@ export var BasePlugin = /*#__PURE__*/function () {
     value: function removeHooks(name) {
       var _this3 = this;
 
-      arrayEach(privatePool.get(this).hooks[name] || [], function (callback) {
+      (0, _array.arrayEach)(privatePool.get(this).hooks[name] || [], function (callback) {
         _this3.hot.removeHook(name, callback);
       });
     }
@@ -218,7 +250,7 @@ export var BasePlugin = /*#__PURE__*/function () {
       var _this4 = this;
 
       var hooks = privatePool.get(this).hooks;
-      objectEach(hooks, function (callbacks, name) {
+      (0, _object.objectEach)(hooks, function (callbacks, name) {
         return _this4.removeHooks(name);
       });
       hooks.length = 0;
@@ -247,7 +279,7 @@ export var BasePlugin = /*#__PURE__*/function () {
   }, {
     key: "onAfterPluginsInitialized",
     value: function onAfterPluginsInitialized() {
-      arrayEach(this.pluginsInitializedCallbacks, function (callback) {
+      (0, _array.arrayEach)(this.pluginsInitializedCallbacks, function (callback) {
         return callback();
       });
       this.pluginsInitializedCallbacks.length = 0;
@@ -300,7 +332,7 @@ export var BasePlugin = /*#__PURE__*/function () {
       }
 
       this.clearHooks();
-      objectEach(this, function (value, property) {
+      (0, _object.objectEach)(this, function (value, property) {
         if (property !== 'hot') {
           _this5[property] = null;
         }
@@ -317,3 +349,5 @@ export var BasePlugin = /*#__PURE__*/function () {
 
   return BasePlugin;
 }();
+
+exports.BasePlugin = BasePlugin;

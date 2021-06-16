@@ -1,17 +1,41 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.PersistentState = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _storage = _interopRequireDefault(require("./storage"));
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,14 +61,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import Storage from "./storage.mjs";
-import Hooks from "../../pluginHooks.mjs";
-Hooks.getSingleton().register('persistentStateSave');
-Hooks.getSingleton().register('persistentStateLoad');
-Hooks.getSingleton().register('persistentStateReset');
-export var PLUGIN_KEY = 'persistentState';
-export var PLUGIN_PRIORITY = 0;
+_pluginHooks.default.getSingleton().register('persistentStateSave');
+
+_pluginHooks.default.getSingleton().register('persistentStateLoad');
+
+_pluginHooks.default.getSingleton().register('persistentStateReset');
+
+var PLUGIN_KEY = 'persistentState';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 0;
 /**
  * @plugin PersistentState
  *
@@ -62,7 +87,9 @@ export var PLUGIN_PRIORITY = 0;
  * with table will be cleared.
  */
 
-export var PersistentState = /*#__PURE__*/function (_BasePlugin) {
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
+var PersistentState = /*#__PURE__*/function (_BasePlugin) {
   _inherits(PersistentState, _BasePlugin);
 
   var _super = _createSuper(PersistentState);
@@ -110,7 +137,7 @@ export var PersistentState = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (!this.storage) {
-        this.storage = new Storage(this.hot.rootElement.id, this.hot.rootWindow);
+        this.storage = new _storage.default(this.hot.rootElement.id, this.hot.rootWindow);
       }
 
       this.addHook('persistentStateSave', function (key, value) {
@@ -209,4 +236,6 @@ export var PersistentState = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return PersistentState;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.PersistentState = PersistentState;

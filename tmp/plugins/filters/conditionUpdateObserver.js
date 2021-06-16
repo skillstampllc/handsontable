@@ -1,7 +1,31 @@
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.filter.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.filter.js");
+
+var _array = require("../../helpers/array");
+
+var _object = require("../../helpers/object");
+
+var _function = require("../../helpers/function");
+
+var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
+
+var _conditionCollection = _interopRequireDefault(require("./conditionCollection"));
+
+var _dataFilter = _interopRequireDefault(require("./dataFilter"));
+
+var _utils = require("./utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9,13 +33,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { arrayEach, arrayMap, arrayFilter } from "../../helpers/array.mjs";
-import { mixin, objectEach } from "../../helpers/object.mjs";
-import { curry } from "../../helpers/function.mjs";
-import localHooks from "../../mixins/localHooks.mjs";
-import ConditionCollection from "./conditionCollection.mjs";
-import DataFilter from "./dataFilter.mjs";
-import { createArrayAssertion } from "./utils.mjs";
 /**
  * Class which is designed for observing changes in condition collection. When condition is changed by user at specified
  * column it's necessary to update all conditions defined after this edited one.
@@ -25,7 +42,6 @@ import { createArrayAssertion } from "./utils.mjs";
  * @class ConditionUpdateObserver
  * @plugin Filters
  */
-
 var ConditionUpdateObserver = /*#__PURE__*/function () {
   function ConditionUpdateObserver(hot, conditionCollection) {
     var _this = this;
@@ -124,7 +140,7 @@ var ConditionUpdateObserver = /*#__PURE__*/function () {
       var _this2 = this;
 
       this.grouping = false;
-      arrayEach(this.changes, function (column) {
+      (0, _array.arrayEach)(this.changes, function (column) {
         _this2.updateStatesAtColumn(column);
       });
       this.changes.length = 0;
@@ -179,9 +195,9 @@ var ConditionUpdateObserver = /*#__PURE__*/function () {
         conditionsAfter.shift();
       }
 
-      var visibleDataFactory = curry(function (curriedConditionsBefore, curriedColumn) {
+      var visibleDataFactory = (0, _function.curry)(function (curriedConditionsBefore, curriedColumn) {
         var conditionsStack = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-        var splitConditionCollection = new ConditionCollection(_this3.hot, false);
+        var splitConditionCollection = new _conditionCollection.default(_this3.hot, false);
         var curriedConditionsBeforeArray = [].concat(curriedConditionsBefore, conditionsStack); // Create new condition collection to determine what rows should be visible in "filter by value" box
         // in the next conditions in the chain
 
@@ -194,17 +210,17 @@ var ConditionUpdateObserver = /*#__PURE__*/function () {
         if (splitConditionCollection.isEmpty()) {
           visibleRows = allRows;
         } else {
-          visibleRows = new DataFilter(splitConditionCollection, function (columnData) {
+          visibleRows = new _dataFilter.default(splitConditionCollection, function (columnData) {
             return _this3.columnDataFactory(columnData);
           }).filter();
         }
 
-        visibleRows = arrayMap(visibleRows, function (rowData) {
+        visibleRows = (0, _array.arrayMap)(visibleRows, function (rowData) {
           return rowData.meta.visualRow;
         });
-        var visibleRowsAssertion = createArrayAssertion(visibleRows);
+        var visibleRowsAssertion = (0, _utils.createArrayAssertion)(visibleRows);
         splitConditionCollection.destroy();
-        return arrayFilter(allRows, function (rowData) {
+        return (0, _array.arrayFilter)(allRows, function (rowData) {
           return visibleRowsAssertion(rowData.meta.visualRow);
         });
       })(conditionsBefore);
@@ -241,7 +257,7 @@ var ConditionUpdateObserver = /*#__PURE__*/function () {
     value: function _onConditionAfterClean() {
       var _this4 = this;
 
-      arrayEach(this.latestOrderStack, function (column) {
+      (0, _array.arrayEach)(this.latestOrderStack, function (column) {
         _this4.updateStatesAtColumn(column);
       });
     }
@@ -255,7 +271,7 @@ var ConditionUpdateObserver = /*#__PURE__*/function () {
       var _this5 = this;
 
       this.clearLocalHooks();
-      objectEach(this, function (value, property) {
+      (0, _object.objectEach)(this, function (value, property) {
         _this5[property] = null;
       });
     }
@@ -264,5 +280,6 @@ var ConditionUpdateObserver = /*#__PURE__*/function () {
   return ConditionUpdateObserver;
 }();
 
-mixin(ConditionUpdateObserver, localHooks);
-export default ConditionUpdateObserver;
+(0, _object.mixin)(ConditionUpdateObserver, _localHooks.default);
+var _default = ConditionUpdateObserver;
+exports.default = _default;

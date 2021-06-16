@@ -1,4 +1,61 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.AutocompleteEditor = exports.EDITOR_TYPE = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.find.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.sort.js");
+
+var _handsontableEditor = require("../handsontableEditor");
+
+var _array = require("../../helpers/array");
+
+var _element = require("../../helpers/dom/element");
+
+var _mixed = require("../../helpers/mixed");
+
+var _string = require("../../helpers/string");
+
+var _unicode = require("../../helpers/unicode");
+
+var _textRenderer = require("../../renderers/textRenderer");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,40 +81,16 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.find.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.replace.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import { HandsontableEditor } from "../handsontableEditor/index.mjs";
-import { arrayMap, pivot } from "../../helpers/array.mjs";
-import { addClass, getCaretPosition, getScrollbarWidth, getSelectionEndPosition, getTrimmingContainer, offset, outerHeight, outerWidth, setCaretPosition } from "../../helpers/dom/element.mjs";
-import { isDefined, stringify } from "../../helpers/mixed.mjs";
-import { stripTags } from "../../helpers/string.mjs";
-import { KEY_CODES, isPrintableChar } from "../../helpers/unicode.mjs";
-import { textRenderer } from "../../renderers/textRenderer/index.mjs";
 var privatePool = new WeakMap();
-export var EDITOR_TYPE = 'autocomplete';
+var EDITOR_TYPE = 'autocomplete';
 /**
  * @private
  * @class AutocompleteEditor
  */
 
-export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
+exports.EDITOR_TYPE = EDITOR_TYPE;
+
+var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
   _inherits(AutocompleteEditor, _HandsontableEditor);
 
   var _super = _createSuper(AutocompleteEditor);
@@ -113,7 +146,7 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
         return strippedValue === _this2.TEXTAREA.value;
       });
 
-      if (isDefined(selectedValue)) {
+      if ((0, _mixed.isDefined)(selectedValue)) {
         return selectedValue;
       }
 
@@ -128,8 +161,8 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
     value: function createElements() {
       _get(_getPrototypeOf(AutocompleteEditor.prototype), "createElements", this).call(this);
 
-      addClass(this.htContainer, 'autocompleteEditor');
-      addClass(this.htContainer, this.hot.rootWindow.navigator.platform.indexOf('Mac') === -1 ? '' : 'htMacScroll');
+      (0, _element.addClass)(this.htContainer, 'autocompleteEditor');
+      (0, _element.addClass)(this.htContainer, this.hot.rootWindow.navigator.platform.indexOf('Mac') === -1 ? '' : 'htMacScroll');
     }
     /**
      * Opens the editor and adjust its size and internal Handsontable's instance.
@@ -148,22 +181,22 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
       var trimDropdown = this.cellProperties.trimDropdown === void 0 ? true : this.cellProperties.trimDropdown;
       this.showEditableElement();
       this.focus();
-      var scrollbarWidth = getScrollbarWidth();
+      var scrollbarWidth = (0, _element.getScrollbarWidth)();
 
       if (scrollbarWidth === 0 && priv.isMacOS) {
         scrollbarWidth += 15; // default scroll bar width if scroll bars are visible only when scrolling
       }
 
       choicesListHot.updateSettings({
-        colWidths: trimDropdown ? [outerWidth(this.TEXTAREA) - 2] : void 0,
-        width: trimDropdown ? outerWidth(this.TEXTAREA) + scrollbarWidth : void 0,
+        colWidths: trimDropdown ? [(0, _element.outerWidth)(this.TEXTAREA) - 2] : void 0,
+        width: trimDropdown ? (0, _element.outerWidth)(this.TEXTAREA) + scrollbarWidth : void 0,
         renderer: function renderer(instance, TD, row, col, prop, value, cellProperties) {
-          textRenderer(instance, TD, row, col, prop, value, cellProperties);
+          (0, _textRenderer.textRenderer)(instance, TD, row, col, prop, value, cellProperties);
           var _this3$cellProperties = _this3.cellProperties,
               filteringCaseSensitive = _this3$cellProperties.filteringCaseSensitive,
               allowHtml = _this3$cellProperties.allowHtml;
           var query = _this3.query;
-          var cellValue = stringify(value);
+          var cellValue = (0, _mixed.stringify)(value);
           var indexOfMatch;
           var match;
 
@@ -252,8 +285,8 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
   }, {
     key: "updateChoicesList",
     value: function updateChoicesList(choicesList) {
-      var pos = getCaretPosition(this.TEXTAREA);
-      var endPos = getSelectionEndPosition(this.TEXTAREA);
+      var pos = (0, _element.getCaretPosition)(this.TEXTAREA);
+      var endPos = (0, _element.getSelectionEndPosition)(this.TEXTAREA);
       var sortByRelevanceSetting = this.cellProperties.sortByRelevance;
       var filterSetting = this.cellProperties.filter;
       var orderByRelevance = null;
@@ -290,7 +323,7 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
       }
 
       this.strippedChoices = choices;
-      this.htEditor.loadData(pivot([choices]));
+      this.htEditor.loadData((0, _array.pivot)([choices]));
       this.updateDropdownHeight();
       this.flipDropdownIfNeeded();
 
@@ -299,7 +332,7 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
       }
 
       this.hot.listen();
-      setCaretPosition(this.TEXTAREA, pos, pos === endPos ? void 0 : endPos);
+      (0, _element.setCaretPosition)(this.TEXTAREA, pos, pos === endPos ? void 0 : endPos);
     }
     /**
      * Checks where is enough place to open editor.
@@ -311,19 +344,19 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
   }, {
     key: "flipDropdownIfNeeded",
     value: function flipDropdownIfNeeded() {
-      var textareaOffset = offset(this.TEXTAREA);
-      var textareaHeight = outerHeight(this.TEXTAREA);
+      var textareaOffset = (0, _element.offset)(this.TEXTAREA);
+      var textareaHeight = (0, _element.outerHeight)(this.TEXTAREA);
       var dropdownHeight = this.getDropdownHeight();
-      var trimmingContainer = getTrimmingContainer(this.hot.view.wt.wtTable.TABLE);
+      var trimmingContainer = (0, _element.getTrimmingContainer)(this.hot.view.wt.wtTable.TABLE);
       var trimmingContainerScrollTop = trimmingContainer.scrollTop;
-      var headersHeight = outerHeight(this.hot.view.wt.wtTable.THEAD);
+      var headersHeight = (0, _element.outerHeight)(this.hot.view.wt.wtTable.THEAD);
       var containerOffset = {
         row: 0,
         col: 0
       };
 
       if (trimmingContainer !== this.hot.rootWindow) {
-        containerOffset = offset(trimmingContainer);
+        containerOffset = (0, _element.offset)(trimmingContainer);
       }
 
       var spaceAbove = textareaOffset.top - containerOffset.top - headersHeight + trimmingContainerScrollTop;
@@ -413,7 +446,7 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
   }, {
     key: "updateDropdownHeight",
     value: function updateDropdownHeight() {
-      var currentDropdownWidth = this.htEditor.getColWidth(0) + getScrollbarWidth(this.hot.rootDocument) + 2;
+      var currentDropdownWidth = this.htEditor.getColWidth(0) + (0, _element.getScrollbarWidth)(this.hot.rootDocument) + 2;
       var trimDropdown = this.cellProperties.trimDropdown;
       this.htEditor.updateSettings({
         height: this.getDropdownHeight(),
@@ -490,11 +523,11 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
     key: "stripValuesIfNeeded",
     value: function stripValuesIfNeeded(values) {
       var allowHtml = this.cellProperties.allowHtml;
-      var stringifiedValues = arrayMap(values, function (value) {
-        return stringify(value);
+      var stringifiedValues = (0, _array.arrayMap)(values, function (value) {
+        return (0, _mixed.stringify)(value);
       });
-      var strippedValues = arrayMap(stringifiedValues, function (value) {
-        return allowHtml ? value : stripTags(value);
+      var strippedValues = (0, _array.arrayMap)(stringifiedValues, function (value) {
+        return allowHtml ? value : (0, _string.stripTags)(value);
       });
       return strippedValues;
     }
@@ -515,11 +548,11 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
       };
       var allowed = false;
 
-      if (keyCode === KEY_CODES.ARROW_DOWN && selected.row > 0 && selected.row < this.htEditor.countRows() - 1) {
+      if (keyCode === _unicode.KEY_CODES.ARROW_DOWN && selected.row > 0 && selected.row < this.htEditor.countRows() - 1) {
         allowed = true;
       }
 
-      if (keyCode === KEY_CODES.ARROW_UP && selected.row > -1) {
+      if (keyCode === _unicode.KEY_CODES.ARROW_UP && selected.row > -1) {
         allowed = true;
       }
 
@@ -540,10 +573,10 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
       var priv = privatePool.get(this);
       priv.skipOne = false;
 
-      if (isPrintableChar(event.keyCode) || event.keyCode === KEY_CODES.BACKSPACE || event.keyCode === KEY_CODES.DELETE || event.keyCode === KEY_CODES.INSERT) {
+      if ((0, _unicode.isPrintableChar)(event.keyCode) || event.keyCode === _unicode.KEY_CODES.BACKSPACE || event.keyCode === _unicode.KEY_CODES.DELETE || event.keyCode === _unicode.KEY_CODES.INSERT) {
         var timeOffset = 0; // on ctl+c / cmd+c don't update suggestion list
 
-        if (event.keyCode === KEY_CODES.C && (event.ctrlKey || event.metaKey)) {
+        if (event.keyCode === _unicode.KEY_CODES.C && (event.ctrlKey || event.metaKey)) {
           return;
         }
 
@@ -570,7 +603,7 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
   }]);
 
   return AutocompleteEditor;
-}(HandsontableEditor);
+}(_handsontableEditor.HandsontableEditor);
 /**
  * Filters and sorts by relevance.
  *
@@ -579,6 +612,9 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
  * @param {boolean} caseSensitive Indicates if it's sorted by case.
  * @returns {number[]} Array of indexes in original choices array.
  */
+
+
+exports.AutocompleteEditor = AutocompleteEditor;
 
 AutocompleteEditor.sortByRelevance = function (value, choices, caseSensitive) {
   var choicesRelevance = [];
@@ -599,7 +635,7 @@ AutocompleteEditor.sortByRelevance = function (value, choices, caseSensitive) {
   }
 
   for (i = 0; i < choicesCount; i++) {
-    currentItem = stripTags(stringify(choices[i]));
+    currentItem = (0, _string.stripTags)((0, _mixed.stringify)(choices[i]));
 
     if (caseSensitive) {
       valueIndex = currentItem.indexOf(value);

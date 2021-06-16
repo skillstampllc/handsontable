@@ -1,19 +1,44 @@
-import "core-js/modules/es.number.is-integer.js";
-import "core-js/modules/es.number.constructor.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.map.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.from.js";
-import { isObject } from "../../helpers/object.mjs";
-import { isRightClick } from "../../helpers/dom/event.mjs";
-export var ASC_SORT_STATE = 'asc';
-export var DESC_SORT_STATE = 'desc';
-export var HEADER_SPAN_CLASS = 'colHeader';
+"use strict";
+
+exports.__esModule = true;
+exports.areValidSortStates = areValidSortStates;
+exports.getNextSortOrder = getNextSortOrder;
+exports.getHeaderSpanElement = getHeaderSpanElement;
+exports.isFirstLevelColumnHeader = isFirstLevelColumnHeader;
+exports.wasHeaderClickedProperly = wasHeaderClickedProperly;
+exports.HEADER_SPAN_CLASS = exports.DESC_SORT_STATE = exports.ASC_SORT_STATE = void 0;
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.array.map.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.from.js");
+
+var _object = require("../../helpers/object");
+
+var _event = require("../../helpers/dom/event");
+
+var ASC_SORT_STATE = 'asc';
+exports.ASC_SORT_STATE = ASC_SORT_STATE;
+var DESC_SORT_STATE = 'desc';
+exports.DESC_SORT_STATE = DESC_SORT_STATE;
+var HEADER_SPAN_CLASS = 'colHeader';
 /**
  * Get if column state is valid.
  *
@@ -21,8 +46,10 @@ export var HEADER_SPAN_CLASS = 'colHeader';
  * @returns {boolean}
  */
 
+exports.HEADER_SPAN_CLASS = HEADER_SPAN_CLASS;
+
 function isValidColumnState(columnState) {
-  if (isObject(columnState) === false) {
+  if ((0, _object.isObject)(columnState) === false) {
     return false;
   }
 
@@ -38,7 +65,7 @@ function isValidColumnState(columnState) {
  */
 
 
-export function areValidSortStates(sortStates) {
+function areValidSortStates(sortStates) {
   if (sortStates.some(function (columnState) {
     return isValidColumnState(columnState) === false;
   })) {
@@ -59,7 +86,8 @@ export function areValidSortStates(sortStates) {
  * @returns {string|undefined} Next sort order (`asc` for ascending, `desc` for descending and undefined for not sorted).
  */
 
-export function getNextSortOrder(sortOrder) {
+
+function getNextSortOrder(sortOrder) {
   if (sortOrder === DESC_SORT_STATE) {
     return;
   } else if (sortOrder === ASC_SORT_STATE) {
@@ -75,7 +103,8 @@ export function getNextSortOrder(sortOrder) {
  * @returns {Element | null}
  */
 
-export function getHeaderSpanElement(TH) {
+
+function getHeaderSpanElement(TH) {
   var headerSpanElement = TH.querySelector(".".concat(HEADER_SPAN_CLASS));
   return headerSpanElement;
 }
@@ -88,7 +117,8 @@ export function getHeaderSpanElement(TH) {
  * @returns {boolean}
  */
 
-export function isFirstLevelColumnHeader(column, TH) {
+
+function isFirstLevelColumnHeader(column, TH) {
   if (column < 0 || !TH.parentNode) {
     return false;
   }
@@ -111,6 +141,7 @@ export function isFirstLevelColumnHeader(column, TH) {
  * @returns {boolean}
  */
 
-export function wasHeaderClickedProperly(row, column, clickEvent) {
-  return row === -1 && column >= 0 && isRightClick(clickEvent) === false;
+
+function wasHeaderClickedProperly(row, column, clickEvent) {
+  return row === -1 && column >= 0 && (0, _event.isRightClick)(clickEvent) === false;
 }

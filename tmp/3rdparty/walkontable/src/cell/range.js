@@ -1,6 +1,17 @@
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.array.index-of.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+var _coords = _interopRequireDefault(require("./../cell/coords"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,14 +19,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import CellCoords from "./../cell/coords.mjs";
 /**
  * CellRange holds cell coordinates as {@link CellCoords} instances. This object represent unit of the selection layer which
  * can contains multiple contiquous cells or single cell.
  *
  * @util
  */
-
 var CellRange = /*#__PURE__*/function () {
   function CellRange(highlight) {
     var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : highlight;
@@ -275,8 +284,8 @@ var CellRange = /*#__PURE__*/function () {
       var bottomRight = this.getOuterBottomRightCorner();
 
       if (cellCoords.row < topLeft.row || cellCoords.col < topLeft.col || cellCoords.row > bottomRight.row || cellCoords.col > bottomRight.col) {
-        this.from = new CellCoords(Math.min(topLeft.row, cellCoords.row), Math.min(topLeft.col, cellCoords.col));
-        this.to = new CellCoords(Math.max(bottomRight.row, cellCoords.row), Math.max(bottomRight.col, cellCoords.col));
+        this.from = new _coords.default(Math.min(topLeft.row, cellCoords.row), Math.min(topLeft.col, cellCoords.col));
+        this.to = new _coords.default(Math.max(bottomRight.row, cellCoords.row), Math.max(bottomRight.col, cellCoords.col));
         return true;
       }
 
@@ -305,8 +314,8 @@ var CellRange = /*#__PURE__*/function () {
       var resultTopCol = Math.min(topLeft.col, expandingTopLeft.col);
       var resultBottomRow = Math.max(bottomRight.row, expandingBottomRight.row);
       var resultBottomCol = Math.max(bottomRight.col, expandingBottomRight.col);
-      var finalFrom = new CellCoords(resultTopRow, resultTopCol);
-      var finalTo = new CellCoords(resultBottomRow, resultBottomCol);
+      var finalFrom = new _coords.default(resultTopRow, resultTopCol);
+      var finalTo = new _coords.default(resultBottomRow, resultBottomCol);
       this.from = finalFrom;
       this.to = finalTo;
       this.setDirection(initialDirection);
@@ -474,7 +483,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getTopLeftCorner",
     value: function getTopLeftCorner() {
-      return new CellCoords(Math.min(this.from.row, this.to.row), Math.min(this.from.col, this.to.col)).normalize();
+      return new _coords.default(Math.min(this.from.row, this.to.row), Math.min(this.from.col, this.to.col)).normalize();
     }
     /**
      * Gets the bottom right corner of this range. If the corner contains header coordinates
@@ -486,7 +495,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getBottomRightCorner",
     value: function getBottomRightCorner() {
-      return new CellCoords(Math.max(this.from.row, this.to.row), Math.max(this.from.col, this.to.col)).normalize();
+      return new _coords.default(Math.max(this.from.row, this.to.row), Math.max(this.from.col, this.to.col)).normalize();
     }
     /**
      * Gets the top right corner of this range. If the corner contains header coordinates
@@ -498,7 +507,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getTopRightCorner",
     value: function getTopRightCorner() {
-      return new CellCoords(Math.min(this.from.row, this.to.row), Math.max(this.from.col, this.to.col)).normalize();
+      return new _coords.default(Math.min(this.from.row, this.to.row), Math.max(this.from.col, this.to.col)).normalize();
     }
     /**
      * Gets the bottom left corner of this range. If the corner contains header coordinates
@@ -510,7 +519,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getBottomLeftCorner",
     value: function getBottomLeftCorner() {
-      return new CellCoords(Math.max(this.from.row, this.to.row), Math.min(this.from.col, this.to.col)).normalize();
+      return new _coords.default(Math.max(this.from.row, this.to.row), Math.min(this.from.col, this.to.col)).normalize();
     }
     /**
      * Gets the top left corner of this range. If the corner contains header coordinates
@@ -522,7 +531,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getOuterTopLeftCorner",
     value: function getOuterTopLeftCorner() {
-      return new CellCoords(Math.min(this.from.row, this.to.row), Math.min(this.from.col, this.to.col));
+      return new _coords.default(Math.min(this.from.row, this.to.row), Math.min(this.from.col, this.to.col));
     }
     /**
      * Gets the bottom right corner of this range.
@@ -533,7 +542,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getOuterBottomRightCorner",
     value: function getOuterBottomRightCorner() {
-      return new CellCoords(Math.max(this.from.row, this.to.row), Math.max(this.from.col, this.to.col));
+      return new _coords.default(Math.max(this.from.row, this.to.row), Math.max(this.from.col, this.to.col));
     }
     /**
      * Gets the top right corner of this range. If the corner contains header coordinates
@@ -545,7 +554,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getOuterTopRightCorner",
     value: function getOuterTopRightCorner() {
-      return new CellCoords(Math.min(this.from.row, this.to.row), Math.max(this.from.col, this.to.col));
+      return new _coords.default(Math.min(this.from.row, this.to.row), Math.max(this.from.col, this.to.col));
     }
     /**
      * Gets the bottom left corner of this range. If the corner contains header coordinates
@@ -557,7 +566,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getOuterBottomLeftCorner",
     value: function getOuterBottomLeftCorner() {
-      return new CellCoords(Math.max(this.from.row, this.to.row), Math.min(this.from.col, this.to.col));
+      return new _coords.default(Math.max(this.from.row, this.to.row), Math.min(this.from.col, this.to.col));
     }
     /**
      * Checks if coordinates match to one of the 4th corners of this range.
@@ -570,7 +579,7 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "isCorner",
     value: function isCorner(coords, expandedRange) {
-      if (expandedRange && expandedRange.includes(coords) && (this.getOuterTopLeftCorner().isEqual(new CellCoords(expandedRange.from.row, expandedRange.from.col)) || this.getOuterTopRightCorner().isEqual(new CellCoords(expandedRange.from.row, expandedRange.to.col)) || this.getOuterBottomLeftCorner().isEqual(new CellCoords(expandedRange.to.row, expandedRange.from.col)) || this.getOuterBottomRightCorner().isEqual(new CellCoords(expandedRange.to.row, expandedRange.to.col)))) {
+      if (expandedRange && expandedRange.includes(coords) && (this.getOuterTopLeftCorner().isEqual(new _coords.default(expandedRange.from.row, expandedRange.from.col)) || this.getOuterTopRightCorner().isEqual(new _coords.default(expandedRange.from.row, expandedRange.to.col)) || this.getOuterBottomLeftCorner().isEqual(new _coords.default(expandedRange.to.row, expandedRange.from.col)) || this.getOuterBottomRightCorner().isEqual(new _coords.default(expandedRange.to.row, expandedRange.to.col)))) {
         return true;
       }
 
@@ -588,25 +597,25 @@ var CellRange = /*#__PURE__*/function () {
   }, {
     key: "getOppositeCorner",
     value: function getOppositeCorner(coords, expandedRange) {
-      if (!(coords instanceof CellCoords)) {
+      if (!(coords instanceof _coords.default)) {
         return false;
       }
 
       if (expandedRange) {
         if (expandedRange.includes(coords)) {
-          if (this.getOuterTopLeftCorner().isEqual(new CellCoords(expandedRange.from.row, expandedRange.from.col))) {
+          if (this.getOuterTopLeftCorner().isEqual(new _coords.default(expandedRange.from.row, expandedRange.from.col))) {
             return this.getOuterBottomRightCorner();
           }
 
-          if (this.getOuterTopRightCorner().isEqual(new CellCoords(expandedRange.from.row, expandedRange.to.col))) {
+          if (this.getOuterTopRightCorner().isEqual(new _coords.default(expandedRange.from.row, expandedRange.to.col))) {
             return this.getOuterBottomLeftCorner();
           }
 
-          if (this.getOuterBottomLeftCorner().isEqual(new CellCoords(expandedRange.to.row, expandedRange.from.col))) {
+          if (this.getOuterBottomLeftCorner().isEqual(new _coords.default(expandedRange.to.row, expandedRange.from.col))) {
             return this.getOuterTopRightCorner();
           }
 
-          if (this.getOuterBottomRightCorner().isEqual(new CellCoords(expandedRange.to.row, expandedRange.to.col))) {
+          if (this.getOuterBottomRightCorner().isEqual(new _coords.default(expandedRange.to.row, expandedRange.to.col))) {
             return this.getOuterTopLeftCorner();
           }
         }
@@ -682,7 +691,7 @@ var CellRange = /*#__PURE__*/function () {
       for (var r = topLeft.row; r <= bottomRight.row; r++) {
         for (var c = topLeft.col; c <= bottomRight.col; c++) {
           if (!(this.from.row === r && this.from.col === c) && !(this.to.row === r && this.to.col === c)) {
-            out.push(new CellCoords(r, c));
+            out.push(new _coords.default(r, c));
           }
         }
       }
@@ -709,7 +718,7 @@ var CellRange = /*#__PURE__*/function () {
           } else if (bottomRight.row === r && bottomRight.col === c) {
             out.push(bottomRight);
           } else {
-            out.push(new CellCoords(r, c));
+            out.push(new _coords.default(r, c));
           }
         }
       }
@@ -770,4 +779,5 @@ var CellRange = /*#__PURE__*/function () {
   return CellRange;
 }();
 
-export default CellRange;
+var _default = CellRange;
+exports.default = _default;

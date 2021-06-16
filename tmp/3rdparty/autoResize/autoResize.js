@@ -1,4 +1,9 @@
-import "core-js/modules/web.timers.js";
+"use strict";
+
+exports.__esModule = true;
+exports.autoResize = autoResize;
+
+require("core-js/modules/web.timers.js");
 
 /**
  * autoResize - resizes a DOM element to the width and height of another DOM element
@@ -6,7 +11,7 @@ import "core-js/modules/web.timers.js";
  * Copyright 2014, Marcin Warpechowski
  * Licensed under the MIT license
  */
-export function autoResize() {
+function autoResize() {
   var defaults = {
     minHeight: 200,
     maxHeight: 300,

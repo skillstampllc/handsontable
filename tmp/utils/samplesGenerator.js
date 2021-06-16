@@ -1,12 +1,29 @@
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+"use strict";
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.array.index-of.js";
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+var _object = require("./../helpers/object");
+
+var _number = require("./../helpers/number");
+
+var _mixed = require("./../helpers/mixed");
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -14,14 +31,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { isObject } from "./../helpers/object.mjs";
-import { rangeEach } from "./../helpers/number.mjs";
-import { stringify } from "./../helpers/mixed.mjs";
 /**
  * @class SamplesGenerator
  * @util
  */
-
 var SamplesGenerator = /*#__PURE__*/function () {
   function SamplesGenerator(dataFactory) {
     _classCallCheck(this, SamplesGenerator);
@@ -144,7 +157,7 @@ var SamplesGenerator = /*#__PURE__*/function () {
           from = _ref.from,
           to = _ref.to;
 
-      rangeEach(from, to, function (index) {
+      (0, _number.rangeEach)(from, to, function (index) {
         var sample = _this.generateSample(type, range, index);
 
         samples.set(index, sample);
@@ -172,7 +185,7 @@ var SamplesGenerator = /*#__PURE__*/function () {
       var samples = new Map();
       var computedKey = type === 'row' ? 'col' : 'row';
       var sampledValues = [];
-      rangeEach(range.from, range.to, function (index) {
+      (0, _number.rangeEach)(range.from, range.to, function (index) {
         var _ref2 = type === 'row' ? _this2.dataFactory(specifierValue, index) : _this2.dataFactory(index, specifierValue),
             value = _ref2.value,
             bundleSeed = _ref2.bundleSeed;
@@ -182,12 +195,12 @@ var SamplesGenerator = /*#__PURE__*/function () {
 
         if (hasCustomBundleSeed) {
           seed = bundleSeed;
-        } else if (isObject(value)) {
+        } else if ((0, _object.isObject)(value)) {
           seed = "".concat(Object.keys(value).length);
         } else if (Array.isArray(value)) {
           seed = "".concat(value.length);
         } else {
-          seed = "".concat(stringify(value).length);
+          seed = "".concat((0, _mixed.stringify)(value).length);
         }
 
         if (!samples.has(seed)) {
@@ -229,4 +242,5 @@ var SamplesGenerator = /*#__PURE__*/function () {
   return SamplesGenerator;
 }();
 
-export default SamplesGenerator;
+var _default = SamplesGenerator;
+exports.default = _default;

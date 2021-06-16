@@ -1,4 +1,73 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.weak-map.js");
+
+exports.__esModule = true;
+exports.CustomBorders = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.object.assign.js");
+
+require("core-js/modules/es.object.values.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _object = require("../../helpers/object");
+
+var _number = require("../../helpers/number");
+
+var _array = require("../../helpers/array");
+
+var _src = require("../../3rdparty/walkontable/src");
+
+var C = _interopRequireWildcard(require("../../i18n/constants"));
+
+var _contextMenuItem = require("./contextMenuItem");
+
+var _utils = require("./utils");
+
+var _selection = require("../../selection");
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -11,27 +80,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.object.assign.js";
-import "core-js/modules/es.object.values.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -57,17 +105,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import { hasOwnProperty, objectEach } from "../../helpers/object.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { arrayEach, arrayReduce, arrayMap } from "../../helpers/array.mjs";
-import { CellRange, CellCoords } from "../../3rdparty/walkontable/src/index.mjs";
-import * as C from "../../i18n/constants.mjs";
-import { bottom, left, noBorders, right, top } from "./contextMenuItem/index.mjs";
-import { createId, createDefaultCustomBorder, createSingleEmptyBorder, createEmptyBorders, extendDefaultBorder } from "./utils.mjs";
-import { detectSelectionType, normalizeSelectionFactory } from "../../selection/index.mjs";
-export var PLUGIN_KEY = 'customBorders';
-export var PLUGIN_PRIORITY = 90;
+var PLUGIN_KEY = 'customBorders';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 90;
 /**
  * @class CustomBorders
  * @plugin CustomBorders
@@ -121,7 +161,9 @@ export var PLUGIN_PRIORITY = 90;
  * ```
  */
 
-export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
+var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
   _inherits(CustomBorders, _BasePlugin);
 
   var _super = _createSuper(CustomBorders);
@@ -229,9 +271,9 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
 
       var defaultBorderKeys = ['top', 'right', 'bottom', 'left'];
       var borderKeys = borderObject ? Object.keys(borderObject) : defaultBorderKeys;
-      var selectionType = detectSelectionType(selectionRanges);
-      var selectionSchemaNormalizer = normalizeSelectionFactory(selectionType);
-      arrayEach(selectionRanges, function (selection) {
+      var selectionType = (0, _selection.detectSelectionType)(selectionRanges);
+      var selectionSchemaNormalizer = (0, _selection.normalizeSelectionFactory)(selectionType);
+      (0, _array.arrayEach)(selectionRanges, function (selection) {
         var _selectionSchemaNorma = selectionSchemaNormalizer(selection),
             _selectionSchemaNorma2 = _slicedToArray(_selectionSchemaNorma, 4),
             rowStart = _selectionSchemaNorma2[0],
@@ -241,7 +283,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
 
         var _loop = function _loop(row) {
           var _loop2 = function _loop2(col) {
-            arrayEach(borderKeys, function (borderKey) {
+            (0, _array.arrayEach)(borderKeys, function (borderKey) {
               _this3.prepareBorderFromCustomAdded(row, col, borderObject, borderKey);
             });
           };
@@ -294,10 +336,10 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
         return this.savedBorders;
       }
 
-      var selectionType = detectSelectionType(selectionRanges);
-      var selectionSchemaNormalizer = normalizeSelectionFactory(selectionType);
+      var selectionType = (0, _selection.detectSelectionType)(selectionRanges);
+      var selectionSchemaNormalizer = (0, _selection.normalizeSelectionFactory)(selectionType);
       var selectedBorders = [];
-      arrayEach(selectionRanges, function (selection) {
+      (0, _array.arrayEach)(selectionRanges, function (selection) {
         var _selectionSchemaNorma3 = selectionSchemaNormalizer(selection),
             _selectionSchemaNorma4 = _slicedToArray(_selectionSchemaNorma3, 4),
             rowStart = _selectionSchemaNorma4[0],
@@ -307,7 +349,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
 
         var _loop3 = function _loop3(row) {
           var _loop4 = function _loop4(col) {
-            arrayEach(_this4.savedBorders, function (border) {
+            (0, _array.arrayEach)(_this4.savedBorders, function (border) {
               if (border.row === row && border.col === col) {
                 selectedBorders.push(border);
               }
@@ -351,7 +393,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
       if (selectionRanges) {
         this.setBorders(selectionRanges);
       } else {
-        arrayEach(this.savedBorders, function (border) {
+        (0, _array.arrayEach)(this.savedBorders, function (border) {
           _this5.clearBordersFromSelectionSettings(border.id);
 
           _this5.clearNullCellRange();
@@ -378,7 +420,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
         this.savedBorders.push(border);
       }
 
-      var visualCellRange = new CellRange(new CellCoords(border.row, border.col));
+      var visualCellRange = new _src.CellRange(new _src.CellCoords(border.row, border.col));
       var hasCustomSelections = this.checkCustomSelections(border, visualCellRange, place);
 
       if (!hasCustomSelections) {
@@ -408,11 +450,11 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      var border = createEmptyBorders(row, column);
+      var border = (0, _utils.createEmptyBorders)(row, column);
 
       if (borderDescriptor) {
-        border = extendDefaultBorder(border, borderDescriptor);
-        arrayEach(this.hot.selection.highlight.customSelections, function (customSelection) {
+        border = (0, _utils.extendDefaultBorder)(border, borderDescriptor);
+        (0, _array.arrayEach)(this.hot.selection.highlight.customSelections, function (customSelection) {
           if (border.id === customSelection.settings.id) {
             Object.assign(customSelection.settings, borderDescriptor);
             border.id = customSelection.settings.id;
@@ -443,13 +485,13 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
       var range = rowDecriptor.range;
       var lastRowIndex = Math.min(range.to.row, this.hot.countRows() - 1);
       var lastColumnIndex = Math.min(range.to.col, this.hot.countCols() - 1);
-      rangeEach(range.from.row, lastRowIndex, function (rowIndex) {
-        rangeEach(range.from.col, lastColumnIndex, function (colIndex) {
-          var border = createEmptyBorders(rowIndex, colIndex);
+      (0, _number.rangeEach)(range.from.row, lastRowIndex, function (rowIndex) {
+        (0, _number.rangeEach)(range.from.col, lastColumnIndex, function (colIndex) {
+          var border = (0, _utils.createEmptyBorders)(rowIndex, colIndex);
           var add = 0;
 
           if (rowIndex === range.from.row) {
-            if (hasOwnProperty(rowDecriptor, 'top')) {
+            if ((0, _object.hasOwnProperty)(rowDecriptor, 'top')) {
               add += 1;
               border.top = rowDecriptor.top;
             }
@@ -457,14 +499,14 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
 
 
           if (rowIndex === range.to.row) {
-            if (hasOwnProperty(rowDecriptor, 'bottom')) {
+            if ((0, _object.hasOwnProperty)(rowDecriptor, 'bottom')) {
               add += 1;
               border.bottom = rowDecriptor.bottom;
             }
           }
 
           if (colIndex === range.from.col) {
-            if (hasOwnProperty(rowDecriptor, 'left')) {
+            if ((0, _object.hasOwnProperty)(rowDecriptor, 'left')) {
               add += 1;
               border.left = rowDecriptor.left;
             }
@@ -472,7 +514,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
 
 
           if (colIndex === range.to.col) {
-            if (hasOwnProperty(rowDecriptor, 'right')) {
+            if ((0, _object.hasOwnProperty)(rowDecriptor, 'right')) {
               add += 1;
               border.right = rowDecriptor.right;
             }
@@ -498,7 +540,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "removeAllBorders",
     value: function removeAllBorders(row, column) {
-      var borderId = createId(row, column);
+      var borderId = (0, _utils.createId)(row, column);
       this.spliceBorder(borderId);
       this.clearBordersFromSelectionSettings(borderId);
       this.clearNullCellRange();
@@ -520,11 +562,11 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
       var bordersMeta = this.hot.getCellMeta(row, column).borders;
 
       if (!bordersMeta || bordersMeta.border === void 0) {
-        bordersMeta = createEmptyBorders(row, column);
+        bordersMeta = (0, _utils.createEmptyBorders)(row, column);
       }
 
       if (remove) {
-        bordersMeta[place] = createSingleEmptyBorder();
+        bordersMeta[place] = (0, _utils.createSingleEmptyBorder)();
         var hideCount = this.countHide(bordersMeta);
 
         if (hideCount === 4) {
@@ -539,7 +581,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
           this.hot.setCellMeta(row, column, 'borders', bordersMeta);
         }
       } else {
-        bordersMeta[place] = createDefaultCustomBorder();
+        bordersMeta[place] = (0, _utils.createDefaultCustomBorder)();
 
         var _customSelectionsChecker = this.checkCustomSelectionsFromContextMenu(bordersMeta, place, remove);
 
@@ -564,7 +606,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
     value: function prepareBorder(selected, place, remove) {
       var _this7 = this;
 
-      arrayEach(selected, function (_ref) {
+      (0, _array.arrayEach)(selected, function (_ref) {
         var start = _ref.start,
             end = _ref.end;
 
@@ -577,33 +619,33 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
         } else {
           switch (place) {
             case 'noBorders':
-              rangeEach(start.col, end.col, function (colIndex) {
-                rangeEach(start.row, end.row, function (rowIndex) {
+              (0, _number.rangeEach)(start.col, end.col, function (colIndex) {
+                (0, _number.rangeEach)(start.row, end.row, function (rowIndex) {
                   _this7.removeAllBorders(rowIndex, colIndex);
                 });
               });
               break;
 
             case 'top':
-              rangeEach(start.col, end.col, function (topCol) {
+              (0, _number.rangeEach)(start.col, end.col, function (topCol) {
                 _this7.setBorder(start.row, topCol, place, remove);
               });
               break;
 
             case 'right':
-              rangeEach(start.row, end.row, function (rowRight) {
+              (0, _number.rangeEach)(start.row, end.row, function (rowRight) {
                 _this7.setBorder(rowRight, end.col, place, remove);
               });
               break;
 
             case 'bottom':
-              rangeEach(start.col, end.col, function (bottomCol) {
+              (0, _number.rangeEach)(start.col, end.col, function (bottomCol) {
                 _this7.setBorder(end.row, bottomCol, place, remove);
               });
               break;
 
             case 'left':
-              rangeEach(start.row, end.row, function (rowLeft) {
+              (0, _number.rangeEach)(start.row, end.row, function (rowLeft) {
                 _this7.setBorder(rowLeft, start.col, place, remove);
               });
               break;
@@ -626,7 +668,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
     value: function createCustomBorders(customBorders) {
       var _this8 = this;
 
-      arrayEach(customBorders, function (customBorder) {
+      (0, _array.arrayEach)(customBorders, function (customBorder) {
         if (customBorder.range) {
           _this8.prepareBorderFromCustomAddedRange(customBorder);
         } else {
@@ -646,7 +688,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
     key: "countHide",
     value: function countHide(border) {
       var values = Object.values(border);
-      return arrayReduce(values, function (accumulator, value) {
+      return (0, _array.arrayReduce)(values, function (accumulator, value) {
         var result = accumulator;
 
         if (value.hide) {
@@ -666,7 +708,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "clearBordersFromSelectionSettings",
     value: function clearBordersFromSelectionSettings(borderId) {
-      var index = arrayMap(this.hot.selection.highlight.customSelections, function (customSelection) {
+      var index = (0, _array.arrayMap)(this.hot.selection.highlight.customSelections, function (customSelection) {
         return customSelection.settings.id;
       }).indexOf(borderId);
 
@@ -685,7 +727,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
     value: function clearNullCellRange() {
       var _this9 = this;
 
-      arrayEach(this.hot.selection.highlight.customSelections, function (customSelection, index) {
+      (0, _array.arrayEach)(this.hot.selection.highlight.customSelections, function (customSelection, index) {
         if (customSelection.cellRange === null) {
           _this9.hot.selection.highlight.customSelections[index].destroy();
 
@@ -706,7 +748,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
     value: function hideBorders() {
       var _this10 = this;
 
-      arrayEach(this.savedBorders, function (border) {
+      (0, _array.arrayEach)(this.savedBorders, function (border) {
         _this10.clearBordersFromSelectionSettings(border.id);
 
         _this10.clearNullCellRange();
@@ -722,7 +764,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "spliceBorder",
     value: function spliceBorder(borderId) {
-      var index = arrayMap(this.savedBorders, function (border) {
+      var index = (0, _array.arrayMap)(this.savedBorders, function (border) {
         return border.id;
       }).indexOf(borderId);
 
@@ -751,7 +793,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
         this.spliceBorder(border.id);
         check = true;
       } else {
-        arrayEach(this.savedBorders, function (savedBorder, index) {
+        (0, _array.arrayEach)(this.savedBorders, function (savedBorder, index) {
           if (border.id === savedBorder.id) {
             _this11.savedBorders[index] = border;
             check = true;
@@ -777,9 +819,9 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
     key: "checkCustomSelectionsFromContextMenu",
     value: function checkCustomSelectionsFromContextMenu(border, place, remove) {
       var check = false;
-      arrayEach(this.hot.selection.highlight.customSelections, function (customSelection) {
+      (0, _array.arrayEach)(this.hot.selection.highlight.customSelections, function (customSelection) {
         if (border.id === customSelection.settings.id) {
-          objectEach(customSelection.instanceBorders, function (borderObject) {
+          (0, _object.objectEach)(customSelection.instanceBorders, function (borderObject) {
             borderObject.toggleHiddenClass(place, remove); // TODO this also bad?
           });
           check = true;
@@ -808,13 +850,13 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
         this.removeAllBorders(border.row, border.col);
         check = true;
       } else {
-        arrayEach(this.hot.selection.highlight.customSelections, function (customSelection) {
+        (0, _array.arrayEach)(this.hot.selection.highlight.customSelections, function (customSelection) {
           if (border.id === customSelection.settings.id) {
             customSelection.visualCellRange = cellRange;
             customSelection.commit();
 
             if (place) {
-              objectEach(customSelection.instanceBorders, function (borderObject) {
+              (0, _object.objectEach)(customSelection.instanceBorders, function (borderObject) {
                 borderObject.changeBorderStyle(place, border);
               });
             }
@@ -873,7 +915,7 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
           return this.selection.isSelectedByCorner();
         },
         submenu: {
-          items: [top(this), right(this), bottom(this), left(this), noBorders(this)]
+          items: [(0, _contextMenuItem.top)(this), (0, _contextMenuItem.right)(this), (0, _contextMenuItem.bottom)(this), (0, _contextMenuItem.left)(this), (0, _contextMenuItem.noBorders)(this)]
         }
       });
     }
@@ -910,4 +952,6 @@ export var CustomBorders = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return CustomBorders;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.CustomBorders = CustomBorders;

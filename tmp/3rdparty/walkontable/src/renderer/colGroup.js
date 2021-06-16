@@ -1,15 +1,35 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = _interopRequireDefault(require("./_base"));
+
+var _element = require("./../../../../helpers/dom/element");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31,8 +51,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import BaseRenderer from "./_base.mjs";
-import { addClass } from "./../../../../helpers/dom/element.mjs";
 /**
  * Colgroup renderer responsible for managing (inserting, tracking, rendering) COL elements.
  *
@@ -45,7 +63,6 @@ import { addClass } from "./../../../../helpers/dom/element.mjs";
  *
  * @class {ColGroupRenderer}
  */
-
 var ColGroupRenderer = /*#__PURE__*/function (_BaseRenderer) {
   _inherits(ColGroupRenderer, _BaseRenderer);
 
@@ -109,12 +126,12 @@ var ColGroupRenderer = /*#__PURE__*/function (_BaseRenderer) {
       var firstChild = this.rootNode.firstChild;
 
       if (firstChild) {
-        addClass(firstChild, 'rowHeader');
+        (0, _element.addClass)(firstChild, 'rowHeader');
       }
     }
   }]);
 
   return ColGroupRenderer;
-}(BaseRenderer);
+}(_base.default);
 
-export { ColGroupRenderer as default };
+exports.default = ColGroupRenderer;

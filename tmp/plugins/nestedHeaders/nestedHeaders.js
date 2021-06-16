@@ -1,27 +1,65 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.freeze.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.object.freeze.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.NestedHeaders = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _element = require("../../helpers/dom/element");
+
+var _event = require("../../helpers/dom/event");
+
+var _templateLiteralTag = require("../../helpers/templateLiteralTag");
+
+var _console = require("../../helpers/console");
+
+var _selection = require("../../selection");
+
+var _base = require("../base");
+
+var _stateManager2 = _interopRequireDefault(require("./stateManager"));
+
+var _ghostTable = _interopRequireDefault(require("./utils/ghostTable"));
 
 var _templateObject, _templateObject2;
 
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -59,16 +97,9 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
-import { addClass, removeClass, fastInnerHTML, empty } from "../../helpers/dom/element.mjs";
-import { isLeftClick, isRightClick } from "../../helpers/dom/event.mjs";
-import { toSingleLine } from "../../helpers/templateLiteralTag.mjs";
-import { warn } from "../../helpers/console.mjs";
-import { ACTIVE_HEADER_TYPE, HEADER_TYPE } from "../../selection/index.mjs";
-import { BasePlugin } from "../base/index.mjs";
-import StateManager from "./stateManager/index.mjs";
-import GhostTable from "./utils/ghostTable.mjs";
-export var PLUGIN_KEY = 'nestedHeaders';
-export var PLUGIN_PRIORITY = 280;
+var PLUGIN_KEY = 'nestedHeaders';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 280;
 /**
  * @plugin NestedHeaders
  * @description
@@ -95,11 +126,13 @@ export var PLUGIN_PRIORITY = 280;
  * ```
  */
 
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
 var _stateManager = /*#__PURE__*/new WeakMap();
 
 var _hidingIndexMapObserver = /*#__PURE__*/new WeakMap();
 
-export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
+var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
   _inherits(NestedHeaders, _BasePlugin);
 
   var _super = _createSuper(NestedHeaders);
@@ -117,7 +150,7 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
 
     _stateManager.set(_assertThisInitialized(_this), {
       writable: true,
-      value: new StateManager()
+      value: new _stateManager2.default()
     });
 
     _hidingIndexMapObserver.set(_assertThisInitialized(_this), {
@@ -125,7 +158,7 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
       value: null
     });
 
-    _defineProperty(_assertThisInitialized(_this), "ghostTable", new GhostTable(_assertThisInitialized(_this)));
+    _defineProperty(_assertThisInitialized(_this), "ghostTable", new _ghostTable.default(_assertThisInitialized(_this)));
 
     _defineProperty(_assertThisInitialized(_this), "detectedOverlappedHeaders", false);
 
@@ -160,7 +193,7 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
           nestedHeaders = _this$hot$getSettings.nestedHeaders;
 
       if (!Array.isArray(nestedHeaders) || !Array.isArray(nestedHeaders[0])) {
-        warn(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["Your Nested Headers plugin configuration is invalid. The settings has to be \n                        passed as an array of arrays e.q. [['A1', { label: 'A2', colspan: 2 }]]"], ["Your Nested Headers plugin configuration is invalid. The settings has to be\\x20\n                        passed as an array of arrays e.q. [['A1', { label: 'A2', colspan: 2 }]]"]))));
+        (0, _console.warn)((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Your Nested Headers plugin configuration is invalid. The settings has to be \n                        passed as an array of arrays e.q. [['A1', { label: 'A2', colspan: 2 }]]"], ["Your Nested Headers plugin configuration is invalid. The settings has to be\\x20\n                        passed as an array of arrays e.q. [['A1', { label: 'A2', colspan: 2 }]]"]))));
       }
 
       this.addHook('init', function () {
@@ -219,7 +252,7 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (this.detectedOverlappedHeaders) {
-        warn(toSingleLine(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Your Nested Headers plugin setup contains overlapping headers. This kind of configuration \n                        is currently not supported."], ["Your Nested Headers plugin setup contains overlapping headers. This kind of configuration\\x20\n                        is currently not supported."]))));
+        (0, _console.warn)((0, _templateLiteralTag.toSingleLine)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Your Nested Headers plugin setup contains overlapping headers. This kind of configuration \n                        is currently not supported."], ["Your Nested Headers plugin setup contains overlapping headers. This kind of configuration\\x20\n                        is currently not supported."]))));
       }
 
       if (this.enabled) {
@@ -343,16 +376,16 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
 
         for (var j = 0, masterNodes = masterLevel.childNodes.length; j < masterNodes; j++) {
           masterLevel.childNodes[j].removeAttribute('colspan');
-          removeClass(masterLevel.childNodes[j], 'hiddenHeader');
+          (0, _element.removeClass)(masterLevel.childNodes[j], 'hiddenHeader');
 
           if (topLevel && topLevel.childNodes[j]) {
             topLevel.childNodes[j].removeAttribute('colspan');
-            removeClass(topLevel.childNodes[j], 'hiddenHeader');
+            (0, _element.removeClass)(topLevel.childNodes[j], 'hiddenHeader');
           }
 
           if (topLeftCornerHeaders && topLeftCornerLevel && topLeftCornerLevel.childNodes[j]) {
             topLeftCornerLevel.childNodes[j].removeAttribute('colspan');
-            removeClass(topLeftCornerLevel.childNodes[j], 'hiddenHeader');
+            (0, _element.removeClass)(topLeftCornerLevel.childNodes[j], 'hiddenHeader');
           }
         }
       }
@@ -387,7 +420,7 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
         }
 
         TH.removeAttribute('colspan');
-        removeClass(TH, 'hiddenHeader');
+        (0, _element.removeClass)(TH, 'hiddenHeader');
 
         var _ref2 = (_classPrivateFieldGet2 = _classPrivateFieldGet(_this4, _stateManager).getHeaderSettings(headerLevel, visualColumnsIndex)) !== null && _classPrivateFieldGet2 !== void 0 ? _classPrivateFieldGet2 : {
           label: ''
@@ -398,7 +431,7 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
             isPlaceholder = _ref2.isPlaceholder;
 
         if (isPlaceholder || isHidden) {
-          addClass(TH, 'hiddenHeader');
+          (0, _element.addClass)(TH, 'hiddenHeader');
         } else if (colspan > 1) {
           var _view$wt$wtOverlays$t, _view$wt$wtOverlays$l;
 
@@ -414,11 +447,11 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
 
         var divEl = rootDocument.createElement('div');
         var spanEl = rootDocument.createElement('span');
-        addClass(divEl, 'relative');
-        addClass(spanEl, 'colHeader');
-        fastInnerHTML(spanEl, label);
+        (0, _element.addClass)(divEl, 'relative');
+        (0, _element.addClass)(spanEl, 'colHeader');
+        (0, _element.fastInnerHTML)(spanEl, label);
         divEl.appendChild(spanEl);
-        empty(TH);
+        (0, _element.empty)(TH);
         TH.appendChild(divEl);
 
         _this4.hot.runHooks('afterGetColHeader', visualColumnsIndex, TH);
@@ -452,11 +485,11 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
           isRoot = _classPrivateFieldGet3.isRoot,
           colspan = _classPrivateFieldGet3.colspan;
 
-      if (selectionType === HEADER_TYPE) {
+      if (selectionType === _selection.HEADER_TYPE) {
         if (!isRoot) {
           return headerNodeData.columnIndex;
         }
-      } else if (selectionType === ACTIVE_HEADER_TYPE) {
+      } else if (selectionType === _selection.ACTIVE_HEADER_TYPE) {
         if (colspan > selectionWidth - columnCursor || !isRoot) {
           // Reset the class names array so the generated TH element won't be modified.
           classNames.length = 0;
@@ -523,7 +556,7 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
         } else {
           columnsToSelect.push(columnIndex, columnIndex + origColspan - 1, coords.row);
         }
-      } else if (isLeftClick(event) || isRightClick(event) && allowRightClickSelection) {
+      } else if ((0, _event.isLeftClick)(event) || (0, _event.isRightClick)(event) && allowRightClickSelection) {
         columnsToSelect.push(columnIndex, columnIndex + origColspan - 1, coords.row);
       } // The plugin takes control of the how the columns are selected.
 
@@ -718,4 +751,6 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return NestedHeaders;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.NestedHeaders = NestedHeaders;

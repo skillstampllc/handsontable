@@ -1,34 +1,67 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.setupEngine = setupEngine;
+exports.registerEngine = registerEngine;
+exports.getRegisteredHotInstances = getRegisteredHotInstances;
+exports.unregisterEngine = unregisterEngine;
+exports.registerCustomFunctions = registerCustomFunctions;
+exports.registerLanguage = registerLanguage;
+exports.registerNamedExpressions = registerNamedExpressions;
+exports.setupSheet = setupSheet;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.function.name.js");
+
+var _staticRegister = _interopRequireDefault(require("../../../utils/staticRegister"));
+
+var _mixed = require("../../../helpers/mixed");
+
+var _console = require("../../../helpers/console");
+
+var _formulas = require("../formulas");
+
+var _settings = require("./settings");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import staticRegister from "../../../utils/staticRegister.mjs";
-import { isUndefined } from "../../../helpers/mixed.mjs";
-import { warn } from "../../../helpers/console.mjs";
-import { PLUGIN_KEY } from "../formulas.mjs";
-import { DEFAULT_LICENSE_KEY, getEngineSettingsWithDefaultsAndOverrides } from "./settings.mjs";
 /**
  * Prepares and returns the collection for the engine relationship with the HoT instances.
  *
  * @returns {Map}
  */
-
 function getEngineRelationshipRegistry() {
   var registryKey = 'engine_relationship';
-  var pluginStaticRegistry = staticRegister(PLUGIN_KEY);
+  var pluginStaticRegistry = (0, _staticRegister.default)(_formulas.PLUGIN_KEY);
 
   if (!pluginStaticRegistry.hasItem(registryKey)) {
     pluginStaticRegistry.register(registryKey, new Map());
@@ -45,7 +78,7 @@ function getEngineRelationshipRegistry() {
 
 function getSharedEngineUsageRegistry() {
   var registryKey = 'shared_engine_usage';
-  var pluginStaticRegistry = staticRegister(PLUGIN_KEY);
+  var pluginStaticRegistry = (0, _staticRegister.default)(_formulas.PLUGIN_KEY);
 
   if (!pluginStaticRegistry.hasItem(registryKey)) {
     pluginStaticRegistry.register(registryKey, new Map());
@@ -62,16 +95,16 @@ function getSharedEngineUsageRegistry() {
  */
 
 
-export function setupEngine(hotInstance) {
+function setupEngine(hotInstance) {
   var hotSettings = hotInstance.getSettings();
-  var pluginSettings = hotSettings[PLUGIN_KEY];
+  var pluginSettings = hotSettings[_formulas.PLUGIN_KEY];
   var engineConfigItem = pluginSettings === null || pluginSettings === void 0 ? void 0 : pluginSettings.engine;
 
   if (pluginSettings === true) {
     return null;
   }
 
-  if (isUndefined(engineConfigItem)) {
+  if ((0, _mixed.isUndefined)(engineConfigItem)) {
     return null;
   } // `engine.hyperformula` or `engine` is the engine class
 
@@ -80,7 +113,7 @@ export function setupEngine(hotInstance) {
     var _engineConfigItem$hyp;
 
     return registerEngine((_engineConfigItem$hyp = engineConfigItem.hyperformula) !== null && _engineConfigItem$hyp !== void 0 ? _engineConfigItem$hyp : engineConfigItem, hotSettings, hotInstance); // `engine` is the engine instance
-  } else if (_typeof(engineConfigItem) === 'object' && isUndefined(engineConfigItem.hyperformula)) {
+  } else if (_typeof(engineConfigItem) === 'object' && (0, _mixed.isUndefined)(engineConfigItem.hyperformula)) {
     var engineRelationship = getEngineRelationshipRegistry();
     var sharedEngineUsage = getSharedEngineUsageRegistry().get(engineConfigItem);
 
@@ -96,7 +129,7 @@ export function setupEngine(hotInstance) {
 
     if (!engineConfigItem.getConfig().licenseKey) {
       engineConfigItem.updateConfig({
-        licenseKey: DEFAULT_LICENSE_KEY
+        licenseKey: _settings.DEFAULT_LICENSE_KEY
       });
     }
 
@@ -114,9 +147,10 @@ export function setupEngine(hotInstance) {
  * @returns {object} Returns the engine instance.
  */
 
-export function registerEngine(engineClass, hotSettings, hotInstance) {
-  var pluginSettings = hotSettings[PLUGIN_KEY];
-  var engineSettings = getEngineSettingsWithDefaultsAndOverrides(hotSettings);
+
+function registerEngine(engineClass, hotSettings, hotInstance) {
+  var pluginSettings = hotSettings[_formulas.PLUGIN_KEY];
+  var engineSettings = (0, _settings.getEngineSettingsWithDefaultsAndOverrides)(hotSettings);
   var engineRegistry = getEngineRelationshipRegistry();
   var sharedEngineRegistry = getSharedEngineUsageRegistry();
   registerCustomFunctions(engineClass, pluginSettings.functions);
@@ -141,7 +175,8 @@ export function registerEngine(engineClass, hotSettings, hotInstance) {
  * @returns {Handsontable[]} Returns an array with Handsontable instances.
  */
 
-export function getRegisteredHotInstances(engine) {
+
+function getRegisteredHotInstances(engine) {
   var _engineRegistry$get;
 
   var engineRegistry = getEngineRelationshipRegistry();
@@ -155,7 +190,8 @@ export function getRegisteredHotInstances(engine) {
  * @param {string} hotInstance The Handsontable instance.
  */
 
-export function unregisterEngine(engine, hotInstance) {
+
+function unregisterEngine(engine, hotInstance) {
   if (engine) {
     var engineRegistry = getEngineRelationshipRegistry();
     var engineHotRelationship = engineRegistry.get(engine);
@@ -187,7 +223,8 @@ export function unregisterEngine(engine, hotInstance) {
  * @param {Array} customFunctions The custom functions array.
  */
 
-export function registerCustomFunctions(engineClass, customFunctions) {
+
+function registerCustomFunctions(engineClass, customFunctions) {
   if (customFunctions) {
     customFunctions.forEach(function (func) {
       var name = func.name,
@@ -197,7 +234,7 @@ export function registerCustomFunctions(engineClass, customFunctions) {
       try {
         engineClass.registerFunction(name, plugin, translations);
       } catch (e) {
-        warn(e.message);
+        (0, _console.warn)(e.message);
       }
     });
   }
@@ -209,14 +246,15 @@ export function registerCustomFunctions(engineClass, customFunctions) {
  * @param {object} languageSetting The engine's language object.
  */
 
-export function registerLanguage(engineClass, languageSetting) {
+
+function registerLanguage(engineClass, languageSetting) {
   if (languageSetting) {
     var langCode = languageSetting.langCode;
 
     try {
       engineClass.registerLanguage(langCode, languageSetting);
     } catch (e) {
-      warn(e.message);
+      (0, _console.warn)(e.message);
     }
   }
 }
@@ -227,7 +265,8 @@ export function registerLanguage(engineClass, languageSetting) {
  * @param {Array} namedExpressions Array of the named expressions to be registered.
  */
 
-export function registerNamedExpressions(engineInstance, namedExpressions) {
+
+function registerNamedExpressions(engineInstance, namedExpressions) {
   if (namedExpressions) {
     engineInstance.suspendEvaluation();
     namedExpressions.forEach(function (namedExp) {
@@ -239,7 +278,7 @@ export function registerNamedExpressions(engineInstance, namedExpressions) {
       try {
         engineInstance.addNamedExpression(name, expression, scope, options);
       } catch (e) {
-        warn(e.message);
+        (0, _console.warn)(e.message);
       }
     });
     engineInstance.resumeEvaluation();
@@ -253,8 +292,9 @@ export function registerNamedExpressions(engineInstance, namedExpressions) {
  * @returns {*}
  */
 
-export function setupSheet(engineInstance, sheetName) {
-  if (isUndefined(sheetName) || !engineInstance.doesSheetExist(sheetName)) {
+
+function setupSheet(engineInstance, sheetName) {
+  if ((0, _mixed.isUndefined)(sheetName) || !engineInstance.doesSheetExist(sheetName)) {
     sheetName = engineInstance.addSheet(sheetName);
   }
 

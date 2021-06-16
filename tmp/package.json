@@ -12,8 +12,8 @@
   "author": "Handsoncode <hello@handsontable.com>",
   "version": "9.0.0",
   "main": "tmp/index",
-  "module": "tmp/index.js",
-  "jsnext:main": "tmp/index.js",
+  "module": "tmp/index.mjs",
+  "jsnext:main": "tmp/index.mjs",
   "jsdelivr": "dist/handsontable.full.min.js",
   "unpkg": "dist/handsontable.full.min.js",
   "keywords": [
@@ -123,37 +123,48 @@
   ],
   "exports": {
     "./cellTypes/autocompleteType": {
-      "require": "./cellTypes/autocompleteType/index.js"
+      "require": "./cellTypes/autocompleteType/index.js",
+      "import": "./cellTypes/autocompleteType/index.mjs"
     },
     "./cellTypes/checkboxType": {
-      "require": "./cellTypes/checkboxType/index.js"
+      "require": "./cellTypes/checkboxType/index.js",
+      "import": "./cellTypes/checkboxType/index.mjs"
     },
     "./cellTypes/dateType": {
-      "require": "./cellTypes/dateType/index.js"
+      "require": "./cellTypes/dateType/index.js",
+      "import": "./cellTypes/dateType/index.mjs"
     },
     "./cellTypes/dropdownType": {
-      "require": "./cellTypes/dropdownType/index.js"
+      "require": "./cellTypes/dropdownType/index.js",
+      "import": "./cellTypes/dropdownType/index.mjs"
     },
     "./cellTypes/handsontableType": {
-      "require": "./cellTypes/handsontableType/index.js"
+      "require": "./cellTypes/handsontableType/index.js",
+      "import": "./cellTypes/handsontableType/index.mjs"
     },
     "./cellTypes/numericType": {
-      "require": "./cellTypes/numericType/index.js"
+      "require": "./cellTypes/numericType/index.js",
+      "import": "./cellTypes/numericType/index.mjs"
     },
     "./cellTypes/passwordType": {
-      "require": "./cellTypes/passwordType/index.js"
+      "require": "./cellTypes/passwordType/index.js",
+      "import": "./cellTypes/passwordType/index.mjs"
     },
     "./cellTypes/textType": {
-      "require": "./cellTypes/textType/index.js"
+      "require": "./cellTypes/textType/index.js",
+      "import": "./cellTypes/textType/index.mjs"
     },
     "./cellTypes/timeType": {
-      "require": "./cellTypes/timeType/index.js"
+      "require": "./cellTypes/timeType/index.js",
+      "import": "./cellTypes/timeType/index.mjs"
     },
     "./cellTypes": {
-      "require": "./cellTypes/index.js"
+      "require": "./cellTypes/index.js",
+      "import": "./cellTypes/index.mjs"
     },
     "./cellTypes/registry": {
-      "require": "./cellTypes/registry.js"
+      "require": "./cellTypes/registry.js",
+      "import": "./cellTypes/registry.mjs"
     },
     "./languages/de-CH": {
       "require": "./languages/de-CH.js",
@@ -224,250 +235,332 @@
       "import": "./languages/zh-TW.mjs"
     },
     "./editors/autocompleteEditor": {
-      "require": "./editors/autocompleteEditor/index.js"
+      "require": "./editors/autocompleteEditor/index.js",
+      "import": "./editors/autocompleteEditor/index.mjs"
     },
     "./editors/baseEditor": {
-      "require": "./editors/baseEditor/index.js"
+      "require": "./editors/baseEditor/index.js",
+      "import": "./editors/baseEditor/index.mjs"
     },
     "./editors/checkboxEditor": {
-      "require": "./editors/checkboxEditor/index.js"
+      "require": "./editors/checkboxEditor/index.js",
+      "import": "./editors/checkboxEditor/index.mjs"
     },
     "./editors/dateEditor": {
-      "require": "./editors/dateEditor/index.js"
+      "require": "./editors/dateEditor/index.js",
+      "import": "./editors/dateEditor/index.mjs"
     },
     "./editors/dropdownEditor": {
-      "require": "./editors/dropdownEditor/index.js"
+      "require": "./editors/dropdownEditor/index.js",
+      "import": "./editors/dropdownEditor/index.mjs"
     },
     "./editors/handsontableEditor": {
-      "require": "./editors/handsontableEditor/index.js"
+      "require": "./editors/handsontableEditor/index.js",
+      "import": "./editors/handsontableEditor/index.mjs"
     },
     "./editors/numericEditor": {
-      "require": "./editors/numericEditor/index.js"
+      "require": "./editors/numericEditor/index.js",
+      "import": "./editors/numericEditor/index.mjs"
     },
     "./editors/passwordEditor": {
-      "require": "./editors/passwordEditor/index.js"
+      "require": "./editors/passwordEditor/index.js",
+      "import": "./editors/passwordEditor/index.mjs"
     },
     "./editors/selectEditor": {
-      "require": "./editors/selectEditor/index.js"
+      "require": "./editors/selectEditor/index.js",
+      "import": "./editors/selectEditor/index.mjs"
     },
     "./editors/textEditor": {
-      "require": "./editors/textEditor/index.js"
+      "require": "./editors/textEditor/index.js",
+      "import": "./editors/textEditor/index.mjs"
     },
     "./editors": {
-      "require": "./editors/index.js"
+      "require": "./editors/index.js",
+      "import": "./editors/index.mjs"
     },
     "./editors/registry": {
-      "require": "./editors/registry.js"
+      "require": "./editors/registry.js",
+      "import": "./editors/registry.mjs"
     },
     "./plugins/autoColumnSize": {
-      "require": "./plugins/autoColumnSize/index.js"
+      "require": "./plugins/autoColumnSize/index.js",
+      "import": "./plugins/autoColumnSize/index.mjs"
     },
     "./plugins/autofill": {
-      "require": "./plugins/autofill/index.js"
+      "require": "./plugins/autofill/index.js",
+      "import": "./plugins/autofill/index.mjs"
     },
     "./plugins/autoRowSize": {
-      "require": "./plugins/autoRowSize/index.js"
+      "require": "./plugins/autoRowSize/index.js",
+      "import": "./plugins/autoRowSize/index.mjs"
     },
     "./plugins/base": {
-      "require": "./plugins/base/index.js"
+      "require": "./plugins/base/index.js",
+      "import": "./plugins/base/index.mjs"
     },
     "./plugins/bindRowsWithHeaders": {
-      "require": "./plugins/bindRowsWithHeaders/index.js"
+      "require": "./plugins/bindRowsWithHeaders/index.js",
+      "import": "./plugins/bindRowsWithHeaders/index.mjs"
     },
     "./plugins/collapsibleColumns": {
-      "require": "./plugins/collapsibleColumns/index.js"
+      "require": "./plugins/collapsibleColumns/index.js",
+      "import": "./plugins/collapsibleColumns/index.mjs"
     },
     "./plugins/columnSorting": {
-      "require": "./plugins/columnSorting/index.js"
+      "require": "./plugins/columnSorting/index.js",
+      "import": "./plugins/columnSorting/index.mjs"
     },
     "./plugins/columnSummary": {
-      "require": "./plugins/columnSummary/index.js"
+      "require": "./plugins/columnSummary/index.js",
+      "import": "./plugins/columnSummary/index.mjs"
     },
     "./plugins/comments": {
-      "require": "./plugins/comments/index.js"
+      "require": "./plugins/comments/index.js",
+      "import": "./plugins/comments/index.mjs"
     },
     "./plugins/contextMenu": {
-      "require": "./plugins/contextMenu/index.js"
+      "require": "./plugins/contextMenu/index.js",
+      "import": "./plugins/contextMenu/index.mjs"
     },
     "./plugins/copyPaste": {
-      "require": "./plugins/copyPaste/index.js"
+      "require": "./plugins/copyPaste/index.js",
+      "import": "./plugins/copyPaste/index.mjs"
     },
     "./plugins/customBorders": {
-      "require": "./plugins/customBorders/index.js"
+      "require": "./plugins/customBorders/index.js",
+      "import": "./plugins/customBorders/index.mjs"
     },
     "./plugins/dragToScroll": {
-      "require": "./plugins/dragToScroll/index.js"
+      "require": "./plugins/dragToScroll/index.js",
+      "import": "./plugins/dragToScroll/index.mjs"
     },
     "./plugins/dropdownMenu": {
-      "require": "./plugins/dropdownMenu/index.js"
+      "require": "./plugins/dropdownMenu/index.js",
+      "import": "./plugins/dropdownMenu/index.mjs"
     },
     "./plugins/exportFile": {
-      "require": "./plugins/exportFile/index.js"
+      "require": "./plugins/exportFile/index.js",
+      "import": "./plugins/exportFile/index.mjs"
     },
     "./plugins/filters": {
-      "require": "./plugins/filters/index.js"
+      "require": "./plugins/filters/index.js",
+      "import": "./plugins/filters/index.mjs"
     },
     "./plugins/formulas": {
-      "require": "./plugins/formulas/index.js"
+      "require": "./plugins/formulas/index.js",
+      "import": "./plugins/formulas/index.mjs"
     },
     "./plugins/hiddenColumns": {
-      "require": "./plugins/hiddenColumns/index.js"
+      "require": "./plugins/hiddenColumns/index.js",
+      "import": "./plugins/hiddenColumns/index.mjs"
     },
     "./plugins/hiddenRows": {
-      "require": "./plugins/hiddenRows/index.js"
+      "require": "./plugins/hiddenRows/index.js",
+      "import": "./plugins/hiddenRows/index.mjs"
     },
     "./plugins/manualColumnFreeze": {
-      "require": "./plugins/manualColumnFreeze/index.js"
+      "require": "./plugins/manualColumnFreeze/index.js",
+      "import": "./plugins/manualColumnFreeze/index.mjs"
     },
     "./plugins/manualColumnMove": {
-      "require": "./plugins/manualColumnMove/index.js"
+      "require": "./plugins/manualColumnMove/index.js",
+      "import": "./plugins/manualColumnMove/index.mjs"
     },
     "./plugins/manualColumnResize": {
-      "require": "./plugins/manualColumnResize/index.js"
+      "require": "./plugins/manualColumnResize/index.js",
+      "import": "./plugins/manualColumnResize/index.mjs"
     },
     "./plugins/manualRowMove": {
-      "require": "./plugins/manualRowMove/index.js"
+      "require": "./plugins/manualRowMove/index.js",
+      "import": "./plugins/manualRowMove/index.mjs"
     },
     "./plugins/manualRowResize": {
-      "require": "./plugins/manualRowResize/index.js"
+      "require": "./plugins/manualRowResize/index.js",
+      "import": "./plugins/manualRowResize/index.mjs"
     },
     "./plugins/mergeCells": {
-      "require": "./plugins/mergeCells/index.js"
+      "require": "./plugins/mergeCells/index.js",
+      "import": "./plugins/mergeCells/index.mjs"
     },
     "./plugins/multiColumnSorting": {
-      "require": "./plugins/multiColumnSorting/index.js"
+      "require": "./plugins/multiColumnSorting/index.js",
+      "import": "./plugins/multiColumnSorting/index.mjs"
     },
     "./plugins/multipleSelectionHandles": {
-      "require": "./plugins/multipleSelectionHandles/index.js"
+      "require": "./plugins/multipleSelectionHandles/index.js",
+      "import": "./plugins/multipleSelectionHandles/index.mjs"
     },
     "./plugins/nestedHeaders": {
-      "require": "./plugins/nestedHeaders/index.js"
+      "require": "./plugins/nestedHeaders/index.js",
+      "import": "./plugins/nestedHeaders/index.mjs"
     },
     "./plugins/nestedRows": {
-      "require": "./plugins/nestedRows/index.js"
+      "require": "./plugins/nestedRows/index.js",
+      "import": "./plugins/nestedRows/index.mjs"
     },
     "./plugins/persistentState": {
-      "require": "./plugins/persistentState/index.js"
+      "require": "./plugins/persistentState/index.js",
+      "import": "./plugins/persistentState/index.mjs"
     },
     "./plugins/search": {
-      "require": "./plugins/search/index.js"
+      "require": "./plugins/search/index.js",
+      "import": "./plugins/search/index.mjs"
     },
     "./plugins/touchScroll": {
-      "require": "./plugins/touchScroll/index.js"
+      "require": "./plugins/touchScroll/index.js",
+      "import": "./plugins/touchScroll/index.mjs"
     },
     "./plugins/trimRows": {
-      "require": "./plugins/trimRows/index.js"
+      "require": "./plugins/trimRows/index.js",
+      "import": "./plugins/trimRows/index.mjs"
     },
     "./plugins/undoRedo": {
-      "require": "./plugins/undoRedo/index.js"
+      "require": "./plugins/undoRedo/index.js",
+      "import": "./plugins/undoRedo/index.mjs"
     },
     "./plugins": {
-      "require": "./plugins/index.js"
+      "require": "./plugins/index.js",
+      "import": "./plugins/index.mjs"
     },
     "./plugins/registry": {
-      "require": "./plugins/registry.js"
+      "require": "./plugins/registry.js",
+      "import": "./plugins/registry.mjs"
     },
     "./renderers/autocompleteRenderer": {
-      "require": "./renderers/autocompleteRenderer/index.js"
+      "require": "./renderers/autocompleteRenderer/index.js",
+      "import": "./renderers/autocompleteRenderer/index.mjs"
     },
     "./renderers/baseRenderer": {
-      "require": "./renderers/baseRenderer/index.js"
+      "require": "./renderers/baseRenderer/index.js",
+      "import": "./renderers/baseRenderer/index.mjs"
     },
     "./renderers/checkboxRenderer": {
-      "require": "./renderers/checkboxRenderer/index.js"
+      "require": "./renderers/checkboxRenderer/index.js",
+      "import": "./renderers/checkboxRenderer/index.mjs"
     },
     "./renderers/htmlRenderer": {
-      "require": "./renderers/htmlRenderer/index.js"
+      "require": "./renderers/htmlRenderer/index.js",
+      "import": "./renderers/htmlRenderer/index.mjs"
     },
     "./renderers/numericRenderer": {
-      "require": "./renderers/numericRenderer/index.js"
+      "require": "./renderers/numericRenderer/index.js",
+      "import": "./renderers/numericRenderer/index.mjs"
     },
     "./renderers/passwordRenderer": {
-      "require": "./renderers/passwordRenderer/index.js"
+      "require": "./renderers/passwordRenderer/index.js",
+      "import": "./renderers/passwordRenderer/index.mjs"
     },
     "./renderers/textRenderer": {
-      "require": "./renderers/textRenderer/index.js"
+      "require": "./renderers/textRenderer/index.js",
+      "import": "./renderers/textRenderer/index.mjs"
     },
     "./renderers": {
-      "require": "./renderers/index.js"
+      "require": "./renderers/index.js",
+      "import": "./renderers/index.mjs"
     },
     "./renderers/registry": {
-      "require": "./renderers/registry.js"
+      "require": "./renderers/registry.js",
+      "import": "./renderers/registry.mjs"
     },
     "./validators/autocompleteValidator": {
-      "require": "./validators/autocompleteValidator/index.js"
+      "require": "./validators/autocompleteValidator/index.js",
+      "import": "./validators/autocompleteValidator/index.mjs"
     },
     "./validators/dateValidator": {
-      "require": "./validators/dateValidator/index.js"
+      "require": "./validators/dateValidator/index.js",
+      "import": "./validators/dateValidator/index.mjs"
     },
     "./validators/numericValidator": {
-      "require": "./validators/numericValidator/index.js"
+      "require": "./validators/numericValidator/index.js",
+      "import": "./validators/numericValidator/index.mjs"
     },
     "./validators/timeValidator": {
-      "require": "./validators/timeValidator/index.js"
+      "require": "./validators/timeValidator/index.js",
+      "import": "./validators/timeValidator/index.mjs"
     },
     "./validators": {
-      "require": "./validators/index.js"
+      "require": "./validators/index.js",
+      "import": "./validators/index.mjs"
     },
     "./validators/registry": {
-      "require": "./validators/registry.js"
+      "require": "./validators/registry.js",
+      "import": "./validators/registry.mjs"
     },
     "./i18n": {
-      "require": "./i18n/index.js"
+      "require": "./i18n/index.js",
+      "import": "./i18n/index.mjs"
     },
     "./i18n/registry": {
-      "require": "./i18n/registry.js"
+      "require": "./i18n/registry.js",
+      "import": "./i18n/registry.mjs"
     },
     "./i18n/languages/de-CH": {
-      "require": "./i18n/languages/de-CH.js"
+      "require": "./i18n/languages/de-CH.js",
+      "import": "./i18n/languages/de-CH.mjs"
     },
     "./i18n/languages/de-DE": {
-      "require": "./i18n/languages/de-DE.js"
+      "require": "./i18n/languages/de-DE.js",
+      "import": "./i18n/languages/de-DE.mjs"
     },
     "./i18n/languages/en-US": {
-      "require": "./i18n/languages/en-US.js"
+      "require": "./i18n/languages/en-US.js",
+      "import": "./i18n/languages/en-US.mjs"
     },
     "./i18n/languages/es-MX": {
-      "require": "./i18n/languages/es-MX.js"
+      "require": "./i18n/languages/es-MX.js",
+      "import": "./i18n/languages/es-MX.mjs"
     },
     "./i18n/languages/fr-FR": {
-      "require": "./i18n/languages/fr-FR.js"
+      "require": "./i18n/languages/fr-FR.js",
+      "import": "./i18n/languages/fr-FR.mjs"
     },
     "./i18n/languages": {
-      "require": "./i18n/languages/index.js"
+      "require": "./i18n/languages/index.js",
+      "import": "./i18n/languages/index.mjs"
     },
     "./i18n/languages/it-IT": {
-      "require": "./i18n/languages/it-IT.js"
+      "require": "./i18n/languages/it-IT.js",
+      "import": "./i18n/languages/it-IT.mjs"
     },
     "./i18n/languages/ja-JP": {
-      "require": "./i18n/languages/ja-JP.js"
+      "require": "./i18n/languages/ja-JP.js",
+      "import": "./i18n/languages/ja-JP.mjs"
     },
     "./i18n/languages/ko-KR": {
-      "require": "./i18n/languages/ko-KR.js"
+      "require": "./i18n/languages/ko-KR.js",
+      "import": "./i18n/languages/ko-KR.mjs"
     },
     "./i18n/languages/lv-LV": {
-      "require": "./i18n/languages/lv-LV.js"
+      "require": "./i18n/languages/lv-LV.js",
+      "import": "./i18n/languages/lv-LV.mjs"
     },
     "./i18n/languages/nb-NO": {
-      "require": "./i18n/languages/nb-NO.js"
+      "require": "./i18n/languages/nb-NO.js",
+      "import": "./i18n/languages/nb-NO.mjs"
     },
     "./i18n/languages/nl-NL": {
-      "require": "./i18n/languages/nl-NL.js"
+      "require": "./i18n/languages/nl-NL.js",
+      "import": "./i18n/languages/nl-NL.mjs"
     },
     "./i18n/languages/pl-PL": {
-      "require": "./i18n/languages/pl-PL.js"
+      "require": "./i18n/languages/pl-PL.js",
+      "import": "./i18n/languages/pl-PL.mjs"
     },
     "./i18n/languages/pt-BR": {
-      "require": "./i18n/languages/pt-BR.js"
+      "require": "./i18n/languages/pt-BR.js",
+      "import": "./i18n/languages/pt-BR.mjs"
     },
     "./i18n/languages/ru-RU": {
-      "require": "./i18n/languages/ru-RU.js"
+      "require": "./i18n/languages/ru-RU.js",
+      "import": "./i18n/languages/ru-RU.mjs"
     },
     "./i18n/languages/zh-CN": {
-      "require": "./i18n/languages/zh-CN.js"
+      "require": "./i18n/languages/zh-CN.js",
+      "import": "./i18n/languages/zh-CN.mjs"
     },
     "./i18n/languages/zh-TW": {
-      "require": "./i18n/languages/zh-TW.js"
+      "require": "./i18n/languages/zh-TW.js",
+      "import": "./i18n/languages/zh-TW.mjs"
     },
     "./dist/handsontable.css": "./dist/handsontable.css",
     "./dist/handsontable.full.css": "./dist/handsontable.full.css",
@@ -510,6 +603,18 @@
     "./dist/languages/zh-CN.js": "./dist/languages/zh-CN.js",
     "./dist/languages/zh-CN.min.js": "./dist/languages/zh-CN.min.js",
     "./dist/languages/zh-TW.js": "./dist/languages/zh-TW.js",
-    "./dist/languages/zh-TW.min.js": "./dist/languages/zh-TW.min.js"
+    "./dist/languages/zh-TW.min.js": "./dist/languages/zh-TW.min.js",
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    },
+    "./base": {
+      "import": "./base.mjs",
+      "require": "./base.js"
+    },
+    "./languages/all": {
+      "import": "./languages/index.mjs",
+      "require": "./languages/all.js"
+    }
   }
 }

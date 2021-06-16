@@ -1,14 +1,23 @@
-import { CONTEXTMENU_ITEMS_NO_ITEMS } from "../../../i18n/constants.mjs";
-export var KEY = 'no_items';
+"use strict";
+
+exports.__esModule = true;
+exports.default = noItemsItem;
+exports.KEY = void 0;
+
+var _constants = require("../../../i18n/constants");
+
+var KEY = 'no_items';
 /**
  * @returns {object}
  */
 
-export default function noItemsItem() {
+exports.KEY = KEY;
+
+function noItemsItem() {
   return {
     key: KEY,
     name: function name() {
-      return this.getTranslatedPhrase(CONTEXTMENU_ITEMS_NO_ITEMS);
+      return this.getTranslatedPhrase(_constants.CONTEXTMENU_ITEMS_NO_ITEMS);
     },
     disabled: true,
     isCommand: false

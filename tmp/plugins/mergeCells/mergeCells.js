@@ -1,4 +1,81 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.MergeCells = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+var _base = require("../base");
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+var _event = require("../../helpers/dom/event");
+
+var _src = require("../../3rdparty/walkontable/src");
+
+var _cellsCollection = _interopRequireDefault(require("./cellsCollection"));
+
+var _cellCoords = _interopRequireDefault(require("./cellCoords"));
+
+var _autofill = _interopRequireDefault(require("./calculations/autofill"));
+
+var _selection = _interopRequireDefault(require("./calculations/selection"));
+
+var _toggleMerge = _interopRequireDefault(require("./contextMenuItem/toggleMerge"));
+
+var _array = require("../../helpers/array");
+
+var _object = require("../../helpers/object");
+
+var _console = require("../../helpers/console");
+
+var _number = require("../../helpers/number");
+
+var _utils = require("./utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -44,47 +121,18 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import { BasePlugin } from "../base/index.mjs";
-import Hooks from "../../pluginHooks.mjs";
-import { stopImmediatePropagation } from "../../helpers/dom/event.mjs";
-import { CellCoords, CellRange } from "../../3rdparty/walkontable/src/index.mjs";
-import MergedCellsCollection from "./cellsCollection.mjs";
-import MergedCellCoords from "./cellCoords.mjs";
-import AutofillCalculations from "./calculations/autofill.mjs";
-import SelectionCalculations from "./calculations/selection.mjs";
-import toggleMergeItem from "./contextMenuItem/toggleMerge.mjs";
-import { arrayEach } from "../../helpers/array.mjs";
-import { isObject, clone } from "../../helpers/object.mjs";
-import { warn } from "../../helpers/console.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { applySpanProperties } from "./utils.mjs";
-Hooks.getSingleton().register('beforeMergeCells');
-Hooks.getSingleton().register('afterMergeCells');
-Hooks.getSingleton().register('beforeUnmergeCells');
-Hooks.getSingleton().register('afterUnmergeCells');
-export var PLUGIN_KEY = 'mergeCells';
-export var PLUGIN_PRIORITY = 150;
+_pluginHooks.default.getSingleton().register('beforeMergeCells');
+
+_pluginHooks.default.getSingleton().register('afterMergeCells');
+
+_pluginHooks.default.getSingleton().register('beforeUnmergeCells');
+
+_pluginHooks.default.getSingleton().register('afterUnmergeCells');
+
+var PLUGIN_KEY = 'mergeCells';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 150;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var privatePool = new WeakMap();
 /**
  * @plugin MergeCells
@@ -105,7 +153,7 @@ var privatePool = new WeakMap();
  * ```
  */
 
-export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
+var MergeCells = /*#__PURE__*/function (_BasePlugin) {
   _inherits(MergeCells, _BasePlugin);
 
   var _super = _createSuper(MergeCells);
@@ -171,9 +219,9 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.mergedCellsCollection = new MergedCellsCollection(this);
-      this.autofillCalculations = new AutofillCalculations(this);
-      this.selectionCalculations = new SelectionCalculations(this);
+      this.mergedCellsCollection = new _cellsCollection.default(this);
+      this.autofillCalculations = new _autofill.default(this);
+      this.selectionCalculations = new _selection.default(this);
       this.addHook('afterInit', function () {
         return _this2.onAfterInit.apply(_this2, arguments);
       });
@@ -297,17 +345,17 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
         return false;
       }
 
-      if (MergedCellCoords.containsNegativeValues(setting)) {
-        warn(MergedCellCoords.NEGATIVE_VALUES_WARNING(setting));
+      if (_cellCoords.default.containsNegativeValues(setting)) {
+        (0, _console.warn)(_cellCoords.default.NEGATIVE_VALUES_WARNING(setting));
         valid = false;
-      } else if (MergedCellCoords.isOutOfBounds(setting, this.hot.countRows(), this.hot.countCols())) {
-        warn(MergedCellCoords.IS_OUT_OF_BOUNDS_WARNING(setting));
+      } else if (_cellCoords.default.isOutOfBounds(setting, this.hot.countRows(), this.hot.countCols())) {
+        (0, _console.warn)(_cellCoords.default.IS_OUT_OF_BOUNDS_WARNING(setting));
         valid = false;
-      } else if (MergedCellCoords.isSingleCell(setting)) {
-        warn(MergedCellCoords.IS_SINGLE_CELL(setting));
+      } else if (_cellCoords.default.isSingleCell(setting)) {
+        (0, _console.warn)(_cellCoords.default.IS_SINGLE_CELL(setting));
         valid = false;
-      } else if (MergedCellCoords.containsZeroSpan(setting)) {
-        warn(MergedCellCoords.ZERO_SPAN_WARNING(setting));
+      } else if (_cellCoords.default.containsZeroSpan(setting)) {
+        (0, _console.warn)(_cellCoords.default.ZERO_SPAN_WARNING(setting));
         valid = false;
       }
 
@@ -329,14 +377,14 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
         var _this$hot;
 
         var populationArgumentsList = [];
-        arrayEach(settings, function (setting) {
+        (0, _array.arrayEach)(settings, function (setting) {
           if (!_this3.validateSetting(setting)) {
             return;
           }
 
-          var highlight = new CellCoords(setting.row, setting.col);
-          var rangeEnd = new CellCoords(setting.row + setting.rowspan - 1, setting.col + setting.colspan - 1);
-          var mergeRange = new CellRange(highlight, highlight, rangeEnd);
+          var highlight = new _src.CellCoords(setting.row, setting.col);
+          var rangeEnd = new _src.CellCoords(setting.row + setting.rowspan - 1, setting.col + setting.colspan - 1);
+          var mergeRange = new _src.CellRange(highlight, highlight, rangeEnd);
           populationArgumentsList.push(_this3.mergeRange(mergeRange, true, true));
         }); // remove 'empty' setting objects, caused by improper merge range declarations
 
@@ -366,14 +414,14 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       var dataAtRange = (_this$hot2 = this.hot).getData.apply(_this$hot2, _toConsumableArray(populationDataRange));
 
       var newDataAtRange = dataAtRange.splice(0);
-      arrayEach(populationArgumentsList, function (mergedCellArguments) {
+      (0, _array.arrayEach)(populationArgumentsList, function (mergedCellArguments) {
         var _mergedCellArguments = _slicedToArray(mergedCellArguments, 3),
             mergedCellRowIndex = _mergedCellArguments[0],
             mergedCellColumnIndex = _mergedCellArguments[1],
             mergedCellData = _mergedCellArguments[2];
 
-        arrayEach(mergedCellData, function (mergedCellRow, rowIndex) {
-          arrayEach(mergedCellRow, function (mergedCellElement, columnIndex) {
+        (0, _array.arrayEach)(mergedCellData, function (mergedCellRow, rowIndex) {
+          (0, _array.arrayEach)(mergedCellRow, function (mergedCellElement, columnIndex) {
             newDataAtRange[mergedCellRowIndex - populationDataRange[0] + rowIndex][mergedCellColumnIndex - populationDataRange[1] + columnIndex] = mergedCellElement; // eslint-disable-line max-len
           });
         });
@@ -396,7 +444,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       var mergedCellRow = null;
       var mergedCellColumn = null;
       var mergedCellData = null;
-      arrayEach(populationArgumentsList, function (mergedCellArguments) {
+      (0, _array.arrayEach)(populationArgumentsList, function (mergedCellArguments) {
         mergedCellRow = mergedCellArguments[0];
         mergedCellColumn = mergedCellArguments[1];
         mergedCellData = mergedCellArguments[2];
@@ -529,8 +577,8 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       }
 
       this.hot.runHooks('beforeMergeCells', cellRange, auto);
-      rangeEach(0, mergeParent.rowspan - 1, function (i) {
-        rangeEach(0, mergeParent.colspan - 1, function (j) {
+      (0, _number.rangeEach)(0, mergeParent.rowspan - 1, function (i) {
+        (0, _number.rangeEach)(0, mergeParent.colspan - 1, function (j) {
           var clearedValue = null;
 
           if (!clearedData[i]) {
@@ -586,11 +634,11 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       }
 
       this.hot.runHooks('beforeUnmergeCells', cellRange, auto);
-      arrayEach(mergedCells, function (currentCollection) {
+      (0, _array.arrayEach)(mergedCells, function (currentCollection) {
         _this5.mergedCellsCollection.remove(currentCollection.row, currentCollection.col);
 
-        rangeEach(0, currentCollection.rowspan - 1, function (i) {
-          rangeEach(0, currentCollection.colspan - 1, function (j) {
+        (0, _number.rangeEach)(0, currentCollection.rowspan - 1, function (i) {
+          (0, _number.rangeEach)(0, currentCollection.colspan - 1, function (j) {
             _this5.hot.removeCellMeta(currentCollection.row + i, currentCollection.col + j, 'hidden');
           });
         });
@@ -633,9 +681,9 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "merge",
     value: function merge(startRow, startColumn, endRow, endColumn) {
-      var start = new CellCoords(startRow, startColumn);
-      var end = new CellCoords(endRow, endColumn);
-      this.mergeRange(new CellRange(start, start, end));
+      var start = new _src.CellCoords(startRow, startColumn);
+      var end = new _src.CellCoords(endRow, endColumn);
+      this.mergeRange(new _src.CellRange(start, start, end));
     }
     /**
      * Unmerges the merged cell in the provided range.
@@ -651,9 +699,9 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "unmerge",
     value: function unmerge(startRow, startColumn, endRow, endColumn) {
-      var start = new CellCoords(startRow, startColumn);
-      var end = new CellCoords(endRow, endColumn);
-      this.unmergeRange(new CellRange(start, start, end));
+      var start = new _src.CellCoords(startRow, startColumn);
+      var end = new _src.CellCoords(endRow, endColumn);
+      this.unmergeRange(new _src.CellRange(start, start, end));
     }
     /**
      * `afterInit` hook callback.
@@ -683,7 +731,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
         // CTRL + M
         this.toggleMerge(this.hot.getSelectedRangeLast());
         this.hot.render();
-        stopImmediatePropagation(event);
+        (0, _event.stopImmediatePropagation)(event);
       }
     }
     /**
@@ -727,21 +775,21 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
         col: delta.col
       };
       var nextPosition = null;
-      var currentPosition = new CellCoords(currentlySelectedRange.highlight.row, currentlySelectedRange.highlight.col);
+      var currentPosition = new _src.CellCoords(currentlySelectedRange.highlight.row, currentlySelectedRange.highlight.col);
       var mergedParent = this.mergedCellsCollection.get(currentPosition.row, currentPosition.col);
 
       if (!priv.lastDesiredCoords) {
-        priv.lastDesiredCoords = new CellCoords(null, null);
+        priv.lastDesiredCoords = new _src.CellCoords(null, null);
       }
 
       if (mergedParent) {
         // only merge selected
-        var mergeTopLeft = new CellCoords(mergedParent.row, mergedParent.col);
-        var mergeBottomRight = new CellCoords(mergedParent.row + mergedParent.rowspan - 1, mergedParent.col + mergedParent.colspan - 1);
-        var mergeRange = new CellRange(mergeTopLeft, mergeTopLeft, mergeBottomRight);
+        var mergeTopLeft = new _src.CellCoords(mergedParent.row, mergedParent.col);
+        var mergeBottomRight = new _src.CellCoords(mergedParent.row + mergedParent.rowspan - 1, mergedParent.col + mergedParent.colspan - 1);
+        var mergeRange = new _src.CellRange(mergeTopLeft, mergeTopLeft, mergeBottomRight);
 
         if (!mergeRange.includes(priv.lastDesiredCoords)) {
-          priv.lastDesiredCoords = new CellCoords(null, null); // reset outdated version of lastDesiredCoords
+          priv.lastDesiredCoords = new _src.CellCoords(null, null); // reset outdated version of lastDesiredCoords
         }
 
         newDelta.row = priv.lastDesiredCoords.row ? priv.lastDesiredCoords.row - currentPosition.row : newDelta.row;
@@ -764,7 +812,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
         }
       }
 
-      nextPosition = new CellCoords(currentlySelectedRange.highlight.row + newDelta.row, currentlySelectedRange.highlight.col + newDelta.col);
+      nextPosition = new _src.CellCoords(currentlySelectedRange.highlight.row + newDelta.row, currentlySelectedRange.highlight.col + newDelta.col);
       var nextPositionMergedCell = this.mergedCellsCollection.get(nextPosition.row, nextPosition.col);
 
       if (nextPositionMergedCell) {
@@ -798,15 +846,15 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       var _this6 = this;
 
       var currentSelectionRange = this.hot.getSelectedRangeLast();
-      var newDelta = clone(delta);
+      var newDelta = (0, _object.clone)(delta);
       var newSelectionRange = this.selectionCalculations.getUpdatedSelectionRange(currentSelectionRange, delta);
-      var tempDelta = clone(newDelta);
+      var tempDelta = (0, _object.clone)(newDelta);
       var mergedCellsWithinRange = this.mergedCellsCollection.getWithinRange(newSelectionRange, true);
 
       do {
-        tempDelta = clone(newDelta);
+        tempDelta = (0, _object.clone)(newDelta);
         this.selectionCalculations.getUpdatedSelectionRange(currentSelectionRange, newDelta);
-        arrayEach(mergedCellsWithinRange, function (mergedCell) {
+        (0, _array.arrayEach)(mergedCellsWithinRange, function (mergedCell) {
           _this6.selectionCalculations.snapDelta(newDelta, currentSelectionRange, mergedCell);
         });
       } while (newDelta.row !== tempDelta.row || newDelta.col !== tempDelta.col);
@@ -856,7 +904,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
     value: function addMergeActionsToContextMenu(defaultOptions) {
       defaultOptions.items.push({
         name: '---------'
-      }, toggleMergeItem(this));
+      }, (0, _toggleMerge.default)(this));
     }
     /**
      * `afterRenderer` hook callback.
@@ -872,9 +920,9 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
     value: function onAfterRenderer(TD, row, col) {
       var mergedCell = this.mergedCellsCollection.get(row, col); // We shouldn't override data in the collection.
 
-      var mergedCellCopy = isObject(mergedCell) ? clone(mergedCell) : void 0;
+      var mergedCellCopy = (0, _object.isObject)(mergedCell) ? (0, _object.clone)(mergedCell) : void 0;
 
-      if (isObject(mergedCellCopy)) {
+      if ((0, _object.isObject)(mergedCellCopy)) {
         var _this$hot3 = this.hot,
             rowMapper = _this$hot3.rowIndexMapper,
             columnMapper = _this$hot3.columnIndexMapper;
@@ -904,7 +952,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
         mergedCellCopy.colspan = Math.min(mergedCellCopy.colspan, maxColSpan);
       }
 
-      applySpanProperties(TD, mergedCellCopy, row, col);
+      (0, _utils.applySpanProperties)(TD, mergedCellCopy, row, col);
     }
     /**
      * `beforeSetRangeStart` and `beforeSetRangeStartOnly` hook callback.
@@ -943,7 +991,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
     key: "onBeforeSetRangeEnd",
     value: function onBeforeSetRangeEnd(coords) {
       var selRange = this.hot.getSelectedRangeLast();
-      selRange.highlight = new CellCoords(selRange.highlight.row, selRange.highlight.col); // clone in case we will modify its reference
+      selRange.highlight = new _src.CellCoords(selRange.highlight.row, selRange.highlight.col); // clone in case we will modify its reference
 
       selRange.to = coords;
       var rangeExpanded = false;
@@ -1021,7 +1069,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       for (var visualColumnIndex = 0; visualColumnIndex < nrOfColumns; visualColumnIndex += 1) {
         var mergeParentForViewportStart = this.mergedCellsCollection.get(visualStartRow, visualColumnIndex);
 
-        if (isObject(mergeParentForViewportStart)) {
+        if ((0, _object.isObject)(mergeParentForViewportStart)) {
           var renderableIndexAtMergeStart = rowMapper.getRenderableFromVisualIndex(rowMapper.getFirstNotHiddenIndex(mergeParentForViewportStart.row, 1)); // Merge start is out of the viewport (i.e. when we scrolled to the bottom and we can see just part of a merge).
 
           if (renderableIndexAtMergeStart < calc.startRow) {
@@ -1052,7 +1100,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       for (var visualColumnIndex = 0; visualColumnIndex < nrOfColumns; visualColumnIndex += 1) {
         var mergeParentForViewportEnd = this.mergedCellsCollection.get(visualEndRow, visualColumnIndex);
 
-        if (isObject(mergeParentForViewportEnd)) {
+        if ((0, _object.isObject)(mergeParentForViewportEnd)) {
           var mergeEnd = mergeParentForViewportEnd.row + mergeParentForViewportEnd.rowspan - 1;
           var renderableIndexAtMergeEnd = rowMapper.getRenderableFromVisualIndex(rowMapper.getFirstNotHiddenIndex(mergeEnd, -1)); // Merge end is out of the viewport.
 
@@ -1098,7 +1146,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       for (var visualRowIndex = 0; visualRowIndex < nrOfRows; visualRowIndex += 1) {
         var mergeParentForViewportStart = this.mergedCellsCollection.get(visualRowIndex, visualStartCol);
 
-        if (isObject(mergeParentForViewportStart)) {
+        if ((0, _object.isObject)(mergeParentForViewportStart)) {
           var renderableIndexAtMergeStart = columnMapper.getRenderableFromVisualIndex(columnMapper.getFirstNotHiddenIndex(mergeParentForViewportStart.col, 1)); // Merge start is out of the viewport (i.e. when we scrolled to the right and we can see just part of a merge).
 
           if (renderableIndexAtMergeStart < calc.startColumn) {
@@ -1129,7 +1177,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       for (var visualRowIndex = 0; visualRowIndex < nrOfRows; visualRowIndex += 1) {
         var mergeParentForViewportEnd = this.mergedCellsCollection.get(visualRowIndex, visualEndCol);
 
-        if (isObject(mergeParentForViewportEnd)) {
+        if ((0, _object.isObject)(mergeParentForViewportEnd)) {
           var mergeEnd = mergeParentForViewportEnd.col + mergeParentForViewportEnd.colspan - 1;
           var renderableIndexAtMergeEnd = columnMapper.getRenderableFromVisualIndex(columnMapper.getFirstNotHiddenIndex(mergeEnd, -1)); // Merge end is out of the viewport.
 
@@ -1313,7 +1361,7 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
       if (className && className === 'area') {
         var selectedRange = this.hot.getSelectedRangeLast();
         var mergedCellsWithinRange = this.mergedCellsCollection.getWithinRange(selectedRange);
-        arrayEach(mergedCellsWithinRange, function (mergedCell) {
+        (0, _array.arrayEach)(mergedCellsWithinRange, function (mergedCell) {
           if (selectedRange.getBottomRightCorner().row === mergedCell.getLastRow() && selectedRange.getBottomRightCorner().col === mergedCell.getLastColumn()) {
             corners[2] = mergedCell.row;
             corners[3] = mergedCell.col;
@@ -1404,4 +1452,6 @@ export var MergeCells = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return MergeCells;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.MergeCells = MergeCells;

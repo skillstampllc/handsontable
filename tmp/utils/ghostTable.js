@@ -1,3 +1,36 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.string.trim.js");
+
+var _element = require("./../helpers/dom/element");
+
+var _array = require("./../helpers/array");
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10,32 +43,16 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.string.trim.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { addClass, outerHeight, outerWidth } from "./../helpers/dom/element.mjs";
-import { arrayEach } from "./../helpers/array.mjs";
 /**
  * @class GhostTable
  * @util
  */
-
 var GhostTable = /*#__PURE__*/function () {
   function GhostTable(hotInstance) {
     _classCallCheck(this, GhostTable);
@@ -196,9 +213,9 @@ var GhostTable = /*#__PURE__*/function () {
         this.injectTable();
       }
 
-      arrayEach(this.rows, function (row) {
+      (0, _array.arrayEach)(this.rows, function (row) {
         // -1 <- reduce border-top from table
-        callback(row.row, outerHeight(row.table) - 1);
+        callback(row.row, (0, _element.outerHeight)(row.table) - 1);
       });
     }
     /**
@@ -214,8 +231,8 @@ var GhostTable = /*#__PURE__*/function () {
         this.injectTable();
       }
 
-      arrayEach(this.columns, function (column) {
-        callback(column.col, outerWidth(column.table));
+      (0, _array.arrayEach)(this.columns, function (column) {
+        callback(column.col, (0, _element.outerWidth)(column.table));
       });
     }
     /**
@@ -290,7 +307,7 @@ var GhostTable = /*#__PURE__*/function () {
       }
 
       this.samples.forEach(function (sample) {
-        arrayEach(sample.strings, function (string) {
+        (0, _array.arrayEach)(sample.strings, function (string) {
           fragment.appendChild(_this.createColElement(string.col));
         });
       });
@@ -318,7 +335,7 @@ var GhostTable = /*#__PURE__*/function () {
       }
 
       this.samples.forEach(function (sample) {
-        arrayEach(sample.strings, function (string) {
+        (0, _array.arrayEach)(sample.strings, function (string) {
           var column = string.col;
 
           var cellProperties = _this2.hot.getCellMeta(row, column);
@@ -358,7 +375,7 @@ var GhostTable = /*#__PURE__*/function () {
       }
 
       this.samples.forEach(function (sample) {
-        arrayEach(sample.strings, function (string) {
+        (0, _array.arrayEach)(sample.strings, function (string) {
           var column = string.col;
           var th = rootDocument.createElement('th');
           columnHeaders.push([column, th]);
@@ -367,7 +384,7 @@ var GhostTable = /*#__PURE__*/function () {
       }); // Appending DOM elements for headers
 
       this.table.tHead.appendChild(domFragment);
-      arrayEach(columnHeaders, function (columnHeader) {
+      (0, _array.arrayEach)(columnHeaders, function (columnHeader) {
         var _columnHeader = _slicedToArray(columnHeader, 2),
             column = _columnHeader[0],
             th = _columnHeader[1]; // Using source method for filling a header with value.
@@ -391,7 +408,7 @@ var GhostTable = /*#__PURE__*/function () {
       var rootDocument = this.hot.rootDocument;
       var fragment = rootDocument.createDocumentFragment();
       this.samples.forEach(function (sample) {
-        arrayEach(sample.strings, function (string) {
+        (0, _array.arrayEach)(sample.strings, function (string) {
           var row = string.row;
 
           var cellProperties = _this4.hot.getCellMeta(row, column);
@@ -512,7 +529,7 @@ var GhostTable = /*#__PURE__*/function () {
       }
 
       table.appendChild(tBody);
-      addClass(table, className);
+      (0, _element.addClass)(table, className);
       fragment.appendChild(table);
       return {
         fragment: fragment,
@@ -539,7 +556,7 @@ var GhostTable = /*#__PURE__*/function () {
       var fragment = rootDocument.createDocumentFragment();
       var container = rootDocument.createElement('div');
       var containerClassName = "htGhostTable htAutoSize ".concat(className.trim());
-      addClass(container, containerClassName);
+      (0, _element.addClass)(container, containerClassName);
       fragment.appendChild(container);
       return {
         fragment: fragment,
@@ -573,4 +590,5 @@ var GhostTable = /*#__PURE__*/function () {
   return GhostTable;
 }();
 
-export default GhostTable;
+var _default = GhostTable;
+exports.default = _default;

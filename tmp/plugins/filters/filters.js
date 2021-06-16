@@ -1,17 +1,97 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.freeze.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.object.freeze.js");
+
+require("core-js/modules/es.weak-map.js");
+
+exports.__esModule = true;
+exports.Filters = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _array = require("../../helpers/array");
+
+var _templateLiteralTag = require("../../helpers/templateLiteralTag");
+
+var _console = require("../../helpers/console");
+
+var _number = require("../../helpers/number");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _element = require("../../helpers/dom/element");
+
+var _predefinedItems = require("../contextMenu/predefinedItems");
+
+var constants = _interopRequireWildcard(require("../../i18n/constants"));
+
+var _condition = _interopRequireDefault(require("./component/condition"));
+
+var _operators = _interopRequireDefault(require("./component/operators"));
+
+var _value = _interopRequireDefault(require("./component/value"));
+
+var _actionBar = _interopRequireDefault(require("./component/actionBar"));
+
+var _conditionCollection = _interopRequireDefault(require("./conditionCollection"));
+
+var _dataFilter = _interopRequireDefault(require("./dataFilter"));
+
+var _conditionUpdateObserver = _interopRequireDefault(require("./conditionUpdateObserver"));
+
+var _utils = require("./utils");
+
+var _constants2 = require("./constants");
+
+var _translations = require("../../translations");
 
 var _templateObject;
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -26,17 +106,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.concat.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -62,27 +131,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import { arrayEach, arrayMap } from "../../helpers/array.mjs";
-import { toSingleLine } from "../../helpers/templateLiteralTag.mjs";
-import { warn } from "../../helpers/console.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import EventManager from "../../eventManager.mjs";
-import { addClass, removeClass, closest } from "../../helpers/dom/element.mjs";
-import { SEPARATOR } from "../contextMenu/predefinedItems.mjs";
-import * as constants from "../../i18n/constants.mjs";
-import ConditionComponent from "./component/condition.mjs";
-import OperatorsComponent from "./component/operators.mjs";
-import ValueComponent from "./component/value.mjs";
-import ActionBarComponent from "./component/actionBar.mjs";
-import ConditionCollection from "./conditionCollection.mjs";
-import DataFilter from "./dataFilter.mjs";
-import ConditionUpdateObserver from "./conditionUpdateObserver.mjs";
-import { createArrayAssertion, toEmptyString, unifyColumnValues } from "./utils.mjs";
-import { CONDITION_NONE, CONDITION_BY_VALUE, OPERATION_AND, OPERATION_OR, OPERATION_OR_THEN_VARIABLE } from "./constants.mjs";
-import { TrimmingMap } from "../../translations/index.mjs";
-export var PLUGIN_KEY = 'filters';
-export var PLUGIN_PRIORITY = 250;
+var PLUGIN_KEY = 'filters';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 250;
 /**
  * @plugin Filters
  *
@@ -104,7 +155,9 @@ export var PLUGIN_PRIORITY = 250;
  * ```
  */
 
-export var Filters = /*#__PURE__*/function (_BasePlugin) {
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
+var Filters = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Filters, _BasePlugin);
 
   var _super = _createSuper(Filters);
@@ -122,7 +175,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
      * @type {EventManager}
      */
 
-    _this.eventManager = new EventManager(_assertThisInitialized(_this));
+    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
     /**
      * Instance of {@link DropdownMenu}.
      *
@@ -206,7 +259,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.filtersRowsMap = this.hot.rowIndexMapper.registerMap(this.pluginName, new TrimmingMap());
+      this.filtersRowsMap = this.hot.rowIndexMapper.registerMap(this.pluginName, new _translations.TrimmingMap());
       this.dropdownMenuPlugin = this.hot.getPlugin('dropdownMenu');
       var dropdownSettings = this.hot.getSettings().dropdownMenu;
       var menuContainer = dropdownSettings && dropdownSettings.uiContainer || this.hot.rootDocument.body;
@@ -233,7 +286,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
       };
 
       if (!this.components.get('filter_by_condition')) {
-        var conditionComponent = new ConditionComponent(this.hot, {
+        var conditionComponent = new _condition.default(this.hot, {
           id: 'filter_by_condition',
           name: filterByConditionLabel,
           addSeparator: false,
@@ -246,14 +299,14 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (!this.components.get('filter_operators')) {
-        this.components.set('filter_operators', new OperatorsComponent(this.hot, {
+        this.components.set('filter_operators', new _operators.default(this.hot, {
           id: 'filter_operators',
           name: 'Operators'
         }));
       }
 
       if (!this.components.get('filter_by_condition2')) {
-        var _conditionComponent = new ConditionComponent(this.hot, {
+        var _conditionComponent = new _condition.default(this.hot, {
           id: 'filter_by_condition2',
           name: '',
           addSeparator: true,
@@ -268,25 +321,25 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (!this.components.get('filter_by_value')) {
-        this.components.set('filter_by_value', addConfirmationHooks(new ValueComponent(this.hot, {
+        this.components.set('filter_by_value', addConfirmationHooks(new _value.default(this.hot, {
           id: 'filter_by_value',
           name: filterValueLabel
         })));
       }
 
       if (!this.components.get('filter_action_bar')) {
-        this.components.set('filter_action_bar', addConfirmationHooks(new ActionBarComponent(this.hot, {
+        this.components.set('filter_action_bar', addConfirmationHooks(new _actionBar.default(this.hot, {
           id: 'filter_action_bar',
           name: 'Action bar'
         })));
       }
 
       if (!this.conditionCollection) {
-        this.conditionCollection = new ConditionCollection(this.hot);
+        this.conditionCollection = new _conditionCollection.default(this.hot);
       }
 
       if (!this.conditionUpdateObserver) {
-        this.conditionUpdateObserver = new ConditionUpdateObserver(this.hot, this.conditionCollection, function (physicalColumn) {
+        this.conditionUpdateObserver = new _conditionUpdateObserver.default(this.hot, this.conditionCollection, function (physicalColumn) {
           return _this2.getDataMapAtColumn(physicalColumn);
         });
         this.conditionUpdateObserver.addLocalHook('update', function (conditionState) {
@@ -440,7 +493,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "addCondition",
     value: function addCondition(column, name, args) {
-      var operationId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : OPERATION_AND;
+      var operationId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : _constants2.OPERATION_AND;
       var physicalColumn = this.hot.toPhysicalColumn(column);
       this.conditionCollection.addCondition(physicalColumn, {
         command: {
@@ -503,16 +556,16 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
           this.hot.batchExecution(function () {
             _this5.filtersRowsMap.clear();
 
-            visibleVisualRows = arrayMap(dataFilter.filter(), function (rowData) {
+            visibleVisualRows = (0, _array.arrayMap)(dataFilter.filter(), function (rowData) {
               return rowData.meta.visualRow;
             });
-            var visibleVisualRowsAssertion = createArrayAssertion(visibleVisualRows);
-            rangeEach(_this5.hot.countSourceRows() - 1, function (row) {
+            var visibleVisualRowsAssertion = (0, _utils.createArrayAssertion)(visibleVisualRows);
+            (0, _number.rangeEach)(_this5.hot.countSourceRows() - 1, function (row) {
               if (!visibleVisualRowsAssertion(row)) {
                 trimmedRows.push(row);
               }
             });
-            arrayEach(trimmedRows, function (physicalRow) {
+            (0, _array.arrayEach)(trimmedRows, function (physicalRow) {
               _this5.filtersRowsMap.setValueAtIndex(physicalRow, true);
             });
           }, true);
@@ -573,7 +626,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
 
       var visualIndex = this.hot.toVisualColumn(column);
       var data = [];
-      arrayEach(this.hot.getSourceDataAtCol(visualIndex), function (value, rowIndex) {
+      (0, _array.arrayEach)(this.hot.getSourceDataAtCol(visualIndex), function (value, rowIndex) {
         var _this6$hot$getCellMet = _this6.hot.getCellMeta(rowIndex, visualIndex),
             row = _this6$hot$getCellMet.row,
             col = _this6$hot$getCellMet.col,
@@ -593,7 +646,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
             instance: instance,
             dateFormat: dateFormat
           },
-          value: toEmptyString(value)
+          value: (0, _utils.toEmptyString)(value)
         });
       });
       return data;
@@ -611,7 +664,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
       var _this7 = this;
 
       if (changes) {
-        arrayEach(changes, function (change) {
+        (0, _array.arrayEach)(changes, function (change) {
           var _change = _slicedToArray(change, 2),
               prop = _change[1];
 
@@ -634,7 +687,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
     key: "updateValueComponentCondition",
     value: function updateValueComponentCondition(columnIndex) {
       var dataAtCol = this.hot.getDataAtCol(columnIndex);
-      var selectedValues = unifyColumnValues(dataAtCol);
+      var selectedValues = (0, _utils.unifyColumnValues)(dataAtCol);
       this.conditionUpdateObserver.updateStatesAtColumn(columnIndex, selectedValues);
     }
     /**
@@ -712,7 +765,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
     key: "onAfterDropdownMenuDefaultOptions",
     value: function onAfterDropdownMenuDefaultOptions(defaultOptions) {
       defaultOptions.items.push({
-        name: SEPARATOR
+        name: _predefinedItems.SEPARATOR
       });
       this.components.forEach(function (component) {
         defaultOptions.items.push(component.getMenuItemDescriptor());
@@ -734,11 +787,11 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
     value: function getOperationBasedOnArguments(suggestedOperation, byConditionState1, byConditionState2, byValueState) {
       var operation = suggestedOperation;
 
-      if (operation === OPERATION_OR && byConditionState1.command.key !== CONDITION_NONE && byConditionState2.command.key !== CONDITION_NONE && byValueState.command.key !== CONDITION_NONE) {
-        operation = OPERATION_OR_THEN_VARIABLE;
-      } else if (byValueState.command.key !== CONDITION_NONE) {
-        if (byConditionState1.command.key === CONDITION_NONE || byConditionState2.command.key === CONDITION_NONE) {
-          operation = OPERATION_AND;
+      if (operation === _constants2.OPERATION_OR && byConditionState1.command.key !== _constants2.CONDITION_NONE && byConditionState2.command.key !== _constants2.CONDITION_NONE && byValueState.command.key !== _constants2.CONDITION_NONE) {
+        operation = _constants2.OPERATION_OR_THEN_VARIABLE;
+      } else if (byValueState.command.key !== _constants2.CONDITION_NONE) {
+        if (byConditionState1.command.key === _constants2.CONDITION_NONE || byConditionState2.command.key === _constants2.CONDITION_NONE) {
+          operation = _constants2.OPERATION_AND;
         }
       }
 
@@ -771,15 +824,15 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
 
         this.conditionCollection.removeConditions(physicalIndex);
 
-        if (byConditionState1.command.key !== CONDITION_NONE) {
+        if (byConditionState1.command.key !== _constants2.CONDITION_NONE) {
           this.conditionCollection.addCondition(physicalIndex, byConditionState1, operation, columnStackPosition);
 
-          if (byConditionState2.command.key !== CONDITION_NONE) {
+          if (byConditionState2.command.key !== _constants2.CONDITION_NONE) {
             this.conditionCollection.addCondition(physicalIndex, byConditionState2, operation, columnStackPosition);
           }
         }
 
-        if (byValueState.command.key !== CONDITION_NONE) {
+        if (byValueState.command.key !== _constants2.CONDITION_NONE) {
           this.conditionCollection.addCondition(physicalIndex, byValueState, operation, columnStackPosition);
         }
 
@@ -808,7 +861,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
     value: function onComponentChange(component, command) {
       this.updateDependentComponentsVisibility();
 
-      if (component.constructor === ConditionComponent && !command.inputsCount) {
+      if (component.constructor === _condition.default && !command.inputsCount) {
         this.setListeningDropdownMenu();
       }
     }
@@ -873,9 +926,9 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
       var physicalColumn = this.hot.toPhysicalColumn(col);
 
       if (this.enabled && this.conditionCollection.hasConditions(physicalColumn)) {
-        addClass(TH, 'htFiltersActive');
+        (0, _element.addClass)(TH, 'htFiltersActive');
       } else {
-        removeClass(TH, 'htFiltersActive');
+        (0, _element.removeClass)(TH, 'htFiltersActive');
       }
     }
     /**
@@ -888,7 +941,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onTableClick",
     value: function onTableClick(event) {
-      var th = closest(event.target, 'TH');
+      var th = (0, _element.closest)(event.target, 'TH');
 
       if (th) {
         var visualIndex = this.hot.getCoords(th).col;
@@ -913,7 +966,7 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
       var _this9 = this;
 
       var conditionCollection = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.conditionCollection;
-      return new DataFilter(conditionCollection, function (physicalColumn) {
+      return new _dataFilter.default(conditionCollection, function (physicalColumn) {
         return _this9.getDataMapAtColumn(physicalColumn);
       });
     }
@@ -939,14 +992,14 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
           conditions = _conditionsState$edit.conditions,
           column = _conditionsState$edit.column;
       var conditionsByValue = conditions.filter(function (condition) {
-        return condition.name === CONDITION_BY_VALUE;
+        return condition.name === _constants2.CONDITION_BY_VALUE;
       });
       var conditionsWithoutByValue = conditions.filter(function (condition) {
-        return condition.name !== CONDITION_BY_VALUE;
+        return condition.name !== _constants2.CONDITION_BY_VALUE;
       });
 
       if (conditionsByValue.length >= 2 || conditionsWithoutByValue.length >= 3) {
-        warn(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["The filter conditions have been applied properly, but couldn\u2019t be displayed visually. \n        The overall amount of conditions exceed the capability of the dropdown menu. \n        For more details see the documentation."], ["The filter conditions have been applied properly, but couldn\u2019t be displayed visually.\\x20\n        The overall amount of conditions exceed the capability of the dropdown menu.\\x20\n        For more details see the documentation."]))));
+        (0, _console.warn)((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["The filter conditions have been applied properly, but couldn\u2019t be displayed visually. \n        The overall amount of conditions exceed the capability of the dropdown menu. \n        For more details see the documentation."], ["The filter conditions have been applied properly, but couldn\u2019t be displayed visually.\\x20\n        The overall amount of conditions exceed the capability of the dropdown menu.\\x20\n        For more details see the documentation."]))));
       } else {
         var operationType = this.conditionCollection.getOperation(column);
         this.components.get('filter_by_condition').updateState(conditionsWithoutByValue[0], column);
@@ -978,8 +1031,8 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
         components[_key] = arguments[_key];
       }
 
-      arrayEach(components, function (component) {
-        arrayEach(menu.menuItems, function (item, index) {
+      (0, _array.arrayEach)(components, function (component) {
+        (0, _array.arrayEach)(menu.menuItems, function (item, index) {
           if (item.key === component.getMenuItemDescriptor().key) {
             indexes.push(index);
           }
@@ -1096,4 +1149,6 @@ export var Filters = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return Filters;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.Filters = Filters;

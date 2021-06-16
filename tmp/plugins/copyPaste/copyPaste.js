@@ -1,3 +1,70 @@
+"use strict";
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.CopyPaste = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.join.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+var _base = require("../base");
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+var _SheetClip = require("../../3rdparty/SheetClip");
+
+var _array = require("../../helpers/array");
+
+var _number = require("../../helpers/number");
+
+var _string = require("../../helpers/string");
+
+var _element = require("../../helpers/dom/element");
+
+var _copy = _interopRequireDefault(require("./contextMenuItem/copy"));
+
+var _cut = _interopRequireDefault(require("./contextMenuItem/cut"));
+
+var _pasteEvent = _interopRequireDefault(require("./pasteEvent"));
+
+var _focusableElement = require("./focusableElement");
+
+var _parseTable = require("../../utils/parseTable");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -36,46 +103,26 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
-import { BasePlugin } from "../base/index.mjs";
-import Hooks from "../../pluginHooks.mjs";
-import { stringify, parse } from "../../3rdparty/SheetClip/index.mjs";
-import { arrayEach } from "../../helpers/array.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { sanitize } from "../../helpers/string.mjs";
-import { getSelectionText } from "../../helpers/dom/element.mjs";
-import copyItem from "./contextMenuItem/copy.mjs";
-import cutItem from "./contextMenuItem/cut.mjs";
-import PasteEvent from "./pasteEvent.mjs";
-import { createElement, destroyElement } from "./focusableElement.mjs";
-import { _dataToHTML, htmlToGridSettings } from "../../utils/parseTable.mjs";
-Hooks.getSingleton().register('afterCopyLimit');
-Hooks.getSingleton().register('modifyCopyableRange');
-Hooks.getSingleton().register('beforeCut');
-Hooks.getSingleton().register('afterCut');
-Hooks.getSingleton().register('beforePaste');
-Hooks.getSingleton().register('afterPaste');
-Hooks.getSingleton().register('beforeCopy');
-Hooks.getSingleton().register('afterCopy');
-export var PLUGIN_KEY = 'copyPaste';
-export var PLUGIN_PRIORITY = 80;
+_pluginHooks.default.getSingleton().register('afterCopyLimit');
+
+_pluginHooks.default.getSingleton().register('modifyCopyableRange');
+
+_pluginHooks.default.getSingleton().register('beforeCut');
+
+_pluginHooks.default.getSingleton().register('afterCut');
+
+_pluginHooks.default.getSingleton().register('beforePaste');
+
+_pluginHooks.default.getSingleton().register('afterPaste');
+
+_pluginHooks.default.getSingleton().register('beforeCopy');
+
+_pluginHooks.default.getSingleton().register('afterCopy');
+
+var PLUGIN_KEY = 'copyPaste';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 80;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var ROWS_LIMIT = 1000;
 var COLUMNS_LIMIT = 1000;
 var privatePool = new WeakMap();
@@ -116,7 +163,7 @@ var META_HEAD = ['<meta name="generator" content="Handsontable"/>', '<style type
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
 
-export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
+var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
   _inherits(CopyPaste, _BasePlugin);
 
   var _super = _createSuper(CopyPaste);
@@ -236,7 +283,7 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('beforeKeyDown', function () {
         return _this2.onBeforeKeyDown();
       });
-      this.focusableElement = createElement(this.uiContainer);
+      this.focusableElement = (0, _focusableElement.createElement)(this.uiContainer);
       this.focusableElement.addLocalHook('copy', function (event) {
         return _this2.onCopy(event);
       }).addLocalHook('cut', function (event) {
@@ -268,7 +315,7 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
     key: "disablePlugin",
     value: function disablePlugin() {
       if (this.focusableElement) {
-        destroyElement(this.focusableElement);
+        (0, _focusableElement.destroyElement)(this.focusableElement);
       }
 
       _get(_getPrototypeOf(CopyPaste.prototype), "disablePlugin", this).call(this);
@@ -315,27 +362,27 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       var copyableRows = [];
       var copyableColumns = []; // Count all copyable rows and columns
 
-      arrayEach(ranges, function (range) {
-        rangeEach(range.startRow, range.endRow, function (row) {
+      (0, _array.arrayEach)(ranges, function (range) {
+        (0, _number.rangeEach)(range.startRow, range.endRow, function (row) {
           if (copyableRows.indexOf(row) === -1) {
             copyableRows.push(row);
           }
         });
-        rangeEach(range.startCol, range.endCol, function (column) {
+        (0, _number.rangeEach)(range.startCol, range.endCol, function (column) {
           if (copyableColumns.indexOf(column) === -1) {
             copyableColumns.push(column);
           }
         });
       }); // Concat all rows and columns data defined in ranges into one copyable string
 
-      arrayEach(copyableRows, function (row) {
+      (0, _array.arrayEach)(copyableRows, function (row) {
         var rowSet = [];
-        arrayEach(copyableColumns, function (column) {
+        (0, _array.arrayEach)(copyableColumns, function (column) {
           rowSet.push(_this3.hot.getCopyableData(row, column));
         });
         dataSet.push(rowSet);
       });
-      return stringify(dataSet);
+      return (0, _SheetClip.stringify)(dataSet);
     }
     /**
      * Creates copyable text releated to range objects.
@@ -353,22 +400,22 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       var copyableRows = [];
       var copyableColumns = []; // Count all copyable rows and columns
 
-      arrayEach(ranges, function (range) {
-        rangeEach(range.startRow, range.endRow, function (row) {
+      (0, _array.arrayEach)(ranges, function (range) {
+        (0, _number.rangeEach)(range.startRow, range.endRow, function (row) {
           if (copyableRows.indexOf(row) === -1) {
             copyableRows.push(row);
           }
         });
-        rangeEach(range.startCol, range.endCol, function (column) {
+        (0, _number.rangeEach)(range.startCol, range.endCol, function (column) {
           if (copyableColumns.indexOf(column) === -1) {
             copyableColumns.push(column);
           }
         });
       }); // Concat all rows and columns data defined in ranges into one copyable string
 
-      arrayEach(copyableRows, function (row) {
+      (0, _array.arrayEach)(copyableRows, function (row) {
         var rowSet = [];
-        arrayEach(copyableColumns, function (column) {
+        (0, _array.arrayEach)(copyableColumns, function (column) {
           rowSet.push(_this4.hot.getCopyableData(row, column));
         });
         dataSet.push(rowSet);
@@ -392,7 +439,7 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      var pasteData = new PasteEvent();
+      var pasteData = new _pasteEvent.default();
 
       if (pastableText) {
         pasteData.clipboardData.setData('text/plain', pastableText);
@@ -569,11 +616,10 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       var allowCopying = !!this.hot.runHooks('beforeCopy', rangedData, this.copyableRanges);
 
       if (allowCopying) {
-        var textPlain = stringify(rangedData);
+        var textPlain = (0, _SheetClip.stringify)(rangedData);
 
         if (event && event.clipboardData) {
-          var textHTML = _dataToHTML(rangedData, this.hot.rootDocument);
-
+          var textHTML = (0, _parseTable._dataToHTML)(rangedData, this.hot.rootDocument);
           event.clipboardData.setData('text/plain', textPlain);
           event.clipboardData.setData('text/html', [META_HEAD, textHTML].join(''));
         } else if (typeof ClipboardEvent === 'undefined') {
@@ -607,11 +653,10 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       var allowCuttingOut = !!this.hot.runHooks('beforeCut', rangedData, this.copyableRanges);
 
       if (allowCuttingOut) {
-        var textPlain = stringify(rangedData);
+        var textPlain = (0, _SheetClip.stringify)(rangedData);
 
         if (event && event.clipboardData) {
-          var textHTML = _dataToHTML(rangedData, this.hot.rootDocument);
-
+          var textHTML = (0, _parseTable._dataToHTML)(rangedData, this.hot.rootDocument);
           event.clipboardData.setData('text/plain', textPlain);
           event.clipboardData.setData('text/html', [META_HEAD, textHTML].join(''));
         } else if (typeof ClipboardEvent === 'undefined') {
@@ -645,14 +690,14 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       var pastedData;
 
       if (event && typeof event.clipboardData !== 'undefined') {
-        var textHTML = sanitize(event.clipboardData.getData('text/html'), {
+        var textHTML = (0, _string.sanitize)(event.clipboardData.getData('text/html'), {
           ADD_TAGS: ['meta'],
           ADD_ATTR: ['content'],
           FORCE_BODY: true
         });
 
         if (textHTML && /(<table)|(<TABLE)/g.test(textHTML)) {
-          var parsedConfig = htmlToGridSettings(textHTML, this.hot.rootDocument);
+          var parsedConfig = (0, _parseTable.htmlToGridSettings)(textHTML, this.hot.rootDocument);
           pastedData = parsedConfig.data;
         } else {
           pastedData = event.clipboardData.getData('text/plain');
@@ -662,7 +707,7 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (typeof pastedData === 'string') {
-        pastedData = parse(pastedData);
+        pastedData = (0, _SheetClip.parse)(pastedData);
       }
 
       if (pastedData && pastedData.length === 0) {
@@ -695,7 +740,7 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
     value: function onAfterContextMenuDefaultOptions(options) {
       options.items.push({
         name: '---------'
-      }, copyItem(this), cutItem(this));
+      }, (0, _copy.default)(this), (0, _cut.default)(this));
     }
     /**
      * Force focus on focusableElement.
@@ -733,7 +778,7 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
 
       this.getOrCreateFocusableElement();
 
-      if (isFragmentSelectionEnabled && this.focusableElement.getFocusableElement() !== this.hot.rootDocument.activeElement && getSelectionText()) {
+      if (isFragmentSelectionEnabled && this.focusableElement.getFocusableElement() !== this.hot.rootDocument.activeElement && (0, _element.getSelectionText)()) {
         return;
       }
 
@@ -771,7 +816,7 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
     key: "destroy",
     value: function destroy() {
       if (this.focusableElement) {
-        destroyElement(this.focusableElement);
+        (0, _focusableElement.destroyElement)(this.focusableElement);
         this.focusableElement = null;
       }
 
@@ -790,4 +835,6 @@ export var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return CopyPaste;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.CopyPaste = CopyPaste;

@@ -1,17 +1,27 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _element = require("./../../../helpers/dom/element");
+
+var _object = require("./../../../helpers/object");
+
+var _eventManager = _interopRequireDefault(require("./../../../eventManager"));
+
+var _calculator = require("./calculator");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { getScrollbarWidth, getStyle, offset, outerHeight, outerWidth } from "./../../../helpers/dom/element.mjs";
-import { objectEach } from "./../../../helpers/object.mjs";
-import EventManager from "./../../../eventManager.mjs";
-import { RENDER_TYPE, FULLY_VISIBLE_TYPE, ViewportColumnsCalculator, ViewportRowsCalculator } from "./calculator/index.mjs";
 /**
  * @class Viewport
  */
-
 var Viewport = /*#__PURE__*/function () {
   /**
    * @param {Walkontable} wotInstance The Walkontable instance.
@@ -32,7 +42,7 @@ var Viewport = /*#__PURE__*/function () {
     this.rowHeaderWidth = NaN;
     this.rowsVisibleCalculator = null;
     this.columnsVisibleCalculator = null;
-    this.eventManager = new EventManager(this.wot);
+    this.eventManager = new _eventManager.default(this.wot);
     this.eventManager.addEventListener(this.wot.rootWindow, 'resize', function () {
       _this.clientHeight = _this.getWorkspaceHeight();
     });
@@ -52,7 +62,7 @@ var Viewport = /*#__PURE__*/function () {
       if (trimmingContainer === this.wot.rootWindow) {
         height = currentDocument.documentElement.clientHeight;
       } else {
-        var elemHeight = outerHeight(trimmingContainer); // returns height without DIV scrollbar
+        var elemHeight = (0, _element.outerHeight)(trimmingContainer); // returns height without DIV scrollbar
 
         height = elemHeight > 0 && trimmingContainer.clientHeight > 0 ? trimmingContainer.clientHeight : Infinity;
       }
@@ -73,7 +83,7 @@ var Viewport = /*#__PURE__*/function () {
       var overflow;
 
       if (preventOverflow) {
-        return outerWidth(this.instance.wtTable.wtRootElement);
+        return (0, _element.outerWidth)(this.instance.wtTable.wtRootElement);
       }
 
       if (wot.getSetting('freezeOverlays')) {
@@ -91,7 +101,7 @@ var Viewport = /*#__PURE__*/function () {
       }
 
       if (trimmingContainer !== rootWindow) {
-        overflow = getStyle(this.instance.wtOverlays.leftOverlay.trimmingContainer, 'overflow', rootWindow);
+        overflow = (0, _element.getStyle)(this.instance.wtOverlays.leftOverlay.trimmingContainer, 'overflow', rootWindow);
 
         if (overflow === 'scroll' || overflow === 'hidden' || overflow === 'auto') {
           // this is used in `scroll.html`
@@ -104,7 +114,7 @@ var Viewport = /*#__PURE__*/function () {
 
       if (stretchSetting === 'none' || !stretchSetting) {
         // if no stretching is used, return the maximum used workspace width
-        return Math.max(width, outerWidth(this.instance.wtTable.TABLE));
+        return Math.max(width, (0, _element.outerWidth)(this.instance.wtTable.TABLE));
       } // if stretching is used, return the actual container width, so the columns can fit inside it
 
 
@@ -180,7 +190,7 @@ var Viewport = /*#__PURE__*/function () {
   }, {
     key: "getWorkspaceOffset",
     value: function getWorkspaceOffset() {
-      return offset(this.wot.wtTable.TABLE);
+      return (0, _element.offset)(this.wot.wtTable.TABLE);
     }
     /**
      * @returns {number}
@@ -189,7 +199,7 @@ var Viewport = /*#__PURE__*/function () {
   }, {
     key: "getWorkspaceActualHeight",
     value: function getWorkspaceActualHeight() {
-      return outerHeight(this.wot.wtTable.TABLE);
+      return (0, _element.outerHeight)(this.wot.wtTable.TABLE);
     }
     /**
      * @returns {number}
@@ -199,7 +209,7 @@ var Viewport = /*#__PURE__*/function () {
     key: "getWorkspaceActualWidth",
     value: function getWorkspaceActualWidth() {
       var wtTable = this.wot.wtTable;
-      return outerWidth(wtTable.TABLE) || outerWidth(wtTable.TBODY) || outerWidth(wtTable.THEAD); // IE8 reports 0 as <table> offsetWidth;
+      return (0, _element.outerWidth)(wtTable.TABLE) || (0, _element.outerWidth)(wtTable.TBODY) || (0, _element.outerWidth)(wtTable.THEAD); // IE8 reports 0 as <table> offsetWidth;
     }
     /**
      * @returns {number}
@@ -213,7 +223,7 @@ var Viewport = /*#__PURE__*/function () {
       if (!columnHeaders.length) {
         this.columnHeaderHeight = 0;
       } else if (isNaN(this.columnHeaderHeight)) {
-        this.columnHeaderHeight = outerHeight(this.wot.wtTable.THEAD);
+        this.columnHeaderHeight = (0, _element.outerHeight)(this.wot.wtTable.THEAD);
       }
 
       return this.columnHeaderHeight;
@@ -268,7 +278,7 @@ var Viewport = /*#__PURE__*/function () {
 
           for (var _i = 0, _len = rowHeaders.length; _i < _len; _i++) {
             if (TH) {
-              this.rowHeaderWidth += outerWidth(TH);
+              this.rowHeaderWidth += (0, _element.outerWidth)(TH);
               TH = TH.nextSibling;
             } else {
               // yes this is a cheat but it worked like that before, just taking assumption from CSS instead of measuring.
@@ -318,7 +328,7 @@ var Viewport = /*#__PURE__*/function () {
   }, {
     key: "createRowsCalculator",
     value: function createRowsCalculator() {
-      var calculationType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : RENDER_TYPE;
+      var calculationType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _calculator.RENDER_TYPE;
       var wot = this.wot;
       var wtSettings = wot.wtSettings,
           wtOverlays = wot.wtOverlays,
@@ -329,7 +339,7 @@ var Viewport = /*#__PURE__*/function () {
       var fixedRowsHeight;
       this.rowHeaderWidth = NaN;
 
-      if (wtSettings.settings.renderAllRows && calculationType === RENDER_TYPE) {
+      if (wtSettings.settings.renderAllRows && calculationType === _calculator.RENDER_TYPE) {
         height = Infinity;
       } else {
         height = this.getViewportHeight();
@@ -359,10 +369,10 @@ var Viewport = /*#__PURE__*/function () {
       if (wtTable.holder.clientHeight === wtTable.holder.offsetHeight) {
         scrollbarHeight = 0;
       } else {
-        scrollbarHeight = getScrollbarWidth(rootDocument);
+        scrollbarHeight = (0, _element.getScrollbarWidth)(rootDocument);
       }
 
-      return new ViewportRowsCalculator({
+      return new _calculator.ViewportRowsCalculator({
         viewportSize: height,
         scrollOffset: pos,
         totalItems: wot.getSetting('totalRows'),
@@ -387,7 +397,7 @@ var Viewport = /*#__PURE__*/function () {
   }, {
     key: "createColumnsCalculator",
     value: function createColumnsCalculator() {
-      var calculationType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : RENDER_TYPE;
+      var calculationType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _calculator.RENDER_TYPE;
       var wot = this.wot;
       var wtSettings = wot.wtSettings,
           wtOverlays = wot.wtOverlays,
@@ -410,10 +420,10 @@ var Viewport = /*#__PURE__*/function () {
       }
 
       if (wtTable.holder.clientWidth !== wtTable.holder.offsetWidth) {
-        width -= getScrollbarWidth(rootDocument);
+        width -= (0, _element.getScrollbarWidth)(rootDocument);
       }
 
-      return new ViewportColumnsCalculator({
+      return new _calculator.ViewportColumnsCalculator({
         viewportSize: width,
         scrollOffset: pos,
         totalItems: wot.getSetting('totalColumns'),
@@ -444,8 +454,8 @@ var Viewport = /*#__PURE__*/function () {
       var runFastDraw = fastDraw;
 
       if (runFastDraw) {
-        var proposedRowsVisibleCalculator = this.createRowsCalculator(FULLY_VISIBLE_TYPE);
-        var proposedColumnsVisibleCalculator = this.createColumnsCalculator(FULLY_VISIBLE_TYPE);
+        var proposedRowsVisibleCalculator = this.createRowsCalculator(_calculator.FULLY_VISIBLE_TYPE);
+        var proposedColumnsVisibleCalculator = this.createColumnsCalculator(_calculator.FULLY_VISIBLE_TYPE);
 
         if (!(this.areAllProposedVisibleRowsAlreadyRendered(proposedRowsVisibleCalculator) && this.areAllProposedVisibleColumnsAlreadyRendered(proposedColumnsVisibleCalculator))) {
           runFastDraw = false;
@@ -453,8 +463,8 @@ var Viewport = /*#__PURE__*/function () {
       }
 
       if (!runFastDraw) {
-        this.rowsRenderCalculator = this.createRowsCalculator(RENDER_TYPE);
-        this.columnsRenderCalculator = this.createColumnsCalculator(RENDER_TYPE);
+        this.rowsRenderCalculator = this.createRowsCalculator(_calculator.RENDER_TYPE);
+        this.columnsRenderCalculator = this.createColumnsCalculator(_calculator.RENDER_TYPE);
       } // delete temporarily to make sure that renderers always use rowsRenderCalculator, not rowsVisibleCalculator
 
 
@@ -470,8 +480,8 @@ var Viewport = /*#__PURE__*/function () {
   }, {
     key: "createVisibleCalculators",
     value: function createVisibleCalculators() {
-      this.rowsVisibleCalculator = this.createRowsCalculator(FULLY_VISIBLE_TYPE);
-      this.columnsVisibleCalculator = this.createColumnsCalculator(FULLY_VISIBLE_TYPE);
+      this.rowsVisibleCalculator = this.createRowsCalculator(_calculator.FULLY_VISIBLE_TYPE);
+      this.columnsVisibleCalculator = this.createColumnsCalculator(_calculator.FULLY_VISIBLE_TYPE);
     }
     /**
      * Returns information whether proposedRowsVisibleCalculator viewport
@@ -540,7 +550,7 @@ var Viewport = /*#__PURE__*/function () {
   }, {
     key: "resetHasOversizedColumnHeadersMarked",
     value: function resetHasOversizedColumnHeadersMarked() {
-      objectEach(this.hasOversizedColumnHeadersMarked, function (value, key, object) {
+      (0, _object.objectEach)(this.hasOversizedColumnHeadersMarked, function (value, key, object) {
         object[key] = void 0;
       });
     }
@@ -549,4 +559,5 @@ var Viewport = /*#__PURE__*/function () {
   return Viewport;
 }();
 
-export default Viewport;
+var _default = Viewport;
+exports.default = _default;

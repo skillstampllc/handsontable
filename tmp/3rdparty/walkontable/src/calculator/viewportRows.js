@@ -1,15 +1,26 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _constants = require("./constants");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import { RENDER_TYPE, FULLY_VISIBLE_TYPE } from "./constants.mjs";
 var privatePool = new WeakMap();
 /**
  * Calculates indexes of rows to render OR rows that are visible.
@@ -108,11 +119,11 @@ var ViewportRowsCalculator = /*#__PURE__*/function () {
           rowHeight = ViewportRowsCalculator.DEFAULT_HEIGHT;
         }
 
-        if (sum <= scrollOffset && calculationType !== FULLY_VISIBLE_TYPE) {
+        if (sum <= scrollOffset && calculationType !== _constants.FULLY_VISIBLE_TYPE) {
           this.startRow = i;
         }
 
-        if (sum >= scrollOffset && sum + (calculationType === FULLY_VISIBLE_TYPE ? rowHeight : 0) <= scrollOffset + viewportHeight - horizontalScrollbarHeight) {
+        if (sum >= scrollOffset && sum + (calculationType === _constants.FULLY_VISIBLE_TYPE ? rowHeight : 0) <= scrollOffset + viewportHeight - horizontalScrollbarHeight) {
           // eslint-disable-line max-len
           if (this.startRow === null) {
             this.startRow = i;
@@ -124,7 +135,7 @@ var ViewportRowsCalculator = /*#__PURE__*/function () {
         startPositions.push(sum);
         sum += rowHeight;
 
-        if (calculationType !== FULLY_VISIBLE_TYPE) {
+        if (calculationType !== _constants.FULLY_VISIBLE_TYPE) {
           this.endRow = i;
         }
 
@@ -143,7 +154,7 @@ var ViewportRowsCalculator = /*#__PURE__*/function () {
           // rowHeight is the height of the last row
           var viewportSum = startPositions[this.endRow] + rowHeight - startPositions[this.startRow - 1];
 
-          if (viewportSum <= viewportHeight - horizontalScrollbarHeight || calculationType !== FULLY_VISIBLE_TYPE) {
+          if (viewportSum <= viewportHeight - horizontalScrollbarHeight || calculationType !== _constants.FULLY_VISIBLE_TYPE) {
             this.startRow -= 1;
           }
 
@@ -153,7 +164,7 @@ var ViewportRowsCalculator = /*#__PURE__*/function () {
         }
       }
 
-      if (calculationType === RENDER_TYPE && this.startRow !== null && overrideFn) {
+      if (calculationType === _constants.RENDER_TYPE && this.startRow !== null && overrideFn) {
         overrideFn(this);
       }
 
@@ -188,4 +199,5 @@ var ViewportRowsCalculator = /*#__PURE__*/function () {
   return ViewportRowsCalculator;
 }();
 
-export default ViewportRowsCalculator;
+var _default = ViewportRowsCalculator;
+exports.default = _default;

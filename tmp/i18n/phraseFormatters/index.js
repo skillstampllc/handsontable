@@ -1,7 +1,16 @@
-import staticRegister from "./../../utils/staticRegister.mjs";
-import pluralizeFn from "./pluralize.mjs";
+"use strict";
 
-var _staticRegister = staticRegister('phraseFormatters'),
+exports.__esModule = true;
+exports.registerPhraseFormatter = exports.register = register;
+exports.getPhraseFormatters = exports.getAll = getAll;
+
+var _staticRegister2 = _interopRequireDefault(require("./../../utils/staticRegister"));
+
+var _pluralize = _interopRequireDefault(require("./pluralize"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _staticRegister = (0, _staticRegister2.default)('phraseFormatters'),
     registerGloballyPhraseFormatter = _staticRegister.register,
     getGlobalPhraseFormatters = _staticRegister.getValues;
 /**
@@ -12,7 +21,7 @@ var _staticRegister = staticRegister('phraseFormatters'),
  */
 
 
-export function register(name, formatterFn) {
+function register(name, formatterFn) {
   registerGloballyPhraseFormatter(name, formatterFn);
 }
 /**
@@ -21,8 +30,9 @@ export function register(name, formatterFn) {
  * @returns {Array}
  */
 
-export function getAll() {
+
+function getAll() {
   return getGlobalPhraseFormatters();
 }
-export { register as registerPhraseFormatter, getAll as getPhraseFormatters };
-register('pluralize', pluralizeFn);
+
+register('pluralize', _pluralize.default);

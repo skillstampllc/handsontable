@@ -1,14 +1,45 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _src = require("./3rdparty/walkontable/src");
+
+var _unicode = require("./helpers/unicode");
+
+var _event = require("./helpers/dom/event");
+
+var _registry = require("./editors/registry");
+
+var _eventManager = _interopRequireDefault(require("./eventManager"));
+
+var _baseEditor = require("./editors/baseEditor");
+
+var _element = require("./helpers/dom/element");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -27,14 +58,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-import { CellCoords } from "./3rdparty/walkontable/src/index.mjs";
-import { KEY_CODES, isMetaKey, isCtrlMetaKey } from "./helpers/unicode.mjs";
-import { stopImmediatePropagation, isImmediatePropagationStopped } from "./helpers/dom/event.mjs";
-import { getEditorInstance } from "./editors/registry.mjs";
-import EventManager from "./eventManager.mjs";
-import { EDITOR_STATE } from "./editors/baseEditor/index.mjs";
-import { getParentWindow } from "./helpers/dom/element.mjs";
 
 var EditorManager = /*#__PURE__*/function () {
   /**
@@ -77,7 +100,7 @@ var EditorManager = /*#__PURE__*/function () {
      * @type {EventManager}
      */
 
-    this.eventManager = new EventManager(instance);
+    this.eventManager = new _eventManager.default(instance);
     /**
      * Determines if EditorManager is destroyed.
      *
@@ -127,7 +150,7 @@ var EditorManager = /*#__PURE__*/function () {
           _this.instance.runHooks('afterDocumentKeyDown', event);
         }
       });
-      frame = getParentWindow(frame);
+      frame = (0, _element.getParentWindow)(frame);
     } // Open editor when text composition is started (IME editor)
 
 
@@ -245,7 +268,7 @@ var EditorManager = /*#__PURE__*/function () {
       if (editorClass && td) {
         var prop = this.instance.colToProp(visualColumnToCheck);
         var originalValue = this.instance.getSourceDataAtCell(this.instance.toPhysicalRow(visualRowToCheck), visualColumnToCheck);
-        this.activeEditor = getEditorInstance(editorClass, this.instance); // Using not modified coordinates, as we need to get the table element using selection coordinates.
+        this.activeEditor = (0, _registry.getEditorInstance)(editorClass, this.instance); // Using not modified coordinates, as we need to get the table element using selection coordinates.
         // There is an extra translation in the editor for saving value.
 
         this.activeEditor.prepare(row, col, prop, td, originalValue, this.cellProperties);
@@ -436,7 +459,7 @@ var EditorManager = /*#__PURE__*/function () {
         return;
       }
 
-      if (isImmediatePropagationStopped(event)) {
+      if ((0, _event.isImmediatePropagationStopped)(event)) {
         return;
       }
 
@@ -450,7 +473,7 @@ var EditorManager = /*#__PURE__*/function () {
       var isCtrlPressed = (event.ctrlKey || event.metaKey) && !event.altKey;
 
       if (this.activeEditor && !this.activeEditor.isWaiting()) {
-        if (!isMetaKey(event.keyCode) && !isCtrlMetaKey(event.keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
+        if (!(0, _unicode.isMetaKey)(event.keyCode) && !(0, _unicode.isCtrlMetaKey)(event.keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
           this.openEditor('', event);
           return;
         }
@@ -461,7 +484,7 @@ var EditorManager = /*#__PURE__*/function () {
       var tabMoves;
 
       switch (event.keyCode) {
-        case KEY_CODES.A:
+        case _unicode.KEY_CODES.A:
           if (!this.isEditorOpened() && isCtrlPressed) {
             this.instance.selectAll();
             event.preventDefault();
@@ -470,7 +493,7 @@ var EditorManager = /*#__PURE__*/function () {
 
           break;
 
-        case KEY_CODES.ARROW_UP:
+        case _unicode.KEY_CODES.ARROW_UP:
           if (this.isEditorOpened() && !this.activeEditor.isWaiting()) {
             this.closeEditorAndSaveChanges(isCtrlPressed);
           }
@@ -480,7 +503,7 @@ var EditorManager = /*#__PURE__*/function () {
           event.stopPropagation();
           break;
 
-        case KEY_CODES.ARROW_DOWN:
+        case _unicode.KEY_CODES.ARROW_DOWN:
           if (this.isEditorOpened() && !this.activeEditor.isWaiting()) {
             this.closeEditorAndSaveChanges(isCtrlPressed);
           }
@@ -490,7 +513,7 @@ var EditorManager = /*#__PURE__*/function () {
           event.stopPropagation();
           break;
 
-        case KEY_CODES.ARROW_RIGHT:
+        case _unicode.KEY_CODES.ARROW_RIGHT:
           if (this.isEditorOpened() && !this.activeEditor.isWaiting()) {
             this.closeEditorAndSaveChanges(isCtrlPressed);
           }
@@ -500,7 +523,7 @@ var EditorManager = /*#__PURE__*/function () {
           event.stopPropagation();
           break;
 
-        case KEY_CODES.ARROW_LEFT:
+        case _unicode.KEY_CODES.ARROW_LEFT:
           if (this.isEditorOpened() && !this.activeEditor.isWaiting()) {
             this.closeEditorAndSaveChanges(isCtrlPressed);
           }
@@ -510,7 +533,7 @@ var EditorManager = /*#__PURE__*/function () {
           event.stopPropagation();
           break;
 
-        case KEY_CODES.TAB:
+        case _unicode.KEY_CODES.TAB:
           tabMoves = typeof this.tableMeta.tabMoves === 'function' ? this.tableMeta.tabMoves(event) : this.tableMeta.tabMoves;
 
           if (isShiftPressed) {
@@ -525,14 +548,14 @@ var EditorManager = /*#__PURE__*/function () {
           event.stopPropagation();
           break;
 
-        case KEY_CODES.BACKSPACE:
-        case KEY_CODES.DELETE:
+        case _unicode.KEY_CODES.BACKSPACE:
+        case _unicode.KEY_CODES.DELETE:
           this.instance.emptySelectedCells();
           this.prepareEditor();
           event.preventDefault();
           break;
 
-        case KEY_CODES.F2:
+        case _unicode.KEY_CODES.F2:
           /* F2 */
           if (this.activeEditor) {
             this.activeEditor.enableFullEditMode();
@@ -543,10 +566,10 @@ var EditorManager = /*#__PURE__*/function () {
 
           break;
 
-        case KEY_CODES.ENTER:
+        case _unicode.KEY_CODES.ENTER:
           /* return/enter */
           if (this.isEditorOpened()) {
-            if (this.activeEditor && this.activeEditor.state !== EDITOR_STATE.WAITING) {
+            if (this.activeEditor && this.activeEditor.state !== _baseEditor.EDITOR_STATE.WAITING) {
               this.closeEditorAndSaveChanges(isCtrlPressed);
             }
 
@@ -564,11 +587,11 @@ var EditorManager = /*#__PURE__*/function () {
 
           event.preventDefault(); // don't add newline to field
 
-          stopImmediatePropagation(event); // required by HandsontableEditor
+          (0, _event.stopImmediatePropagation)(event); // required by HandsontableEditor
 
           break;
 
-        case KEY_CODES.ESCAPE:
+        case _unicode.KEY_CODES.ESCAPE:
           if (this.isEditorOpened()) {
             this.closeEditorAndRestoreOriginalValue(isCtrlPressed);
             this.activeEditor.focus();
@@ -577,11 +600,11 @@ var EditorManager = /*#__PURE__*/function () {
           event.preventDefault();
           break;
 
-        case KEY_CODES.HOME:
+        case _unicode.KEY_CODES.HOME:
           if (event.ctrlKey || event.metaKey) {
-            rangeModifier.call(this.selection, new CellCoords(this.instance.rowIndexMapper.getFirstNotHiddenIndex(0, 1), this.selection.selectedRange.current().from.col));
+            rangeModifier.call(this.selection, new _src.CellCoords(this.instance.rowIndexMapper.getFirstNotHiddenIndex(0, 1), this.selection.selectedRange.current().from.col));
           } else {
-            rangeModifier.call(this.selection, new CellCoords(this.selection.selectedRange.current().from.row, this.instance.columnIndexMapper.getFirstNotHiddenIndex(0, 1)));
+            rangeModifier.call(this.selection, new _src.CellCoords(this.selection.selectedRange.current().from.row, this.instance.columnIndexMapper.getFirstNotHiddenIndex(0, 1)));
           }
 
           event.preventDefault(); // don't scroll the window
@@ -589,11 +612,11 @@ var EditorManager = /*#__PURE__*/function () {
           event.stopPropagation();
           break;
 
-        case KEY_CODES.END:
+        case _unicode.KEY_CODES.END:
           if (event.ctrlKey || event.metaKey) {
-            rangeModifier.call(this.selection, new CellCoords(this.instance.rowIndexMapper.getFirstNotHiddenIndex(this.instance.countRows() - 1, -1), this.selection.selectedRange.current().from.col));
+            rangeModifier.call(this.selection, new _src.CellCoords(this.instance.rowIndexMapper.getFirstNotHiddenIndex(this.instance.countRows() - 1, -1), this.selection.selectedRange.current().from.col));
           } else {
-            rangeModifier.call(this.selection, new CellCoords(this.selection.selectedRange.current().from.row, this.instance.columnIndexMapper.getFirstNotHiddenIndex(this.instance.countCols() - 1, -1)));
+            rangeModifier.call(this.selection, new _src.CellCoords(this.selection.selectedRange.current().from.row, this.instance.columnIndexMapper.getFirstNotHiddenIndex(this.instance.countCols() - 1, -1)));
           }
 
           event.preventDefault(); // don't scroll the window
@@ -601,14 +624,14 @@ var EditorManager = /*#__PURE__*/function () {
           event.stopPropagation();
           break;
 
-        case KEY_CODES.PAGE_UP:
+        case _unicode.KEY_CODES.PAGE_UP:
           this.selection.transformStart(-this.instance.countVisibleRows(), 0);
           event.preventDefault(); // don't page up the window
 
           event.stopPropagation();
           break;
 
-        case KEY_CODES.PAGE_DOWN:
+        case _unicode.KEY_CODES.PAGE_DOWN:
           this.selection.transformStart(this.instance.countVisibleRows(), 0);
           event.preventDefault(); // don't page down the window
 
@@ -674,4 +697,5 @@ EditorManager.getInstance = function (hotInstance, tableMeta, selection) {
   return editorManager;
 };
 
-export default EditorManager;
+var _default = EditorManager;
+exports.default = _default;

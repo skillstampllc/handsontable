@@ -1,3 +1,38 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+var _object = require("../../../helpers/object");
+
+var _utils = require("../utils");
+
+var _lazyFactoryMap = _interopRequireDefault(require("../lazyFactoryMap"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10,27 +45,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { extend } from "../../../helpers/object.mjs";
-import { expandMetaType, assert, isUnsignedNumber } from "../utils.mjs";
-import LazyFactoryMap from "../lazyFactoryMap.mjs";
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
 /**
@@ -63,7 +83,6 @@ import LazyFactoryMap from "../lazyFactoryMap.mjs";
  */
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
-
 var CellMeta = /*#__PURE__*/function () {
   function CellMeta(columnMeta) {
     var _this = this;
@@ -85,7 +104,7 @@ var CellMeta = /*#__PURE__*/function () {
      * @type {LazyFactoryMap<number, LazyFactoryMap<number, object>>}
      */
 
-    this.metas = new LazyFactoryMap(function () {
+    this.metas = new _lazyFactoryMap.default(function () {
       return _this._createRow();
     });
   }
@@ -102,8 +121,8 @@ var CellMeta = /*#__PURE__*/function () {
     key: "updateMeta",
     value: function updateMeta(physicalRow, physicalColumn, settings) {
       var meta = this.getMeta(physicalRow, physicalColumn);
-      extend(meta, settings);
-      extend(meta, expandMetaType(settings.type, meta));
+      (0, _object.extend)(meta, settings);
+      (0, _object.extend)(meta, (0, _utils.expandMetaType)(settings.type, meta));
     }
     /**
      * Creates one or more rows at specific position.
@@ -237,8 +256,8 @@ var CellMeta = /*#__PURE__*/function () {
   }, {
     key: "getMetasAtRow",
     value: function getMetasAtRow(physicalRow) {
-      assert(function () {
-        return isUnsignedNumber(physicalRow);
+      (0, _utils.assert)(function () {
+        return (0, _utils.isUnsignedNumber)(physicalRow);
       }, 'Expecting an unsigned number.');
       var rowsMeta = new Map(this.metas);
       return rowsMeta.has(physicalRow) ? Array.from(rowsMeta.get(physicalRow).values()) : [];
@@ -264,7 +283,7 @@ var CellMeta = /*#__PURE__*/function () {
     value: function _createRow() {
       var _this2 = this;
 
-      return new LazyFactoryMap(function (physicalColumn) {
+      return new _lazyFactoryMap.default(function (physicalColumn) {
         return _this2._createMeta(physicalColumn);
       });
     }
@@ -287,4 +306,4 @@ var CellMeta = /*#__PURE__*/function () {
   return CellMeta;
 }();
 
-export { CellMeta as default };
+exports.default = CellMeta;

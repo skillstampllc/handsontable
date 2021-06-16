@@ -1,4 +1,61 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.Comments = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/web.timers.js");
+
+var _element = require("../../helpers/dom/element");
+
+var _object = require("../../helpers/object");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _src = require("../../3rdparty/walkontable/src");
+
+var _base = require("../base");
+
+var _commentEditor = _interopRequireDefault(require("./commentEditor"));
+
+var _utils = require("../contextMenu/utils");
+
+var _displaySwitch = _interopRequireDefault(require("./displaySwitch"));
+
+var C = _interopRequireWildcard(require("../../i18n/constants"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -26,31 +83,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/web.timers.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import { addClass, closest, isChildOf, hasClass, offset, outerWidth, outerHeight } from "../../helpers/dom/element.mjs";
-import { deepClone, deepExtend, isObject } from "../../helpers/object.mjs";
-import EventManager from "../../eventManager.mjs";
-import { CellCoords } from "../../3rdparty/walkontable/src/index.mjs";
-import { BasePlugin } from "../base/index.mjs";
-import CommentEditor from "./commentEditor.mjs";
-import { checkSelectionConsistency, markLabelAsSelected } from "../contextMenu/utils.mjs";
-import DisplaySwitch from "./displaySwitch.mjs";
-import * as C from "../../i18n/constants.mjs";
-export var PLUGIN_KEY = 'comments';
-export var PLUGIN_PRIORITY = 60;
+var PLUGIN_KEY = 'comments';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 60;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var privatePool = new WeakMap();
 var META_COMMENT = 'comment';
 var META_COMMENT_VALUE = 'value';
@@ -111,7 +147,7 @@ var META_READONLY = 'readOnly';
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
 
-export var Comments = /*#__PURE__*/function (_BasePlugin) {
+var Comments = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Comments, _BasePlugin);
 
   var _super = _createSuper(Comments);
@@ -204,15 +240,15 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (!this.editor) {
-        this.editor = new CommentEditor(this.hot.rootDocument);
+        this.editor = new _commentEditor.default(this.hot.rootDocument);
       }
 
       if (!this.eventManager) {
-        this.eventManager = new EventManager(this);
+        this.eventManager = new _eventManager.default(this);
       }
 
       if (!this.displaySwitch) {
-        this.displaySwitch = new DisplaySwitch(this.getDisplayDelaySetting());
+        this.displaySwitch = new _displaySwitch.default(this.getDisplayDelaySetting());
       }
 
       this.addHook('afterContextMenuDefaultOptions', function (options) {
@@ -325,8 +361,8 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "targetIsCellWithComment",
     value: function targetIsCellWithComment(event) {
-      var closestCell = closest(event.target, 'TD', 'TBODY');
-      return !!(closestCell && hasClass(closestCell, 'htCommentCell') && closest(closestCell, [this.hot.rootElement]));
+      var closestCell = (0, _element.closest)(event.target, 'TD', 'TBODY');
+      return !!(closestCell && (0, _element.hasClass)(closestCell, 'htCommentCell') && (0, _element.closest)(closestCell, [this.hot.rootElement]));
     }
     /**
      * Checks if the event target is a comment textarea.
@@ -380,7 +416,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
     key: "setCommentAtCell",
     value: function setCommentAtCell(row, column, value) {
       this.setRange({
-        from: new CellCoords(row, column)
+        from: new _src.CellCoords(row, column)
       });
       this.setComment(value);
     }
@@ -420,7 +456,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
     value: function removeCommentAtCell(row, column) {
       var forceRender = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
       this.setRange({
-        from: new CellCoords(row, column)
+        from: new _src.CellCoords(row, column)
       });
       this.removeComment(forceRender);
     }
@@ -493,7 +529,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
     key: "showAtCell",
     value: function showAtCell(row, column) {
       this.setRange({
-        from: new CellCoords(row, column)
+        from: new _src.CellCoords(row, column)
       });
       return this.show();
     }
@@ -559,9 +595,9 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
         row: renderableRow,
         col: renderableColumn
       });
-      var cellOffset = offset(TD);
+      var cellOffset = (0, _element.offset)(TD);
       var lastColWidth = isBeforeRenderedColumns ? 0 : wtTable.getStretchedColumnWidth(renderableColumn);
-      var lastRowHeight = targetingPreviousRow && !isBeforeRenderedRows ? outerHeight(TD) : 0;
+      var lastRowHeight = targetingPreviousRow && !isBeforeRenderedRows ? (0, _element.outerHeight)(TD) : 0;
       var cellTopOffset = cellOffset.top;
       var cellLeftOffset = cellOffset.left;
 
@@ -627,8 +663,8 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
       var newComment;
 
       if (oldComment) {
-        newComment = deepClone(oldComment);
-        deepExtend(newComment, metaObject);
+        newComment = (0, _object.deepClone)(oldComment);
+        (0, _object.deepExtend)(newComment, metaObject);
       } else {
         newComment = metaObject;
       }
@@ -672,7 +708,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (!this.contextMenuEvent && !this.targetIsCommentTextArea(event)) {
-        var eventCell = closest(event.target, 'TD', 'TBODY');
+        var eventCell = (0, _element.closest)(event.target, 'TD', 'TBODY');
         var coordinates = null;
 
         if (eventCell) {
@@ -704,17 +740,17 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
       var rootDocument = this.hot.rootDocument;
       priv.cellBelowCursor = rootDocument.elementFromPoint(event.clientX, event.clientY);
 
-      if (this.mouseDown || this.editor.isFocused() || hasClass(event.target, 'wtBorder') || priv.cellBelowCursor !== event.target || !this.editor) {
+      if (this.mouseDown || this.editor.isFocused() || (0, _element.hasClass)(event.target, 'wtBorder') || priv.cellBelowCursor !== event.target || !this.editor) {
         return;
       }
 
       if (this.targetIsCellWithComment(event)) {
         var coordinates = this.hot.view.wt.wtTable.getCoords(event.target);
         var range = {
-          from: new CellCoords(this.hot.rowIndexMapper.getVisualFromRenderableIndex(coordinates.row), this.hot.columnIndexMapper.getVisualFromRenderableIndex(coordinates.col))
+          from: new _src.CellCoords(this.hot.rowIndexMapper.getVisualFromRenderableIndex(coordinates.row), this.hot.columnIndexMapper.getVisualFromRenderableIndex(coordinates.col))
         };
         this.displaySwitch.show(range);
-      } else if (isChildOf(event.target, rootDocument) && !this.targetIsCommentTextArea(event)) {
+      } else if ((0, _element.isChildOf)(event.target, rootDocument) && !this.targetIsCommentTextArea(event)) {
         this.displaySwitch.hide();
       }
     }
@@ -741,7 +777,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
     key: "onAfterRenderer",
     value: function onAfterRenderer(TD, cellProperties) {
       if (cellProperties[META_COMMENT] && cellProperties[META_COMMENT][META_COMMENT_VALUE]) {
-        addClass(TD, cellProperties.commentedCellClassName);
+        (0, _element.addClass)(TD, cellProperties.commentedCellClassName);
       }
     }
     /**
@@ -767,8 +803,8 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
     value: function onEditorMouseDown(event) {
       var priv = privatePool.get(this);
       priv.tempEditorDimensions = {
-        width: outerWidth(event.target),
-        height: outerHeight(event.target)
+        width: (0, _element.outerWidth)(event.target),
+        height: (0, _element.outerHeight)(event.target)
       };
     }
     /**
@@ -782,8 +818,8 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
     key: "onEditorMouseUp",
     value: function onEditorMouseUp(event) {
       var priv = privatePool.get(this);
-      var currentWidth = outerWidth(event.target);
-      var currentHeight = outerHeight(event.target);
+      var currentWidth = (0, _element.outerWidth)(event.target);
+      var currentHeight = (0, _element.outerHeight)(event.target);
 
       if (currentWidth !== priv.tempEditorDimensions.width + 1 || currentHeight !== priv.tempEditorDimensions.height + 2) {
         this.updateCommentMeta(this.range.from.row, this.range.from.col, _defineProperty({}, META_STYLE, {
@@ -917,7 +953,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
           var _this8 = this;
 
           var label = this.getTranslatedPhrase(C.CONTEXTMENU_ITEMS_READ_ONLY_COMMENT);
-          var hasProperty = checkSelectionConsistency(this.getSelectedRangeLast(), function (row, col) {
+          var hasProperty = (0, _utils.checkSelectionConsistency)(this.getSelectedRangeLast(), function (row, col) {
             var readOnlyProperty = _this8.getCellMeta(row, col)[META_COMMENT];
 
             if (readOnlyProperty) {
@@ -930,7 +966,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
           });
 
           if (hasProperty) {
-            label = markLabelAsSelected(label);
+            label = (0, _utils.markLabelAsSelected)(label);
           }
 
           return label;
@@ -959,7 +995,7 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
     value: function getDisplayDelaySetting() {
       var commentSetting = this.hot.getSettings()[PLUGIN_KEY];
 
-      if (isObject(commentSetting)) {
+      if ((0, _object.isObject)(commentSetting)) {
         return commentSetting.displayDelay;
       }
 
@@ -1006,4 +1042,6 @@ export var Comments = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return Comments;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.Comments = Comments;

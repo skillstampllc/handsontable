@@ -1,11 +1,21 @@
-import { NumericEditor } from "../../editors/numericEditor/index.mjs";
-import { numericRenderer } from "../../renderers/numericRenderer/index.mjs";
-import { numericValidator } from "../../validators/numericValidator/index.mjs";
-export var CELL_TYPE = 'numeric';
-export var NumericCellType = {
+"use strict";
+
+exports.__esModule = true;
+exports.NumericCellType = exports.CELL_TYPE = void 0;
+
+var _numericEditor = require("../../editors/numericEditor");
+
+var _numericRenderer = require("../../renderers/numericRenderer");
+
+var _numericValidator = require("../../validators/numericValidator");
+
+var CELL_TYPE = 'numeric';
+exports.CELL_TYPE = CELL_TYPE;
+var NumericCellType = {
   CELL_TYPE: CELL_TYPE,
-  editor: NumericEditor,
-  renderer: numericRenderer,
-  validator: numericValidator,
+  editor: _numericEditor.NumericEditor,
+  renderer: _numericRenderer.numericRenderer,
+  validator: _numericValidator.numericValidator,
   dataType: 'number'
 };
+exports.NumericCellType = NumericCellType;

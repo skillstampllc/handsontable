@@ -1,13 +1,24 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _globalMeta = _interopRequireDefault(require("./metaLayers/globalMeta"));
+
+var _tableMeta = _interopRequireDefault(require("./metaLayers/tableMeta"));
+
+var _columnMeta = _interopRequireDefault(require("./metaLayers/columnMeta"));
+
+var _cellMeta = _interopRequireDefault(require("./metaLayers/cellMeta"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import GlobalMeta from "./metaLayers/globalMeta.mjs";
-import TableMeta from "./metaLayers/tableMeta.mjs";
-import ColumnMeta from "./metaLayers/columnMeta.mjs";
-import CellMeta from "./metaLayers/cellMeta.mjs";
 /**
  * With the Meta Manager class, it can be possible to manage with meta objects for different layers in
  * one place. All coordinates used to fetch, updating, removing, or creating rows or columns have to
@@ -35,7 +46,6 @@ import CellMeta from "./metaLayers/cellMeta.mjs";
  *
  * A more detailed description of the specific layers can be found in the "metaLayers/" modules description.
  */
-
 var MetaManager = /*#__PURE__*/function () {
   function MetaManager() {
     var customSettings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -45,23 +55,23 @@ var MetaManager = /*#__PURE__*/function () {
     /**
      * @type {GlobalMeta}
      */
-    this.globalMeta = new GlobalMeta();
+    this.globalMeta = new _globalMeta.default();
     this.globalMeta.updateMeta(customSettings);
     /**
      * @type {TableMeta}
      */
 
-    this.tableMeta = new TableMeta(this.globalMeta);
+    this.tableMeta = new _tableMeta.default(this.globalMeta);
     /**
      * @type {ColumnMeta}
      */
 
-    this.columnMeta = new ColumnMeta(this.globalMeta);
+    this.columnMeta = new _columnMeta.default(this.globalMeta);
     /**
      * @type {CellMeta}
      */
 
-    this.cellMeta = new CellMeta(this.columnMeta);
+    this.cellMeta = new _cellMeta.default(this.columnMeta);
   }
   /**
    * Gets the global meta object that is a root of all default settings, which are recognizable by Handsontable.
@@ -302,4 +312,4 @@ var MetaManager = /*#__PURE__*/function () {
   return MetaManager;
 }();
 
-export { MetaManager as default };
+exports.default = MetaManager;

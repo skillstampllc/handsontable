@@ -1,3 +1,39 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.createPriorityMap = createPriorityMap;
+exports.DESC = exports.ASC = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.map.js");
+
+require("core-js/modules/es.array.sort.js");
+
+var _number = require("../../helpers/number");
+
+var _function = require("../../helpers/function");
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -18,23 +54,10 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.map.js";
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
-import { isNumeric } from "../../helpers/number.mjs";
-import { isFunction } from "../../helpers/function.mjs";
-export var ASC = 'asc';
-export var DESC = 'desc';
+var ASC = 'asc';
+exports.ASC = ASC;
+var DESC = 'desc';
+exports.DESC = DESC;
 var ORDER_MAP = new Map([[ASC, [-1, 1]], [DESC, [1, -1]]]);
 
 var DEFAULT_ERROR_PRIORITY_EXISTS = function DEFAULT_ERROR_PRIORITY_EXISTS(priority) {
@@ -60,14 +83,14 @@ var DEFAULT_ERROR_PRIORITY_NAN = function DEFAULT_ERROR_PRIORITY_NAN(priority) {
  */
 
 
-export function createPriorityMap() {
+function createPriorityMap() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       errorPriorityExists = _ref.errorPriorityExists,
       errorPriorityNaN = _ref.errorPriorityNaN;
 
   var priorityMap = new Map();
-  errorPriorityExists = isFunction(errorPriorityExists) ? errorPriorityExists : DEFAULT_ERROR_PRIORITY_EXISTS;
-  errorPriorityNaN = isFunction(errorPriorityNaN) ? errorPriorityNaN : DEFAULT_ERROR_PRIORITY_NAN;
+  errorPriorityExists = (0, _function.isFunction)(errorPriorityExists) ? errorPriorityExists : DEFAULT_ERROR_PRIORITY_EXISTS;
+  errorPriorityNaN = (0, _function.isFunction)(errorPriorityNaN) ? errorPriorityNaN : DEFAULT_ERROR_PRIORITY_NAN;
   /**
    * Adds items to priority map. Throws an error if `priority` is not a number or if is already added.
    *
@@ -76,7 +99,7 @@ export function createPriorityMap() {
    */
 
   function addItem(priority, item) {
-    if (!isNumeric(priority)) {
+    if (!(0, _number.isNumeric)(priority)) {
       throw new Error(errorPriorityNaN(priority));
     }
 

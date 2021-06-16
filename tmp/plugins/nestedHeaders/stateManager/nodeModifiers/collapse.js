@@ -1,13 +1,28 @@
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import { arrayEach } from "../../../../helpers/array.mjs";
-import { expandNode } from "./expand.mjs";
-import { getFirstChildProperty, isNodeReflectsFirstChildColspan, traverseHiddenNodeColumnIndexes } from "./utils/tree.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.collapseNode = collapseNode;
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+var _array = require("../../../../helpers/array");
+
+var _expand = require("./expand");
+
+var _tree = require("./utils/tree");
+
 /**
  * Collapsing a node is a process where the processing node is collapsed
  * to the colspan width of the first child. All node children, except the
@@ -25,8 +40,7 @@ import { getFirstChildProperty, isNodeReflectsFirstChildColspan, traverseHiddenN
  *                    - colspanCompensation: The number of colspan by
  *                      which the processed node colspan was reduced.
  */
-
-export function collapseNode(nodeToProcess) {
+function collapseNode(nodeToProcess) {
   var _getFirstChildPropert;
 
   var nodeData = nodeToProcess.data,
@@ -40,7 +54,7 @@ export function collapseNode(nodeToProcess) {
     };
   }
 
-  var isNodeReflected = isNodeReflectsFirstChildColspan(nodeToProcess);
+  var isNodeReflected = (0, _tree.isNodeReflectsFirstChildColspan)(nodeToProcess);
 
   if (isNodeReflected) {
     return collapseNode(nodeChilds[0]);
@@ -51,8 +65,8 @@ export function collapseNode(nodeToProcess) {
   var affectedColumns = new Set();
 
   if (allLeavesExceptMostLeft.length > 0) {
-    arrayEach(allLeavesExceptMostLeft, function (node) {
-      traverseHiddenNodeColumnIndexes(node, function (gridColumnIndex) {
+    (0, _array.arrayEach)(allLeavesExceptMostLeft, function (node) {
+      (0, _tree.traverseHiddenNodeColumnIndexes)(node, function (gridColumnIndex) {
         affectedColumns.add(gridColumnIndex);
       }); // Clone the tree to preserve original tree state after header expanding.
 
@@ -77,7 +91,7 @@ export function collapseNode(nodeToProcess) {
   // the first child colspan width.
 
 
-  var colspanCompensation = nodeData.colspan - ((_getFirstChildPropert = getFirstChildProperty(nodeToProcess, 'colspan')) !== null && _getFirstChildPropert !== void 0 ? _getFirstChildPropert : 1);
+  var colspanCompensation = nodeData.colspan - ((_getFirstChildPropert = (0, _tree.getFirstChildProperty)(nodeToProcess, 'colspan')) !== null && _getFirstChildPropert !== void 0 ? _getFirstChildPropert : 1);
   nodeToProcess.walkUp(function (node) {
     var data = node.data;
     data.colspan -= colspanCompensation;
@@ -85,13 +99,13 @@ export function collapseNode(nodeToProcess) {
     if (data.colspan <= 1) {
       data.colspan = 1;
       data.isCollapsed = true;
-    } else if (isNodeReflectsFirstChildColspan(node)) {
-      data.isCollapsed = getFirstChildProperty(node, 'isCollapsed');
+    } else if ((0, _tree.isNodeReflectsFirstChildColspan)(node)) {
+      data.isCollapsed = (0, _tree.getFirstChildProperty)(node, 'isCollapsed');
     }
   });
   return {
     rollbackModification: function rollbackModification() {
-      return expandNode(nodeToProcess);
+      return (0, _expand.expandNode)(nodeToProcess);
     },
     affectedColumns: Array.from(affectedColumns),
     colspanCompensation: colspanCompensation

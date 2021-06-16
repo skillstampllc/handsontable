@@ -1,23 +1,51 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.number.is-integer.js";
-import "core-js/modules/es.number.constructor.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.TrimRows = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _translations = require("../../translations");
+
+var _array = require("../../helpers/array");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43,11 +71,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import { TrimmingMap } from "../../translations/index.mjs";
-import { arrayEach, arrayReduce } from "../../helpers/array.mjs";
-export var PLUGIN_KEY = 'trimRows';
-export var PLUGIN_PRIORITY = 330;
+var PLUGIN_KEY = 'trimRows';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 330;
 /**
  * @plugin TrimRows
  *
@@ -91,7 +117,9 @@ export var PLUGIN_PRIORITY = 330;
  * ```
  */
 
-export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
+var TrimRows = /*#__PURE__*/function (_BasePlugin) {
   _inherits(TrimRows, _BasePlugin);
 
   var _super = _createSuper(TrimRows);
@@ -138,7 +166,7 @@ export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.trimmedRowsMap = this.hot.rowIndexMapper.registerMap('trimRows', new TrimmingMap());
+      this.trimmedRowsMap = this.hot.rowIndexMapper.registerMap('trimRows', new _translations.TrimmingMap());
       this.trimmedRowsMap.addLocalHook('init', function () {
         return _this2.onMapInit();
       });
@@ -160,7 +188,7 @@ export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
         this.hot.batchExecution(function () {
           _this3.trimmedRowsMap.clear();
 
-          arrayEach(trimmedRows, function (physicalRow) {
+          (0, _array.arrayEach)(trimmedRows, function (physicalRow) {
             _this3.trimmedRowsMap.setValueAtIndex(physicalRow, true);
           });
         }, true);
@@ -219,7 +247,7 @@ export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
 
       if (isValidConfig) {
         this.hot.batchExecution(function () {
-          arrayEach(rows, function (physicalRow) {
+          (0, _array.arrayEach)(rows, function (physicalRow) {
             _this4.trimmedRowsMap.setValueAtIndex(physicalRow, true);
           });
         }, true);
@@ -261,11 +289,11 @@ export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
 
       if (isValidConfig && isAnyRowUntrimmed) {
         // Preparing new values for trimming map.
-        arrayEach(rows, function (physicalRow) {
+        (0, _array.arrayEach)(rows, function (physicalRow) {
           trimmingMapValues[physicalRow] = false;
         }); // Preparing new trimming config.
 
-        destinationTrimConfig = arrayReduce(trimmingMapValues, function (trimmedIndexes, isTrimmed, physicalIndex) {
+        destinationTrimConfig = (0, _array.arrayReduce)(trimmingMapValues, function (trimmedIndexes, isTrimmed, physicalIndex) {
           if (isTrimmed) {
             trimmedIndexes.push(physicalIndex);
           }
@@ -352,7 +380,7 @@ export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
 
       if (Array.isArray(trimmedRows)) {
         this.hot.batchExecution(function () {
-          arrayEach(trimmedRows, function (physicalRow) {
+          (0, _array.arrayEach)(trimmedRows, function (physicalRow) {
             _this5.trimmedRowsMap.setValueAtIndex(physicalRow, true);
           });
         }, true);
@@ -380,4 +408,6 @@ export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return TrimRows;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.TrimRows = TrimRows;

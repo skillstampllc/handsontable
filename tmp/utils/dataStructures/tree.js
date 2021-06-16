@@ -1,3 +1,41 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.get-own-property-descriptors.js");
+
+exports.__esModule = true;
+exports.depthFirstPreOrder = depthFirstPreOrder;
+exports.default = exports.TRAVERSAL_BF = exports.TRAVERSAL_DF_POST = exports.TRAVERSAL_DF_PRE = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -9,23 +47,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.object.get-own-property-descriptors.js";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -44,14 +65,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *
  * @type {string}
  */
-export var TRAVERSAL_DF_PRE = 'DF-pre-order';
+var TRAVERSAL_DF_PRE = 'DF-pre-order';
 /**
  * @param {Function} callback A callback which will be called on each visited node.
  * @param {*} context A context to pass through.
  * @returns {boolean}
  */
 
-export function depthFirstPreOrder(callback, context) {
+exports.TRAVERSAL_DF_PRE = TRAVERSAL_DF_PRE;
+
+function depthFirstPreOrder(callback, context) {
   var continueTraverse = callback.call(context, this);
 
   for (var i = 0; i < this.childs.length; i++) {
@@ -70,12 +93,15 @@ export function depthFirstPreOrder(callback, context) {
  * @type {string}
  */
 
-export var TRAVERSAL_DF_POST = 'DF-post-order';
+
+var TRAVERSAL_DF_POST = 'DF-post-order';
 /**
  * @param {Function} callback A callback which will be called on each visited node.
  * @param {*} context A context to pass through.
  * @returns {boolean}
  */
+
+exports.TRAVERSAL_DF_POST = TRAVERSAL_DF_POST;
 
 function depthFirstPostOrder(callback, context) {
   for (var i = 0; i < this.childs.length; i++) {
@@ -95,11 +121,13 @@ function depthFirstPostOrder(callback, context) {
  */
 
 
-export var TRAVERSAL_BF = 'BF';
+var TRAVERSAL_BF = 'BF';
 /**
  * @param {Function} callback A callback which will be called on each visited node.
  * @param {*} context A context to pass through.
  */
+
+exports.TRAVERSAL_BF = TRAVERSAL_BF;
 
 function breadthFirst(callback, context) {
   var queue = [this];
@@ -285,4 +313,4 @@ var TreeNode = /*#__PURE__*/function () {
   return TreeNode;
 }();
 
-export { TreeNode as default };
+exports.default = TreeNode;

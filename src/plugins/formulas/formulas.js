@@ -1,4 +1,3 @@
-import { HyperFormula } from 'hyperformula';
 import { BasePlugin } from '../base';
 import { createAutofillHooks } from './autofill';
 import staticRegister from '../../utils/staticRegister';
@@ -21,10 +20,12 @@ import { getEngineSettingsWithOverrides } from './engine/settings';
 import { isArrayOfArrays } from '../../helpers/data';
 import { toUpperCaseFirst } from '../../helpers/string';
 import Hooks from '../../pluginHooks';
-import { HFValueFunction } from './custom/custom-hyper-function';
+import HFValueFunction from './custom/custom-hyper-function';
 
 export const PLUGIN_KEY = 'formulas';
 export const PLUGIN_PRIORITY = 260;
+
+const HyperFormula = require('hyperformula').HyperFormula;
 
 Hooks.getSingleton().register('afterNamedExpressionAdded');
 Hooks.getSingleton().register('afterNamedExpressionRemoved');

@@ -1,10 +1,16 @@
-import "core-js/modules/es.number.constructor.js";
+"use strict";
+
+exports.__esModule = true;
+exports.isFloat = isFloat;
+exports.isInt = isInt;
+
+require("core-js/modules/es.number.constructor.js");
 
 /**
  * @param {number} num A number to check.
  * @returns {boolean}
  */
-export function isFloat(num) {
+function isFloat(num) {
   return Number(num) == num && num % 1 !== 0; // eslint-disable-line eqeqeq
 }
 /**
@@ -12,6 +18,7 @@ export function isFloat(num) {
  * @returns {boolean}
  */
 
-export function isInt(num) {
+
+function isInt(num) {
   return Number(num) == num && num % 1 === 0; // eslint-disable-line eqeqeq
 }

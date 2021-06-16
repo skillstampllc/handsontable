@@ -1,4 +1,19 @@
-import "core-js/modules/es.array.slice.js";
+"use strict";
+
+exports.__esModule = true;
+exports.IndexMap = void 0;
+
+require("core-js/modules/es.array.slice.js");
+
+var _number = require("../../helpers/number");
+
+var _object = require("../../helpers/object");
+
+var _function = require("../../helpers/function");
+
+var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6,15 +21,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { rangeEach } from "../../helpers/number.mjs";
-import { mixin } from "../../helpers/object.mjs";
-import { isFunction } from "../../helpers/function.mjs";
-import localHooks from "../../mixins/localHooks.mjs";
 /**
  * Map for storing mappings from an index to a value.
  */
-
-export var IndexMap = /*#__PURE__*/function () {
+var IndexMap = /*#__PURE__*/function () {
   function IndexMap() {
     var initValueOrFn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -139,12 +149,12 @@ export var IndexMap = /*#__PURE__*/function () {
       var length = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.indexedValues.length;
       this.indexedValues.length = 0;
 
-      if (isFunction(this.initValueOrFn)) {
-        rangeEach(length - 1, function (index) {
+      if ((0, _function.isFunction)(this.initValueOrFn)) {
+        (0, _number.rangeEach)(length - 1, function (index) {
           return _this.indexedValues.push(_this.initValueOrFn(index));
         });
       } else {
-        rangeEach(length - 1, function () {
+        (0, _number.rangeEach)(length - 1, function () {
           return _this.indexedValues.push(_this.initValueOrFn);
         });
       }
@@ -207,4 +217,6 @@ export var IndexMap = /*#__PURE__*/function () {
 
   return IndexMap;
 }();
-mixin(IndexMap, localHooks);
+
+exports.IndexMap = IndexMap;
+(0, _object.mixin)(IndexMap, _localHooks.default);

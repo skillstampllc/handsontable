@@ -1,11 +1,29 @@
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.object.get-own-property-descriptors.js";
+"use strict";
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.get-own-property-descriptors.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _constants = require("../constants");
+
+var _visualSelection = _interopRequireDefault(require("../visualSelection"));
+
 var _excluded = ["headerClassName", "rowClassName", "columnClassName"];
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -17,8 +35,6 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-import { HEADER_TYPE } from "../constants.mjs";
-import VisualSelection from "../visualSelection.mjs";
 /**
  * Creates the new instance of Selection, responsible for highlighting row and column headers. This type of selection
  * can occur multiple times.
@@ -29,23 +45,23 @@ import VisualSelection from "../visualSelection.mjs";
  * @param {string} highlightParams.columnClassName Highlighted column' class name.
  * @returns {Selection}
  */
-
 function createHighlight(_ref) {
   var headerClassName = _ref.headerClassName,
       rowClassName = _ref.rowClassName,
       columnClassName = _ref.columnClassName,
       restOptions = _objectWithoutProperties(_ref, _excluded);
 
-  var s = new VisualSelection(_objectSpread(_objectSpread({
+  var s = new _visualSelection.default(_objectSpread(_objectSpread({
     className: 'highlight',
     highlightHeaderClassName: headerClassName,
     highlightRowClassName: rowClassName,
     highlightColumnClassName: columnClassName
   }, restOptions), {}, {
     highlightOnlyClosestHeader: true,
-    selectionType: HEADER_TYPE
+    selectionType: _constants.HEADER_TYPE
   }));
   return s;
 }
 
-export default createHighlight;
+var _default = createHighlight;
+exports.default = _default;

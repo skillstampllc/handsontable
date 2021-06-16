@@ -1,15 +1,28 @@
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _mixed = require("../../helpers/mixed");
+
+var _object = require("../../helpers/object");
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import { isEmpty } from "../../helpers/mixed.mjs";
-import { isObjectEqual } from "../../helpers/object.mjs";
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
 /**
@@ -85,8 +98,7 @@ import { isObjectEqual } from "../../helpers/object.mjs";
  */
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
-
-export default (function () {
+var _default = function _default() {
   return {
     /**
      * License key for commercial version of Handsontable.
@@ -1130,10 +1142,10 @@ export default (function () {
       for (col = 0, colLen = this.countCols(); col < colLen; col++) {
         value = this.getDataAtCell(row, col);
 
-        if (isEmpty(value) === false) {
+        if ((0, _mixed.isEmpty)(value) === false) {
           if (_typeof(value) === 'object') {
             meta = this.getCellMeta(row, col);
-            return isObjectEqual(this.getSchema()[meta.prop], value);
+            return (0, _object.isObjectEqual)(this.getSchema()[meta.prop], value);
           }
 
           return false;
@@ -1167,7 +1179,7 @@ export default (function () {
       for (row = 0, rowLen = this.countRows(); row < rowLen; row++) {
         value = this.getDataAtCell(row, col);
 
-        if (isEmpty(value) === false) {
+        if ((0, _mixed.isEmpty)(value) === false) {
           return false;
         }
       }
@@ -2918,4 +2930,6 @@ export default (function () {
      */
     nestedRows: void 0
   };
-});
+};
+
+exports.default = _default;

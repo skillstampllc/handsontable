@@ -1,22 +1,43 @@
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+"use strict";
 
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.replace.js";
-import "core-js/modules/web.timers.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/web.timers.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.array.join.js");
+
+require("core-js/modules/es.array.slice.js");
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /*!
  * https://github.com/Starcounter-Jack/JSON-Patch
@@ -24,7 +45,7 @@ import "core-js/modules/web.dom-collections.iterator.js";
  * (c) 2013 Joachim Wester
  * MIT license
  */
-var __extends = this && this.__extends || function (d, b) {
+var __extends = void 0 && (void 0).__extends || function (d, b) {
   for (var p in b) {
     if (b.hasOwnProperty(p)) d[p] = b[p];
   }
@@ -779,4 +800,5 @@ var jsonpatch;
   jsonpatch.validate = validate;
 })(jsonpatch || (jsonpatch = {}));
 
-export default jsonpatch;
+var _default = jsonpatch;
+exports.default = _default;

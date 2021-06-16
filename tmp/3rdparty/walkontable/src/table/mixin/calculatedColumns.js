@@ -1,4 +1,10 @@
-import { defineGetter } from "../../../../../helpers/object.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _object = require("../../../../../helpers/object");
+
 var MIXIN_NAME = 'calculatedColumns';
 /**
  * Mixin for the subclasses of `Table` with implementations of
@@ -88,8 +94,9 @@ var calculatedColumns = {
     return this.wot.wtViewport.columnsVisibleCalculator.count;
   }
 };
-defineGetter(calculatedColumns, 'MIXIN_NAME', MIXIN_NAME, {
+(0, _object.defineGetter)(calculatedColumns, 'MIXIN_NAME', MIXIN_NAME, {
   writable: false,
   enumerable: false
 });
-export default calculatedColumns;
+var _default = calculatedColumns;
+exports.default = _default;

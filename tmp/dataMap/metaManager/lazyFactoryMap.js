@@ -1,14 +1,33 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.array.index-of.js";
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+var _array = require("../../helpers/array");
+
+var _utils = require("./utils");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16,8 +35,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { arrayFilter } from "../../helpers/array.mjs";
-import { assert, isUnsignedNumber, isNullish } from "./utils.mjs";
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
 /**
@@ -142,7 +159,6 @@ import { assert, isUnsignedNumber, isNullish } from "./utils.mjs";
  */
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
-
 var LazyFactoryMap = /*#__PURE__*/function () {
   function LazyFactoryMap(valueFactory) {
     _classCallCheck(this, LazyFactoryMap);
@@ -186,8 +202,8 @@ var LazyFactoryMap = /*#__PURE__*/function () {
   _createClass(LazyFactoryMap, [{
     key: "obtain",
     value: function obtain(key) {
-      assert(function () {
-        return isUnsignedNumber(key);
+      (0, _utils.assert)(function () {
+        return (0, _utils.isUnsignedNumber)(key);
       }, 'Expecting an unsigned number.');
 
       var dataIndex = this._getStorageIndexByKey(key);
@@ -232,8 +248,8 @@ var LazyFactoryMap = /*#__PURE__*/function () {
       var _this$index;
 
       var amount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-      assert(function () {
-        return isUnsignedNumber(key) || isNullish(key);
+      (0, _utils.assert)(function () {
+        return (0, _utils.isUnsignedNumber)(key) || (0, _utils.isNullish)(key);
       }, 'Expecting an unsigned number or null/undefined argument.');
       var newIndexes = [];
       var dataLength = this.data.length;
@@ -243,7 +259,7 @@ var LazyFactoryMap = /*#__PURE__*/function () {
         this.data.push(void 0);
       }
 
-      (_this$index = this.index).splice.apply(_this$index, [isNullish(key) ? this.index.length : key, 0].concat(newIndexes));
+      (_this$index = this.index).splice.apply(_this$index, [(0, _utils.isNullish)(key) ? this.index.length : key, 0].concat(newIndexes));
     }
     /**
      * Removes (soft remove) data from "index" and according to the amount of data.
@@ -256,10 +272,10 @@ var LazyFactoryMap = /*#__PURE__*/function () {
     key: "remove",
     value: function remove(key) {
       var amount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-      assert(function () {
-        return isUnsignedNumber(key) || isNullish(key);
+      (0, _utils.assert)(function () {
+        return (0, _utils.isUnsignedNumber)(key) || (0, _utils.isNullish)(key);
       }, 'Expecting an unsigned number or null/undefined argument.');
-      var removed = this.index.splice(isNullish(key) ? this.index.length - amount : key, amount);
+      var removed = this.index.splice((0, _utils.isNullish)(key) ? this.index.length - amount : key, amount);
 
       for (var i = 0; i < removed.length; i++) {
         var removedIndex = removed[i];
@@ -291,7 +307,7 @@ var LazyFactoryMap = /*#__PURE__*/function () {
     value: function values() {
       var _this = this;
 
-      return arrayFilter(this.data, function (_, index) {
+      return (0, _array.arrayFilter)(this.data, function (_, index) {
         return !_this.holes.has(index);
       })[Symbol.iterator]();
     }
@@ -383,4 +399,4 @@ var LazyFactoryMap = /*#__PURE__*/function () {
   return LazyFactoryMap;
 }();
 
-export { LazyFactoryMap as default };
+exports.default = LazyFactoryMap;

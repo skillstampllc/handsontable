@@ -1,6 +1,6 @@
-import { FunctionPlugin } from 'hyperformula';
+const FunctionPlugin = require('hyperformula').FunctionPlugin;
 
-export class HFValueFunction extends FunctionPlugin {
+export default class HFValueFunction extends FunctionPlugin {
   static implementedFunctions = {
     VALUE: {
       method: 'value'

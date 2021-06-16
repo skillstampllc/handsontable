@@ -1,16 +1,41 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _array = require("../../../helpers/array");
+
+var _number = require("../../../helpers/number");
+
+var _element = require("../../../helpers/dom/element");
+
+var _base = _interopRequireDefault(require("./_base"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32,10 +57,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { arrayEach } from "../../../helpers/array.mjs";
-import { rangeEach } from "../../../helpers/number.mjs";
-import { addClass } from "../../../helpers/dom/element.mjs";
-import BaseUI from "./_base.mjs";
 /**
  * Class responsible for the UI in the Nested Rows' row headers.
  *
@@ -44,7 +65,6 @@ import BaseUI from "./_base.mjs";
  * @util
  * @augments BaseUI
  */
-
 var HeadersUI = /*#__PURE__*/function (_BaseUI) {
   _inherits(HeadersUI, _BaseUI);
 
@@ -103,20 +123,20 @@ var HeadersUI = /*#__PURE__*/function (_BaseUI) {
       var innerDiv = TH.getElementsByTagName('DIV')[0];
       var innerSpan = innerDiv.querySelector('span.rowHeader');
       var previousIndicators = innerDiv.querySelectorAll('[class^="ht_nesting"]');
-      arrayEach(previousIndicators, function (elem) {
+      (0, _array.arrayEach)(previousIndicators, function (elem) {
         if (elem) {
           innerDiv.removeChild(elem);
         }
       });
-      addClass(TH, HeadersUI.CSS_CLASSES.indicatorContainer);
+      (0, _element.addClass)(TH, HeadersUI.CSS_CLASSES.indicatorContainer);
 
       if (rowLevel) {
         var rootDocument = this.hot.rootDocument;
         var initialContent = innerSpan.cloneNode(true);
         innerDiv.innerHTML = '';
-        rangeEach(0, rowLevel - 1, function () {
+        (0, _number.rangeEach)(0, rowLevel - 1, function () {
           var levelIndicator = rootDocument.createElement('SPAN');
-          addClass(levelIndicator, HeadersUI.CSS_CLASSES.emptyIndicator);
+          (0, _element.addClass)(levelIndicator, HeadersUI.CSS_CLASSES.emptyIndicator);
           innerDiv.appendChild(levelIndicator);
         });
         innerDiv.appendChild(initialContent);
@@ -124,12 +144,12 @@ var HeadersUI = /*#__PURE__*/function (_BaseUI) {
 
       if (this.dataManager.hasChildren(rowObject)) {
         var buttonsContainer = this.hot.rootDocument.createElement('DIV');
-        addClass(TH, HeadersUI.CSS_CLASSES.parent);
+        (0, _element.addClass)(TH, HeadersUI.CSS_CLASSES.parent);
 
         if (this.collapsingUI.areChildrenCollapsed(rowIndex)) {
-          addClass(buttonsContainer, "".concat(HeadersUI.CSS_CLASSES.button, " ").concat(HeadersUI.CSS_CLASSES.expandButton));
+          (0, _element.addClass)(buttonsContainer, "".concat(HeadersUI.CSS_CLASSES.button, " ").concat(HeadersUI.CSS_CLASSES.expandButton));
         } else {
-          addClass(buttonsContainer, "".concat(HeadersUI.CSS_CLASSES.button, " ").concat(HeadersUI.CSS_CLASSES.collapseButton));
+          (0, _element.addClass)(buttonsContainer, "".concat(HeadersUI.CSS_CLASSES.button, " ").concat(HeadersUI.CSS_CLASSES.collapseButton));
         }
 
         innerDiv.appendChild(buttonsContainer);
@@ -176,6 +196,7 @@ var HeadersUI = /*#__PURE__*/function (_BaseUI) {
   }]);
 
   return HeadersUI;
-}(BaseUI);
+}(_base.default);
 
-export default HeadersUI;
+var _default = HeadersUI;
+exports.default = _default;

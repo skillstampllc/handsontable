@@ -1,7 +1,16 @@
-import { textRenderer } from "../textRenderer/index.mjs";
-import { fastInnerHTML } from "../../helpers/dom/element.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-export var RENDERER_TYPE = 'password';
+"use strict";
+
+exports.__esModule = true;
+exports.passwordRenderer = passwordRenderer;
+exports.RENDERER_TYPE = void 0;
+
+var _textRenderer = require("../textRenderer");
+
+var _element = require("../../helpers/dom/element");
+
+var _number = require("../../helpers/number");
+
+var RENDERER_TYPE = 'password';
 /**
  * @private
  * @param {Core} instance The Handsontable instance.
@@ -13,14 +22,18 @@ export var RENDERER_TYPE = 'password';
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-export function passwordRenderer(instance, TD, row, col, prop, value, cellProperties) {
-  textRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
+exports.RENDERER_TYPE = RENDERER_TYPE;
+
+function passwordRenderer(instance, TD, row, col, prop, value, cellProperties) {
+  _textRenderer.textRenderer.apply(this, [instance, TD, row, col, prop, value, cellProperties]);
+
   var hashLength = cellProperties.hashLength || TD.innerHTML.length;
   var hashSymbol = cellProperties.hashSymbol || '*';
   var hash = '';
-  rangeEach(hashLength - 1, function () {
+  (0, _number.rangeEach)(hashLength - 1, function () {
     hash += hashSymbol;
   });
-  fastInnerHTML(TD, hash);
+  (0, _element.fastInnerHTML)(TD, hash);
 }
+
 passwordRenderer.RENDERER_TYPE = RENDERER_TYPE;

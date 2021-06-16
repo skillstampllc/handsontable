@@ -1,11 +1,71 @@
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.freeze.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.function.name.js";
+"use strict";
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.object.freeze.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.set.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+var _highlight = _interopRequireDefault(require("./highlight/highlight"));
+
+var _constants = require("./highlight/constants");
+
+var _range = _interopRequireDefault(require("./range"));
+
+var _src = require("./../3rdparty/walkontable/src");
+
+var _keyStateObserver = require("./../utils/keyStateObserver");
+
+var _object = require("./../helpers/object");
+
+var _mixed = require("./../helpers/mixed");
+
+var _array = require("./../helpers/array");
+
+var _localHooks = _interopRequireDefault(require("./../mixins/localHooks"));
+
+var _transformation = _interopRequireDefault(require("./transformation"));
+
+var _utils = require("./utils");
+
+var _templateLiteralTag = require("./../helpers/templateLiteralTag");
 
 var _templateObject;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -21,42 +81,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.number.is-integer.js";
-import "core-js/modules/es.number.constructor.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import Highlight from "./highlight/highlight.mjs";
-import { AREA_TYPE, HEADER_TYPE, CELL_TYPE } from "./highlight/constants.mjs";
-import SelectionRange from "./range.mjs";
-import { CellCoords } from "./../3rdparty/walkontable/src/index.mjs";
-import { isPressedCtrlKey } from "./../utils/keyStateObserver.mjs";
-import { createObjectPropListener, mixin } from "./../helpers/object.mjs";
-import { isUndefined } from "./../helpers/mixed.mjs";
-import { arrayEach } from "./../helpers/array.mjs";
-import localHooks from "./../mixins/localHooks.mjs";
-import Transformation from "./transformation.mjs";
-import { detectSelectionType, isValidCoord, normalizeSelectionFactory, SELECTION_TYPE_EMPTY, SELECTION_TYPE_UNRECOGNIZED } from "./utils.mjs";
-import { toSingleLine } from "./../helpers/templateLiteralTag.mjs";
 /**
  * @class Selection
  * @util
  */
-
 var Selection = /*#__PURE__*/function () {
   function Selection(settings, tableProps) {
     var _this = this;
@@ -112,14 +146,14 @@ var Selection = /*#__PURE__*/function () {
      * @type {SelectionRange}
      */
 
-    this.selectedRange = new SelectionRange();
+    this.selectedRange = new _range.default();
     /**
      * Visualization layer.
      *
      * @type {Highlight}
      */
 
-    this.highlight = new Highlight({
+    this.highlight = new _highlight.default({
       headerClassName: settings.currentHeaderClassName,
       activeHeaderClassName: settings.activeHeaderClassName,
       rowClassName: settings.currentRowClassName,
@@ -146,7 +180,7 @@ var Selection = /*#__PURE__*/function () {
      * @type {Transformation}
      */
 
-    this.transformation = new Transformation(this.selectedRange, {
+    this.transformation = new _transformation.default(this.selectedRange, {
       countRows: function countRows() {
         return _this.tableProps.countRowsTranslated();
       },
@@ -276,14 +310,14 @@ var Selection = /*#__PURE__*/function () {
     value: function setRangeStart(coords, multipleSelection) {
       var fragment = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var isMultipleMode = this.settings.selectionMode === 'multiple';
-      var isMultipleSelection = isUndefined(multipleSelection) ? isPressedCtrlKey() : multipleSelection;
+      var isMultipleSelection = (0, _mixed.isUndefined)(multipleSelection) ? (0, _keyStateObserver.isPressedCtrlKey)() : multipleSelection;
       var isRowNegative = coords.row < 0;
       var isColumnNegative = coords.col < 0;
       var selectedByCorner = isRowNegative && isColumnNegative;
       this.selectedByCorner = selectedByCorner;
       this.runLocalHooks("beforeSetRangeStart".concat(fragment ? 'Only' : ''), coords);
 
-      if (!isMultipleMode || isMultipleMode && !isMultipleSelection && isUndefined(multipleSelection)) {
+      if (!isMultipleMode || isMultipleMode && !isMultipleSelection && (0, _mixed.isUndefined)(multipleSelection)) {
         this.selectedRange.clear();
       }
 
@@ -338,13 +372,13 @@ var Selection = /*#__PURE__*/function () {
       var cellRange = this.selectedRange.current();
 
       if (this.settings.selectionMode !== 'single') {
-        cellRange.setTo(new CellCoords(coords.row, coords.col));
+        cellRange.setTo(new _src.CellCoords(coords.row, coords.col));
       } // Set up current selection.
 
 
       this.highlight.getCell().clear();
 
-      if (this.highlight.isEnabledFor(CELL_TYPE, cellRange.highlight)) {
+      if (this.highlight.isEnabledFor(_constants.CELL_TYPE, cellRange.highlight)) {
         this.highlight.getCell().add(this.selectedRange.current().highlight).commit().adjustCoordinates(cellRange);
       }
 
@@ -352,13 +386,13 @@ var Selection = /*#__PURE__*/function () {
       // indication that the new selection is performing.
 
       if (layerLevel < this.highlight.layerLevel) {
-        arrayEach(this.highlight.getAreas(), function (highlight) {
+        (0, _array.arrayEach)(this.highlight.getAreas(), function (highlight) {
           return void highlight.clear();
         });
-        arrayEach(this.highlight.getHeaders(), function (highlight) {
+        (0, _array.arrayEach)(this.highlight.getHeaders(), function (highlight) {
           return void highlight.clear();
         });
-        arrayEach(this.highlight.getActiveHeaders(), function (highlight) {
+        (0, _array.arrayEach)(this.highlight.getActiveHeaders(), function (highlight) {
           return void highlight.clear();
         });
       }
@@ -371,7 +405,7 @@ var Selection = /*#__PURE__*/function () {
       headerHighlight.clear();
       activeHeaderHighlight.clear();
 
-      if (this.highlight.isEnabledFor(AREA_TYPE, cellRange.highlight) && (this.isMultiple() || layerLevel >= 1)) {
+      if (this.highlight.isEnabledFor(_constants.AREA_TYPE, cellRange.highlight) && (this.isMultiple() || layerLevel >= 1)) {
         areaHighlight.add(cellRange.from).add(cellRange.to).commit();
 
         if (layerLevel === 1) {
@@ -385,7 +419,7 @@ var Selection = /*#__PURE__*/function () {
         }
       }
 
-      if (this.highlight.isEnabledFor(HEADER_TYPE, cellRange.highlight)) {
+      if (this.highlight.isEnabledFor(_constants.HEADER_TYPE, cellRange.highlight)) {
         // The header selection generally contains cell selection. In a case when all rows (or columns)
         // are hidden that visual coordinates are translated to renderable coordinates that do not exist.
         // Hence no header highlight is generated. In that case, to make a column (or a row) header
@@ -420,7 +454,7 @@ var Selection = /*#__PURE__*/function () {
           var isRowSelected = this.tableProps.countCols() === cellRange.getWidth(); // Make sure that the whole row is selected (in case where selectionMode is set to 'single')
 
           if (isRowSelected) {
-            activeHeaderHighlight.add(new CellCoords(cellRange.from.row, -1)).add(new CellCoords(cellRange.to.row, -1)).commit();
+            activeHeaderHighlight.add(new _src.CellCoords(cellRange.from.row, -1)).add(new _src.CellCoords(cellRange.to.row, -1)).commit();
           }
         }
 
@@ -428,7 +462,7 @@ var Selection = /*#__PURE__*/function () {
           var isColumnSelected = this.tableProps.countRows() === cellRange.getHeight(); // Make sure that the whole column is selected (in case where selectionMode is set to 'single')
 
           if (isColumnSelected) {
-            activeHeaderHighlight.add(new CellCoords(-1, cellRange.from.col)).add(new CellCoords(-1, cellRange.to.col)).commit();
+            activeHeaderHighlight.add(new _src.CellCoords(-1, cellRange.from.col)).add(new _src.CellCoords(-1, cellRange.to.col)).commit();
           }
         }
       }
@@ -445,7 +479,7 @@ var Selection = /*#__PURE__*/function () {
   }, {
     key: "isMultiple",
     value: function isMultiple() {
-      var isMultipleListener = createObjectPropListener(!this.selectedRange.current().isSingle());
+      var isMultipleListener = (0, _object.createObjectPropListener)(!this.selectedRange.current().isSingle());
       this.runLocalHooks('afterIsMultipleSelection', isMultipleListener);
       return isMultipleListener.value;
     }
@@ -665,12 +699,12 @@ var Selection = /*#__PURE__*/function () {
         return;
       }
 
-      var startCoords = new CellCoords(includeColumnHeaders ? -1 : 0, includeRowHeaders ? -1 : 0);
+      var startCoords = new _src.CellCoords(includeColumnHeaders ? -1 : 0, includeRowHeaders ? -1 : 0);
       this.clear();
       this.setRangeStartOnly(startCoords);
       this.selectedByRowHeader.add(this.getLayerLevel());
       this.selectedByColumnHeader.add(this.getLayerLevel());
-      this.setRangeEnd(new CellCoords(nrOfRows - 1, nrOfColumns - 1));
+      this.setRangeEnd(new _src.CellCoords(nrOfRows - 1, nrOfColumns - 1));
       this.finish();
     }
     /**
@@ -688,15 +722,15 @@ var Selection = /*#__PURE__*/function () {
     value: function selectCells(selectionRanges) {
       var _this2 = this;
 
-      var selectionType = detectSelectionType(selectionRanges);
+      var selectionType = (0, _utils.detectSelectionType)(selectionRanges);
 
-      if (selectionType === SELECTION_TYPE_EMPTY) {
+      if (selectionType === _utils.SELECTION_TYPE_EMPTY) {
         return false;
-      } else if (selectionType === SELECTION_TYPE_UNRECOGNIZED) {
-        throw new Error(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["Unsupported format of the selection ranges was passed. To select cells pass \n        the coordinates as an array of arrays ([[rowStart, columnStart/columnPropStart, rowEnd, \n        columnEnd/columnPropEnd]]) or as an array of CellRange objects."], ["Unsupported format of the selection ranges was passed. To select cells pass\\x20\n        the coordinates as an array of arrays ([[rowStart, columnStart/columnPropStart, rowEnd,\\x20\n        columnEnd/columnPropEnd]]) or as an array of CellRange objects."]))));
+      } else if (selectionType === _utils.SELECTION_TYPE_UNRECOGNIZED) {
+        throw new Error((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Unsupported format of the selection ranges was passed. To select cells pass \n        the coordinates as an array of arrays ([[rowStart, columnStart/columnPropStart, rowEnd, \n        columnEnd/columnPropEnd]]) or as an array of CellRange objects."], ["Unsupported format of the selection ranges was passed. To select cells pass\\x20\n        the coordinates as an array of arrays ([[rowStart, columnStart/columnPropStart, rowEnd,\\x20\n        columnEnd/columnPropEnd]]) or as an array of CellRange objects."]))));
       }
 
-      var selectionSchemaNormalizer = normalizeSelectionFactory(selectionType, {
+      var selectionSchemaNormalizer = (0, _utils.normalizeSelectionFactory)(selectionType, {
         propToCol: function propToCol(prop) {
           return _this2.tableProps.propToCol(prop);
         },
@@ -713,14 +747,14 @@ var Selection = /*#__PURE__*/function () {
             rowEnd = _selectionSchemaNorma2[2],
             columnEnd = _selectionSchemaNorma2[3];
 
-        var _isValid = isValidCoord(rowStart, nrOfRows) && isValidCoord(columnStart, nrOfColumns) && isValidCoord(rowEnd, nrOfRows) && isValidCoord(columnEnd, nrOfColumns);
+        var _isValid = (0, _utils.isValidCoord)(rowStart, nrOfRows) && (0, _utils.isValidCoord)(columnStart, nrOfColumns) && (0, _utils.isValidCoord)(rowEnd, nrOfRows) && (0, _utils.isValidCoord)(columnEnd, nrOfColumns);
 
         return !_isValid;
       });
 
       if (isValid) {
         this.clear();
-        arrayEach(selectionRanges, function (selection) {
+        (0, _array.arrayEach)(selectionRanges, function (selection) {
           var _selectionSchemaNorma3 = selectionSchemaNormalizer(selection),
               _selectionSchemaNorma4 = _slicedToArray(_selectionSchemaNorma3, 4),
               rowStart = _selectionSchemaNorma4[0],
@@ -728,9 +762,9 @@ var Selection = /*#__PURE__*/function () {
               rowEnd = _selectionSchemaNorma4[2],
               columnEnd = _selectionSchemaNorma4[3];
 
-          _this2.setRangeStartOnly(new CellCoords(rowStart, columnStart), false);
+          _this2.setRangeStartOnly(new _src.CellCoords(rowStart, columnStart), false);
 
-          _this2.setRangeEnd(new CellCoords(rowEnd, columnEnd));
+          _this2.setRangeEnd(new _src.CellCoords(rowEnd, columnEnd));
 
           _this2.finish();
         });
@@ -759,11 +793,11 @@ var Selection = /*#__PURE__*/function () {
       var end = typeof endColumn === 'string' ? this.tableProps.propToCol(endColumn) : endColumn;
       var nrOfColumns = this.tableProps.countCols();
       var nrOfRows = this.tableProps.countRows();
-      var isValid = isValidCoord(start, nrOfColumns) && isValidCoord(end, nrOfColumns);
+      var isValid = (0, _utils.isValidCoord)(start, nrOfColumns) && (0, _utils.isValidCoord)(end, nrOfColumns);
 
       if (isValid) {
-        this.setRangeStartOnly(new CellCoords(headerLevel, start));
-        this.setRangeEnd(new CellCoords(nrOfRows - 1, end));
+        this.setRangeStartOnly(new _src.CellCoords(headerLevel, start));
+        this.setRangeEnd(new _src.CellCoords(nrOfRows - 1, end));
         this.finish();
       }
 
@@ -787,11 +821,11 @@ var Selection = /*#__PURE__*/function () {
       var headerLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
       var nrOfRows = this.tableProps.countRows();
       var nrOfColumns = this.tableProps.countCols();
-      var isValid = isValidCoord(startRow, nrOfRows) && isValidCoord(endRow, nrOfRows);
+      var isValid = (0, _utils.isValidCoord)(startRow, nrOfRows) && (0, _utils.isValidCoord)(endRow, nrOfRows);
 
       if (isValid) {
-        this.setRangeStartOnly(new CellCoords(startRow, headerLevel));
-        this.setRangeEnd(new CellCoords(endRow, nrOfColumns - 1));
+        this.setRangeStartOnly(new _src.CellCoords(startRow, headerLevel));
+        this.setRangeEnd(new _src.CellCoords(endRow, nrOfColumns - 1));
         this.finish();
       }
 
@@ -835,5 +869,6 @@ var Selection = /*#__PURE__*/function () {
   return Selection;
 }();
 
-mixin(Selection, localHooks);
-export default Selection;
+(0, _object.mixin)(Selection, _localHooks.default);
+var _default = Selection;
+exports.default = _default;

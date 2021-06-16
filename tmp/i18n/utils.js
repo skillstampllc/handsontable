@@ -1,15 +1,31 @@
+"use strict";
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.object.freeze.js");
+
+exports.__esModule = true;
+exports.extendNotExistingKeys = extendNotExistingKeys;
+exports.createCellHeadersRange = createCellHeadersRange;
+exports.normalizeLanguageCode = normalizeLanguageCode;
+exports.warnUserAboutLanguageRegistration = warnUserAboutLanguageRegistration;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+var _mixed = require("./../helpers/mixed");
+
+var _object = require("./../helpers/object");
+
+var _console = require("./../helpers/console");
+
+var _templateLiteralTag = require("./../helpers/templateLiteralTag");
+
 var _templateObject;
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.freeze.js";
-import { isUndefined, isDefined } from "./../helpers/mixed.mjs";
-import { objectEach } from "./../helpers/object.mjs";
-import { error } from "./../helpers/console.mjs";
-import { toSingleLine } from "./../helpers/templateLiteralTag.mjs";
 /**
  * Perform shallow extend of a target object with only this extension's properties which doesn't exist in the target.
  *
@@ -19,10 +35,9 @@ import { toSingleLine } from "./../helpers/templateLiteralTag.mjs";
  * @param {object} extension An object containing additional properties to merge into the target.
  * @returns {object}
  */
-
-export function extendNotExistingKeys(target, extension) {
-  objectEach(extension, function (value, key) {
-    if (isUndefined(target[key])) {
+function extendNotExistingKeys(target, extension) {
+  (0, _object.objectEach)(extension, function (value, key) {
+    if ((0, _mixed.isUndefined)(target[key])) {
       target[key] = value;
     }
   });
@@ -43,7 +58,8 @@ export function extendNotExistingKeys(target, extension) {
  * @returns {string} Value representing range i.e. A-Z, 11-15.
  */
 
-export function createCellHeadersRange(firstRowIndex, nextRowIndex) {
+
+function createCellHeadersRange(firstRowIndex, nextRowIndex) {
   var fromValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : firstRowIndex;
   var toValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : nextRowIndex;
   // Will swap `fromValue` with `toValue` if it's necessary.
@@ -66,7 +82,8 @@ export function createCellHeadersRange(firstRowIndex, nextRowIndex) {
  * @returns {string}
  */
 
-export function normalizeLanguageCode(languageCode) {
+
+function normalizeLanguageCode(languageCode) {
   var languageCodePattern = /^([a-zA-Z]{2})-([a-zA-Z]{2})$/;
   var partsOfLanguageCode = languageCodePattern.exec(languageCode);
 
@@ -83,8 +100,9 @@ export function normalizeLanguageCode(languageCode) {
  * @param {string} languageCode Language code for specific language i.e. 'en-US', 'pt-BR', 'de-DE'.
  */
 
-export function warnUserAboutLanguageRegistration(languageCode) {
-  if (isDefined(languageCode)) {
-    error(toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["Language with code \"", "\" was not found. You should register particular language \n    before using it. Read more about this issue at: https://docs.handsontable.com/i18n/missing-language-code."], ["Language with code \"", "\" was not found. You should register particular language\\x20\n    before using it. Read more about this issue at: https://docs.handsontable.com/i18n/missing-language-code."])), languageCode));
+
+function warnUserAboutLanguageRegistration(languageCode) {
+  if ((0, _mixed.isDefined)(languageCode)) {
+    (0, _console.error)((0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["Language with code \"", "\" was not found. You should register particular language \n    before using it. Read more about this issue at: https://docs.handsontable.com/i18n/missing-language-code."], ["Language with code \"", "\" was not found. You should register particular language\\x20\n    before using it. Read more about this issue at: https://docs.handsontable.com/i18n/missing-language-code."])), languageCode));
   }
 }

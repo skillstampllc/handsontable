@@ -1,5 +1,14 @@
-import "core-js/modules/es.function.name.js";
-export var operations = {};
+"use strict";
+
+exports.__esModule = true;
+exports.getOperationFunc = getOperationFunc;
+exports.getOperationName = getOperationName;
+exports.registerOperation = registerOperation;
+exports.operations = void 0;
+
+require("core-js/modules/es.function.name.js");
+
+var operations = {};
 /**
  * Get operation closure with pre-bound arguments.
  *
@@ -7,7 +16,9 @@ export var operations = {};
  * @returns {Function}
  */
 
-export function getOperationFunc(id) {
+exports.operations = operations;
+
+function getOperationFunc(id) {
   if (!operations[id]) {
     throw Error("Operation with id \"".concat(id, "\" does not exist."));
   }
@@ -24,7 +35,8 @@ export function getOperationFunc(id) {
  * @returns {string}
  */
 
-export function getOperationName(id) {
+
+function getOperationName(id) {
   return operations[id].name;
 }
 /**
@@ -35,7 +47,8 @@ export function getOperationName(id) {
  * @param {Function} func Operation function.
  */
 
-export function registerOperation(id, name, func) {
+
+function registerOperation(id, name, func) {
   operations[id] = {
     name: name,
     func: func

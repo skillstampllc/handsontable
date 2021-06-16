@@ -1,4 +1,65 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.Search = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.search.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.join.js");
+
+var _base = require("../base");
+
+var _object = require("../../helpers/object");
+
+var _number = require("../../helpers/number");
+
+var _mixed = require("../../helpers/mixed");
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -36,36 +97,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.to-string.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.search.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.array.join.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import { BasePlugin } from "../base/index.mjs";
-import { isObject } from "../../helpers/object.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { isUndefined } from "../../helpers/mixed.mjs";
-export var PLUGIN_KEY = 'search';
-export var PLUGIN_PRIORITY = 190;
+var PLUGIN_KEY = 'search';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 190;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var DEFAULT_SEARCH_RESULT_CLASS = 'htSearchResult';
 
 var DEFAULT_CALLBACK = function DEFAULT_CALLBACK(instance, row, col, data, testResult) {
@@ -73,11 +108,11 @@ var DEFAULT_CALLBACK = function DEFAULT_CALLBACK(instance, row, col, data, testR
 };
 
 var DEFAULT_QUERY_METHOD = function DEFAULT_QUERY_METHOD(query, value) {
-  if (isUndefined(query) || query === null || !query.toLowerCase || query.length === 0) {
+  if ((0, _mixed.isUndefined)(query) || query === null || !query.toLowerCase || query.length === 0) {
     return false;
   }
 
-  if (isUndefined(value) || value === null) {
+  if ((0, _mixed.isUndefined)(value) || value === null) {
     return false;
   }
 
@@ -115,7 +150,7 @@ var DEFAULT_QUERY_METHOD = function DEFAULT_QUERY_METHOD(query, value) {
  */
 
 
-export var Search = /*#__PURE__*/function (_BasePlugin) {
+var Search = /*#__PURE__*/function (_BasePlugin) {
   _inherits(Search, _BasePlugin);
 
   var _super = _createSuper(Search);
@@ -238,8 +273,8 @@ export var Search = /*#__PURE__*/function (_BasePlugin) {
       var colCount = this.hot.countCols();
       var queryResult = [];
       var instance = this.hot;
-      rangeEach(0, rowCount - 1, function (rowIndex) {
-        rangeEach(0, colCount - 1, function (colIndex) {
+      (0, _number.rangeEach)(0, rowCount - 1, function (rowIndex) {
+        (0, _number.rangeEach)(0, colCount - 1, function (colIndex) {
           var cellData = _this4.hot.getDataAtCell(rowIndex, colIndex);
 
           var cellProperties = _this4.hot.getCellMeta(rowIndex, colIndex);
@@ -340,7 +375,7 @@ export var Search = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "updatePluginSettings",
     value: function updatePluginSettings(searchSettings) {
-      if (isObject(searchSettings)) {
+      if ((0, _object.isObject)(searchSettings)) {
         if (searchSettings.searchResultClass) {
           this.setSearchResultClass(searchSettings.searchResultClass);
         }
@@ -413,4 +448,6 @@ export var Search = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return Search;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.Search = Search;

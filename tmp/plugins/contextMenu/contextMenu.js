@@ -1,18 +1,55 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.ContextMenu = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+var _array = require("../../helpers/array");
+
+var _commandExecutor = _interopRequireDefault(require("./commandExecutor"));
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _itemsFactory = _interopRequireDefault(require("./itemsFactory"));
+
+var _menu = _interopRequireDefault(require("./menu"));
+
+var _element = require("../../helpers/dom/element");
+
+var _predefinedItems = require("./predefinedItems");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38,22 +75,20 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import Hooks from "../../pluginHooks.mjs";
-import { arrayEach } from "../../helpers/array.mjs";
-import CommandExecutor from "./commandExecutor.mjs";
-import EventManager from "../../eventManager.mjs";
-import ItemsFactory from "./itemsFactory.mjs";
-import Menu from "./menu.mjs";
-import { getWindowScrollLeft, getWindowScrollTop, hasClass } from "../../helpers/dom/element.mjs";
-import { ROW_ABOVE, ROW_BELOW, COLUMN_LEFT, COLUMN_RIGHT, REMOVE_ROW, REMOVE_COLUMN, UNDO, REDO, READ_ONLY, ALIGNMENT, SEPARATOR } from "./predefinedItems.mjs";
-export var PLUGIN_KEY = 'contextMenu';
-export var PLUGIN_PRIORITY = 70;
-Hooks.getSingleton().register('afterContextMenuDefaultOptions');
-Hooks.getSingleton().register('beforeContextMenuShow');
-Hooks.getSingleton().register('afterContextMenuShow');
-Hooks.getSingleton().register('afterContextMenuHide');
-Hooks.getSingleton().register('afterContextMenuExecute');
+var PLUGIN_KEY = 'contextMenu';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 70;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
+_pluginHooks.default.getSingleton().register('afterContextMenuDefaultOptions');
+
+_pluginHooks.default.getSingleton().register('beforeContextMenuShow');
+
+_pluginHooks.default.getSingleton().register('afterContextMenuShow');
+
+_pluginHooks.default.getSingleton().register('afterContextMenuHide');
+
+_pluginHooks.default.getSingleton().register('afterContextMenuExecute');
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
 /**
@@ -97,7 +132,8 @@ Hooks.getSingleton().register('afterContextMenuExecute');
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
 
-export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
+
+var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ContextMenu, _BasePlugin);
 
   var _super = _createSuper(ContextMenu);
@@ -115,7 +151,7 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
      * @type {EventManager}
      */
 
-    _this.eventManager = new EventManager(_assertThisInitialized(_this));
+    _this.eventManager = new _eventManager.default(_assertThisInitialized(_this));
     /**
      * Instance of {@link CommandExecutor}.
      *
@@ -123,7 +159,7 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
      * @type {CommandExecutor}
      */
 
-    _this.commandExecutor = new CommandExecutor(_this.hot);
+    _this.commandExecutor = new _commandExecutor.default(_this.hot);
     /**
      * Instance of {@link ItemsFactory}.
      *
@@ -174,7 +210,7 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
         this.commandExecutor.setCommonCallback(settings.callback);
       }
 
-      this.menu = new Menu(this.hot, {
+      this.menu = new _menu.default(this.hot, {
         className: 'htContextMenu',
         keepInViewport: true,
         container: settings.uiContainer || this.hot.rootDocument.body
@@ -261,11 +297,11 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
             top = _frameElement$getBoun.top,
             left = _frameElement$getBoun.left;
 
-        offsetTop = top - getWindowScrollTop(event.view);
-        offsetLeft = left - getWindowScrollLeft(event.view);
+        offsetTop = top - (0, _element.getWindowScrollTop)(event.view);
+        offsetLeft = left - (0, _element.getWindowScrollLeft)(event.view);
       } else {
-        offsetTop = -1 * getWindowScrollTop(this.menu.hotMenu.rootWindow);
-        offsetLeft = -1 * getWindowScrollLeft(this.menu.hotMenu.rootWindow);
+        offsetTop = -1 * (0, _element.getWindowScrollTop)(this.menu.hotMenu.rootWindow);
+        offsetLeft = -1 * (0, _element.getWindowScrollLeft)(this.menu.hotMenu.rootWindow);
       }
 
       this.menu.setPosition({
@@ -342,7 +378,7 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
     value: function prepareMenuItems() {
       var _this3 = this;
 
-      this.itemsFactory = new ItemsFactory(this.hot, ContextMenu.DEFAULT_ITEMS);
+      this.itemsFactory = new _itemsFactory.default(this.hot, ContextMenu.DEFAULT_ITEMS);
       var settings = this.hot.getSettings()[PLUGIN_KEY];
       var predefinedItems = {
         items: this.itemsFactory.getItems(settings)
@@ -353,7 +389,7 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
       this.hot.runHooks('beforeContextMenuSetItems', menuItems);
       this.menu.setMenuItems(menuItems); // Register all commands. Predefined and added by user or by plugins
 
-      arrayEach(menuItems, function (command) {
+      (0, _array.arrayEach)(menuItems, function (command) {
         return _this3.commandExecutor.registerCommand(command.key, command);
       });
     }
@@ -382,7 +418,7 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
       var element = event.target;
       this.close();
 
-      if (hasClass(element, 'handsontableInput')) {
+      if ((0, _element.hasClass)(element, 'handsontableInput')) {
         return;
       }
 
@@ -390,7 +426,7 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
       event.stopPropagation();
 
       if (!(showRowHeaders || showColHeaders)) {
-        if (!isValidElement(element) && !(hasClass(element, 'current') && hasClass(element, 'wtBorder'))) {
+        if (!isValidElement(element) && !((0, _element.hasClass)(element, 'current') && (0, _element.hasClass)(element, 'wtBorder'))) {
           return;
         }
       }
@@ -470,12 +506,14 @@ export var ContextMenu = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "DEFAULT_ITEMS",
     get: function get() {
-      return [ROW_ABOVE, ROW_BELOW, SEPARATOR, COLUMN_LEFT, COLUMN_RIGHT, SEPARATOR, REMOVE_ROW, REMOVE_COLUMN, SEPARATOR, UNDO, REDO, SEPARATOR, READ_ONLY, SEPARATOR, ALIGNMENT];
+      return [_predefinedItems.ROW_ABOVE, _predefinedItems.ROW_BELOW, _predefinedItems.SEPARATOR, _predefinedItems.COLUMN_LEFT, _predefinedItems.COLUMN_RIGHT, _predefinedItems.SEPARATOR, _predefinedItems.REMOVE_ROW, _predefinedItems.REMOVE_COLUMN, _predefinedItems.SEPARATOR, _predefinedItems.UNDO, _predefinedItems.REDO, _predefinedItems.SEPARATOR, _predefinedItems.READ_ONLY, _predefinedItems.SEPARATOR, _predefinedItems.ALIGNMENT];
     }
   }]);
 
   return ContextMenu;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.ContextMenu = ContextMenu;
 ContextMenu.SEPARATOR = {
-  name: SEPARATOR
+  name: _predefinedItems.SEPARATOR
 };

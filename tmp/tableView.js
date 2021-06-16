@@ -1,3 +1,60 @@
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+var _element = require("./helpers/dom/element");
+
+var _eventManager = _interopRequireDefault(require("./eventManager"));
+
+var _event = require("./helpers/dom/event");
+
+var _src = _interopRequireWildcard(require("./3rdparty/walkontable/src"));
+
+var _mouseEventHandler = require("./selection/mouseEventHandler");
+
+var _rootInstance = require("./utils/rootInstance");
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -30,27 +87,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.number.is-integer.js";
-import "core-js/modules/es.number.constructor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import { addClass, clearTextSelection, empty, fastInnerHTML, fastInnerText, getScrollbarWidth, hasClass, isChildOf, isInput, isOutsideInput } from "./helpers/dom/element.mjs";
-import EventManager from "./eventManager.mjs";
-import { isImmediatePropagationStopped, isRightClick, isLeftClick } from "./helpers/dom/event.mjs";
-import Walkontable, { CellCoords } from "./3rdparty/walkontable/src/index.mjs";
-import { handleMouseEvent } from "./selection/mouseEventHandler.mjs";
-import { isRootInstance } from "./utils/rootInstance.mjs";
 var privatePool = new WeakMap();
 /**
  * @class TableView
@@ -78,7 +114,7 @@ var TableView = /*#__PURE__*/function () {
      * @type {EventManager}
      */
 
-    this.eventManager = new EventManager(instance);
+    this.eventManager = new _eventManager.default(instance);
     /**
      * Current Handsontable's GridSettings object.
      *
@@ -286,12 +322,12 @@ var TableView = /*#__PURE__*/function () {
         rootElement.setAttribute('data-originalstyle', originalStyle); // needed to retrieve original style in jsFiddle link generator in HT examples. may be removed in future versions
       }
 
-      addClass(rootElement, 'handsontable');
+      (0, _element.addClass)(rootElement, 'handsontable');
       priv.table = rootDocument.createElement('TABLE');
-      addClass(priv.table, 'htCore');
+      (0, _element.addClass)(priv.table, 'htCore');
 
       if (this.instance.getSettings().tableClassName) {
-        addClass(priv.table, this.instance.getSettings().tableClassName);
+        (0, _element.addClass)(priv.table, this.instance.getSettings().tableClassName);
       }
 
       this.THEAD = rootDocument.createElement('THEAD');
@@ -323,7 +359,7 @@ var TableView = /*#__PURE__*/function () {
 
         if (!_this.isTextSelectionAllowed(event.target)) {
           var rootWindow = _this.instance.rootWindow;
-          clearTextSelection(rootWindow);
+          (0, _element.clearTextSelection)(rootWindow);
           event.preventDefault();
           rootWindow.focus(); // make sure that window that contains HOT is active. Important when HOT is in iframe.
         }
@@ -335,7 +371,7 @@ var TableView = /*#__PURE__*/function () {
         if (priv.selectionMouseDown && !_this.isTextSelectionAllowed(event.target)) {
           // Clear selection only when fragmentSelection is enabled, otherwise clearing selection breakes the IME editor.
           if (_this.settings.fragmentSelection) {
-            clearTextSelection(_this.instance.rootWindow);
+            (0, _element.clearTextSelection)(_this.instance.rootWindow);
           }
 
           event.preventDefault();
@@ -347,19 +383,19 @@ var TableView = /*#__PURE__*/function () {
         }
       });
       this.eventManager.addEventListener(documentElement, 'mouseup', function (event) {
-        if (selection.isInProgress() && isLeftClick(event)) {
+        if (selection.isInProgress() && (0, _event.isLeftClick)(event)) {
           // is left mouse button
           selection.finish();
         }
 
         priv.mouseDown = false;
 
-        if (isOutsideInput(rootDocument.activeElement) || !selection.isSelected() && !selection.isSelectedByAnyHeader() && !rootElement.contains(event.target) && !isRightClick(event)) {
+        if ((0, _element.isOutsideInput)(rootDocument.activeElement) || !selection.isSelected() && !selection.isSelectedByAnyHeader() && !rootElement.contains(event.target) && !(0, _event.isRightClick)(event)) {
           _this.instance.unlisten();
         }
       });
       this.eventManager.addEventListener(documentElement, 'contextmenu', function (event) {
-        if (selection.isInProgress() && isRightClick(event)) {
+        if (selection.isInProgress() && (0, _event.isRightClick)(event)) {
           selection.finish();
           priv.mouseDown = false;
         }
@@ -385,7 +421,7 @@ var TableView = /*#__PURE__*/function () {
         var holder = _this.instance.view.wt.wtTable.holder;
 
         if (next === holder) {
-          var scrollbarWidth = getScrollbarWidth(rootDocument);
+          var scrollbarWidth = (0, _element.getScrollbarWidth)(rootDocument);
 
           if (rootDocument.elementFromPoint(eventX + scrollbarWidth, eventY) !== holder || rootDocument.elementFromPoint(eventX, eventY + scrollbarWidth) !== holder) {
             return;
@@ -420,7 +456,7 @@ var TableView = /*#__PURE__*/function () {
         }
       });
       this.eventManager.addEventListener(priv.table, 'selectstart', function (event) {
-        if (_this.settings.fragmentSelection || isInput(event.target)) {
+        if (_this.settings.fragmentSelection || (0, _element.isInput)(event.target)) {
           return;
         } // https://github.com/handsontable/handsontable/issues/160
         // Prevent text from being selected when performing drag down.
@@ -442,7 +478,7 @@ var TableView = /*#__PURE__*/function () {
       var row = _ref.row,
           col = _ref.col;
       // TODO: To consider an idea to reusing the CellCoords instance instead creating new one.
-      return _construct(CellCoords, _toConsumableArray(this.translateFromRenderableToVisualIndex(row, col)));
+      return _construct(_src.CellCoords, _toConsumableArray(this.translateFromRenderableToVisualIndex(row, col)));
     }
     /**
      * Translate renderable row and column indexes to visual row and column indexes.
@@ -595,7 +631,7 @@ var TableView = /*#__PURE__*/function () {
         externalRowCalculator: this.instance.getPlugin('autoRowSize') && this.instance.getPlugin('autoRowSize').isEnabled(),
         table: priv.table,
         isDataViewInstance: function isDataViewInstance() {
-          return isRootInstance(_this2.instance);
+          return (0, _rootInstance.isRootInstance)(_this2.instance);
         },
         preventOverflow: function preventOverflow() {
           return _this2.settings.preventOverflow;
@@ -763,11 +799,11 @@ var TableView = /*#__PURE__*/function () {
 
           _this2.instance.runHooks('beforeOnCellMouseDown', event, visualCoords, TD, blockCalculations);
 
-          if (isImmediatePropagationStopped(event)) {
+          if ((0, _event.isImmediatePropagationStopped)(event)) {
             return;
           }
 
-          handleMouseEvent(event, {
+          (0, _mouseEventHandler.handleMouseEvent)(event, {
             coords: visualCoords,
             selection: _this2.instance.selection,
             controller: blockCalculations
@@ -789,7 +825,7 @@ var TableView = /*#__PURE__*/function () {
 
           _this2.instance.runHooks('beforeOnCellContextMenu', event, visualCoords, TD);
 
-          if (isImmediatePropagationStopped(event)) {
+          if ((0, _event.isImmediatePropagationStopped)(event)) {
             return;
           }
 
@@ -804,7 +840,7 @@ var TableView = /*#__PURE__*/function () {
 
           _this2.instance.runHooks('beforeOnCellMouseOut', event, visualCoords, TD);
 
-          if (isImmediatePropagationStopped(event)) {
+          if ((0, _event.isImmediatePropagationStopped)(event)) {
             return;
           }
 
@@ -824,12 +860,12 @@ var TableView = /*#__PURE__*/function () {
 
           _this2.instance.runHooks('beforeOnCellMouseOver', event, visualCoords, TD, blockCalculations);
 
-          if (isImmediatePropagationStopped(event)) {
+          if ((0, _event.isImmediatePropagationStopped)(event)) {
             return;
           }
 
           if (priv.mouseDown) {
-            handleMouseEvent(event, {
+            (0, _mouseEventHandler.handleMouseEvent)(event, {
               coords: visualCoords,
               selection: _this2.instance.selection,
               controller: blockCalculations
@@ -851,7 +887,7 @@ var TableView = /*#__PURE__*/function () {
           // breaks the table (#7231).
 
 
-          if (isImmediatePropagationStopped(event) || _this2.instance.isDestroyed) {
+          if ((0, _event.isImmediatePropagationStopped)(event) || _this2.instance.isDestroyed) {
             return;
           }
 
@@ -1028,7 +1064,7 @@ var TableView = /*#__PURE__*/function () {
         }
       };
       this.instance.runHooks('beforeInitWalkontable', walkontableConfig);
-      this.wt = new Walkontable(walkontableConfig);
+      this.wt = new _src.default(walkontableConfig);
       this.activeWt = this.wt;
       var spreader = this.wt.wtTable.spreader; // We have to cache width and height after Walkontable initialization.
 
@@ -1070,11 +1106,11 @@ var TableView = /*#__PURE__*/function () {
   }, {
     key: "isTextSelectionAllowed",
     value: function isTextSelectionAllowed(el) {
-      if (isInput(el)) {
+      if ((0, _element.isInput)(el)) {
         return true;
       }
 
-      var isChildOfTableBody = isChildOf(el, this.instance.view.wt.wtTable.spreader);
+      var isChildOfTableBody = (0, _element.isChildOf)(el, this.instance.view.wt.wtTable.spreader);
 
       if (this.settings.fragmentSelection === true && isChildOfTableBody) {
         return true;
@@ -1176,8 +1212,8 @@ var TableView = /*#__PURE__*/function () {
       if (TH.firstChild) {
         var container = TH.firstChild;
 
-        if (!hasClass(container, 'relative')) {
-          empty(TH);
+        if (!(0, _element.hasClass)(container, 'relative')) {
+          (0, _element.empty)(TH);
           this.appendRowHeader(visualRowIndex, TH);
           return;
         }
@@ -1212,10 +1248,10 @@ var TableView = /*#__PURE__*/function () {
       if (TH.firstChild) {
         var container = TH.firstChild;
 
-        if (hasClass(container, 'relative')) {
+        if ((0, _element.hasClass)(container, 'relative')) {
           this.updateCellHeader(container.querySelector('.colHeader'), visualColumnIndex, this.instance.getColHeader);
         } else {
-          empty(TH);
+          (0, _element.empty)(TH);
           this.appendColHeader(visualColumnIndex, TH);
         }
       } else {
@@ -1247,19 +1283,19 @@ var TableView = /*#__PURE__*/function () {
       var parentOverlay = this.wt.wtOverlays.getParentOverlay(element) || this.wt; // prevent wrong calculations from SampleGenerator
 
       if (element.parentNode) {
-        if (hasClass(element, 'colHeader')) {
+        if ((0, _element.hasClass)(element, 'colHeader')) {
           renderedIndex = parentOverlay.wtTable.columnFilter.sourceToRendered(index);
-        } else if (hasClass(element, 'rowHeader')) {
+        } else if ((0, _element.hasClass)(element, 'rowHeader')) {
           renderedIndex = parentOverlay.wtTable.rowFilter.sourceToRendered(index);
         }
       }
 
       if (renderedIndex > -1) {
-        fastInnerHTML(element, content(index));
+        (0, _element.fastInnerHTML)(element, content(index));
       } else {
         // workaround for https://github.com/handsontable/handsontable/issues/1946
-        fastInnerText(element, String.fromCharCode(160));
-        addClass(element, 'cornerHeader');
+        (0, _element.fastInnerText)(element, String.fromCharCode(160));
+        (0, _element.addClass)(element, 'cornerHeader');
       }
     }
     /**
@@ -1353,4 +1389,5 @@ var TableView = /*#__PURE__*/function () {
   return TableView;
 }();
 
-export default TableView;
+var _default = TableView;
+exports.default = _default;

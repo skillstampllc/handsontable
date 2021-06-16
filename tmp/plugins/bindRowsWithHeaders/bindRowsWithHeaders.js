@@ -1,4 +1,43 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.BindRowsWithHeaders = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _base = require("../base");
+
+var _looseBindsMap = _interopRequireDefault(require("./maps/looseBindsMap"));
+
+var _strictBindsMap = _interopRequireDefault(require("./maps/strictBindsMap"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,26 +63,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import { BasePlugin } from "../base/index.mjs";
-import LooseBindsMap from "./maps/looseBindsMap.mjs";
-import StrictBindsMap from "./maps/strictBindsMap.mjs";
-export var PLUGIN_KEY = 'bindRowsWithHeaders';
-export var PLUGIN_PRIORITY = 210;
+var PLUGIN_KEY = 'bindRowsWithHeaders';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 210;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var DEFAULT_BIND = 'loose';
-var bindTypeToMapStrategy = new Map([['loose', LooseBindsMap], ['strict', StrictBindsMap]]);
+var bindTypeToMapStrategy = new Map([['loose', _looseBindsMap.default], ['strict', _strictBindsMap.default]]);
 /**
  * @plugin BindRowsWithHeaders
  *
@@ -64,7 +89,7 @@ var bindTypeToMapStrategy = new Map([['loose', LooseBindsMap], ['strict', Strict
  * ```
  */
 
-export var BindRowsWithHeaders = /*#__PURE__*/function (_BasePlugin) {
+var BindRowsWithHeaders = /*#__PURE__*/function (_BasePlugin) {
   _inherits(BindRowsWithHeaders, _BasePlugin);
 
   var _super = _createSuper(BindRowsWithHeaders);
@@ -171,4 +196,6 @@ export var BindRowsWithHeaders = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return BindRowsWithHeaders;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.BindRowsWithHeaders = BindRowsWithHeaders;

@@ -1,3 +1,56 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.IndexMapper = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.array.fill.js");
+
+var _array = require("../helpers/array");
+
+var _maps = require("./maps");
+
+var _mapCollections = require("./mapCollections");
+
+var _localHooks = _interopRequireDefault(require("../mixins/localHooks"));
+
+var _object = require("../helpers/object");
+
+var _mixed = require("../helpers/mixed");
+
+var _observable = require("./changesObservable/observable");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10,36 +63,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.array.fill.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { arrayMap } from "../helpers/array.mjs";
-import { createIndexMap, getListWithInsertedItems, getListWithRemovedItems, HidingMap, IndexesSequence, TrimmingMap } from "./maps/index.mjs";
-import { AggregatedCollection, MapCollection } from "./mapCollections/index.mjs";
-import localHooks from "../mixins/localHooks.mjs";
-import { mixin } from "../helpers/object.mjs";
-import { isDefined } from "../helpers/mixed.mjs";
-import { ChangesObservable } from "./changesObservable/observable.mjs";
 /**
  * Index mapper stores, registers and manages the indexes on the basis of calculations collected from the subsidiary maps.
  * It should be seen as a single source of truth (regarding row and column indexes, for example, their sequence, information if they are skipped in the process of rendering (hidden or trimmed), values linked to them)
@@ -56,8 +85,7 @@ import { ChangesObservable } from "./changesObservable/observable.mjs";
  *
  * These are: {@link to IndexesSequence}, {@link to PhysicalIndexToValueMap}, {@link to HidingMap}, and {@link to TrimmingMap}.
  */
-
-export var IndexMapper = /*#__PURE__*/function () {
+var IndexMapper = /*#__PURE__*/function () {
   function IndexMapper() {
     var _this = this;
 
@@ -71,7 +99,7 @@ export var IndexMapper = /*#__PURE__*/function () {
      * @private
      * @type {IndexesSequence}
      */
-    this.indexesSequence = new IndexesSequence();
+    this.indexesSequence = new _maps.IndexesSequence();
     /**
      * Collection for different trimming maps. Indexes marked as trimmed in any map WILL NOT be included in
      * the {@link DataMap} and won't be rendered.
@@ -80,7 +108,7 @@ export var IndexMapper = /*#__PURE__*/function () {
      * @type {MapCollection}
      */
 
-    this.trimmingMapsCollection = new AggregatedCollection(function (valuesForIndex) {
+    this.trimmingMapsCollection = new _mapCollections.AggregatedCollection(function (valuesForIndex) {
       return valuesForIndex.some(function (value) {
         return value === true;
       });
@@ -93,7 +121,7 @@ export var IndexMapper = /*#__PURE__*/function () {
      * @type {MapCollection}
      */
 
-    this.hidingMapsCollection = new AggregatedCollection(function (valuesForIndex) {
+    this.hidingMapsCollection = new _mapCollections.AggregatedCollection(function (valuesForIndex) {
       return valuesForIndex.some(function (value) {
         return value === true;
       });
@@ -105,7 +133,7 @@ export var IndexMapper = /*#__PURE__*/function () {
      * @type {MapCollection}
      */
 
-    this.variousMapsCollection = new MapCollection();
+    this.variousMapsCollection = new _mapCollections.MapCollection();
     /**
      * The class instance collects row and column index changes that happen while the Handsontable
      * is running. The object allows creating observers that you can subscribe. Each event represents
@@ -116,7 +144,7 @@ export var IndexMapper = /*#__PURE__*/function () {
      * @type {ChangesObservable}
      */
 
-    this.hidingChangesObservable = new ChangesObservable({
+    this.hidingChangesObservable = new _observable.ChangesObservable({
       initialIndexValue: false
     });
     /**
@@ -273,7 +301,7 @@ export var IndexMapper = /*#__PURE__*/function () {
   }, {
     key: "createAndRegisterIndexMap",
     value: function createAndRegisterIndexMap(indexName, mapType, initValueOrFn) {
-      return this.registerMap(indexName, createIndexMap(mapType, initValueOrFn));
+      return this.registerMap(indexName, (0, _maps.createIndexMap)(mapType, initValueOrFn));
     }
     /**
      * Register map which provide some index mappings. Type of map determining to which collection it will be added.
@@ -290,9 +318,9 @@ export var IndexMapper = /*#__PURE__*/function () {
         throw Error("Map with name \"".concat(uniqueName, "\" has been already registered."));
       }
 
-      if (indexMap instanceof TrimmingMap) {
+      if (indexMap instanceof _maps.TrimmingMap) {
         this.trimmingMapsCollection.register(uniqueName, indexMap);
-      } else if (indexMap instanceof HidingMap) {
+      } else if (indexMap instanceof _maps.HidingMap) {
         this.hidingMapsCollection.register(uniqueName, indexMap);
       } else {
         this.variousMapsCollection.register(uniqueName, indexMap);
@@ -350,7 +378,7 @@ export var IndexMapper = /*#__PURE__*/function () {
       // Index in the table boundaries provided by the `DataMap`.
       var physicalIndex = this.notTrimmedIndexesCache[visualIndex];
 
-      if (isDefined(physicalIndex)) {
+      if ((0, _mixed.isDefined)(physicalIndex)) {
         return physicalIndex;
       }
 
@@ -368,7 +396,7 @@ export var IndexMapper = /*#__PURE__*/function () {
     value: function getPhysicalFromRenderableIndex(renderableIndex) {
       var physicalIndex = this.renderablePhysicalIndexesCache[renderableIndex]; // Index in the renderable table boundaries.
 
-      if (isDefined(physicalIndex)) {
+      if ((0, _mixed.isDefined)(physicalIndex)) {
         return physicalIndex;
       }
 
@@ -386,7 +414,7 @@ export var IndexMapper = /*#__PURE__*/function () {
     value: function getVisualFromPhysicalIndex(physicalIndex) {
       var visualIndex = this.fromPhysicalToVisualIndexesCache.get(physicalIndex); // Index in the table boundaries provided by the `DataMap`.
 
-      if (isDefined(visualIndex)) {
+      if ((0, _mixed.isDefined)(visualIndex)) {
         return visualIndex;
       }
 
@@ -416,7 +444,7 @@ export var IndexMapper = /*#__PURE__*/function () {
     value: function getRenderableFromVisualIndex(visualIndex) {
       var renderableIndex = this.fromVisualToRenderableIndexesCache.get(visualIndex); // Index in the renderable table boundaries.
 
-      if (isDefined(renderableIndex)) {
+      if ((0, _mixed.isDefined)(renderableIndex)) {
         return renderableIndex;
       }
 
@@ -649,13 +677,13 @@ export var IndexMapper = /*#__PURE__*/function () {
         movedIndexes = [movedIndexes];
       }
 
-      var physicalMovedIndexes = arrayMap(movedIndexes, function (visualIndex) {
+      var physicalMovedIndexes = (0, _array.arrayMap)(movedIndexes, function (visualIndex) {
         return _this5.getPhysicalFromVisualIndex(visualIndex);
       });
       var notTrimmedIndexesLength = this.getNotTrimmedIndexesLength();
       var movedIndexesLength = movedIndexes.length; // Removing indexes without re-indexing.
 
-      var listWithRemovedItems = getListWithRemovedItems(this.getIndexesSequence(), physicalMovedIndexes); // When item(s) are moved after the last visible item we assign the last possible index.
+      var listWithRemovedItems = (0, _maps.getListWithRemovedItems)(this.getIndexesSequence(), physicalMovedIndexes); // When item(s) are moved after the last visible item we assign the last possible index.
 
       var destinationPosition = notTrimmedIndexesLength - movedIndexesLength; // Otherwise, we find proper index for inserted item(s).
 
@@ -668,7 +696,7 @@ export var IndexMapper = /*#__PURE__*/function () {
       } // Adding indexes without re-indexing.
 
 
-      this.setIndexesSequence(getListWithInsertedItems(listWithRemovedItems, destinationPosition, physicalMovedIndexes));
+      this.setIndexesSequence((0, _maps.getListWithInsertedItems)(listWithRemovedItems, destinationPosition, physicalMovedIndexes));
     }
     /**
      * Get whether index is trimmed. Index marked as trimmed isn't included in a {@link DataMap} and isn't rendered.
@@ -706,9 +734,9 @@ export var IndexMapper = /*#__PURE__*/function () {
     key: "insertIndexes",
     value: function insertIndexes(firstInsertedVisualIndex, amountOfIndexes) {
       var nthVisibleIndex = this.getNotTrimmedIndexes()[firstInsertedVisualIndex];
-      var firstInsertedPhysicalIndex = isDefined(nthVisibleIndex) ? nthVisibleIndex : this.getNumberOfIndexes();
+      var firstInsertedPhysicalIndex = (0, _mixed.isDefined)(nthVisibleIndex) ? nthVisibleIndex : this.getNumberOfIndexes();
       var insertionIndex = this.getIndexesSequence().includes(nthVisibleIndex) ? this.getIndexesSequence().indexOf(nthVisibleIndex) : this.getNumberOfIndexes();
-      var insertedIndexes = arrayMap(new Array(amountOfIndexes).fill(firstInsertedPhysicalIndex), function (nextIndex, stepsFromStart) {
+      var insertedIndexes = (0, _array.arrayMap)(new Array(amountOfIndexes).fill(firstInsertedPhysicalIndex), function (nextIndex, stepsFromStart) {
         return nextIndex + stepsFromStart;
       });
       this.suspendOperations();
@@ -814,4 +842,6 @@ export var IndexMapper = /*#__PURE__*/function () {
 
   return IndexMapper;
 }();
-mixin(IndexMapper, localHooks);
+
+exports.IndexMapper = IndexMapper;
+(0, _object.mixin)(IndexMapper, _localHooks.default);

@@ -1,4 +1,55 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.function.name.js");
+
+var _menu = _interopRequireDefault(require("../../../plugins/contextMenu/menu"));
+
+var _object = require("../../../helpers/object");
+
+var _array = require("../../../helpers/array");
+
+var C = _interopRequireWildcard(require("../../../i18n/constants"));
+
+var _predefinedItems = require("../../../plugins/contextMenu/predefinedItems");
+
+var _base = _interopRequireDefault(require("./_base"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,26 +75,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import Menu from "../../../plugins/contextMenu/menu.mjs";
-import { clone, extend } from "../../../helpers/object.mjs";
-import { arrayEach } from "../../../helpers/array.mjs";
-import * as C from "../../../i18n/constants.mjs";
-import { SEPARATOR } from "../../../plugins/contextMenu/predefinedItems.mjs";
-import BaseUI from "./_base.mjs";
 var privatePool = new WeakMap();
 /**
  * @class SelectUI
@@ -60,7 +91,7 @@ var SelectUI = /*#__PURE__*/function (_BaseUI) {
 
     _classCallCheck(this, SelectUI);
 
-    _this = _super.call(this, hotInstance, extend(SelectUI.DEFAULTS, options));
+    _this = _super.call(this, hotInstance, (0, _object.extend)(SelectUI.DEFAULTS, options));
     privatePool.set(_assertThisInitialized(_this), {});
     /**
      * Instance of {@link Menu}.
@@ -122,7 +153,7 @@ var SelectUI = /*#__PURE__*/function (_BaseUI) {
     value: function translateNames(items) {
       var _this3 = this;
 
-      arrayEach(items, function (item) {
+      (0, _array.arrayEach)(items, function (item) {
         item.name = _this3.translateIfPossible(item.name);
       });
       return items;
@@ -138,24 +169,24 @@ var SelectUI = /*#__PURE__*/function (_BaseUI) {
 
       _get(_getPrototypeOf(SelectUI.prototype), "build", this).call(this);
 
-      this.menu = new Menu(this.hot, {
+      this.menu = new _menu.default(this.hot, {
         className: 'htSelectUI htFiltersConditionsMenu',
         keepInViewport: false,
         standalone: true,
         container: this.options.menuContainer
       });
       this.menu.setMenuItems(this.items);
-      var caption = new BaseUI(this.hot, {
+      var caption = new _base.default(this.hot, {
         className: 'htUISelectCaption'
       });
-      var dropdown = new BaseUI(this.hot, {
+      var dropdown = new _base.default(this.hot, {
         className: 'htUISelectDropdown'
       });
       var priv = privatePool.get(this);
       priv.caption = caption;
       priv.captionElement = caption.element;
       priv.dropdown = dropdown;
-      arrayEach([caption, dropdown], function (element) {
+      (0, _array.arrayEach)([caption, dropdown], function (element) {
         return _this4._element.appendChild(element.element);
       });
       this.menu.addLocalHook('select', function (command) {
@@ -229,7 +260,7 @@ var SelectUI = /*#__PURE__*/function (_BaseUI) {
   }, {
     key: "onMenuSelect",
     value: function onMenuSelect(command) {
-      if (command.name !== SEPARATOR) {
+      if (command.name !== _predefinedItems.SEPARATOR) {
         this.options.value = command;
         this.update();
         this.runLocalHooks('select', this.options.value);
@@ -286,7 +317,7 @@ var SelectUI = /*#__PURE__*/function (_BaseUI) {
   }], [{
     key: "DEFAULTS",
     get: function get() {
-      return clone({
+      return (0, _object.clone)({
         className: 'htUISelect',
         wrapIt: false
       });
@@ -294,6 +325,7 @@ var SelectUI = /*#__PURE__*/function (_BaseUI) {
   }]);
 
   return SelectUI;
-}(BaseUI);
+}(_base.default);
 
-export default SelectUI;
+var _default = SelectUI;
+exports.default = _default;

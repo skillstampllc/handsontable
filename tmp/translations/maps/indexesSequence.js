@@ -1,17 +1,39 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.IndexesSequence = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _indexMap = require("./indexMap");
+
+var _indexesSequence = require("./utils/indexesSequence");
+
+var _utils = require("./utils");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,16 +59,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { IndexMap } from "./indexMap.mjs";
-import { getListWithRemovedItems, getListWithInsertedItems } from "./utils/indexesSequence.mjs";
-import { getDecreasedIndexes, getIncreasedIndexes } from "./utils/index.mjs";
 /**
  * Map for storing mappings from an index to a physical index.
  *
  * It also updates the physical indexes (remaining in the map) on remove/add row or column action.
  */
-
-export var IndexesSequence = /*#__PURE__*/function (_IndexMap) {
+var IndexesSequence = /*#__PURE__*/function (_IndexMap) {
   _inherits(IndexesSequence, _IndexMap);
 
   var _super = _createSuper(IndexesSequence);
@@ -71,8 +89,8 @@ export var IndexesSequence = /*#__PURE__*/function (_IndexMap) {
   _createClass(IndexesSequence, [{
     key: "insert",
     value: function insert(insertionIndex, insertedIndexes) {
-      var listAfterUpdate = getIncreasedIndexes(this.indexedValues, insertedIndexes);
-      this.indexedValues = getListWithInsertedItems(listAfterUpdate, insertionIndex, insertedIndexes);
+      var listAfterUpdate = (0, _utils.getIncreasedIndexes)(this.indexedValues, insertedIndexes);
+      this.indexedValues = (0, _indexesSequence.getListWithInsertedItems)(listAfterUpdate, insertionIndex, insertedIndexes);
 
       _get(_getPrototypeOf(IndexesSequence.prototype), "insert", this).call(this, insertionIndex, insertedIndexes);
     }
@@ -86,12 +104,14 @@ export var IndexesSequence = /*#__PURE__*/function (_IndexMap) {
   }, {
     key: "remove",
     value: function remove(removedIndexes) {
-      var listAfterUpdate = getListWithRemovedItems(this.indexedValues, removedIndexes);
-      this.indexedValues = getDecreasedIndexes(listAfterUpdate, removedIndexes);
+      var listAfterUpdate = (0, _indexesSequence.getListWithRemovedItems)(this.indexedValues, removedIndexes);
+      this.indexedValues = (0, _utils.getDecreasedIndexes)(listAfterUpdate, removedIndexes);
 
       _get(_getPrototypeOf(IndexesSequence.prototype), "remove", this).call(this, removedIndexes);
     }
   }]);
 
   return IndexesSequence;
-}(IndexMap);
+}(_indexMap.IndexMap);
+
+exports.IndexesSequence = IndexesSequence;

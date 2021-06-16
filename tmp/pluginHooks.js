@@ -1,5 +1,35 @@
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.object.freeze.js";
+"use strict";
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.object.freeze.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.splice.js");
+
+var _array = require("./helpers/array");
+
+var _object = require("./helpers/object");
+
+var _string = require("./helpers/string");
+
+var _console = require("./helpers/console");
+
+var _templateLiteralTag = require("./helpers/templateLiteralTag");
 
 var _templateObject;
 
@@ -9,21 +39,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.splice.js";
-
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-import { arrayEach } from "./helpers/array.mjs";
-import { objectEach } from "./helpers/object.mjs";
-import { substitute } from "./helpers/string.mjs";
-import { warn } from "./helpers/console.mjs";
-import { toSingleLine } from "./helpers/templateLiteralTag.mjs";
 /**
  * @description
  * Handsontable events are the common interface that function in 2 ways: as __callbacks__ and as __hooks__.
@@ -71,7 +88,6 @@ import { toSingleLine } from "./helpers/templateLiteralTag.mjs";
  * ...
  */
 // @TODO: Move plugin description hooks to plugin?
-
 var REGISTERED_HOOKS = [
 /**
  * Fired after resetting a cell's meta. This happens when the {@link Core#updateSettings} method is called.
@@ -1903,7 +1919,7 @@ var REGISTERED_HOOKS = [
  * @type {string}
  */
 
-var REMOVED_MESSAGE = toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["The plugin hook \"[hookName]\" was removed in Handsontable [removedInVersion]. \n  Please consult release notes https://github.com/handsontable/handsontable/releases/tag/[removedInVersion] to \n  learn about the migration path."], ["The plugin hook \"[hookName]\" was removed in Handsontable [removedInVersion].\\x20\n  Please consult release notes https://github.com/handsontable/handsontable/releases/tag/[removedInVersion] to\\x20\n  learn about the migration path."])));
+var REMOVED_MESSAGE = (0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["The plugin hook \"[hookName]\" was removed in Handsontable [removedInVersion]. \n  Please consult release notes https://github.com/handsontable/handsontable/releases/tag/[removedInVersion] to \n  learn about the migration path."], ["The plugin hook \"[hookName]\" was removed in Handsontable [removedInVersion].\\x20\n  Please consult release notes https://github.com/handsontable/handsontable/releases/tag/[removedInVersion] to\\x20\n  learn about the migration path."])));
 /**
  * The list of the hooks which are removed from the API. The warning message is printed out in
  * the developer console when the hook is used.
@@ -1975,7 +1991,7 @@ var Hooks = /*#__PURE__*/function () {
     value: function createEmptyBucket() {
       var bucket = Object.create(null); // eslint-disable-next-line no-return-assign
 
-      arrayEach(REGISTERED_HOOKS, function (hook) {
+      (0, _array.arrayEach)(REGISTERED_HOOKS, function (hook) {
         return bucket[hook] = [];
       });
       return bucket;
@@ -2039,19 +2055,19 @@ var Hooks = /*#__PURE__*/function () {
       var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
       if (Array.isArray(callback)) {
-        arrayEach(callback, function (c) {
+        (0, _array.arrayEach)(callback, function (c) {
           return _this.add(key, c, context);
         });
       } else {
         if (REMOVED_HOOKS.has(key)) {
-          warn(substitute(REMOVED_MESSAGE, {
+          (0, _console.warn)((0, _string.substitute)(REMOVED_MESSAGE, {
             hookName: key,
             removedInVersion: REMOVED_HOOKS.get(key)
           }));
         }
 
         if (DEPRECATED_HOOKS.has(key)) {
-          warn(DEPRECATED_HOOKS.get(key));
+          (0, _console.warn)(DEPRECATED_HOOKS.get(key));
         }
 
         var bucket = this.getBucket(context);
@@ -2068,7 +2084,7 @@ var Hooks = /*#__PURE__*/function () {
           var foundInitialHook = false;
 
           if (callback.initialHook) {
-            arrayEach(bucket[key], function (cb, i) {
+            (0, _array.arrayEach)(bucket[key], function (cb, i) {
               if (cb.initialHook) {
                 bucket[key][i] = callback;
                 foundInitialHook = true;
@@ -2107,7 +2123,7 @@ var Hooks = /*#__PURE__*/function () {
       var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
       if (Array.isArray(callback)) {
-        arrayEach(callback, function (c) {
+        (0, _array.arrayEach)(callback, function (c) {
           return _this2.once(key, c, context);
         });
       } else {
@@ -2270,7 +2286,7 @@ var Hooks = /*#__PURE__*/function () {
     value: function destroy() {
       var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       // eslint-disable-next-line no-return-assign
-      objectEach(this.getBucket(context), function (value, key, bucket) {
+      (0, _object.objectEach)(this.getBucket(context), function (value, key, bucket) {
         return bucket[key].length = 0;
       });
     }
@@ -2397,4 +2413,5 @@ function getGlobalSingleton() {
   return globalSingleton;
 }
 
-export default Hooks;
+var _default = Hooks;
+exports.default = _default;

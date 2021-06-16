@@ -1,6 +1,15 @@
-import staticRegister from "../utils/staticRegister.mjs";
+"use strict";
 
-var _staticRegister = staticRegister('renderers'),
+exports.__esModule = true;
+exports.registerRenderer = _register;
+exports.getRenderer = _getItem;
+exports.getRegisteredRenderers = exports.getRegisteredRendererNames = exports.hasRenderer = void 0;
+
+var _staticRegister2 = _interopRequireDefault(require("../utils/staticRegister"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _staticRegister = (0, _staticRegister2.default)('renderers'),
     register = _staticRegister.register,
     getItem = _staticRegister.getItem,
     hasItem = _staticRegister.hasItem,
@@ -13,6 +22,10 @@ var _staticRegister = staticRegister('renderers'),
  * @returns {Function} Returns renderer function.
  */
 
+
+exports.getRegisteredRenderers = getValues;
+exports.getRegisteredRendererNames = getNames;
+exports.hasRenderer = hasItem;
 
 function _getItem(name) {
   if (typeof name === 'function') {
@@ -41,5 +54,3 @@ function _register(name, renderer) {
 
   register(name, renderer);
 }
-
-export { _register as registerRenderer, _getItem as getRenderer, hasItem as hasRenderer, getNames as getRegisteredRendererNames, getValues as getRegisteredRenderers };

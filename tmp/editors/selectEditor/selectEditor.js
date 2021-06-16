@@ -1,15 +1,41 @@
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+"use strict";
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.SelectEditor = exports.EDITOR_TYPE = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _baseEditor = require("../baseEditor");
+
+var _element = require("../../helpers/dom/element");
+
+var _event = require("../../helpers/dom/event");
+
+var _object = require("../../helpers/object");
+
+var _unicode = require("../../helpers/unicode");
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -37,19 +63,16 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BaseEditor, EDITOR_STATE } from "../baseEditor/index.mjs";
-import { addClass, empty, fastInnerHTML, getComputedStyle, getCssTransform, hasClass, offset, outerHeight, outerWidth, removeClass, resetCssTransform } from "../../helpers/dom/element.mjs";
-import { stopImmediatePropagation } from "../../helpers/dom/event.mjs";
-import { objectEach } from "../../helpers/object.mjs";
-import { KEY_CODES } from "../../helpers/unicode.mjs";
 var EDITOR_VISIBLE_CLASS_NAME = 'ht_editor_visible';
-export var EDITOR_TYPE = 'select';
+var EDITOR_TYPE = 'select';
 /**
  * @private
  * @class SelectEditor
  */
 
-export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
+exports.EDITOR_TYPE = EDITOR_TYPE;
+
+var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
   _inherits(SelectEditor, _BaseEditor);
 
   var _super = _createSuper(SelectEditor);
@@ -68,7 +91,7 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
      */
     function init() {
       this.select = this.hot.rootDocument.createElement('SELECT');
-      addClass(this.select, 'htSelectEditor');
+      (0, _element.addClass)(this.select, 'htSelectEditor');
       this.select.style.display = 'none';
       this.hot.rootElement.appendChild(this.select);
       this.registerHooks();
@@ -121,8 +144,8 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
       this._opened = false;
       this.select.style.display = 'none';
 
-      if (hasClass(this.select, EDITOR_VISIBLE_CLASS_NAME)) {
-        removeClass(this.select, EDITOR_VISIBLE_CLASS_NAME);
+      if ((0, _element.hasClass)(this.select, EDITOR_VISIBLE_CLASS_NAME)) {
+        (0, _element.removeClass)(this.select, EDITOR_VISIBLE_CLASS_NAME);
       }
 
       this.clearHooks();
@@ -187,12 +210,12 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
         options = this.prepareOptions(selectOptions);
       }
 
-      empty(this.select);
-      objectEach(options, function (optionValue, key) {
+      (0, _element.empty)(this.select);
+      (0, _object.objectEach)(options, function (optionValue, key) {
         var optionElement = _this3.hot.rootDocument.createElement('OPTION');
 
         optionElement.value = key;
-        fastInnerHTML(optionElement, optionValue);
+        (0, _element.fastInnerHTML)(optionElement, optionValue);
 
         _this3.select.appendChild(optionElement);
       });
@@ -243,7 +266,7 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
   }, {
     key: "refreshDimensions",
     value: function refreshDimensions() {
-      if (this.state !== EDITOR_STATE.EDITING) {
+      if (this.state !== _baseEditor.EDITOR_STATE.EDITING) {
         return;
       }
 
@@ -255,35 +278,35 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
       }
 
       var wtOverlays = this.hot.view.wt.wtOverlays;
-      var currentOffset = offset(this.TD);
-      var containerOffset = offset(this.hot.rootElement);
+      var currentOffset = (0, _element.offset)(this.TD);
+      var containerOffset = (0, _element.offset)(this.hot.rootElement);
       var scrollableContainer = wtOverlays.scrollableElement;
       var editorSection = this.checkEditorSection();
-      var width = outerWidth(this.TD) + 1;
-      var height = outerHeight(this.TD) + 1;
+      var width = (0, _element.outerWidth)(this.TD) + 1;
+      var height = (0, _element.outerHeight)(this.TD) + 1;
       var editTop = currentOffset.top - containerOffset.top - 1 - (scrollableContainer.scrollTop || 0);
       var editLeft = currentOffset.left - containerOffset.left - 1 - (scrollableContainer.scrollLeft || 0);
       var cssTransformOffset;
 
       switch (editorSection) {
         case 'top':
-          cssTransformOffset = getCssTransform(wtOverlays.topOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.topOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'left':
-          cssTransformOffset = getCssTransform(wtOverlays.leftOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.leftOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'top-left-corner':
-          cssTransformOffset = getCssTransform(wtOverlays.topLeftCornerOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.topLeftCornerOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'bottom-left-corner':
-          cssTransformOffset = getCssTransform(wtOverlays.bottomLeftCornerOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.bottomLeftCornerOverlay.clone.wtTable.holder.parentNode);
           break;
 
         case 'bottom':
-          cssTransformOffset = getCssTransform(wtOverlays.bottomOverlay.clone.wtTable.holder.parentNode);
+          cssTransformOffset = (0, _element.getCssTransform)(wtOverlays.bottomOverlay.clone.wtTable.holder.parentNode);
           break;
 
         default:
@@ -308,10 +331,10 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
       if (cssTransformOffset && cssTransformOffset !== -1) {
         selectStyle[cssTransformOffset[0]] = cssTransformOffset[1];
       } else {
-        resetCssTransform(this.select);
+        (0, _element.resetCssTransform)(this.select);
       }
 
-      var cellComputedStyle = getComputedStyle(this.TD, this.hot.rootWindow);
+      var cellComputedStyle = (0, _element.getComputedStyle)(this.TD, this.hot.rootWindow);
 
       if (parseInt(cellComputedStyle.borderTopWidth, 10) > 0) {
         height -= 1;
@@ -326,7 +349,7 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
       selectStyle.top = "".concat(editTop, "px");
       selectStyle.left = "".concat(editLeft, "px");
       selectStyle.margin = '0px';
-      addClass(this.select, EDITOR_VISIBLE_CLASS_NAME);
+      (0, _element.addClass)(this.select, EDITOR_VISIBLE_CLASS_NAME);
     }
     /**
      * OnBeforeKeyDown callback.
@@ -341,21 +364,21 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
       var nextOptionIndex = this.select.selectedIndex + 1;
 
       switch (event.keyCode) {
-        case KEY_CODES.ARROW_UP:
+        case _unicode.KEY_CODES.ARROW_UP:
           if (previousOptionIndex >= 0) {
             this.select[previousOptionIndex].selected = true;
           }
 
-          stopImmediatePropagation(event);
+          (0, _event.stopImmediatePropagation)(event);
           event.preventDefault();
           break;
 
-        case KEY_CODES.ARROW_DOWN:
+        case _unicode.KEY_CODES.ARROW_DOWN:
           if (nextOptionIndex <= this.select.length - 1) {
             this.select[nextOptionIndex].selected = true;
           }
 
-          stopImmediatePropagation(event);
+          (0, _event.stopImmediatePropagation)(event);
           event.preventDefault();
           break;
 
@@ -371,4 +394,6 @@ export var SelectEditor = /*#__PURE__*/function (_BaseEditor) {
   }]);
 
   return SelectEditor;
-}(BaseEditor);
+}(_baseEditor.BaseEditor);
+
+exports.SelectEditor = SelectEditor;

@@ -1,11 +1,20 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _viewSize = _interopRequireDefault(require("./viewSize"));
+
+var _constants = require("./constants");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import ViewSize from "./viewSize.mjs";
-import { WORKING_SPACE_ALL, WORKING_SPACE_TOP, WORKING_SPACE_BOTTOM } from "./constants.mjs";
 /**
  * The class is a source of the truth of information about the current and
  * next size of the rendered DOM elements and current and next offset of
@@ -22,7 +31,6 @@ import { WORKING_SPACE_ALL, WORKING_SPACE_TOP, WORKING_SPACE_BOTTOM } from "./co
  *
  * @class {ViewSizeSet}
  */
-
 var ViewSizeSet = /*#__PURE__*/function () {
   function ViewSizeSet() {
     _classCallCheck(this, ViewSizeSet);
@@ -32,7 +40,7 @@ var ViewSizeSet = /*#__PURE__*/function () {
      *
      * @type {ViewSize}
      */
-    this.size = new ViewSize();
+    this.size = new _viewSize.default();
     /**
      * Defines if this instance shares its size with another instance. If it's in the shared
      * mode it defines what space it occupies ('top' or 'bottom').
@@ -40,7 +48,7 @@ var ViewSizeSet = /*#__PURE__*/function () {
      * @type {number}
      */
 
-    this.workingSpace = WORKING_SPACE_ALL;
+    this.workingSpace = _constants.WORKING_SPACE_ALL;
     /**
      * Shared Size instance.
      *
@@ -94,7 +102,7 @@ var ViewSizeSet = /*#__PURE__*/function () {
   }, {
     key: "isShared",
     value: function isShared() {
-      return this.sharedSize instanceof ViewSize;
+      return this.sharedSize instanceof _viewSize.default;
     }
     /**
      * Checks what working space describes this size instance.
@@ -117,8 +125,8 @@ var ViewSizeSet = /*#__PURE__*/function () {
   }, {
     key: "append",
     value: function append(viewSize) {
-      this.workingSpace = WORKING_SPACE_TOP;
-      viewSize.workingSpace = WORKING_SPACE_BOTTOM;
+      this.workingSpace = _constants.WORKING_SPACE_TOP;
+      viewSize.workingSpace = _constants.WORKING_SPACE_BOTTOM;
       this.sharedSize = viewSize.getViewSize();
     }
     /**
@@ -130,8 +138,8 @@ var ViewSizeSet = /*#__PURE__*/function () {
   }, {
     key: "prepend",
     value: function prepend(viewSize) {
-      this.workingSpace = WORKING_SPACE_BOTTOM;
-      viewSize.workingSpace = WORKING_SPACE_TOP;
+      this.workingSpace = _constants.WORKING_SPACE_BOTTOM;
+      viewSize.workingSpace = _constants.WORKING_SPACE_TOP;
       this.sharedSize = viewSize.getViewSize();
     }
   }]);
@@ -139,4 +147,4 @@ var ViewSizeSet = /*#__PURE__*/function () {
   return ViewSizeSet;
 }();
 
-export { ViewSizeSet as default };
+exports.default = ViewSizeSet;

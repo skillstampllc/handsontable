@@ -1,3 +1,54 @@
+"use strict";
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.get-own-property-descriptors.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.fill.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.array.concat.js");
+
+var _types = require("./types");
+
+var _constants = require("./constants");
+
+var _array = require("./../../helpers/array");
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -16,36 +67,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-import "core-js/modules/es.array.fill.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.object.get-own-property-descriptors.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { createHighlight } from "./types/index.mjs";
-import { ACTIVE_HEADER_TYPE, AREA_TYPE, CELL_TYPE, CUSTOM_SELECTION_TYPE, FILL_TYPE, HEADER_TYPE } from "./constants.mjs";
-import { arrayEach } from "./../../helpers/array.mjs";
 /**
  * Highlight class responsible for managing Walkontable Selection classes.
  *
@@ -61,7 +88,6 @@ import { arrayEach } from "./../../helpers/array.mjs";
  * @class Highlight
  * @util
  */
-
 var Highlight = /*#__PURE__*/function () {
   function Highlight(options) {
     _classCallCheck(this, Highlight);
@@ -91,7 +117,7 @@ var Highlight = /*#__PURE__*/function () {
      * @type {Selection}
      */
 
-    this.cell = createHighlight(CELL_TYPE, options);
+    this.cell = (0, _types.createHighlight)(_constants.CELL_TYPE, options);
     /**
      * `fill` highlight object which describes attributes for the borders for autofill functionality.
      * It can only occur only once on the table.
@@ -99,7 +125,7 @@ var Highlight = /*#__PURE__*/function () {
      * @type {Selection}
      */
 
-    this.fill = createHighlight(FILL_TYPE, options);
+    this.fill = (0, _types.createHighlight)(_constants.FILL_TYPE, options);
     /**
      * Collection of the `area` highlights. That objects describes attributes for the borders and selection of
      * the multiple selected cells. It can occur multiple times on the table.
@@ -147,7 +173,7 @@ var Highlight = /*#__PURE__*/function () {
     value: function isEnabledFor(highlightType, coords) {
       var type = highlightType; // Legacy compatibility.
 
-      if (highlightType === CELL_TYPE) {
+      if (highlightType === _constants.CELL_TYPE) {
         type = 'current'; // One from settings for `disableVisualSelection` up to Handsontable 0.36/Handsontable Pro 1.16.0.
       }
 
@@ -211,7 +237,7 @@ var Highlight = /*#__PURE__*/function () {
       if (this.areas.has(layerLevel)) {
         area = this.areas.get(layerLevel);
       } else {
-        area = createHighlight(AREA_TYPE, _objectSpread({
+        area = (0, _types.createHighlight)(_constants.AREA_TYPE, _objectSpread({
           layerLevel: layerLevel
         }, this.options));
         this.areas.set(layerLevel, area);
@@ -246,7 +272,7 @@ var Highlight = /*#__PURE__*/function () {
       if (this.headers.has(layerLevel)) {
         header = this.headers.get(layerLevel);
       } else {
-        header = createHighlight(HEADER_TYPE, _objectSpread({}, this.options));
+        header = (0, _types.createHighlight)(_constants.HEADER_TYPE, _objectSpread({}, this.options));
         this.headers.set(layerLevel, header);
       }
 
@@ -279,7 +305,7 @@ var Highlight = /*#__PURE__*/function () {
       if (this.activeHeaders.has(layerLevel)) {
         header = this.activeHeaders.get(layerLevel);
       } else {
-        header = createHighlight(ACTIVE_HEADER_TYPE, _objectSpread({}, this.options));
+        header = (0, _types.createHighlight)(_constants.ACTIVE_HEADER_TYPE, _objectSpread({}, this.options));
         this.activeHeaders.set(layerLevel, header);
       }
 
@@ -316,7 +342,7 @@ var Highlight = /*#__PURE__*/function () {
   }, {
     key: "addCustomSelection",
     value: function addCustomSelection(selectionInstance) {
-      this.customSelections.push(createHighlight(CUSTOM_SELECTION_TYPE, _objectSpread(_objectSpread({}, this.options), selectionInstance)));
+      this.customSelections.push((0, _types.createHighlight)(_constants.CUSTOM_SELECTION_TYPE, _objectSpread(_objectSpread({}, this.options), selectionInstance)));
     }
     /**
      * Perform cleaning visual highlights for the whole table.
@@ -327,13 +353,13 @@ var Highlight = /*#__PURE__*/function () {
     value: function clear() {
       this.cell.clear();
       this.fill.clear();
-      arrayEach(this.areas.values(), function (highlight) {
+      (0, _array.arrayEach)(this.areas.values(), function (highlight) {
         return void highlight.clear();
       });
-      arrayEach(this.headers.values(), function (highlight) {
+      (0, _array.arrayEach)(this.headers.values(), function (highlight) {
         return void highlight.clear();
       });
-      arrayEach(this.activeHeaders.values(), function (highlight) {
+      (0, _array.arrayEach)(this.activeHeaders.values(), function (highlight) {
         return void highlight.clear();
       });
     }
@@ -353,4 +379,5 @@ var Highlight = /*#__PURE__*/function () {
   return Highlight;
 }();
 
-export default Highlight;
+var _default = Highlight;
+exports.default = _default;

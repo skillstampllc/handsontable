@@ -1,3 +1,10 @@
+"use strict";
+
+exports.__esModule = true;
+exports.traverseHiddenNodeColumnIndexes = traverseHiddenNodeColumnIndexes;
+exports.getFirstChildProperty = getFirstChildProperty;
+exports.isNodeReflectsFirstChildColspan = isNodeReflectsFirstChildColspan;
+
 /**
  * Traverses the tree nodes and calls a callback when no hidden node is found. The callback
  * is called with visual column index then.
@@ -5,7 +12,7 @@
  * @param {TreeNode} node A tree node to traverse.
  * @param {Function} callback The callback function which will be called for each node.
  */
-export function traverseHiddenNodeColumnIndexes(node, callback) {
+function traverseHiddenNodeColumnIndexes(node, callback) {
   node.walkDown(function (_ref) {
     var data = _ref.data,
         childs = _ref.childs;
@@ -29,7 +36,8 @@ export function traverseHiddenNodeColumnIndexes(node, callback) {
  * @returns {*}
  */
 
-export function getFirstChildProperty(_ref2, propertyName) {
+
+function getFirstChildProperty(_ref2, propertyName) {
   var childs = _ref2.childs;
 
   if (childs.length === 0) {
@@ -54,6 +62,7 @@ export function getFirstChildProperty(_ref2, propertyName) {
  * @returns {boolean}
  */
 
-export function isNodeReflectsFirstChildColspan(node) {
+
+function isNodeReflectsFirstChildColspan(node) {
   return getFirstChildProperty(node, 'origColspan') === node.data.origColspan;
 }

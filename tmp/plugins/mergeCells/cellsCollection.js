@@ -1,4 +1,51 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.object.freeze.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.splice.js");
+
+var _cellCoords = _interopRequireDefault(require("./cellCoords"));
+
+var _index = require("../../3rdparty/walkontable/src/index");
+
+var _number = require("../../helpers/number");
+
+var _console = require("../../helpers/console");
+
+var _array = require("../../helpers/array");
+
+var _utils = require("./utils");
+
+var _templateLiteralTag = require("../../helpers/templateLiteralTag");
+
 var _templateObject;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -14,40 +61,18 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.object.freeze.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import MergedCellCoords from "./cellCoords.mjs";
-import { CellCoords, CellRange } from "../../3rdparty/walkontable/src/index.mjs";
-import { rangeEach, rangeEachReverse } from "../../helpers/number.mjs";
-import { warn } from "../../helpers/console.mjs";
-import { arrayEach } from "../../helpers/array.mjs";
-import { applySpanProperties } from "./utils.mjs";
-import { toSingleLine } from "../../helpers/templateLiteralTag.mjs";
 /**
  * Defines a container object for the merged cells.
  *
  * @class MergedCellsCollection
  * @plugin MergeCells
  */
-
 var MergedCellsCollection = /*#__PURE__*/function () {
   function MergedCellsCollection(plugin) {
     _classCallCheck(this, MergedCellsCollection);
@@ -95,7 +120,7 @@ var MergedCellsCollection = /*#__PURE__*/function () {
     function get(row, column) {
       var mergedCells = this.mergedCells;
       var result = false;
-      arrayEach(mergedCells, function (mergedCell) {
+      (0, _array.arrayEach)(mergedCells, function (mergedCell) {
         if (mergedCell.row <= row && mergedCell.row + mergedCell.rowspan - 1 >= row && mergedCell.col <= column && mergedCell.col + mergedCell.colspan - 1 >= column) {
           result = mergedCell;
           return false;
@@ -117,7 +142,7 @@ var MergedCellsCollection = /*#__PURE__*/function () {
     value: function getByRange(range) {
       var mergedCells = this.mergedCells;
       var result = false;
-      arrayEach(mergedCells, function (mergedCell) {
+      (0, _array.arrayEach)(mergedCells, function (mergedCell) {
         if (mergedCell.row <= range.from.row && mergedCell.row + mergedCell.rowspan - 1 >= range.to.row && mergedCell.col <= range.from.col && mergedCell.col + mergedCell.colspan - 1 >= range.to.col) {
           result = mergedCell;
           return result;
@@ -144,15 +169,15 @@ var MergedCellsCollection = /*#__PURE__*/function () {
       var testedRange = range;
 
       if (!testedRange.includesRange) {
-        var from = new CellCoords(testedRange.from.row, testedRange.from.col);
-        var to = new CellCoords(testedRange.to.row, testedRange.to.col);
-        testedRange = new CellRange(from, from, to);
+        var from = new _index.CellCoords(testedRange.from.row, testedRange.from.col);
+        var to = new _index.CellCoords(testedRange.to.row, testedRange.to.col);
+        testedRange = new _index.CellRange(from, from, to);
       }
 
-      arrayEach(mergedCells, function (mergedCell) {
-        var mergedCellTopLeft = new CellCoords(mergedCell.row, mergedCell.col);
-        var mergedCellBottomRight = new CellCoords(mergedCell.row + mergedCell.rowspan - 1, mergedCell.col + mergedCell.colspan - 1);
-        var mergedCellRange = new CellRange(mergedCellTopLeft, mergedCellTopLeft, mergedCellBottomRight);
+      (0, _array.arrayEach)(mergedCells, function (mergedCell) {
+        var mergedCellTopLeft = new _index.CellCoords(mergedCell.row, mergedCell.col);
+        var mergedCellBottomRight = new _index.CellCoords(mergedCell.row + mergedCell.rowspan - 1, mergedCell.col + mergedCell.colspan - 1);
+        var mergedCellRange = new _index.CellRange(mergedCellTopLeft, mergedCellTopLeft, mergedCellBottomRight);
 
         if (countPartials) {
           if (testedRange.overlaps(mergedCellRange)) {
@@ -179,7 +204,7 @@ var MergedCellsCollection = /*#__PURE__*/function () {
       var column = mergedCellInfo.col;
       var rowspan = mergedCellInfo.rowspan;
       var colspan = mergedCellInfo.colspan;
-      var newMergedCell = new MergedCellCoords(row, column, rowspan, colspan);
+      var newMergedCell = new _cellCoords.default(row, column, rowspan, colspan);
       var alreadyExists = this.get(row, column);
       var isOverlapping = this.isOverlapping(newMergedCell);
 
@@ -192,7 +217,7 @@ var MergedCellsCollection = /*#__PURE__*/function () {
         return newMergedCell;
       }
 
-      warn(MergedCellsCollection.IS_OVERLAPPING_WARNING(newMergedCell));
+      (0, _console.warn)(MergedCellsCollection.IS_OVERLAPPING_WARNING(newMergedCell));
       return false;
     }
     /**
@@ -230,7 +255,7 @@ var MergedCellsCollection = /*#__PURE__*/function () {
       var mergedCells = this.mergedCells;
       var mergedCellParentsToClear = [];
       var hiddenCollectionElements = [];
-      arrayEach(mergedCells, function (mergedCell) {
+      (0, _array.arrayEach)(mergedCells, function (mergedCell) {
         var TD = _this.hot.getCell(mergedCell.row, mergedCell.col);
 
         if (TD) {
@@ -238,9 +263,9 @@ var MergedCellsCollection = /*#__PURE__*/function () {
         }
       });
       this.mergedCells.length = 0;
-      arrayEach(mergedCellParentsToClear, function (mergedCell, i) {
-        rangeEach(0, mergedCell.rowspan - 1, function (j) {
-          rangeEach(0, mergedCell.colspan - 1, function (k) {
+      (0, _array.arrayEach)(mergedCellParentsToClear, function (mergedCell, i) {
+        (0, _number.rangeEach)(0, mergedCell.rowspan - 1, function (j) {
+          (0, _number.rangeEach)(0, mergedCell.colspan - 1, function (k) {
             if (k !== 0 || j !== 0) {
               var TD = _this.hot.getCell(mergedCell.row + j, mergedCell.col + k);
 
@@ -252,11 +277,11 @@ var MergedCellsCollection = /*#__PURE__*/function () {
         });
         mergedCellParentsToClear[i][1] = null;
       });
-      arrayEach(mergedCellParentsToClear, function (mergedCellParents) {
-        applySpanProperties.apply(void 0, _toConsumableArray(mergedCellParents));
+      (0, _array.arrayEach)(mergedCellParentsToClear, function (mergedCellParents) {
+        _utils.applySpanProperties.apply(void 0, _toConsumableArray(mergedCellParents));
       });
-      arrayEach(hiddenCollectionElements, function (hiddenCollectionElement) {
-        applySpanProperties.apply(void 0, _toConsumableArray(hiddenCollectionElement));
+      (0, _array.arrayEach)(hiddenCollectionElements, function (hiddenCollectionElement) {
+        _utils.applySpanProperties.apply(void 0, _toConsumableArray(hiddenCollectionElement));
       });
     }
     /**
@@ -269,10 +294,10 @@ var MergedCellsCollection = /*#__PURE__*/function () {
   }, {
     key: "isOverlapping",
     value: function isOverlapping(mergedCell) {
-      var mergedCellRange = new CellRange(new CellCoords(0, 0), new CellCoords(mergedCell.row, mergedCell.col), new CellCoords(mergedCell.row + mergedCell.rowspan - 1, mergedCell.col + mergedCell.colspan - 1));
+      var mergedCellRange = new _index.CellRange(new _index.CellCoords(0, 0), new _index.CellCoords(mergedCell.row, mergedCell.col), new _index.CellCoords(mergedCell.row + mergedCell.rowspan - 1, mergedCell.col + mergedCell.colspan - 1));
       var result = false;
-      arrayEach(this.mergedCells, function (col) {
-        var currentRange = new CellRange(new CellCoords(0, 0), new CellCoords(col.row, col.col), new CellCoords(col.row + col.rowspan - 1, col.col + col.colspan - 1));
+      (0, _array.arrayEach)(this.mergedCells, function (col) {
+        var currentRange = new _index.CellRange(new _index.CellCoords(0, 0), new _index.CellCoords(col.row, col.col), new _index.CellCoords(col.row + col.rowspan - 1, col.col + col.colspan - 1));
 
         if (currentRange.overlaps(mergedCellRange)) {
           result = true;
@@ -313,12 +338,12 @@ var MergedCellsCollection = /*#__PURE__*/function () {
       var mergeParent = this.get(row, column);
 
       if (!mergeParent || this.isFirstRenderableMergedCell(row, column)) {
-        return new CellCoords(row, column);
+        return new _index.CellCoords(row, column);
       }
 
       var firstRenderableRow = this.hot.rowIndexMapper.getFirstNotHiddenIndex(mergeParent.row, 1);
       var firstRenderableColumn = this.hot.columnIndexMapper.getFirstNotHiddenIndex(mergeParent.col, 1);
-      return new CellCoords(firstRenderableRow, firstRenderableColumn);
+      return new _index.CellCoords(firstRenderableRow, firstRenderableColumn);
     }
     /**
      * Shift the merged cell in the direction and by an offset defined in the arguments.
@@ -355,10 +380,10 @@ var MergedCellsCollection = /*#__PURE__*/function () {
         default:
       }
 
-      arrayEach(this.mergedCells, function (currentMerge) {
+      (0, _array.arrayEach)(this.mergedCells, function (currentMerge) {
         currentMerge.shift(shiftVector, index);
       });
-      rangeEachReverse(this.mergedCells.length - 1, 0, function (i) {
+      (0, _number.rangeEachReverse)(this.mergedCells.length - 1, 0, function (i) {
         var currentMerge = _this2.mergedCells[i];
 
         if (currentMerge && currentMerge.removed) {
@@ -369,11 +394,12 @@ var MergedCellsCollection = /*#__PURE__*/function () {
   }], [{
     key: "IS_OVERLAPPING_WARNING",
     value: function IS_OVERLAPPING_WARNING(newMergedCell) {
-      return toSingleLine(_templateObject || (_templateObject = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "], overlaps \n      with the other declared merged cell. The overlapping merged cell was not added to the table, please \n      fix your setup."], ["The merged cell declared at [", ", ", "], overlaps\\x20\n      with the other declared merged cell. The overlapping merged cell was not added to the table, please\\x20\n      fix your setup."])), newMergedCell.row, newMergedCell.col);
+      return (0, _templateLiteralTag.toSingleLine)(_templateObject || (_templateObject = _taggedTemplateLiteral(["The merged cell declared at [", ", ", "], overlaps \n      with the other declared merged cell. The overlapping merged cell was not added to the table, please \n      fix your setup."], ["The merged cell declared at [", ", ", "], overlaps\\x20\n      with the other declared merged cell. The overlapping merged cell was not added to the table, please\\x20\n      fix your setup."])), newMergedCell.row, newMergedCell.col);
     }
   }]);
 
   return MergedCellsCollection;
 }();
 
-export default MergedCellsCollection;
+var _default = MergedCellsCollection;
+exports.default = _default;

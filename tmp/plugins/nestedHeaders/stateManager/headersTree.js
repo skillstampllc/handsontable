@@ -1,3 +1,48 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.get-own-property-descriptors.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.weak-map.js");
+
+var _array = require("../../../helpers/array");
+
+var _tree = _interopRequireDefault(require("../../../utils/dataStructures/tree"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16,24 +61,6 @@ function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "und
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.object.get-own-property-descriptors.js";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -50,8 +77,12 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
-import { arrayEach } from "../../../helpers/array.mjs";
-import TreeNode from "../../../utils/dataStructures/tree.mjs";
+var _rootNodes = /*#__PURE__*/new WeakMap();
+
+var _rootsIndex = /*#__PURE__*/new WeakMap();
+
+var _sourceSettings = /*#__PURE__*/new WeakMap();
+
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
 /**
@@ -90,13 +121,6 @@ import TreeNode from "../../../utils/dataStructures/tree.mjs";
  */
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
-
-var _rootNodes = /*#__PURE__*/new WeakMap();
-
-var _rootsIndex = /*#__PURE__*/new WeakMap();
-
-var _sourceSettings = /*#__PURE__*/new WeakMap();
-
 var HeadersTree = /*#__PURE__*/function () {
   /**
    * The collection of nested headers settings structured into trees. The root trees are stored
@@ -223,7 +247,7 @@ var HeadersTree = /*#__PURE__*/function () {
 
       _classPrivateFieldGet(this, _rootsIndex).clear();
 
-      arrayEach(_classPrivateFieldGet(this, _rootNodes), function (_ref) {
+      (0, _array.arrayEach)(_classPrivateFieldGet(this, _rootNodes), function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
             colspan = _ref2[1].data.colspan;
 
@@ -252,7 +276,7 @@ var HeadersTree = /*#__PURE__*/function () {
       while (columnIndex < columnsCount) {
         var columnSettings = _classPrivateFieldGet(this, _sourceSettings).getHeaderSettings(0, columnIndex);
 
-        var rootNode = new TreeNode();
+        var rootNode = new _tree.default();
 
         _classPrivateFieldGet(this, _rootNodes).set(columnIndex, rootNode);
 
@@ -281,7 +305,7 @@ var HeadersTree = /*#__PURE__*/function () {
       var columnsSettings = _classPrivateFieldGet(this, _sourceSettings).getHeadersSettings(headerLevel, columnIndex, extractionLength);
 
       headerLevel += 1;
-      arrayEach(columnsSettings, function (columnSettings) {
+      (0, _array.arrayEach)(columnsSettings, function (columnSettings) {
         var nodeData = _objectSpread(_objectSpread({}, columnSettings), {}, {
           /**
            * The header level (tree node depth level).
@@ -305,7 +329,7 @@ var HeadersTree = /*#__PURE__*/function () {
           parentNode.data = nodeData;
           node = parentNode;
         } else {
-          node = new TreeNode(nodeData);
+          node = new _tree.default(nodeData);
           parentNode.addChild(node);
         }
 
@@ -332,4 +356,4 @@ var HeadersTree = /*#__PURE__*/function () {
   return HeadersTree;
 }();
 
-export { HeadersTree as default };
+exports.default = HeadersTree;

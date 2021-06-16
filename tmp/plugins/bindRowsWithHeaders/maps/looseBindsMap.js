@@ -1,17 +1,35 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _translations = require("../../../translations");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,9 +55,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { IndexMap, alterUtilsFactory, getDecreasedIndexes, getIncreasedIndexes } from "../../../translations/index.mjs";
-
-var _alterUtilsFactory = alterUtilsFactory('physicallyIndexed'),
+var _alterUtilsFactory = (0, _translations.alterUtilsFactory)('physicallyIndexed'),
     getListWithInsertedItems = _alterUtilsFactory.getListWithInsertedItems,
     getListWithRemovedItems = _alterUtilsFactory.getListWithRemovedItems;
 /**
@@ -71,7 +87,7 @@ var LooseBindsMap = /*#__PURE__*/function (_IndexMap) {
   _createClass(LooseBindsMap, [{
     key: "insert",
     value: function insert(insertionIndex, insertedIndexes) {
-      var listAfterUpdate = getIncreasedIndexes(this.indexedValues, insertedIndexes);
+      var listAfterUpdate = (0, _translations.getIncreasedIndexes)(this.indexedValues, insertedIndexes);
       this.indexedValues = getListWithInsertedItems(listAfterUpdate, insertionIndex, insertedIndexes, this.initValueOrFn);
 
       _get(_getPrototypeOf(LooseBindsMap.prototype), "insert", this).call(this, insertionIndex, insertedIndexes);
@@ -87,13 +103,14 @@ var LooseBindsMap = /*#__PURE__*/function (_IndexMap) {
     key: "remove",
     value: function remove(removedIndexes) {
       var listAfterUpdate = getListWithRemovedItems(this.indexedValues, removedIndexes);
-      this.indexedValues = getDecreasedIndexes(listAfterUpdate, removedIndexes);
+      this.indexedValues = (0, _translations.getDecreasedIndexes)(listAfterUpdate, removedIndexes);
 
       _get(_getPrototypeOf(LooseBindsMap.prototype), "remove", this).call(this, removedIndexes);
     }
   }]);
 
   return LooseBindsMap;
-}(IndexMap);
+}(_translations.IndexMap);
 
-export default LooseBindsMap;
+var _default = LooseBindsMap;
+exports.default = _default;

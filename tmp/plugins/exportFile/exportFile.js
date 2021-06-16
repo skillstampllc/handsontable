@@ -1,17 +1,49 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/web.timers.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+exports.__esModule = true;
+exports.ExportFile = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/web.timers.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _dataProvider = _interopRequireDefault(require("./dataProvider"));
+
+var _typeFactory = _interopRequireWildcard(require("./typeFactory"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33,11 +65,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import DataProvider from "./dataProvider.mjs";
-import typeFactory, { EXPORT_TYPES } from "./typeFactory.mjs";
-export var PLUGIN_KEY = 'exportFile';
-export var PLUGIN_PRIORITY = 240;
+var PLUGIN_KEY = 'exportFile';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 240;
 /**
  * @plugin ExportFile
  *
@@ -78,7 +108,9 @@ export var PLUGIN_PRIORITY = 240;
  * ```
  */
 
-export var ExportFile = /*#__PURE__*/function (_BasePlugin) {
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
+
+var ExportFile = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ExportFile, _BasePlugin);
 
   var _super = _createSuper(ExportFile);
@@ -194,11 +226,11 @@ export var ExportFile = /*#__PURE__*/function (_BasePlugin) {
     value: function _createTypeFormatter(format) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      if (!EXPORT_TYPES[format]) {
+      if (!_typeFactory.EXPORT_TYPES[format]) {
         throw new Error("Export format type \"".concat(format, "\" is not supported."));
       }
 
-      return typeFactory(format, new DataProvider(this.hot), options);
+      return (0, _typeFactory.default)(format, new _dataProvider.default(this.hot), options);
     }
     /**
      * Creates blob object based on provided type formatter class.
@@ -234,4 +266,6 @@ export var ExportFile = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ExportFile;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.ExportFile = ExportFile;

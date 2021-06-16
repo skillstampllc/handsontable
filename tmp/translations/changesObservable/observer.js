@@ -1,8 +1,23 @@
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+"use strict";
+
+exports.__esModule = true;
+exports.ChangesObserver = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/es.weak-map.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _object = require("../../helpers/object");
+
+var _localHooks = _interopRequireDefault(require("../../mixins/localHooks"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20,18 +35,15 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
-import { mixin } from "../../helpers/object.mjs";
-import localHooks from "../../mixins/localHooks.mjs";
+var _currentInitialChanges = /*#__PURE__*/new WeakMap();
+
 /**
  * The ChangesObserver module is an object that represents a disposable resource
  * provided by the ChangesObservable module.
  *
  * @class ChangesObserver
  */
-
-var _currentInitialChanges = /*#__PURE__*/new WeakMap();
-
-export var ChangesObserver = /*#__PURE__*/function () {
+var ChangesObserver = /*#__PURE__*/function () {
   function ChangesObserver() {
     _classCallCheck(this, ChangesObserver);
 
@@ -106,4 +118,6 @@ export var ChangesObserver = /*#__PURE__*/function () {
 
   return ChangesObserver;
 }();
-mixin(ChangesObserver, localHooks);
+
+exports.ChangesObserver = ChangesObserver;
+(0, _object.mixin)(ChangesObserver, _localHooks.default);

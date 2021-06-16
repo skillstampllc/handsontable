@@ -1,21 +1,63 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/web.timers.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.from.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.from.js");
+
+exports.__esModule = true;
+exports.AutoRowSize = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/web.timers.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _base = require("../base");
+
+var _array = require("../../helpers/array");
+
+var _feature = require("../../helpers/feature");
+
+var _element = require("../../helpers/dom/element");
+
+var _ghostTable = _interopRequireDefault(require("../../utils/ghostTable"));
+
+var _object = require("../../helpers/object");
+
+var _number = require("../../helpers/number");
+
+var _samplesGenerator = _interopRequireDefault(require("../../utils/samplesGenerator"));
+
+var _string = require("../../helpers/string");
+
+var _translations = require("../../translations");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -53,18 +95,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { BasePlugin } from "../base/index.mjs";
-import { arrayEach, arrayFilter } from "../../helpers/array.mjs";
-import { cancelAnimationFrame, requestAnimationFrame } from "../../helpers/feature.mjs";
-import { isVisible } from "../../helpers/dom/element.mjs";
-import GhostTable from "../../utils/ghostTable.mjs";
-import { isObject, hasOwnProperty } from "../../helpers/object.mjs";
-import { valueAccordingPercent, rangeEach } from "../../helpers/number.mjs";
-import SamplesGenerator from "../../utils/samplesGenerator.mjs";
-import { isPercentValue } from "../../helpers/string.mjs";
-import { PhysicalIndexToValueMap as IndexToValueMap } from "../../translations/index.mjs";
-export var PLUGIN_KEY = 'autoRowSize';
-export var PLUGIN_PRIORITY = 40;
+var PLUGIN_KEY = 'autoRowSize';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 40;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var ROW_WIDTHS_MAP_NAME = 'autoRowSize';
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -120,7 +154,7 @@ var ROW_WIDTHS_MAP_NAME = 'autoRowSize';
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
 
-export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
+var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
   _inherits(AutoRowSize, _BasePlugin);
 
   var _super = _createSuper(AutoRowSize);
@@ -154,7 +188,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
      * @type {GhostTable}
      */
 
-    _this.ghostTable = new GhostTable(_this.hot);
+    _this.ghostTable = new _ghostTable.default(_this.hot);
     /**
      * Instance of {@link SamplesGenerator} for generating samples necessary for rows height calculations.
      *
@@ -162,7 +196,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
      * @type {SamplesGenerator}
      */
 
-    _this.samplesGenerator = new SamplesGenerator(function (row, col) {
+    _this.samplesGenerator = new _samplesGenerator.default(function (row, col) {
       var cellValue;
 
       if (row >= 0) {
@@ -204,7 +238,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
      * @type {PhysicalIndexToValueMap}
      */
 
-    _this.rowHeightsMap = new IndexToValueMap();
+    _this.rowHeightsMap = new _translations.PhysicalIndexToValueMap();
 
     _this.hot.rowIndexMapper.registerMap(ROW_WIDTHS_MAP_NAME, _this.rowHeightsMap); // Leave the listener active to allow auto-sizing the rows when the plugin is disabled.
     // This is necesseary for height recalculation for resize handler doubleclick (ManualRowResize).
@@ -228,7 +262,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
     key: "isEnabled",
     value: function isEnabled() {
       var settings = this.hot.getSettings()[PLUGIN_KEY];
-      return settings === true || isObject(settings);
+      return settings === true || (0, _object.isObject)(settings);
     }
     /**
      * Enables the plugin functionality for this Handsontable instance.
@@ -321,13 +355,13 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
         this.ghostTable.addColumnHeadersRow(samples.get(-1));
       }
 
-      rangeEach(rowsRange.from, rowsRange.to, function (row) {
+      (0, _number.rangeEach)(rowsRange.from, rowsRange.to, function (row) {
         // For rows we must calculate row height even when user had set height value manually.
         // We can shrink column but cannot shrink rows!
         if (force || _this4.rowHeightsMap.getValueAtIndex(row) === null) {
           var _samples = _this4.samplesGenerator.generateRowSamples(row, columnsRange);
 
-          arrayEach(_samples, function (_ref) {
+          (0, _array.arrayEach)(_samples, function (_ref) {
             var _ref2 = _slicedToArray(_ref, 2),
                 rowIndex = _ref2[0],
                 sample = _ref2[1];
@@ -375,7 +409,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
       var loop = function loop() {
         // When hot was destroyed after calculating finished cancel frame
         if (!_this5.hot) {
-          cancelAnimationFrame(timer);
+          (0, _feature.cancelAnimationFrame)(timer);
           _this5.inProgress = false;
           return;
         }
@@ -388,9 +422,9 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
         current = current + AutoRowSize.CALCULATION_STEP + 1;
 
         if (current < length) {
-          timer = requestAnimationFrame(loop);
+          timer = (0, _feature.requestAnimationFrame)(loop);
         } else {
-          cancelAnimationFrame(timer);
+          (0, _feature.cancelAnimationFrame)(timer);
           _this5.inProgress = false; // @TODO Should call once per render cycle, currently fired separately in different plugins
 
           _this5.hot.view.adjustElementsSize(true); // tmp
@@ -431,8 +465,8 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
     key: "setSamplingOptions",
     value: function setSamplingOptions() {
       var setting = this.hot.getSettings()[PLUGIN_KEY];
-      var samplingRatio = setting && hasOwnProperty(setting, 'samplingRatio') ? setting.samplingRatio : void 0;
-      var allowSampleDuplicates = setting && hasOwnProperty(setting, 'allowSampleDuplicates') ? setting.allowSampleDuplicates : void 0;
+      var samplingRatio = setting && (0, _object.hasOwnProperty)(setting, 'samplingRatio') ? setting.samplingRatio : void 0;
+      var allowSampleDuplicates = setting && (0, _object.hasOwnProperty)(setting, 'allowSampleDuplicates') ? setting.allowSampleDuplicates : void 0;
 
       if (samplingRatio && !isNaN(samplingRatio)) {
         this.samplesGenerator.setSampleCount(parseInt(samplingRatio, 10));
@@ -449,7 +483,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "recalculateAllRowsHeight",
     value: function recalculateAllRowsHeight() {
-      if (isVisible(this.hot.view.wt.wtTable.TABLE)) {
+      if ((0, _element.isVisible)(this.hot.view.wt.wtTable.TABLE)) {
         this.clearCache();
         this.calculateAllRowsHeight();
       }
@@ -470,11 +504,11 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
       var limit = AutoRowSize.SYNC_CALCULATION_LIMIT;
       var rowsLimit = this.hot.countRows() - 1;
 
-      if (isObject(settings)) {
+      if ((0, _object.isObject)(settings)) {
         limit = settings.syncLimit;
 
-        if (isPercentValue(limit)) {
-          limit = valueAccordingPercent(rowsLimit, limit);
+        if ((0, _string.isPercentValue)(limit)) {
+          limit = (0, _number.valueAccordingPercent)(rowsLimit, limit);
         } else {
           // Force to Number
           limit >>= 0;
@@ -586,7 +620,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
           to = _ref3.to;
 
       this.hot.batchExecution(function () {
-        rangeEach(Math.min(from, to), Math.max(from, to), function (row) {
+        (0, _number.rangeEach)(Math.min(from, to), Math.max(from, to), function (row) {
           _this6.rowHeightsMap.setValueAtIndex(row, null);
         });
       }, true);
@@ -600,7 +634,7 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "isNeedRecalculate",
     value: function isNeedRecalculate() {
-      return !!arrayFilter(this.rowHeightsMap.getValues().slice(0, this.measuredRows), function (item) {
+      return !!(0, _array.arrayFilter)(this.rowHeightsMap.getValues().slice(0, this.measuredRows), function (item) {
         return item === null;
       }).length;
     }
@@ -759,4 +793,6 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return AutoRowSize;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.AutoRowSize = AutoRowSize;

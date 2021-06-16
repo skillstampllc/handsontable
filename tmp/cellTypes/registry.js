@@ -1,9 +1,21 @@
-import staticRegister from "../utils/staticRegister.mjs";
-import { registerEditor } from "../editors/registry.mjs";
-import { registerRenderer } from "../renderers/registry.mjs";
-import { registerValidator } from "../validators/registry.mjs";
+"use strict";
 
-var _staticRegister = staticRegister('cellTypes'),
+exports.__esModule = true;
+exports.registerCellType = _register;
+exports.getCellType = _getItem;
+exports.getRegisteredCellTypes = exports.getRegisteredCellTypeNames = exports.hasCellType = void 0;
+
+var _staticRegister2 = _interopRequireDefault(require("../utils/staticRegister"));
+
+var _registry = require("../editors/registry");
+
+var _registry2 = require("../renderers/registry");
+
+var _registry3 = require("../validators/registry");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _staticRegister = (0, _staticRegister2.default)('cellTypes'),
     register = _staticRegister.register,
     getItem = _staticRegister.getItem,
     hasItem = _staticRegister.hasItem,
@@ -16,6 +28,10 @@ var _staticRegister = staticRegister('cellTypes'),
  * @returns {object} Returns cell type object.
  */
 
+
+exports.getRegisteredCellTypes = getValues;
+exports.getRegisteredCellTypeNames = getNames;
+exports.hasCellType = hasItem;
 
 function _getItem(name) {
   if (!hasItem(name)) {
@@ -44,18 +60,16 @@ function _register(name, type) {
       validator = _type.validator;
 
   if (editor) {
-    registerEditor(name, editor);
+    (0, _registry.registerEditor)(name, editor);
   }
 
   if (renderer) {
-    registerRenderer(name, renderer);
+    (0, _registry2.registerRenderer)(name, renderer);
   }
 
   if (validator) {
-    registerValidator(name, validator);
+    (0, _registry3.registerValidator)(name, validator);
   }
 
   register(name, type);
 }
-
-export { _register as registerCellType, _getItem as getCellType, hasItem as hasCellType, getNames as getRegisteredCellTypeNames, getValues as getRegisteredCellTypes };

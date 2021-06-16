@@ -1,17 +1,49 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.DateEditor = exports.EDITOR_TYPE = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _moment = _interopRequireDefault(require("moment"));
+
+var _pikaday = _interopRequireDefault(require("pikaday"));
+
+var _textEditor = require("../textEditor");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _element = require("../../helpers/dom/element");
+
+var _object = require("../../helpers/object");
+
+var _unicode = require("../../helpers/unicode");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37,20 +69,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import moment from 'moment';
-import Pikaday from 'pikaday';
-import { TextEditor } from "../textEditor/index.mjs";
-import EventManager from "../../eventManager.mjs";
-import { addClass, outerHeight } from "../../helpers/dom/element.mjs";
-import { deepExtend } from "../../helpers/object.mjs";
-import { isMetaKey } from "../../helpers/unicode.mjs";
-export var EDITOR_TYPE = 'date';
+var EDITOR_TYPE = 'date';
 /**
  * @private
  * @class DateEditor
  */
 
-export var DateEditor = /*#__PURE__*/function (_TextEditor) {
+exports.EDITOR_TYPE = EDITOR_TYPE;
+
+var DateEditor = /*#__PURE__*/function (_TextEditor) {
   _inherits(DateEditor, _TextEditor);
 
   var _super = _createSuper(DateEditor);
@@ -77,11 +104,11 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
     value: function init() {
       var _this2 = this;
 
-      if (typeof moment !== 'function') {
+      if (typeof _moment.default !== 'function') {
         throw new Error('You need to include moment.js to your project.');
       }
 
-      if (typeof Pikaday !== 'function') {
+      if (typeof _pikaday.default !== 'function') {
         throw new Error('You need to include Pikaday to your project.');
       }
 
@@ -108,10 +135,10 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       this.datePickerStyle.top = 0;
       this.datePickerStyle.left = 0;
       this.datePickerStyle.zIndex = 9999;
-      addClass(this.datePicker, 'htDatepickerHolder');
+      (0, _element.addClass)(this.datePicker, 'htDatepickerHolder');
       this.hot.rootDocument.body.appendChild(this.datePicker);
-      this.$datePicker = new Pikaday(this.getDatePickerConfig());
-      var eventManager = new EventManager(this);
+      this.$datePicker = new _pikaday.default(this.getDatePickerConfig());
+      var eventManager = new _eventManager.default(this);
       /**
        * Prevent recognizing clicking on datepicker as clicking outside of table.
        */
@@ -225,8 +252,8 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       var datePickerConfig = this.$datePicker.config();
       var dateStr;
       var isMouseDown = this.instance.view.isMouseDown();
-      var isMeta = event ? isMetaKey(event.keyCode) : false;
-      this.datePickerStyle.top = "".concat(this.hot.rootWindow.pageYOffset + offset.top + outerHeight(this.TD), "px");
+      var isMeta = event ? (0, _unicode.isMetaKey)(event.keyCode) : false;
+      this.datePickerStyle.top = "".concat(this.hot.rootWindow.pageYOffset + offset.top + (0, _element.outerHeight)(this.TD), "px");
       this.datePickerStyle.left = "".concat(this.hot.rootWindow.pageXOffset + offset.left, "px");
 
       this.$datePicker._onInputFocus = function () {};
@@ -236,8 +263,8 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       if (this.originalValue) {
         dateStr = this.originalValue;
 
-        if (moment(dateStr, dateFormat, true).isValid()) {
-          this.$datePicker.setMoment(moment(dateStr, dateFormat), true);
+        if ((0, _moment.default)(dateStr, dateFormat, true).isValid()) {
+          this.$datePicker.setMoment((0, _moment.default)(dateStr, dateFormat), true);
         } // workaround for date/time cells - pikaday resets the cell value to 12:00 AM by default, this will overwrite the value.
 
 
@@ -252,8 +279,8 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
         dateStr = this.cellProperties.defaultDate;
         datePickerConfig.defaultDate = dateStr;
 
-        if (moment(dateStr, dateFormat, true).isValid()) {
-          this.$datePicker.setMoment(moment(dateStr, dateFormat), true);
+        if ((0, _moment.default)(dateStr, dateFormat, true).isValid()) {
+          this.$datePicker.setMoment((0, _moment.default)(dateStr, dateFormat), true);
         }
 
         if (!isMeta && !isMouseDown) {
@@ -293,7 +320,7 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       var options = {};
 
       if (this.cellProperties && this.cellProperties.datePickerConfig) {
-        deepExtend(options, this.cellProperties.datePickerConfig);
+        (0, _object.deepExtend)(options, this.cellProperties.datePickerConfig);
       }
 
       var origOnSelect = options.onSelect;
@@ -309,7 +336,7 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
         var dateStr = value;
 
         if (!isNaN(dateStr.getTime())) {
-          dateStr = moment(dateStr).format(_this4.cellProperties.dateFormat || _this4.defaultDateFormat);
+          dateStr = (0, _moment.default)(dateStr).format(_this4.cellProperties.dateFormat || _this4.defaultDateFormat);
         }
 
         _this4.setValue(dateStr);
@@ -341,4 +368,6 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
   }]);
 
   return DateEditor;
-}(TextEditor);
+}(_textEditor.TextEditor);
+
+exports.DateEditor = DateEditor;

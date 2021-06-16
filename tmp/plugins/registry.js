@@ -1,3 +1,41 @@
+"use strict";
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.getPluginsNames = getPluginsNames;
+exports.getPlugin = getPlugin;
+exports.hasPlugin = hasPlugin;
+exports.registerPlugin = registerPlugin;
+
+require("core-js/modules/es.array.concat.js");
+
+var _string = require("../helpers/string");
+
+var _priorityMap = require("../utils/dataStructures/priorityMap");
+
+var _uniqueMap = require("../utils/dataStructures/uniqueMap");
+
+var _uniqueSet = require("../utils/dataStructures/uniqueSet");
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5,18 +43,6 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -29,14 +55,6 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-/**
- * Utility to register plugins and common namespace for keeping the reference to all plugins classes.
- */
-import { toUpperCaseFirst } from "../helpers/string.mjs";
-import { createPriorityMap } from "../utils/dataStructures/priorityMap.mjs";
-import { createUniqueMap } from "../utils/dataStructures/uniqueMap.mjs";
-import { createUniqueSet } from "../utils/dataStructures/uniqueSet.mjs";
 
 var ERROR_PLUGIN_REGISTERED = function ERROR_PLUGIN_REGISTERED(pluginName) {
   return "There is already registered \"".concat(pluginName, "\" plugin.");
@@ -54,7 +72,7 @@ var ERROR_PRIORITY_NAN = function ERROR_PRIORITY_NAN(priority) {
  */
 
 
-var priorityPluginsQueue = createPriorityMap({
+var priorityPluginsQueue = (0, _priorityMap.createPriorityMap)({
   errorPriorityExists: ERROR_PRIORITY_REGISTERED,
   errorPriorityNaN: ERROR_PRIORITY_NAN
 });
@@ -62,14 +80,14 @@ var priorityPluginsQueue = createPriorityMap({
  * Stores plugins names' queue by registration order.
  */
 
-var uniquePluginsQueue = createUniqueSet({
+var uniquePluginsQueue = (0, _uniqueSet.createUniqueSet)({
   errorItemExists: ERROR_PLUGIN_REGISTERED
 });
 /**
  * Stores plugins references between their name and class.
  */
 
-var uniquePluginsList = createUniqueMap({
+var uniquePluginsList = (0, _uniqueMap.createUniqueMap)({
   errorIdExists: ERROR_PLUGIN_REGISTERED
 });
 /**
@@ -80,7 +98,7 @@ var uniquePluginsList = createUniqueMap({
  * @returns {string[]}
  */
 
-export function getPluginsNames() {
+function getPluginsNames() {
   return [].concat(_toConsumableArray(priorityPluginsQueue.getItems()), _toConsumableArray(uniquePluginsQueue.getItems()));
 }
 /**
@@ -90,8 +108,9 @@ export function getPluginsNames() {
  * @returns {BasePlugin}
  */
 
-export function getPlugin(pluginName) {
-  var unifiedPluginName = toUpperCaseFirst(pluginName);
+
+function getPlugin(pluginName) {
+  var unifiedPluginName = (0, _string.toUpperCaseFirst)(pluginName);
   return uniquePluginsList.getItem(unifiedPluginName);
 }
 /**
@@ -101,7 +120,8 @@ export function getPlugin(pluginName) {
  * @returns {boolean}
  */
 
-export function hasPlugin(pluginName) {
+
+function hasPlugin(pluginName) {
   /* eslint-disable no-unneeded-ternary */
   return getPlugin(pluginName) ? true : false;
 }
@@ -113,7 +133,8 @@ export function hasPlugin(pluginName) {
  * @param {number} [priority] The plugin priority.
  */
 
-export function registerPlugin(pluginName, pluginClass, priority) {
+
+function registerPlugin(pluginName, pluginClass, priority) {
   var _unifyPluginArguments = unifyPluginArguments(pluginName, pluginClass, priority);
 
   var _unifyPluginArguments2 = _slicedToArray(_unifyPluginArguments, 3);
@@ -134,8 +155,9 @@ export function registerPlugin(pluginName, pluginClass, priority) {
  * @param {number} [priority] The plugin priority.
  */
 
+
 function _registerPlugin(pluginName, pluginClass, priority) {
-  var unifiedPluginName = toUpperCaseFirst(pluginName);
+  var unifiedPluginName = (0, _string.toUpperCaseFirst)(pluginName);
 
   if (uniquePluginsList.hasItem(unifiedPluginName)) {
     throw new Error(ERROR_PLUGIN_REGISTERED(unifiedPluginName));

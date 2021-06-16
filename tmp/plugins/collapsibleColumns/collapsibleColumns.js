@@ -1,4 +1,65 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.CollapsibleColumns = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.weak-map.js");
+
+var _base = require("../base");
+
+var _array = require("../../helpers/array");
+
+var _number = require("../../helpers/number");
+
+var _console = require("../../helpers/console");
+
+var _element = require("../../helpers/dom/element");
+
+var _eventManager = _interopRequireDefault(require("../../eventManager"));
+
+var _event = require("../../helpers/dom/event");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -48,35 +109,10 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.function.name.js";
-import { BasePlugin } from "../base/index.mjs";
-import { arrayEach, arrayFilter, arrayUnique } from "../../helpers/array.mjs";
-import { rangeEach } from "../../helpers/number.mjs";
-import { warn } from "../../helpers/console.mjs";
-import { addClass, hasClass, fastInnerText } from "../../helpers/dom/element.mjs";
-import EventManager from "../../eventManager.mjs";
-import { stopImmediatePropagation } from "../../helpers/dom/event.mjs";
-export var PLUGIN_KEY = 'collapsibleColumns';
-export var PLUGIN_PRIORITY = 290;
+var PLUGIN_KEY = 'collapsibleColumns';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 290;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var actionDictionary = new Map([['collapse', {
   hideColumn: true,
   beforeHook: 'beforeColumnCollapse',
@@ -129,7 +165,7 @@ var actionDictionary = new Map([['collapse', {
 
 var _collapsedColumnsMap = /*#__PURE__*/new WeakMap();
 
-export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
+var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
   _inherits(CollapsibleColumns, _BasePlugin);
 
   var _super = _createSuper(CollapsibleColumns);
@@ -147,7 +183,7 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
 
     _defineProperty(_assertThisInitialized(_this), "nestedHeadersPlugin", null);
 
-    _defineProperty(_assertThisInitialized(_this), "eventManager", new EventManager(_assertThisInitialized(_this)));
+    _defineProperty(_assertThisInitialized(_this), "eventManager", new _eventManager.default(_assertThisInitialized(_this)));
 
     _defineProperty(_assertThisInitialized(_this), "headerStateManager", null);
 
@@ -188,7 +224,7 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
           nestedHeaders = _this$hot$getSettings.nestedHeaders;
 
       if (!nestedHeaders) {
-        warn('You need to configure the Nested Headers plugin in order to use collapsible headers.');
+        (0, _console.warn)('You need to configure the Nested Headers plugin in order to use collapsible headers.');
       }
 
       _classPrivateFieldSet(this, _collapsedColumnsMap, this.hot.columnIndexMapper.createAndRegisterIndexMap(this.pluginName, 'hiding'));
@@ -283,11 +319,11 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
         }
       };
 
-      rangeEach(0, headerLevels - 1, function (i) {
+      (0, _number.rangeEach)(0, headerLevels - 1, function (i) {
         var masterLevel = mainHeaders.childNodes[i];
         var topLevel = topHeaders.childNodes[i];
         var topLeftCornerLevel = topLeftCornerHeaders ? topLeftCornerHeaders.childNodes[i] : null;
-        rangeEach(0, masterLevel.childNodes.length - 1, function (j) {
+        (0, _number.rangeEach)(0, masterLevel.childNodes.length - 1, function (j) {
           var button = masterLevel.childNodes[j].querySelector('.collapsibleIndicator');
           removeButton(button);
 
@@ -394,12 +430,12 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
       } // Ignore coordinates which points to the cells range.
 
 
-      var filteredCoords = arrayFilter(coords, function (_ref2) {
+      var filteredCoords = (0, _array.arrayFilter)(coords, function (_ref2) {
         var row = _ref2.row;
         return row < 0;
       });
       var isActionPossible = filteredCoords.length > 0;
-      arrayEach(filteredCoords, function (_ref3) {
+      (0, _array.arrayEach)(filteredCoords, function (_ref3) {
         var _this4$headerStateMan;
 
         var row = _ref3.row,
@@ -418,7 +454,7 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
       var affectedColumnsIndexes = [];
 
       if (isActionPossible) {
-        arrayEach(filteredCoords, function (_ref5) {
+        (0, _array.arrayEach)(filteredCoords, function (_ref5) {
           var row = _ref5.row,
               column = _ref5.col;
 
@@ -438,9 +474,9 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
       var destinationCollapsedColumns = [];
 
       if (action === 'collapse') {
-        destinationCollapsedColumns = arrayUnique([].concat(_toConsumableArray(currentCollapsedColumns), affectedColumnsIndexes));
+        destinationCollapsedColumns = (0, _array.arrayUnique)([].concat(_toConsumableArray(currentCollapsedColumns), affectedColumnsIndexes));
       } else if (action === 'expand') {
-        destinationCollapsedColumns = arrayFilter(currentCollapsedColumns, function (index) {
+        destinationCollapsedColumns = (0, _array.arrayFilter)(currentCollapsedColumns, function (index) {
           return !affectedColumnsIndexes.includes(index);
         });
       }
@@ -450,14 +486,14 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
 
       if (isActionAllowed === false) {
         // Rollback all header nodes modification (collapse or expand).
-        arrayEach(nodeModRollbacks, function (nodeModRollback) {
+        (0, _array.arrayEach)(nodeModRollbacks, function (nodeModRollback) {
           nodeModRollback();
         });
         return;
       }
 
       this.hot.batchExecution(function () {
-        arrayEach(affectedColumnsIndexes, function (visualColumn) {
+        (0, _array.arrayEach)(affectedColumnsIndexes, function (visualColumn) {
           _classPrivateFieldGet(_this4, _collapsedColumnsMap).setValueAtIndex(_this4.hot.toPhysicalColumn(visualColumn), actionTranslator.hideColumn);
         });
       }, true);
@@ -492,14 +528,14 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
     value: function generateIndicator(row, column) {
       var divEl = this.hot.rootDocument.createElement('div');
       var columnSettings = this.headerStateManager.getHeaderSettings(row, column);
-      addClass(divEl, 'collapsibleIndicator');
+      (0, _element.addClass)(divEl, 'collapsibleIndicator');
 
       if (columnSettings.isCollapsed) {
-        addClass(divEl, 'collapsed');
-        fastInnerText(divEl, '+');
+        (0, _element.addClass)(divEl, 'collapsed');
+        (0, _element.fastInnerText)(divEl, '+');
       } else {
-        addClass(divEl, 'expanded');
-        fastInnerText(divEl, '-');
+        (0, _element.addClass)(divEl, 'expanded');
+        (0, _element.fastInnerText)(divEl, '-');
       }
 
       return divEl;
@@ -541,16 +577,16 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onBeforeOnCellMouseDown",
     value: function onBeforeOnCellMouseDown(event, coords) {
-      if (hasClass(event.target, 'collapsibleIndicator')) {
-        if (hasClass(event.target, 'expanded')) {
+      if ((0, _element.hasClass)(event.target, 'collapsibleIndicator')) {
+        if ((0, _element.hasClass)(event.target, 'expanded')) {
           this.eventManager.fireEvent(event.target, 'mouseup');
           this.toggleCollapsibleSection([coords], 'collapse');
-        } else if (hasClass(event.target, 'collapsed')) {
+        } else if ((0, _element.hasClass)(event.target, 'collapsed')) {
           this.eventManager.fireEvent(event.target, 'mouseup');
           this.toggleCollapsibleSection([coords], 'expand');
         }
 
-        stopImmediatePropagation(event);
+        (0, _event.stopImmediatePropagation)(event);
       }
     }
     /**
@@ -617,4 +653,6 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return CollapsibleColumns;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.CollapsibleColumns = CollapsibleColumns;

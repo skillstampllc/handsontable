@@ -1,7 +1,20 @@
-import "core-js/modules/es.number.is-integer.js";
-import "core-js/modules/es.number.constructor.js";
-import { hasOwnProperty, isObject, objectEach, inherit } from "../../helpers/object.mjs";
-import { getCellType } from "../../cellTypes/registry.mjs";
+"use strict";
+
+exports.__esModule = true;
+exports.expandMetaType = expandMetaType;
+exports.columnFactory = columnFactory;
+exports.isUnsignedNumber = isUnsignedNumber;
+exports.assert = assert;
+exports.isNullish = isNullish;
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+var _object = require("../../helpers/object");
+
+var _registry = require("../../cellTypes/registry");
+
 /**
  * Expands "type" property of the meta object to single values. For example `type: 'numeric'` sets
  * "renderer", "editor", "validator" properties to specific functions designed for numeric values.
@@ -12,18 +25,17 @@ import { getCellType } from "../../cellTypes/registry.mjs";
  * @param {object|undefined} [metaObject] Source meta object.
  * @returns {object|undefined}
  */
+function expandMetaType(type, metaObject) {
+  var validType = typeof type === 'string' ? (0, _registry.getCellType)(type) : type;
 
-export function expandMetaType(type, metaObject) {
-  var validType = typeof type === 'string' ? getCellType(type) : type;
-
-  if (!isObject(validType)) {
+  if (!(0, _object.isObject)(validType)) {
     return;
   }
 
-  var preventSourceOverwrite = isObject(metaObject);
+  var preventSourceOverwrite = (0, _object.isObject)(metaObject);
   var expandedType = {};
-  objectEach(validType, function (value, property) {
-    if (property !== 'CELL_TYPE' && (!preventSourceOverwrite || preventSourceOverwrite && !hasOwnProperty(metaObject, property))) {
+  (0, _object.objectEach)(validType, function (value, property) {
+    if (property !== 'CELL_TYPE' && (!preventSourceOverwrite || preventSourceOverwrite && !(0, _object.hasOwnProperty)(metaObject, property))) {
       expandedType[property] = value;
     }
   });
@@ -39,7 +51,8 @@ export function expandMetaType(type, metaObject) {
  * @returns {ColumnMeta} Returns constructor ready to initialize with `new` operator.
  */
 
-export function columnFactory(TableMeta) {
+
+function columnFactory(TableMeta) {
   var conflictList = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
   // Do not use ES6 "class extends" syntax here. It seems that the babel produces code
@@ -50,7 +63,7 @@ export function columnFactory(TableMeta) {
    */
   function ColumnMeta() {}
 
-  inherit(ColumnMeta, TableMeta); // Clear conflict settings
+  (0, _object.inherit)(ColumnMeta, TableMeta); // Clear conflict settings
 
   for (var i = 0; i < conflictList.length; i++) {
     ColumnMeta.prototype[conflictList[i]] = void 0;
@@ -65,7 +78,8 @@ export function columnFactory(TableMeta) {
  * @returns {boolean}
  */
 
-export function isUnsignedNumber(value) {
+
+function isUnsignedNumber(value) {
   return Number.isInteger(value) && value >= 0;
 }
 /**
@@ -75,7 +89,8 @@ export function isUnsignedNumber(value) {
  * @param {string} errorMessage String which describes assertion error.
  */
 
-export function assert(condition, errorMessage) {
+
+function assert(condition, errorMessage) {
   if (!condition()) {
     throw new Error("Assertion failed: ".concat(errorMessage));
   }
@@ -87,6 +102,7 @@ export function assert(condition, errorMessage) {
  * @returns {boolean}
  */
 
-export function isNullish(variable) {
+
+function isNullish(variable) {
   return variable === null || variable === void 0;
 }

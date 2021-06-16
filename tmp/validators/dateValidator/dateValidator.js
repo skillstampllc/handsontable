@@ -1,10 +1,25 @@
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.search.js";
-import moment from 'moment';
-import { getEditorInstance } from "../../editors/registry.mjs";
-import { EDITOR_TYPE as DATE_EDITOR_TYPE } from "../../editors/dateEditor/index.mjs";
-import { getNormalizedDate } from "../../helpers/date.mjs";
-export var VALIDATOR_TYPE = 'date';
+"use strict";
+
+exports.__esModule = true;
+exports.dateValidator = dateValidator;
+exports.correctFormat = correctFormat;
+exports.VALIDATOR_TYPE = void 0;
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.search.js");
+
+var _moment = _interopRequireDefault(require("moment"));
+
+var _registry = require("../../editors/registry");
+
+var _dateEditor = require("../../editors/dateEditor");
+
+var _date = require("../../helpers/date");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var VALIDATOR_TYPE = 'date';
 /**
  * The Date cell validator.
  *
@@ -13,8 +28,10 @@ export var VALIDATOR_TYPE = 'date';
  * @param {Function} callback Callback called with validation result.
  */
 
-export function dateValidator(value, callback) {
-  var dateEditor = getEditorInstance(DATE_EDITOR_TYPE, this.instance);
+exports.VALIDATOR_TYPE = VALIDATOR_TYPE;
+
+function dateValidator(value, callback) {
+  var dateEditor = (0, _registry.getEditorInstance)(_dateEditor.EDITOR_TYPE, this.instance);
   var valueToValidate = value;
   var valid = true;
 
@@ -22,8 +39,8 @@ export function dateValidator(value, callback) {
     valueToValidate = '';
   }
 
-  var isValidFormat = moment(valueToValidate, this.dateFormat || dateEditor.defaultDateFormat, true).isValid();
-  var isValidDate = moment(new Date(valueToValidate)).isValid() || isValidFormat;
+  var isValidFormat = (0, _moment.default)(valueToValidate, this.dateFormat || dateEditor.defaultDateFormat, true).isValid();
+  var isValidDate = (0, _moment.default)(new Date(valueToValidate)).isValid() || isValidFormat;
 
   if (this.allowEmpty && valueToValidate === '') {
     isValidDate = true;
@@ -53,6 +70,7 @@ export function dateValidator(value, callback) {
 
   callback(valid);
 }
+
 dateValidator.VALIDATOR_TYPE = VALIDATOR_TYPE;
 /**
  * Format the given string using moment.js' format feature.
@@ -62,9 +80,9 @@ dateValidator.VALIDATOR_TYPE = VALIDATOR_TYPE;
  * @returns {string}
  */
 
-export function correctFormat(value, dateFormat) {
-  var dateFromDate = moment(getNormalizedDate(value));
-  var dateFromMoment = moment(value, dateFormat);
+function correctFormat(value, dateFormat) {
+  var dateFromDate = (0, _moment.default)((0, _date.getNormalizedDate)(value));
+  var dateFromMoment = (0, _moment.default)(value, dateFormat);
   var isAlphanumeric = value.search(/[A-z]/g) > -1;
   var date;
 

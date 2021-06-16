@@ -1,15 +1,39 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.TopLeftCornerOverlay = void 0;
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _element = require("./../../../../helpers/dom/element");
+
+var _topLeftCorner = _interopRequireDefault(require("./../table/topLeftCorner"));
+
+var _base = require("./_base");
+
+var _constants = require("./constants");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
@@ -33,15 +57,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { outerHeight, outerWidth, setOverlayPosition, resetCssTransform } from "./../../../../helpers/dom/element.mjs";
-import TopLeftCornerOverlayTable from "./../table/topLeftCorner.mjs";
-import { Overlay } from "./_base.mjs";
-import { CLONE_TOP_LEFT_CORNER } from "./constants.mjs";
 /**
  * @class TopLeftCornerOverlay
  */
-
-export var TopLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
+var TopLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
   _inherits(TopLeftCornerOverlay, _Overlay);
 
   var _super = _createSuper(TopLeftCornerOverlay);
@@ -55,7 +74,7 @@ export var TopLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
     _classCallCheck(this, TopLeftCornerOverlay);
 
     _this = _super.call(this, wotInstance);
-    _this.clone = _this.makeClone(CLONE_TOP_LEFT_CORNER);
+    _this.clone = _this.makeClone(_constants.CLONE_TOP_LEFT_CORNER);
     return _this;
   }
   /**
@@ -74,7 +93,7 @@ export var TopLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
         args[_key] = arguments[_key];
       }
 
-      return _construct(TopLeftCornerOverlayTable, args);
+      return _construct(_topLeftCorner.default, args);
     }
     /**
      * Checks if overlay should be fully rendered.
@@ -129,13 +148,13 @@ export var TopLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
           }
         }
 
-        setOverlayPosition(overlayRoot, finalLeft, finalTop);
+        (0, _element.setOverlayPosition)(overlayRoot, finalLeft, finalTop);
       } else {
-        resetCssTransform(overlayRoot);
+        (0, _element.resetCssTransform)(overlayRoot);
       }
 
-      var tableHeight = outerHeight(this.clone.wtTable.TABLE);
-      var tableWidth = outerWidth(this.clone.wtTable.TABLE);
+      var tableHeight = (0, _element.outerHeight)(this.clone.wtTable.TABLE);
+      var tableWidth = (0, _element.outerWidth)(this.clone.wtTable.TABLE);
 
       if (!this.wot.wtTable.hasDefinedSize()) {
         tableHeight = 0;
@@ -148,9 +167,11 @@ export var TopLeftCornerOverlay = /*#__PURE__*/function (_Overlay) {
   }], [{
     key: "OVERLAY_NAME",
     get: function get() {
-      return CLONE_TOP_LEFT_CORNER;
+      return _constants.CLONE_TOP_LEFT_CORNER;
     }
   }]);
 
   return TopLeftCornerOverlay;
-}(Overlay);
+}(_base.Overlay);
+
+exports.TopLeftCornerOverlay = TopLeftCornerOverlay;

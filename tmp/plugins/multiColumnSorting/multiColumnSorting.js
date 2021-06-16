@@ -1,19 +1,53 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.MultiColumnSorting = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.array.sort.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _columnSorting = require("../columnSorting");
+
+var _sortService = require("../columnSorting/sortService");
+
+var _utils = require("../columnSorting/utils");
+
+var _keyStateObserver = require("../../utils/keyStateObserver");
+
+var _element = require("../../helpers/dom/element");
+
+var _rootComparator = require("./rootComparator");
+
+var _utils2 = require("./utils");
+
+var _domHelpers = require("./domHelpers");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39,19 +73,13 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { ColumnSorting } from "../columnSorting/index.mjs";
-import { registerRootComparator } from "../columnSorting/sortService/index.mjs";
-import { wasHeaderClickedProperly } from "../columnSorting/utils.mjs";
-import { isPressedCtrlKey } from "../../utils/keyStateObserver.mjs";
-import { addClass, removeClass } from "../../helpers/dom/element.mjs";
-import { rootComparator } from "./rootComparator.mjs";
-import { warnAboutPluginsConflict } from "./utils.mjs";
-import { getClassesToAdd, getClassesToRemove } from "./domHelpers.mjs";
-export var PLUGIN_KEY = 'multiColumnSorting';
-export var PLUGIN_PRIORITY = 170;
+var PLUGIN_KEY = 'multiColumnSorting';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 170;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var APPEND_COLUMN_CONFIG_STRATEGY = 'append';
 var CONFLICTED_PLUGIN_KEY = 'columnSorting';
-registerRootComparator(PLUGIN_KEY, rootComparator);
+(0, _sortService.registerRootComparator)(PLUGIN_KEY, _rootComparator.rootComparator);
 /**
  * @plugin MultiColumnSorting
  *
@@ -103,7 +131,7 @@ registerRootComparator(PLUGIN_KEY, rootComparator);
  * }]```
  */
 
-export var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
+var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
   _inherits(MultiColumnSorting, _ColumnSorting);
 
   var _super = _createSuper(MultiColumnSorting);
@@ -145,7 +173,7 @@ export var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
     key: "enablePlugin",
     value: function enablePlugin() {
       if (!this.enabled && this.hot.getSettings()[this.pluginKey] && this.hot.getSettings()[CONFLICTED_PLUGIN_KEY]) {
-        warnAboutPluginsConflict();
+        (0, _utils2.warnAboutPluginsConflict)();
       }
 
       _get(_getPrototypeOf(MultiColumnSorting.prototype), "enablePlugin", this).call(this);
@@ -293,10 +321,10 @@ export var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
 
       (_get2 = _get(_getPrototypeOf(MultiColumnSorting.prototype), "updateHeaderClasses", this)).call.apply(_get2, [this, headerSpanElement].concat(args));
 
-      removeClass(headerSpanElement, getClassesToRemove(headerSpanElement));
+      (0, _element.removeClass)(headerSpanElement, (0, _domHelpers.getClassesToRemove)(headerSpanElement));
 
       if (this.enabled !== false) {
-        addClass(headerSpanElement, getClassesToAdd.apply(void 0, args));
+        (0, _element.addClass)(headerSpanElement, _domHelpers.getClassesToAdd.apply(void 0, args));
       }
     }
     /**
@@ -311,7 +339,7 @@ export var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
     key: "onUpdateSettings",
     value: function onUpdateSettings(newSettings) {
       if (this.hot.getSettings()[this.pluginKey] && this.hot.getSettings()[CONFLICTED_PLUGIN_KEY]) {
-        warnAboutPluginsConflict();
+        (0, _utils2.warnAboutPluginsConflict)();
       }
 
       _get(_getPrototypeOf(MultiColumnSorting.prototype), "onUpdateSettings", this).call(this, newSettings);
@@ -327,12 +355,12 @@ export var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
   }, {
     key: "onAfterOnCellMouseDown",
     value: function onAfterOnCellMouseDown(event, coords) {
-      if (wasHeaderClickedProperly(coords.row, coords.col, event) === false) {
+      if ((0, _utils.wasHeaderClickedProperly)(coords.row, coords.col, event) === false) {
         return;
       }
 
       if (this.wasClickableHeaderClicked(event, coords.col)) {
-        if (isPressedCtrlKey()) {
+        if ((0, _keyStateObserver.isPressedCtrlKey)()) {
           this.hot.deselectCell();
           this.hot.selectColumns(coords.col);
           this.sort(this.getNextSortConfig(coords.col, APPEND_COLUMN_CONFIG_STRATEGY));
@@ -354,4 +382,6 @@ export var MultiColumnSorting = /*#__PURE__*/function (_ColumnSorting) {
   }]);
 
   return MultiColumnSorting;
-}(ColumnSorting);
+}(_columnSorting.ColumnSorting);
+
+exports.MultiColumnSorting = MultiColumnSorting;

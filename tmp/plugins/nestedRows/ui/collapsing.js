@@ -1,4 +1,53 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _event = require("../../../helpers/dom/event");
+
+var _array = require("../../../helpers/array");
+
+var _number = require("../../../helpers/number");
+
+var _element = require("../../../helpers/dom/element");
+
+var _base = _interopRequireDefault(require("./_base"));
+
+var _headers = _interopRequireDefault(require("./headers"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -11,22 +60,6 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.array.splice.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.function.name.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -48,12 +81,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { stopImmediatePropagation } from "../../../helpers/dom/event.mjs";
-import { arrayEach } from "../../../helpers/array.mjs";
-import { rangeEach } from "../../../helpers/number.mjs";
-import { hasClass } from "../../../helpers/dom/element.mjs";
-import BaseUI from "./_base.mjs";
-import HeadersUI from "./headers.mjs";
 /**
  * Class responsible for the UI for collapsing and expanding groups.
  *
@@ -62,7 +89,6 @@ import HeadersUI from "./headers.mjs";
  * @private
  * @augments BaseUI
  */
-
 var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
   _inherits(CollapsingUI, _BaseUI);
 
@@ -94,7 +120,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
           targetIndex = Infinity;
         }
 
-        arrayEach(_this.lastCollapsedRows, function (elem, i) {
+        (0, _array.arrayEach)(_this.lastCollapsedRows, function (elem, i) {
           if (elem >= baseIndex && elem < targetIndex) {
             _this.lastCollapsedRows[i] = elem + delta;
           }
@@ -108,7 +134,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
         _this.lastCollapsedRows = void 0;
       },
       trimStash: function trimStash(realElementIndex, amount) {
-        rangeEach(realElementIndex, realElementIndex + amount - 1, function (i) {
+        (0, _number.rangeEach)(realElementIndex, realElementIndex + amount - 1, function (i) {
           var indexOfElement = _this.lastCollapsedRows.indexOf(i);
 
           if (indexOfElement > -1) {
@@ -150,7 +176,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       }
 
       if (this.dataManager.hasChildren(rowObject)) {
-        arrayEach(rowObject.__children, function (elem) {
+        (0, _array.arrayEach)(rowObject.__children, function (elem) {
           rowsToCollapse.push(_this2.dataManager.getRowIndex(elem));
         });
       }
@@ -187,7 +213,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       var forceRender = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var doTrimming = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
       var rowsToTrim = [];
-      arrayEach(rows, function (elem) {
+      (0, _array.arrayEach)(rows, function (elem) {
         rowsToTrim.push.apply(rowsToTrim, _toConsumableArray(_this3.collapseChildren(elem, false, false)));
       });
 
@@ -229,7 +255,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       var recursive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var doTrimming = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var rowsToTrim = [];
-      arrayEach(rowIndexes, function (elem) {
+      (0, _array.arrayEach)(rowIndexes, function (elem) {
         rowsToTrim.push(elem);
 
         if (recursive) {
@@ -263,7 +289,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
 
       if (this.dataManager.hasChildren(parentIndex)) {
         var parentObject = this.dataManager.getDataObject(parentIndex);
-        arrayEach(parentObject.__children, function (elem) {
+        (0, _array.arrayEach)(parentObject.__children, function (elem) {
           var elemIndex = _this5.dataManager.getRowIndex(elem);
 
           rowsToTrim.push(elemIndex);
@@ -306,7 +332,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       var recursive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var doTrimming = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var rowsToUntrim = [];
-      arrayEach(rowIndexes, function (elem) {
+      (0, _array.arrayEach)(rowIndexes, function (elem) {
         rowsToUntrim.push(elem);
 
         if (recursive) {
@@ -340,7 +366,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
 
       if (this.dataManager.hasChildren(parentIndex)) {
         var parentObject = this.dataManager.getDataObject(parentIndex);
-        arrayEach(parentObject.__children, function (elem) {
+        (0, _array.arrayEach)(parentObject.__children, function (elem) {
           if (!_this7.isAnyParentCollapsed(elem)) {
             var elemIndex = _this7.dataManager.getRowIndex(elem);
 
@@ -387,7 +413,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       this.collapsedRows.splice(this.collapsedRows.indexOf(rowIndex), 1);
 
       if (this.dataManager.hasChildren(rowObject)) {
-        arrayEach(rowObject.__children, function (elem) {
+        (0, _array.arrayEach)(rowObject.__children, function (elem) {
           var childIndex = _this8.dataManager.getRowIndex(elem);
 
           rowsToExpand.push(childIndex);
@@ -422,7 +448,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       var forceRender = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var doTrimming = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
       var rowsToUntrim = [];
-      arrayEach(rows, function (elem) {
+      (0, _array.arrayEach)(rows, function (elem) {
         rowsToUntrim.push.apply(rowsToUntrim, _toConsumableArray(_this9.expandChildren(elem, false, false)));
       });
 
@@ -445,7 +471,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
 
       var data = this.dataManager.getData();
       var parentsToCollapse = [];
-      arrayEach(data, function (elem) {
+      (0, _array.arrayEach)(data, function (elem) {
         if (_this10.dataManager.hasChildren(elem)) {
           parentsToCollapse.push(elem);
         }
@@ -464,7 +490,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
 
       var data = this.dataManager.getData();
       var parentsToExpand = [];
-      arrayEach(data, function (elem) {
+      (0, _array.arrayEach)(data, function (elem) {
         if (_this11.dataManager.hasChildren(elem)) {
           parentsToExpand.push(elem);
         }
@@ -484,7 +510,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       var _this12 = this;
 
       this.hot.batchExecution(function () {
-        arrayEach(rows, function (physicalRow) {
+        (0, _array.arrayEach)(rows, function (physicalRow) {
           _this12.plugin.collapsedRowsMap.setValueAtIndex(physicalRow, true);
         });
       }, true);
@@ -501,7 +527,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       var _this13 = this;
 
       this.hot.batchExecution(function () {
-        arrayEach(rows, function (physicalRow) {
+        (0, _array.arrayEach)(rows, function (physicalRow) {
           _this13.plugin.collapsedRowsMap.setValueAtIndex(physicalRow, false);
         });
       }, true);
@@ -529,7 +555,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
       }
 
       if (this.dataManager.hasChildren(rowObj)) {
-        arrayEach(rowObj.__children, function (elem) {
+        (0, _array.arrayEach)(rowObj.__children, function (elem) {
           var rowIndex = _this14.dataManager.getRowIndex(elem);
 
           if (!_this14.plugin.collapsedRowsMap.getValueAtIndex(rowIndex)) {
@@ -582,14 +608,14 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
 
       var row = this.translateTrimmedRow(coords.row);
 
-      if (hasClass(event.target, HeadersUI.CSS_CLASSES.button)) {
+      if ((0, _element.hasClass)(event.target, _headers.default.CSS_CLASSES.button)) {
         if (this.areChildrenCollapsed(row)) {
           this.expandChildren(row);
         } else {
           this.collapseChildren(row);
         }
 
-        stopImmediatePropagation(event);
+        (0, _event.stopImmediatePropagation)(event);
       }
     }
     /**
@@ -634,6 +660,7 @@ var CollapsingUI = /*#__PURE__*/function (_BaseUI) {
   }]);
 
   return CollapsingUI;
-}(BaseUI);
+}(_base.default);
 
-export default CollapsingUI;
+var _default = CollapsingUI;
+exports.default = _default;

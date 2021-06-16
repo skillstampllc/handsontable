@@ -1,14 +1,19 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _element = require("./../../../helpers/dom/element");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import { innerHeight, innerWidth, getScrollLeft, getScrollTop, offset } from "./../../../helpers/dom/element.mjs";
 /**
  * @class Scroll
  */
-
 var Scroll = /*#__PURE__*/function () {
   /**
    * @param {Walkontable} wotInstance The Walkontable instance.
@@ -134,10 +139,10 @@ var Scroll = /*#__PURE__*/function () {
       var firstVisibleRow = wtTable.getFirstVisibleRow();
 
       if (topOverlay.mainTableScrollableElement === rootWindow) {
-        var rootElementOffset = offset(wtTable.wtRootElement);
-        var totalTableHeight = innerHeight(wtTable.hider);
-        var windowHeight = innerHeight(rootWindow);
-        var windowScrollTop = getScrollTop(rootWindow, rootWindow); // Only calculate firstVisibleRow when table didn't filled (from up) whole viewport space
+        var rootElementOffset = (0, _element.offset)(wtTable.wtRootElement);
+        var totalTableHeight = (0, _element.innerHeight)(wtTable.hider);
+        var windowHeight = (0, _element.innerHeight)(rootWindow);
+        var windowScrollTop = (0, _element.getScrollTop)(rootWindow, rootWindow); // Only calculate firstVisibleRow when table didn't filled (from up) whole viewport space
 
         if (rootElementOffset.top + totalTableHeight - windowHeight <= windowScrollTop) {
           var rowsHeight = wtViewport.getColumnHeaderHeight();
@@ -176,11 +181,11 @@ var Scroll = /*#__PURE__*/function () {
       var lastVisibleRow = wtTable.getLastVisibleRow();
 
       if (topOverlay.mainTableScrollableElement === rootWindow) {
-        var rootElementOffset = offset(wtTable.wtRootElement);
-        var windowScrollTop = getScrollTop(rootWindow, rootWindow); // Only calculate lastVisibleRow when table didn't filled (from bottom) whole viewport space
+        var rootElementOffset = (0, _element.offset)(wtTable.wtRootElement);
+        var windowScrollTop = (0, _element.getScrollTop)(rootWindow, rootWindow); // Only calculate lastVisibleRow when table didn't filled (from bottom) whole viewport space
 
         if (rootElementOffset.top > windowScrollTop) {
-          var windowHeight = innerHeight(rootWindow);
+          var windowHeight = (0, _element.innerHeight)(rootWindow);
           var rowsHeight = wtViewport.getColumnHeaderHeight();
 
           for (var row = 1; row <= totalRows; row++) {
@@ -216,10 +221,10 @@ var Scroll = /*#__PURE__*/function () {
       var firstVisibleColumn = wtTable.getFirstVisibleColumn();
 
       if (leftOverlay.mainTableScrollableElement === rootWindow) {
-        var rootElementOffset = offset(wtTable.wtRootElement);
-        var totalTableWidth = innerWidth(wtTable.hider);
-        var windowWidth = innerWidth(rootWindow);
-        var windowScrollLeft = getScrollLeft(rootWindow, rootWindow); // Only calculate firstVisibleColumn when table didn't filled (from left) whole viewport space
+        var rootElementOffset = (0, _element.offset)(wtTable.wtRootElement);
+        var totalTableWidth = (0, _element.innerWidth)(wtTable.hider);
+        var windowWidth = (0, _element.innerWidth)(rootWindow);
+        var windowScrollLeft = (0, _element.getScrollLeft)(rootWindow, rootWindow); // Only calculate firstVisibleColumn when table didn't filled (from left) whole viewport space
 
         if (rootElementOffset.left + totalTableWidth - windowWidth <= windowScrollLeft) {
           var columnsWidth = wtViewport.getRowHeaderWidth();
@@ -257,11 +262,11 @@ var Scroll = /*#__PURE__*/function () {
       var lastVisibleColumn = wtTable.getLastVisibleColumn();
 
       if (leftOverlay.mainTableScrollableElement === rootWindow) {
-        var rootElementOffset = offset(wtTable.wtRootElement);
-        var windowScrollLeft = getScrollLeft(rootWindow, rootWindow); // Only calculate lastVisibleColumn when table didn't filled (from right) whole viewport space
+        var rootElementOffset = (0, _element.offset)(wtTable.wtRootElement);
+        var windowScrollLeft = (0, _element.getScrollLeft)(rootWindow, rootWindow); // Only calculate lastVisibleColumn when table didn't filled (from right) whole viewport space
 
         if (rootElementOffset.left > windowScrollLeft) {
-          var windowWidth = innerWidth(rootWindow);
+          var windowWidth = (0, _element.innerWidth)(rootWindow);
           var columnsWidth = wtViewport.getRowHeaderWidth();
 
           for (var column = 1; column <= totalColumns; column++) {
@@ -315,4 +320,5 @@ var Scroll = /*#__PURE__*/function () {
   return Scroll;
 }();
 
-export default Scroll;
+var _default = Scroll;
+exports.default = _default;

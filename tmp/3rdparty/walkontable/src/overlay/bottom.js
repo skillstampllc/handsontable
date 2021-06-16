@@ -1,15 +1,39 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+exports.__esModule = true;
+exports.BottomOverlay = void 0;
+
+var _element = require("./../../../../helpers/dom/element");
+
+var _bottom = _interopRequireDefault(require("./../table/bottom"));
+
+var _base = require("./_base");
+
+var _constants = require("./constants");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
@@ -35,15 +59,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-import { addClass, getScrollbarWidth, getScrollTop, getWindowScrollLeft, hasClass, outerHeight, removeClass } from "./../../../../helpers/dom/element.mjs";
-import BottomOverlayTable from "./../table/bottom.mjs";
-import { Overlay } from "./_base.mjs";
-import { CLONE_BOTTOM } from "./constants.mjs";
 /**
  * @class BottomOverlay
  */
-
-export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
+var BottomOverlay = /*#__PURE__*/function (_Overlay) {
   _inherits(BottomOverlay, _Overlay);
 
   var _super = _createSuper(BottomOverlay);
@@ -60,7 +79,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
 
     _defineProperty(_assertThisInitialized(_this), "cachedFixedRowsBottom", -1);
 
-    _this.clone = _this.makeClone(CLONE_BOTTOM);
+    _this.clone = _this.makeClone(_constants.CLONE_BOTTOM);
     _this.cachedFixedRowsBottom = _this.wot.getSetting('fixedRowsBottom');
     return _this;
   }
@@ -80,7 +99,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
         args[_key] = arguments[_key];
       }
 
-      return _construct(BottomOverlayTable, args);
+      return _construct(_bottom.default, args);
     }
     /**
      * Checks if overlay should be fully rendered.
@@ -154,7 +173,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
           wtTable = _this$wot2.wtTable,
           rootDocument = _this$wot2.rootDocument;
       var cloneRoot = this.clone.wtTable.holder.parentNode;
-      var scrollbarWidth = getScrollbarWidth(rootDocument);
+      var scrollbarWidth = (0, _element.getScrollbarWidth)(rootDocument);
 
       if (wtTable.holder.clientHeight === wtTable.holder.offsetHeight) {
         scrollbarWidth = 0;
@@ -176,7 +195,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
       var result = false;
 
       if (this.mainTableScrollableElement === rootWindow) {
-        rootWindow.scrollTo(getWindowScrollLeft(rootWindow), pos);
+        rootWindow.scrollTo((0, _element.getWindowScrollLeft)(rootWindow), pos);
         result = true;
       } else if (this.mainTableScrollableElement.scrollTop !== pos) {
         this.mainTableScrollableElement.scrollTop = pos;
@@ -248,7 +267,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
           wtTable = _this$wot4.wtTable,
           wtViewport = _this$wot4.wtViewport,
           rootWindow = _this$wot4.rootWindow;
-      var scrollbarWidth = getScrollbarWidth(this.wot.rootDocument);
+      var scrollbarWidth = (0, _element.getScrollbarWidth)(this.wot.rootDocument);
       var overlayRoot = this.clone.wtTable.holder.parentNode;
       var overlayRootStyle = overlayRoot.style;
       var preventOverflow = this.wot.getSetting('preventOverflow');
@@ -267,7 +286,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
       }
 
       this.clone.wtTable.holder.style.width = overlayRootStyle.width;
-      var tableHeight = outerHeight(this.clone.wtTable.TABLE);
+      var tableHeight = (0, _element.outerHeight)(this.clone.wtTable.TABLE);
 
       if (!this.wot.wtTable.hasDefinedSize()) {
         tableHeight = 0;
@@ -340,7 +359,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
       var scrollbarCompensation = 0;
 
       if (bottomEdge && mainHolder.offsetHeight !== mainHolder.clientHeight) {
-        scrollbarCompensation = getScrollbarWidth(this.wot.rootDocument);
+        scrollbarCompensation = (0, _element.getScrollbarWidth)(this.wot.rootDocument);
       }
 
       if (bottomEdge) {
@@ -379,7 +398,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
   }, {
     key: "getScrollPosition",
     value: function getScrollPosition() {
-      return getScrollTop(this.mainTableScrollableElement, this.wot.rootWindow);
+      return (0, _element.getScrollTop)(this.mainTableScrollableElement, this.wot.rootWindow);
     }
     /**
      * Adds css classes to hide the header border's header (cell-selection border hiding issue).
@@ -398,14 +417,14 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
 
       if ((areFixedRowsBottomChanged || fixedRowsBottom === 0) && columnHeaders.length > 0) {
         var masterParent = this.wot.wtTable.holder.parentNode;
-        var previousState = hasClass(masterParent, 'innerBorderBottom');
+        var previousState = (0, _element.hasClass)(masterParent, 'innerBorderBottom');
         this.cachedFixedRowsBottom = this.wot.getSetting('fixedRowsBottom');
 
         if (position || this.wot.getSetting('totalRows') === 0) {
-          addClass(masterParent, 'innerBorderBottom');
+          (0, _element.addClass)(masterParent, 'innerBorderBottom');
           positionChanged = !previousState;
         } else {
-          removeClass(masterParent, 'innerBorderBottom');
+          (0, _element.removeClass)(masterParent, 'innerBorderBottom');
           positionChanged = previousState;
         }
       }
@@ -415,7 +434,7 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
   }], [{
     key: "OVERLAY_NAME",
     get: function get() {
-      return CLONE_BOTTOM;
+      return _constants.CLONE_BOTTOM;
     }
     /**
      * Cached value which holds the previous value of the `fixedRowsBottom` option.
@@ -427,4 +446,6 @@ export var BottomOverlay = /*#__PURE__*/function (_Overlay) {
   }]);
 
   return BottomOverlay;
-}(Overlay);
+}(_base.Overlay);
+
+exports.BottomOverlay = BottomOverlay;

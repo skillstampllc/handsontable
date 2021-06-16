@@ -1,12 +1,22 @@
-import { registerCondition } from "../conditionRegisterer.mjs";
-export var CONDITION_NAME = 'false';
+"use strict";
+
+exports.__esModule = true;
+exports.condition = condition;
+exports.CONDITION_NAME = void 0;
+
+var _conditionRegisterer = require("../conditionRegisterer");
+
+var CONDITION_NAME = 'false';
 /**
  * @returns {boolean}
  */
 
-export function condition() {
+exports.CONDITION_NAME = CONDITION_NAME;
+
+function condition() {
   return false;
 }
-registerCondition(CONDITION_NAME, condition, {
+
+(0, _conditionRegisterer.registerCondition)(CONDITION_NAME, condition, {
   name: 'False'
 });

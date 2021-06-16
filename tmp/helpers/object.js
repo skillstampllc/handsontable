@@ -1,29 +1,60 @@
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+"use strict";
 
-import "core-js/modules/es.array.includes.js";
-import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.regexp.exec.js";
-import "core-js/modules/es.string.split.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
+exports.__esModule = true;
+exports.duckSchema = duckSchema;
+exports.inherit = inherit;
+exports.extend = extend;
+exports.deepExtend = deepExtend;
+exports.deepClone = deepClone;
+exports.clone = clone;
+exports.mixin = mixin;
+exports.isObjectEqual = isObjectEqual;
+exports.isObject = isObject;
+exports.defineGetter = defineGetter;
+exports.objectEach = objectEach;
+exports.getProperty = getProperty;
+exports.setProperty = setProperty;
+exports.deepObjectSize = deepObjectSize;
+exports.createObjectPropListener = createObjectPropListener;
+exports.hasOwnProperty = hasOwnProperty;
+
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+var _array = require("./array");
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import { arrayEach } from "./array.mjs";
 /**
  * Generate schema for passed object.
  *
  * @param {Array|object} object An object to analyze.
  * @returns {Array|object}
  */
-
-export function duckSchema(object) {
+function duckSchema(object) {
   var schema;
 
   if (Array.isArray(object)) {
@@ -61,7 +92,8 @@ export function duckSchema(object) {
  * @returns {object}
  */
 
-export function inherit(Child, Parent) {
+
+function inherit(Child, Parent) {
   Parent.prototype.constructor = Parent;
   Child.prototype = new Parent();
   Child.prototype.constructor = Child;
@@ -76,7 +108,8 @@ export function inherit(Child, Parent) {
  * @returns {object}
  */
 
-export function extend(target, extension, writableKeys) {
+
+function extend(target, extension, writableKeys) {
   var hasWritableKeys = Array.isArray(writableKeys);
   objectEach(extension, function (value, key) {
     if (hasWritableKeys === false || writableKeys.includes(key)) {
@@ -92,7 +125,8 @@ export function extend(target, extension, writableKeys) {
  * @param {object} extension An object containing additional properties to merge into the target.
  */
 
-export function deepExtend(target, extension) {
+
+function deepExtend(target, extension) {
   objectEach(extension, function (value, key) {
     if (extension[key] && _typeof(extension[key]) === 'object') {
       if (!target[key]) {
@@ -119,7 +153,8 @@ export function deepExtend(target, extension) {
  * @returns {object}
  */
 
-export function deepClone(obj) {
+
+function deepClone(obj) {
   if (_typeof(obj) === 'object') {
     return JSON.parse(JSON.stringify(obj));
   }
@@ -133,7 +168,8 @@ export function deepClone(obj) {
  * @returns {object}
  */
 
-export function clone(object) {
+
+function clone(object) {
   var result = {};
   objectEach(object, function (value, key) {
     result[key] = value;
@@ -148,7 +184,8 @@ export function clone(object) {
  * @returns {object}
  */
 
-export function mixin(Base) {
+
+function mixin(Base) {
   if (!Base.MIXINS) {
     Base.MIXINS = [];
   }
@@ -157,7 +194,7 @@ export function mixin(Base) {
     mixins[_key - 1] = arguments[_key];
   }
 
-  arrayEach(mixins, function (mixinItem) {
+  (0, _array.arrayEach)(mixins, function (mixinItem) {
     Base.MIXINS.push(mixinItem.MIXIN_NAME);
     objectEach(mixinItem, function (value, key) {
       if (Base.prototype[key] !== void 0) {
@@ -214,7 +251,8 @@ export function mixin(Base) {
  * @returns {boolean}
  */
 
-export function isObjectEqual(object1, object2) {
+
+function isObjectEqual(object1, object2) {
   return JSON.stringify(object1) === JSON.stringify(object2);
 }
 /**
@@ -225,7 +263,8 @@ export function isObjectEqual(object1, object2) {
  * @returns {boolean}
  */
 
-export function isObject(object) {
+
+function isObject(object) {
   return Object.prototype.toString.call(object) === '[object Object]';
 }
 /**
@@ -235,7 +274,8 @@ export function isObject(object) {
  * @param {object} options The descriptor for the property being defined or modified.
  */
 
-export function defineGetter(object, property, value, options) {
+
+function defineGetter(object, property, value, options) {
   options.value = value;
   options.writable = options.writable !== false;
   options.enumerable = options.enumerable !== false;
@@ -250,7 +290,8 @@ export function defineGetter(object, property, value, options) {
  * @returns {object} Returns `object`.
  */
 
-export function objectEach(object, iteratee) {
+
+function objectEach(object, iteratee) {
   // eslint-disable-next-line no-restricted-syntax
   for (var key in object) {
     if (!object.hasOwnProperty || object.hasOwnProperty && Object.prototype.hasOwnProperty.call(object, key)) {
@@ -270,7 +311,8 @@ export function objectEach(object, iteratee) {
  * @returns {*}
  */
 
-export function getProperty(object, name) {
+
+function getProperty(object, name) {
   var names = name.split('.');
   var result = object;
   objectEach(names, function (nameItem) {
@@ -291,7 +333,8 @@ export function getProperty(object, name) {
  * @param {*} value Value to be assigned at the provided property.
  */
 
-export function setProperty(object, name, value) {
+
+function setProperty(object, name, value) {
   var names = name.split('.');
   var workingObject = object;
   names.forEach(function (propName, index) {
@@ -313,7 +356,8 @@ export function setProperty(object, name, value) {
  * @returns {number}
  */
 
-export function deepObjectSize(object) {
+
+function deepObjectSize(object) {
   if (!isObject(object)) {
     return 0;
   }
@@ -346,7 +390,8 @@ export function deepObjectSize(object) {
  * @returns {object}
  */
 
-export function createObjectPropListener(defaultValue) {
+
+function createObjectPropListener(defaultValue) {
   var _holder;
 
   var propertyToListen = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'value';
@@ -377,6 +422,7 @@ export function createObjectPropListener(defaultValue) {
  * @returns {boolean}
  */
 
-export function hasOwnProperty(object, key) {
+
+function hasOwnProperty(object, key) {
   return Object.prototype.hasOwnProperty.call(object, key);
 }

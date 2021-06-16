@@ -1,21 +1,94 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.object.keys.js";
-import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.object.get-own-property-descriptors.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.from.js";
-import "core-js/modules/es.function.name.js";
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.index-of.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/web.dom-collections.for-each.js");
+
+require("core-js/modules/es.object.get-own-property-descriptors.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.function.name.js");
+
+exports.__esModule = true;
+exports.ColumnSorting = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
+
+require("core-js/modules/es.array.sort.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.number.is-integer.js");
+
+require("core-js/modules/es.number.constructor.js");
+
+require("core-js/modules/es.array.concat.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+require("core-js/modules/es.object.assign.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.map.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+var _element = require("../../helpers/dom/element");
+
+var _mixed = require("../../helpers/mixed");
+
+var _object = require("../../helpers/object");
+
+var _function = require("../../helpers/function");
+
+var _array = require("../../helpers/array");
+
+var _base = require("../base");
+
+var _translations = require("../../translations");
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
+var _keyStateObserver = require("../../utils/keyStateObserver");
+
+var _columnStatesManager = require("./columnStatesManager");
+
+var _utils = require("./utils");
+
+var _domHelpers = require("./domHelpers");
+
+var _rootComparator = require("./rootComparator");
+
+var _sortService = require("./sortService");
+
 var _excluded = ["column"],
     _excluded2 = ["column"];
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -38,19 +111,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-import "core-js/modules/es.array.sort.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.number.is-integer.js";
-import "core-js/modules/es.number.constructor.js";
-import "core-js/modules/es.array.concat.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.object.assign.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76,27 +136,17 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { addClass, removeClass } from "../../helpers/dom/element.mjs";
-import { isUndefined, isDefined } from "../../helpers/mixed.mjs";
-import { isObject } from "../../helpers/object.mjs";
-import { isFunction } from "../../helpers/function.mjs";
-import { arrayMap } from "../../helpers/array.mjs";
-import { BasePlugin } from "../base/index.mjs";
-import { IndexesSequence, PhysicalIndexToValueMap as IndexToValueMap } from "../../translations/index.mjs";
-import Hooks from "../../pluginHooks.mjs";
-import { isPressedCtrlKey } from "../../utils/keyStateObserver.mjs";
-import { ColumnStatesManager } from "./columnStatesManager.mjs";
-import { getNextSortOrder, areValidSortStates, getHeaderSpanElement, isFirstLevelColumnHeader, wasHeaderClickedProperly } from "./utils.mjs";
-import { getClassesToRemove, getClassesToAdd } from "./domHelpers.mjs";
-import { rootComparator } from "./rootComparator.mjs";
-import { registerRootComparator, sort } from "./sortService/index.mjs";
-export var PLUGIN_KEY = 'columnSorting';
-export var PLUGIN_PRIORITY = 50;
+var PLUGIN_KEY = 'columnSorting';
+exports.PLUGIN_KEY = PLUGIN_KEY;
+var PLUGIN_PRIORITY = 50;
+exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var APPEND_COLUMN_CONFIG_STRATEGY = 'append';
 var REPLACE_COLUMN_CONFIG_STRATEGY = 'replace';
-registerRootComparator(PLUGIN_KEY, rootComparator);
-Hooks.getSingleton().register('beforeColumnSort');
-Hooks.getSingleton().register('afterColumnSort'); // DIFF - MultiColumnSorting & ColumnSorting: changed configuration documentation.
+(0, _sortService.registerRootComparator)(PLUGIN_KEY, _rootComparator.rootComparator);
+
+_pluginHooks.default.getSingleton().register('beforeColumnSort');
+
+_pluginHooks.default.getSingleton().register('afterColumnSort'); // DIFF - MultiColumnSorting & ColumnSorting: changed configuration documentation.
 
 /**
  * @plugin ColumnSorting
@@ -146,7 +196,8 @@ Hooks.getSingleton().register('afterColumnSort'); // DIFF - MultiColumnSorting &
  * }]```
  */
 
-export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
+
+var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   _inherits(ColumnSorting, _BasePlugin);
 
   var _super = _createSuper(ColumnSorting);
@@ -217,8 +268,8 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.columnStatesManager = new ColumnStatesManager(this.hot, "".concat(this.pluginKey, ".sortingStates"));
-      this.columnMetaCache = new IndexToValueMap(function (physicalIndex) {
+      this.columnStatesManager = new _columnStatesManager.ColumnStatesManager(this.hot, "".concat(this.pluginKey, ".sortingStates"));
+      this.columnMetaCache = new _translations.PhysicalIndexToValueMap(function (physicalIndex) {
         var visualIndex = _this2.hot.toVisualColumn(physicalIndex);
 
         if (visualIndex === null) {
@@ -260,9 +311,9 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
       var _this3 = this;
 
       var clearColHeader = function clearColHeader(column, TH) {
-        var headerSpanElement = getHeaderSpanElement(TH);
+        var headerSpanElement = (0, _utils.getHeaderSpanElement)(TH);
 
-        if (isFirstLevelColumnHeader(column, TH) === false || headerSpanElement === null) {
+        if ((0, _utils.isFirstLevelColumnHeader)(column, TH) === false || headerSpanElement === null) {
           return;
         }
 
@@ -321,7 +372,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
       }
 
       if (currentSortConfig.length === 0 && this.indexesSequenceCache === null) {
-        this.indexesSequenceCache = this.hot.rowIndexMapper.registerMap(this.pluginKey, new IndexesSequence());
+        this.indexesSequenceCache = this.hot.rowIndexMapper.registerMap(this.pluginKey, new _translations.IndexesSequence());
         this.indexesSequenceCache.setValues(this.hot.rowIndexMapper.getIndexesSequence());
       }
 
@@ -373,7 +424,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "getSortConfig",
     value: function getSortConfig(column) {
-      if (isDefined(column)) {
+      if ((0, _mixed.isDefined)(column)) {
         return this.columnStatesManager.getColumnSortState(column);
       }
 
@@ -447,7 +498,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
     value: function areValidSortConfigs(sortConfigs) {
       var numberOfColumns = this.hot.countCols(); // We don't translate visual indexes to physical indexes.
 
-      return areValidSortStates(sortConfigs) && sortConfigs.every(function (_ref) {
+      return (0, _utils.areValidSortStates)(sortConfigs) && sortConfigs.every(function (_ref) {
         var column = _ref.column;
         return column <= numberOfColumns && column >= 0;
       });
@@ -477,7 +528,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
         }, restOfProperties);
       };
 
-      allSortSettings.initialConfig = arrayMap(sortConfigs, translateColumnToPhysical);
+      allSortSettings.initialConfig = (0, _array.arrayMap)(sortConfigs, translateColumnToPhysical);
       this.hot.runHooks('persistentStateSave', 'columnSorting', allSortSettings);
     }
     /**
@@ -507,8 +558,8 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
         }, restOfProperties);
       };
 
-      if (isDefined(allSortSettings) && Array.isArray(allSortSettings.initialConfig)) {
-        allSortSettings.initialConfig = arrayMap(allSortSettings.initialConfig, translateColumnToVisual);
+      if ((0, _mixed.isDefined)(allSortSettings) && Array.isArray(allSortSettings.initialConfig)) {
+        allSortSettings.initialConfig = (0, _array.arrayMap)(allSortSettings.initialConfig, translateColumnToVisual);
       }
 
       return allSortSettings;
@@ -528,10 +579,10 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
     value: function getColumnNextConfig(column) {
       var sortOrder = this.columnStatesManager.getSortOrderOfColumn(column);
 
-      if (isDefined(sortOrder)) {
-        var nextSortOrder = getNextSortOrder(sortOrder);
+      if ((0, _mixed.isDefined)(sortOrder)) {
+        var nextSortOrder = (0, _utils.getNextSortOrder)(sortOrder);
 
-        if (isDefined(nextSortOrder)) {
+        if ((0, _mixed.isDefined)(nextSortOrder)) {
           return {
             column: column,
             sortOrder: nextSortOrder
@@ -546,7 +597,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
       if (Number.isInteger(column) && column >= 0 && column < nrOfColumns) {
         return {
           column: column,
-          sortOrder: getNextSortOrder()
+          sortOrder: (0, _utils.getNextSortOrder)()
         };
       }
     }
@@ -574,7 +625,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
       var nextColumnConfig = this.getColumnNextConfig(columnToChange);
 
       if (isColumnSorted) {
-        if (isUndefined(nextColumnConfig)) {
+        if ((0, _mixed.isUndefined)(nextColumnConfig)) {
           return [].concat(_toConsumableArray(currentSortConfig.slice(0, indexOfColumnToChange)), _toConsumableArray(currentSortConfig.slice(indexOfColumnToChange + 1)));
         }
 
@@ -585,7 +636,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
         }
       }
 
-      if (isDefined(nextColumnConfig)) {
+      if ((0, _mixed.isDefined)(nextColumnConfig)) {
         return currentSortConfig.concat(nextColumnConfig);
       }
 
@@ -602,10 +653,10 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "getPluginColumnConfig",
     value: function getPluginColumnConfig(columnConfig) {
-      if (isObject(columnConfig)) {
+      if ((0, _object.isObject)(columnConfig)) {
         var pluginColumnConfig = columnConfig[this.pluginKey];
 
-        if (isObject(pluginColumnConfig)) {
+        if ((0, _object.isObject)(pluginColumnConfig)) {
           return pluginColumnConfig;
         }
       }
@@ -630,7 +681,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
 
       if (Array.isArray(columnMeta.columns)) {
         return Object.assign(storedColumnProperties, pluginMainSettings, this.getPluginColumnConfig(columnMeta.columns[column]));
-      } else if (isFunction(columnMeta.columns)) {
+      } else if ((0, _function.isFunction)(columnMeta.columns)) {
         return Object.assign(storedColumnProperties, pluginMainSettings, this.getPluginColumnConfig(columnMeta.columns(column)));
       }
 
@@ -694,7 +745,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
       var numberOfRows = this.hot.countRows();
 
       var getDataForSortedColumns = function getDataForSortedColumns(visualRowIndex) {
-        return arrayMap(sortConfigs, function (sortConfig) {
+        return (0, _array.arrayMap)(sortConfigs, function (sortConfig) {
           return _this6.hot.getDataAtCell(visualRowIndex, sortConfig.column);
         });
       };
@@ -703,12 +754,12 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
         indexesWithData.push([this.hot.toPhysicalRow(visualRowIndex)].concat(getDataForSortedColumns(visualRowIndex)));
       }
 
-      var indexesBefore = arrayMap(indexesWithData, function (indexWithData) {
+      var indexesBefore = (0, _array.arrayMap)(indexesWithData, function (indexWithData) {
         return indexWithData[0];
       });
-      sort(indexesWithData, this.pluginKey, arrayMap(sortConfigs, function (sortConfig) {
+      (0, _sortService.sort)(indexesWithData, this.pluginKey, (0, _array.arrayMap)(sortConfigs, function (sortConfig) {
         return sortConfig.sortOrder;
-      }), arrayMap(sortConfigs, function (sortConfig) {
+      }), (0, _array.arrayMap)(sortConfigs, function (sortConfig) {
         return _this6.getFirstCellSettings(sortConfig.column);
       })); // Append spareRows
 
@@ -716,13 +767,13 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
         indexesWithData.push([_visualRowIndex].concat(getDataForSortedColumns(_visualRowIndex)));
       }
 
-      var indexesAfter = arrayMap(indexesWithData, function (indexWithData) {
+      var indexesAfter = (0, _array.arrayMap)(indexesWithData, function (indexWithData) {
         return indexWithData[0];
       });
-      var indexMapping = new Map(arrayMap(indexesBefore, function (indexBefore, indexInsideArray) {
+      var indexMapping = new Map((0, _array.arrayMap)(indexesBefore, function (indexBefore, indexInsideArray) {
         return [indexBefore, indexesAfter[indexInsideArray]];
       }));
-      var newIndexesSequence = arrayMap(this.hot.rowIndexMapper.getIndexesSequence(), function (physicalIndex) {
+      var newIndexesSequence = (0, _array.arrayMap)(this.hot.rowIndexMapper.getIndexesSequence(), function (physicalIndex) {
         if (indexMapping.has(physicalIndex)) {
           return indexMapping.get(physicalIndex);
         }
@@ -742,7 +793,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
     value: function loadOrSortBySettings() {
       var storedAllSortSettings = this.getAllSavedSortSettings();
 
-      if (isObject(storedAllSortSettings)) {
+      if ((0, _object.isObject)(storedAllSortSettings)) {
         this.sortBySettings(storedAllSortSettings);
       } else {
         var allSortSettings = this.hot.getSettings()[this.pluginKey];
@@ -760,11 +811,11 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "sortBySettings",
     value: function sortBySettings(allSortSettings) {
-      if (isObject(allSortSettings)) {
+      if ((0, _object.isObject)(allSortSettings)) {
         this.columnStatesManager.updateAllColumnsProperties(allSortSettings);
         var initialConfig = allSortSettings.initialConfig;
 
-        if (Array.isArray(initialConfig) || isObject(initialConfig)) {
+        if (Array.isArray(initialConfig) || (0, _object.isObject)(initialConfig)) {
           this.sort(initialConfig);
         }
       } else {
@@ -783,9 +834,9 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterGetColHeader",
     value: function onAfterGetColHeader(column, TH) {
-      var headerSpanElement = getHeaderSpanElement(TH);
+      var headerSpanElement = (0, _utils.getHeaderSpanElement)(TH);
 
-      if (isFirstLevelColumnHeader(column, TH) === false || headerSpanElement === null) {
+      if ((0, _utils.isFirstLevelColumnHeader)(column, TH) === false || headerSpanElement === null) {
         return;
       }
 
@@ -805,14 +856,14 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "updateHeaderClasses",
     value: function updateHeaderClasses(headerSpanElement) {
-      removeClass(headerSpanElement, getClassesToRemove(headerSpanElement));
+      (0, _element.removeClass)(headerSpanElement, (0, _domHelpers.getClassesToRemove)(headerSpanElement));
 
       if (this.enabled !== false) {
         for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
           args[_key - 1] = arguments[_key];
         }
 
-        addClass(headerSpanElement, getClassesToAdd.apply(void 0, args));
+        (0, _element.addClass)(headerSpanElement, _domHelpers.getClassesToAdd.apply(void 0, args));
       }
     }
     /**
@@ -833,7 +884,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
         this.columnMetaCache.init(this.hot.columnIndexMapper.getNumberOfIndexes());
       }
 
-      if (isDefined(newSettings[this.pluginKey])) {
+      if ((0, _mixed.isDefined)(newSettings[this.pluginKey])) {
         this.sortBySettings(newSettings[this.pluginKey]);
       }
     }
@@ -884,11 +935,11 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onBeforeOnCellMouseDown",
     value: function onBeforeOnCellMouseDown(event, coords, TD, blockCalculations) {
-      if (wasHeaderClickedProperly(coords.row, coords.col, event) === false) {
+      if ((0, _utils.wasHeaderClickedProperly)(coords.row, coords.col, event) === false) {
         return;
       }
 
-      if (this.wasClickableHeaderClicked(event, coords.col) && isPressedCtrlKey()) {
+      if (this.wasClickableHeaderClicked(event, coords.col) && (0, _keyStateObserver.isPressedCtrlKey)()) {
         blockCalculations.column = true;
       }
     }
@@ -903,12 +954,12 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterOnCellMouseDown",
     value: function onAfterOnCellMouseDown(event, coords) {
-      if (wasHeaderClickedProperly(coords.row, coords.col, event) === false) {
+      if ((0, _utils.wasHeaderClickedProperly)(coords.row, coords.col, event) === false) {
         return;
       }
 
       if (this.wasClickableHeaderClicked(event, coords.col)) {
-        if (isPressedCtrlKey()) {
+        if ((0, _keyStateObserver.isPressedCtrlKey)()) {
           this.hot.deselectCell();
           this.hot.selectColumns(coords.col);
         }
@@ -944,4 +995,6 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
   }]);
 
   return ColumnSorting;
-}(BasePlugin);
+}(_base.BasePlugin);
+
+exports.ColumnSorting = ColumnSorting;

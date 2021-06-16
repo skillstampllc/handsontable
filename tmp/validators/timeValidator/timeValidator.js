@@ -1,9 +1,18 @@
-import moment from 'moment'; // Formats which are correctly parsed to time (supported by momentjs)
+"use strict";
 
+exports.__esModule = true;
+exports.timeValidator = timeValidator;
+exports.VALIDATOR_TYPE = void 0;
+
+var _moment = _interopRequireDefault(require("moment"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Formats which are correctly parsed to time (supported by momentjs)
 var STRICT_FORMATS = ['YYYY-MM-DDTHH:mm:ss.SSSZ', 'X', // Unix timestamp
 'x' // Unix ms timestamp
 ];
-export var VALIDATOR_TYPE = 'time';
+var VALIDATOR_TYPE = 'time';
 /**
  * The Time cell validator.
  *
@@ -12,7 +21,9 @@ export var VALIDATOR_TYPE = 'time';
  * @param {Function} callback Callback called with validation result.
  */
 
-export function timeValidator(value, callback) {
+exports.VALIDATOR_TYPE = VALIDATOR_TYPE;
+
+function timeValidator(value, callback) {
   var timeFormat = this.timeFormat || 'h:mm:ss a';
   var valid = true;
   var valueToValidate = value;
@@ -28,10 +39,10 @@ export function timeValidator(value, callback) {
     valueToValidate += ':00';
   }
 
-  var date = moment(valueToValidate, STRICT_FORMATS, true).isValid() ? moment(valueToValidate) : moment(valueToValidate, timeFormat);
+  var date = (0, _moment.default)(valueToValidate, STRICT_FORMATS, true).isValid() ? (0, _moment.default)(valueToValidate) : (0, _moment.default)(valueToValidate, timeFormat);
   var isValidTime = date.isValid(); // is it in the specified format
 
-  var isValidFormat = moment(valueToValidate, timeFormat, true).isValid() && !twoDigitValue;
+  var isValidFormat = (0, _moment.default)(valueToValidate, timeFormat, true).isValid() && !twoDigitValue;
 
   if (this.allowEmpty && valueToValidate === '') {
     isValidTime = true;
@@ -61,4 +72,5 @@ export function timeValidator(value, callback) {
 
   callback(valid);
 }
+
 timeValidator.VALIDATOR_TYPE = VALIDATOR_TYPE;

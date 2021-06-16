@@ -1,5 +1,12 @@
-import { isNumeric } from "../../helpers/number.mjs";
-export var VALIDATOR_TYPE = 'numeric';
+"use strict";
+
+exports.__esModule = true;
+exports.numericValidator = numericValidator;
+exports.VALIDATOR_TYPE = void 0;
+
+var _number = require("../../helpers/number");
+
+var VALIDATOR_TYPE = 'numeric';
 /**
  * The Numeric cell validator.
  *
@@ -8,7 +15,9 @@ export var VALIDATOR_TYPE = 'numeric';
  * @param {Function} callback Callback called with validation result.
  */
 
-export function numericValidator(value, callback) {
+exports.VALIDATOR_TYPE = VALIDATOR_TYPE;
+
+function numericValidator(value, callback) {
   var valueToValidate = value;
 
   if (valueToValidate === null || valueToValidate === void 0) {
@@ -20,7 +29,8 @@ export function numericValidator(value, callback) {
   } else if (valueToValidate === '') {
     callback(false);
   } else {
-    callback(isNumeric(value));
+    callback((0, _number.isNumeric)(value));
   }
 }
+
 numericValidator.VALIDATOR_TYPE = VALIDATOR_TYPE;

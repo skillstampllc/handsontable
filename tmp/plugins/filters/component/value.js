@@ -1,4 +1,69 @@
+"use strict";
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+require("core-js/modules/es.reflect.construct.js");
+
+require("core-js/modules/es.reflect.get.js");
+
+require("core-js/modules/es.object.get-own-property-descriptor.js");
+
+require("core-js/modules/es.symbol.js");
+
+require("core-js/modules/es.symbol.description.js");
+
+require("core-js/modules/es.object.to-string.js");
+
+require("core-js/modules/es.symbol.iterator.js");
+
+require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
+
+require("core-js/modules/web.dom-collections.iterator.js");
+
+require("core-js/modules/es.array.slice.js");
+
+require("core-js/modules/es.array.from.js");
+
+require("core-js/modules/es.weak-map.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.filter.js");
+
+require("core-js/modules/es.object.set-prototype-of.js");
+
+require("core-js/modules/es.object.get-prototype-of.js");
+
+var _element = require("../../../helpers/dom/element");
+
+var _event = require("../../../helpers/dom/event");
+
+var _array = require("../../../helpers/array");
+
+var _unicode = require("../../../helpers/unicode");
+
+var C = _interopRequireWildcard(require("../../../i18n/constants"));
+
+var _utils = require("../utils");
+
+var _base = _interopRequireDefault(require("./_base"));
+
+var _multipleSelect = _interopRequireDefault(require("../ui/multipleSelect"));
+
+var _constants2 = require("../constants");
+
+var _conditionRegisterer = require("../conditionRegisterer");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -11,23 +76,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-import "core-js/modules/es.function.name.js";
-import "core-js/modules/es.array.filter.js";
-import "core-js/modules/es.object.set-prototype-of.js";
-import "core-js/modules/es.object.get-prototype-of.js";
-import "core-js/modules/es.reflect.construct.js";
-import "core-js/modules/es.reflect.get.js";
-import "core-js/modules/es.object.get-own-property-descriptor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.array.slice.js";
-import "core-js/modules/es.array.from.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -53,21 +101,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import { addClass } from "../../../helpers/dom/element.mjs";
-import { stopImmediatePropagation } from "../../../helpers/dom/event.mjs";
-import { arrayEach, arrayFilter, arrayMap } from "../../../helpers/array.mjs";
-import { isKey } from "../../../helpers/unicode.mjs";
-import * as C from "../../../i18n/constants.mjs";
-import { unifyColumnValues, intersectValues, toEmptyString } from "../utils.mjs";
-import BaseComponent from "./_base.mjs";
-import MultipleSelectUI from "../ui/multipleSelect.mjs";
-import { CONDITION_BY_VALUE, CONDITION_NONE } from "../constants.mjs";
-import { getConditionDescriptor } from "../conditionRegisterer.mjs";
 /**
  * @class ValueComponent
  * @plugin Filters
  */
-
 var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
   _inherits(ValueComponent, _BaseComponent);
 
@@ -84,7 +121,7 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
     });
     _this.name = options.name;
 
-    _this.elements.push(new MultipleSelectUI(_this.hot));
+    _this.elements.push(new _multipleSelect.default(_this.hot));
 
     _this.registerHooks();
 
@@ -117,7 +154,7 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
     value: function setState(value) {
       this.reset();
 
-      if (value && value.command.key === CONDITION_BY_VALUE) {
+      if (value && value.command.key === _constants2.CONDITION_BY_VALUE) {
         var select = this.getMultipleSelectElement();
         select.setItems(value.itemsSnapshot);
         select.setValue(value.args[0]);
@@ -136,7 +173,7 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
       var availableItems = select.getItems();
       return {
         command: {
-          key: select.isSelectedAllValues() || !availableItems.length ? CONDITION_NONE : CONDITION_BY_VALUE
+          key: select.isSelectedAllValues() || !availableItems.length ? _constants2.CONDITION_NONE : _constants2.CONDITION_BY_VALUE
         },
         args: [select.getValue()],
         itemsSnapshot: availableItems
@@ -156,8 +193,8 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
       var _this3 = this;
 
       var updateColumnState = function updateColumnState(physicalColumn, conditions, conditionArgsChange, filteredRowsFactory, conditionsStack) {
-        var _arrayFilter = arrayFilter(conditions, function (condition) {
-          return condition.name === CONDITION_BY_VALUE;
+        var _arrayFilter = (0, _array.arrayFilter)(conditions, function (condition) {
+          return condition.name === _constants2.CONDITION_BY_VALUE;
         }),
             _arrayFilter2 = _slicedToArray(_arrayFilter, 1),
             firstByValueCondition = _arrayFilter2[0];
@@ -167,7 +204,7 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
         var defaultBlankCellValue = _this3.hot.getTranslatedPhrase(C.FILTERS_VALUES_BLANK_CELLS);
 
         if (firstByValueCondition) {
-          var rowValues = unifyColumnValues(arrayMap(filteredRowsFactory(physicalColumn, conditionsStack), function (row) {
+          var rowValues = (0, _utils.unifyColumnValues)((0, _array.arrayMap)(filteredRowsFactory(physicalColumn, conditionsStack), function (row) {
             return row.value;
           }));
 
@@ -176,17 +213,17 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
           }
 
           var selectedValues = [];
-          var itemsSnapshot = intersectValues(rowValues, firstByValueCondition.args[0], defaultBlankCellValue, function (item) {
+          var itemsSnapshot = (0, _utils.intersectValues)(rowValues, firstByValueCondition.args[0], defaultBlankCellValue, function (item) {
             if (item.checked) {
               selectedValues.push(item.value);
             }
           });
           state.args = [selectedValues];
-          state.command = getConditionDescriptor(CONDITION_BY_VALUE);
+          state.command = (0, _conditionRegisterer.getConditionDescriptor)(_constants2.CONDITION_BY_VALUE);
           state.itemsSnapshot = itemsSnapshot;
         } else {
           state.args = [];
-          state.command = getConditionDescriptor(CONDITION_NONE);
+          state.command = (0, _conditionRegisterer.getConditionDescriptor)(_constants2.CONDITION_NONE);
         }
 
         _this3.state.setValueAtIndex(physicalColumn, state);
@@ -210,7 +247,7 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
     key: "getMultipleSelectElement",
     value: function getMultipleSelectElement() {
       return this.elements.filter(function (element) {
-        return element instanceof MultipleSelectUI;
+        return element instanceof _multipleSelect.default;
       })[0];
     }
     /**
@@ -233,16 +270,16 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
           return _this4.isHidden();
         },
         renderer: function renderer(hot, wrapper, row, col, prop, value) {
-          addClass(wrapper.parentNode, 'htFiltersMenuValue');
+          (0, _element.addClass)(wrapper.parentNode, 'htFiltersMenuValue');
 
           var label = _this4.hot.rootDocument.createElement('div');
 
-          addClass(label, 'htFiltersMenuLabel');
+          (0, _element.addClass)(label, 'htFiltersMenuLabel');
           label.textContent = value;
           wrapper.appendChild(label);
 
           if (!wrapper.parentNode.hasAttribute('ghost-table')) {
-            arrayEach(_this4.elements, function (ui) {
+            (0, _array.arrayEach)(_this4.elements, function (ui) {
               return wrapper.appendChild(ui.element);
             });
           }
@@ -259,8 +296,8 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
     key: "reset",
     value: function reset() {
       var defaultBlankCellValue = this.hot.getTranslatedPhrase(C.FILTERS_VALUES_BLANK_CELLS);
-      var values = unifyColumnValues(this._getColumnVisibleValues());
-      var items = intersectValues(values, values, defaultBlankCellValue);
+      var values = (0, _utils.unifyColumnValues)(this._getColumnVisibleValues());
+      var items = (0, _utils.intersectValues)(values, values, defaultBlankCellValue);
       this.getMultipleSelectElement().setItems(items);
 
       _get(_getPrototypeOf(ValueComponent.prototype), "reset", this).call(this);
@@ -277,9 +314,9 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
   }, {
     key: "onInputKeyDown",
     value: function onInputKeyDown(event) {
-      if (isKey(event.keyCode, 'ESCAPE')) {
+      if ((0, _unicode.isKey)(event.keyCode, 'ESCAPE')) {
         this.runLocalHooks('cancel');
-        stopImmediatePropagation(event);
+        (0, _event.stopImmediatePropagation)(event);
       }
     }
     /**
@@ -294,13 +331,14 @@ var ValueComponent = /*#__PURE__*/function (_BaseComponent) {
     value: function _getColumnVisibleValues() {
       var lastSelectedColumn = this.hot.getPlugin('filters').getSelectedColumn();
       var visualIndex = lastSelectedColumn && lastSelectedColumn.visualIndex;
-      return arrayMap(this.hot.getDataAtCol(visualIndex), function (v) {
-        return toEmptyString(v);
+      return (0, _array.arrayMap)(this.hot.getDataAtCol(visualIndex), function (v) {
+        return (0, _utils.toEmptyString)(v);
       });
     }
   }]);
 
   return ValueComponent;
-}(BaseComponent);
+}(_base.default);
 
-export default ValueComponent;
+var _default = ValueComponent;
+exports.default = _default;
