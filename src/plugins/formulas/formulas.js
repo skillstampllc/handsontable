@@ -1,3 +1,4 @@
+import { HyperFormula } from 'hyperformula';
 import { BasePlugin } from '../base';
 import { createAutofillHooks } from './autofill';
 import staticRegister from '../../utils/staticRegister';
@@ -20,6 +21,7 @@ import { getEngineSettingsWithOverrides } from './engine/settings';
 import { isArrayOfArrays } from '../../helpers/data';
 import { toUpperCaseFirst } from '../../helpers/string';
 import Hooks from '../../pluginHooks';
+import { HFValueFunction } from './custom/custom-hyper-function';
 
 export const PLUGIN_KEY = 'formulas';
 export const PLUGIN_PRIORITY = 260;
@@ -189,6 +191,9 @@ export class Formulas extends BasePlugin {
    * @param {object} newSettings New set of settings passed to the `updateSettings` method.
    */
   updatePlugin(newSettings) {
+    if (this.engine instanceof HyperFormula) {
+      HyperFormula.registerFunctionPlugin(HFValueFunction);
+    }
     this.engine.updateConfig(getEngineSettingsWithOverrides(this.hot.getSettings()));
 
     const pluginSettings = this.hot.getSettings()[PLUGIN_KEY];
