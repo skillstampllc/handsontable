@@ -12,8 +12,8 @@
   "author": "Handsoncode <hello@handsontable.com>",
   "version": "9.0.0",
   "main": "tmp/index",
-  "module": "tmp/index.mjs",
-  "jsnext:main": "tmp/index.mjs",
+  "module": "tmp/index.js",
+  "jsnext:main": "tmp/index.js",
   "jsdelivr": "dist/handsontable.full.min.js",
   "unpkg": "dist/handsontable.full.min.js",
   "keywords": [
