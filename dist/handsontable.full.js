@@ -29,7 +29,7 @@
  * FROM USE OR INABILITY TO USE THIS SOFTWARE.
  * 
  * Version: 9.0.0
- * Release date: 01/06/2021 (built at 17/06/2021 15:01:00)
+ * Release date: 01/06/2021 (built at 17/06/2021 21:53:10)
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -9070,6 +9070,9 @@ $({ global: true, bind: true, forced: MSIE }, {
 exports.__esModule = true;
 exports.stopImmediatePropagation = stopImmediatePropagation;
 exports.isImmediatePropagationStopped = isImmediatePropagationStopped;
+exports.stopPropagation = stopPropagation;
+exports.pageX = pageX;
+exports.pageY = pageY;
 exports.isRightClick = isRightClick;
 exports.isLeftClick = isLeftClick;
 
@@ -9092,6 +9095,62 @@ function stopImmediatePropagation(event) {
 
 function isImmediatePropagationStopped(event) {
   return event.isImmediatePropagationEnabled === false;
+}
+/**
+ * Prevent further propagation of the current event (prevent bubbling).
+ *
+ * @param event {Event}
+ */
+
+
+function stopPropagation(event) {
+  // ie8
+  // http://msdn.microsoft.com/en-us/library/ie/ff975462(v=vs.85).aspx
+  if (typeof event.stopPropagation === 'function') {
+    event.stopPropagation();
+  } else {
+    event.cancelBubble = true;
+  }
+}
+/**
+ * Get horizontal coordinate of the event object relative to the whole document.
+ *
+ * @param {Event} event
+ * @returns {Number}
+ */
+
+
+function pageX(event) {
+  if (event.pageX) {
+    return event.pageX;
+  }
+
+  var rootWindow = event.target.ownerDocument.defaultView;
+  return event.clientX + getWindowScrollLeft(rootWindow);
+}
+/**
+ * Get vertical coordinate of the event object relative to the whole document.
+ *
+ * @param {Event} event
+ * @returns {Number}
+ */
+
+
+function pageY(event) {
+  if (event.pageY) {
+    return event.pageY;
+  }
+
+  var frame = event.target.ownerDocument.defaultView;
+  var offset = getWindowScrollTop(frame);
+  frame = getParentWindow(frame);
+
+  while (frame) {
+    offset -= getWindowScrollTop(frame);
+    frame = getParentWindow(frame);
+  }
+
+  return event.clientY + offset;
 }
 /**
  * Check if provided event was triggered by clicking the right mouse button.
@@ -59218,7 +59277,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "17/06/2021 15:01:00";
+Handsontable.buildDate = "17/06/2021 21:53:10";
 Handsontable.version = "9.0.0";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
@@ -71675,7 +71734,7 @@ var _number = __webpack_require__(28);
 
 var _mixed = __webpack_require__(23);
 
-var copyableLookup = (0, _data.cellMethodLookupFactory)('copyable', false);
+var copyableLookup = (0, _data.cellMethodLookupFactory)("copyable", false);
 /**
  * Utility class that gets and saves data from/to the data source using mapping of columns numbers to object property names.
  *
@@ -71751,8 +71810,8 @@ var DataMap = /*#__PURE__*/function () {
     value: function createMap() {
       var schema = this.getSchema();
 
-      if (typeof schema === 'undefined') {
-        throw new Error('trying to create `columns` definition but you didn\'t provide `schema` nor `data`');
+      if (typeof schema === "undefined") {
+        throw new Error("trying to create `columns` definition but you didn't provide `schema` nor `data`");
       }
 
       var columns = this.tableMeta.columns;
@@ -71765,7 +71824,7 @@ var DataMap = /*#__PURE__*/function () {
         var filteredIndex = 0;
         var columnsAsFunc = false;
 
-        if (typeof columns === 'function') {
+        if (typeof columns === "function") {
           var schemaLen = (0, _object.deepObjectSize)(schema);
           columnsLen = schemaLen > 0 ? schemaLen : this.countFirstRowKeys();
           columnsAsFunc = true;
@@ -71778,7 +71837,7 @@ var DataMap = /*#__PURE__*/function () {
           var column = columnsAsFunc ? columns(i) : columns[i];
 
           if ((0, _object.isObject)(column)) {
-            if (typeof column.data !== 'undefined') {
+            if (typeof column.data !== "undefined") {
               var index = columnsAsFunc ? filteredIndex : i;
               this.colToPropCache[index] = column.data;
               this.propToColCache.set(column.data, index);
@@ -71820,12 +71879,12 @@ var DataMap = /*#__PURE__*/function () {
       var propertyParent = parent;
       var prop;
 
-      if (typeof lastColumn === 'undefined') {
+      if (typeof lastColumn === "undefined") {
         lastColumn = 0;
-        propertyParent = '';
+        propertyParent = "";
       }
 
-      if ((0, _typeof2.default)(schema) === 'object' && !Array.isArray(schema)) {
+      if ((0, _typeof2.default)(schema) === "object" && !Array.isArray(schema)) {
         (0, _object.objectEach)(schema, function (value, key) {
           if (value === null) {
             prop = propertyParent + key;
@@ -71909,7 +71968,7 @@ var DataMap = /*#__PURE__*/function () {
       var schema = this.tableMeta.dataSchema;
 
       if (schema) {
-        if (typeof schema === 'function') {
+        if (typeof schema === "function") {
           return schema();
         }
 
@@ -71940,7 +71999,7 @@ var DataMap = /*#__PURE__*/function () {
       var numberOfCreatedRows = 0;
       var rowIndex = index;
 
-      if (typeof rowIndex !== 'number' || rowIndex >= sourceRowsCount) {
+      if (typeof rowIndex !== "number" || rowIndex >= sourceRowsCount) {
         rowIndex = sourceRowsCount;
       }
 
@@ -71948,7 +72007,7 @@ var DataMap = /*#__PURE__*/function () {
         physicalRowIndex = this.instance.toPhysicalRow(rowIndex);
       }
 
-      var continueProcess = this.instance.runHooks('beforeCreateRow', rowIndex, amount, source);
+      var continueProcess = this.instance.runHooks("beforeCreateRow", rowIndex, amount, source);
 
       if (continueProcess === false || physicalRowIndex === null) {
         return 0;
@@ -71961,7 +72020,7 @@ var DataMap = /*#__PURE__*/function () {
       var _loop = function _loop() {
         var row = null;
 
-        if (_this2.instance.dataType === 'array') {
+        if (_this2.instance.dataType === "array") {
           if (_this2.tableMeta.dataSchema) {
             // Clone template array
             row = (0, _object.deepClone)(_this2.getSchema());
@@ -71973,7 +72032,7 @@ var DataMap = /*#__PURE__*/function () {
               return row.push(null);
             });
           }
-        } else if (_this2.instance.dataType === 'function') {
+        } else if (_this2.instance.dataType === "function") {
           row = _this2.tableMeta.dataSchema(rowIndex + numberOfCreatedRows);
         } else {
           row = {};
@@ -71990,7 +72049,7 @@ var DataMap = /*#__PURE__*/function () {
 
       this.instance.rowIndexMapper.insertIndexes(rowIndex, numberOfCreatedRows);
       this.spliceData.apply(this, [physicalRowIndex, 0].concat(rowsToAdd));
-      this.instance.runHooks('afterCreateRow', rowIndex, numberOfCreatedRows, source);
+      this.instance.runHooks("afterCreateRow", rowIndex, numberOfCreatedRows, source);
       this.instance.forceFullRender = true; // used when data was changed
 
       return numberOfCreatedRows;
@@ -72012,18 +72071,18 @@ var DataMap = /*#__PURE__*/function () {
       var source = arguments.length > 2 ? arguments[2] : undefined;
 
       if (!this.instance.isColumnModificationAllowed()) {
-        throw new Error('Cannot create new column. When data source in an object, ' + 'you can only have as much columns as defined in first data row, data schema or in the \'columns\' setting.' + 'If you want to be able to add new columns, you have to use array datasource.');
+        throw new Error("Cannot create new column. When data source in an object, " + "you can only have as much columns as defined in first data row, data schema or in the 'columns' setting." + "If you want to be able to add new columns, you have to use array datasource.");
       }
 
       var dataSource = this.dataSource;
       var maxCols = this.tableMeta.maxCols;
       var columnIndex = index;
 
-      if (typeof columnIndex !== 'number' || columnIndex >= this.instance.countSourceCols()) {
+      if (typeof columnIndex !== "number" || columnIndex >= this.instance.countSourceCols()) {
         columnIndex = this.instance.countSourceCols();
       }
 
-      var continueProcess = this.instance.runHooks('beforeCreateCol', columnIndex, amount, source);
+      var continueProcess = this.instance.runHooks("beforeCreateCol", columnIndex, amount, source);
 
       if (continueProcess === false) {
         return 0;
@@ -72041,10 +72100,10 @@ var DataMap = /*#__PURE__*/function () {
       var currentIndex = physicalColumnIndex;
 
       while (numberOfCreatedCols < amount && nrOfColumns < maxCols) {
-        if (typeof columnIndex !== 'number' || columnIndex >= nrOfColumns) {
+        if (typeof columnIndex !== "number" || columnIndex >= nrOfColumns) {
           if (numberOfSourceRows > 0) {
             for (var row = 0; row < numberOfSourceRows; row += 1) {
-              if (typeof dataSource[row] === 'undefined') {
+              if (typeof dataSource[row] === "undefined") {
                 dataSource[row] = [];
               }
 
@@ -72065,7 +72124,7 @@ var DataMap = /*#__PURE__*/function () {
       }
 
       this.instance.columnIndexMapper.insertIndexes(columnIndex, numberOfCreatedCols);
-      this.instance.runHooks('afterCreateCol', columnIndex, numberOfCreatedCols, source);
+      this.instance.runHooks("afterCreateCol", columnIndex, numberOfCreatedCols, source);
       this.instance.forceFullRender = true; // used when data was changed
 
       return numberOfCreatedCols;
@@ -72092,7 +72151,7 @@ var DataMap = /*#__PURE__*/function () {
       var sourceRowsLength = this.instance.countSourceRows();
       rowIndex = (sourceRowsLength + rowIndex) % sourceRowsLength; // It handle also callback from the `NestedRows` plugin. Removing parent node has effect in removing children nodes.
 
-      var actionWasNotCancelled = this.instance.runHooks('beforeRemoveRow', rowIndex, removedPhysicalIndexes.length, removedPhysicalIndexes, source);
+      var actionWasNotCancelled = this.instance.runHooks("beforeRemoveRow", rowIndex, removedPhysicalIndexes.length, removedPhysicalIndexes, source);
 
       if (actionWasNotCancelled === false) {
         return false;
@@ -72118,7 +72177,7 @@ var DataMap = /*#__PURE__*/function () {
         }
       }
 
-      this.instance.runHooks('afterRemoveRow', rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes, source);
+      this.instance.runHooks("afterRemoveRow", rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes, source);
       this.instance.forceFullRender = true; // used when data was changed
 
       return true;
@@ -72140,17 +72199,17 @@ var DataMap = /*#__PURE__*/function () {
       var amount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       var source = arguments.length > 2 ? arguments[2] : undefined;
 
-      if (this.instance.dataType === 'object' || this.tableMeta.columns) {
-        throw new Error('cannot remove column with object data source or columns option specified');
+      if (this.instance.dataType === "object" || this.tableMeta.columns) {
+        throw new Error("cannot remove column with object data source or columns option specified");
       }
 
-      var columnIndex = typeof index !== 'number' ? -amount : index;
+      var columnIndex = typeof index !== "number" ? -amount : index;
       columnIndex = (this.instance.countCols() + columnIndex) % this.instance.countCols();
       var logicColumns = this.visualColumnsToPhysical(columnIndex, amount);
       var descendingLogicColumns = logicColumns.slice(0).sort(function (a, b) {
         return b - a;
       });
-      var actionWasNotCancelled = this.instance.runHooks('beforeRemoveCol', columnIndex, amount, logicColumns, source);
+      var actionWasNotCancelled = this.instance.runHooks("beforeRemoveCol", columnIndex, amount, logicColumns, source);
 
       if (actionWasNotCancelled === false) {
         return false;
@@ -72187,7 +72246,7 @@ var DataMap = /*#__PURE__*/function () {
         }
       }
 
-      this.instance.runHooks('afterRemoveCol', columnIndex, amount, logicColumns, source);
+      this.instance.runHooks("afterRemoveCol", columnIndex, amount, logicColumns, source);
       this.instance.forceFullRender = true; // used when data was changed
 
       return true;
@@ -72223,7 +72282,7 @@ var DataMap = /*#__PURE__*/function () {
       }
 
       (0, _array.to2dArray)(elements);
-      this.instance.populateFromArray(index, col, elements, null, null, 'spliceCol');
+      this.instance.populateFromArray(index, col, elements, null, null, "spliceCol");
       return removed;
     }
     /**
@@ -72256,7 +72315,7 @@ var DataMap = /*#__PURE__*/function () {
         i += 1;
       }
 
-      this.instance.populateFromArray(row, index, [elements], null, null, 'spliceRow');
+      this.instance.populateFromArray(row, index, [elements], null, null, "spliceRow");
       return removed;
     }
     /**
@@ -72274,7 +72333,7 @@ var DataMap = /*#__PURE__*/function () {
         elements[_key3 - 2] = arguments[_key3];
       }
 
-      var continueSplicing = this.instance.runHooks('beforeDataSplice', index, amount, elements);
+      var continueSplicing = this.instance.runHooks("beforeDataSplice", index, amount, elements);
 
       if (continueSplicing !== false) {
         var _this$dataSource;
@@ -72294,7 +72353,7 @@ var DataMap = /*#__PURE__*/function () {
   }, {
     key: "filterData",
     value: function filterData(index, amount, physicalRows) {
-      var continueSplicing = this.instance.runHooks('beforeDataFilter', index, amount, physicalRows);
+      var continueSplicing = this.instance.runHooks("beforeDataFilter", index, amount, physicalRows);
 
       if (continueSplicing !== false) {
         var newData = this.dataSource.filter(function (row, rowIndex) {
@@ -72317,15 +72376,15 @@ var DataMap = /*#__PURE__*/function () {
       var physicalRow = this.instance.toPhysicalRow(row);
       var dataRow = this.dataSource[physicalRow]; // TODO: To remove, use 'modifyData' hook instead (see below)
 
-      var modifiedRowData = this.instance.runHooks('modifyRowData', physicalRow);
+      var modifiedRowData = this.instance.runHooks("modifyRowData", physicalRow);
       dataRow = isNaN(modifiedRowData) ? modifiedRowData : dataRow; //
 
       var value = null; // try to get value under property `prop` (includes dot)
 
       if (dataRow && dataRow.hasOwnProperty && (0, _object.hasOwnProperty)(dataRow, prop)) {
         value = dataRow[prop];
-      } else if (typeof prop === 'string' && prop.indexOf('.') > -1) {
-        var sliced = prop.split('.');
+      } else if (typeof prop === "string" && prop.indexOf(".") > -1) {
+        var sliced = prop.split(".");
         var out = dataRow;
 
         if (!out) {
@@ -72335,13 +72394,13 @@ var DataMap = /*#__PURE__*/function () {
         for (var i = 0, ilen = sliced.length; i < ilen; i++) {
           out = out[sliced[i]];
 
-          if (typeof out === 'undefined') {
+          if (typeof out === "undefined") {
             return null;
           }
         }
 
         value = out;
-      } else if (typeof prop === 'function') {
+      } else if (typeof prop === "function") {
         /**
          *  Allows for interacting with complex structures, for example
          *  d3/jQuery getter/setter properties:
@@ -72358,9 +72417,9 @@ var DataMap = /*#__PURE__*/function () {
         value = prop(this.dataSource.slice(physicalRow, physicalRow + 1)[0]);
       }
 
-      if (this.instance.hasHook('modifyData')) {
+      if (this.instance.hasHook("modifyData")) {
         var valueHolder = (0, _object.createObjectPropListener)(value);
-        this.instance.runHooks('modifyData', physicalRow, this.propToCol(prop), valueHolder, 'get');
+        this.instance.runHooks("modifyData", physicalRow, this.propToCol(prop), valueHolder, "get");
 
         if (valueHolder.isTouched()) {
           value = valueHolder.value;
@@ -72384,7 +72443,7 @@ var DataMap = /*#__PURE__*/function () {
         return this.get(row, prop);
       }
 
-      return '';
+      return "";
     }
     /**
      * Saves single value to the data array.
@@ -72401,12 +72460,12 @@ var DataMap = /*#__PURE__*/function () {
       var newValue = value;
       var dataRow = this.dataSource[physicalRow]; // TODO: To remove, use 'modifyData' hook instead (see below)
 
-      var modifiedRowData = this.instance.runHooks('modifyRowData', physicalRow);
+      var modifiedRowData = this.instance.runHooks("modifyRowData", physicalRow);
       dataRow = isNaN(modifiedRowData) ? modifiedRowData : dataRow; //
 
-      if (this.instance.hasHook('modifyData')) {
+      if (this.instance.hasHook("modifyData")) {
         var valueHolder = (0, _object.createObjectPropListener)(newValue);
-        this.instance.runHooks('modifyData', physicalRow, this.propToCol(prop), valueHolder, 'set');
+        this.instance.runHooks("modifyData", physicalRow, this.propToCol(prop), valueHolder, "set");
 
         if (valueHolder.isTouched()) {
           newValue = valueHolder.value;
@@ -72416,14 +72475,14 @@ var DataMap = /*#__PURE__*/function () {
 
       if (dataRow && dataRow.hasOwnProperty && (0, _object.hasOwnProperty)(dataRow, prop)) {
         dataRow[prop] = newValue;
-      } else if (typeof prop === 'string' && prop.indexOf('.') > -1) {
-        var sliced = prop.split('.');
+      } else if (typeof prop === "string" && prop.indexOf(".") > -1) {
+        var sliced = prop.split(".");
         var out = dataRow;
         var i = 0;
         var ilen;
 
         for (i = 0, ilen = sliced.length - 1; i < ilen; i++) {
-          if (typeof out[sliced[i]] === 'undefined') {
+          if (typeof out[sliced[i]] === "undefined") {
             out[sliced[i]] = {};
           }
 
@@ -72431,7 +72490,7 @@ var DataMap = /*#__PURE__*/function () {
         }
 
         out[sliced[i]] = newValue;
-      } else if (typeof prop === 'function') {
+      } else if (typeof prop === "function") {
         /* see the `function` handler in `get` */
         prop(this.dataSource.slice(physicalRow, physicalRow + 1)[0], newValue);
       } else {
@@ -72499,7 +72558,7 @@ var DataMap = /*#__PURE__*/function () {
     value: function clear() {
       for (var r = 0; r < this.instance.countSourceRows(); r++) {
         for (var c = 0; c < this.instance.countCols(); c++) {
-          this.set(r, this.colToProp(c), '');
+          this.set(r, this.colToProp(c), "");
         }
       }
     }
@@ -72538,8 +72597,8 @@ var DataMap = /*#__PURE__*/function () {
         col: 0
       };
       var end = {
-        row: Math.max(this.instance.countRows() - 1, 0),
-        col: Math.max(this.instance.countCols() - 1, 0)
+        row: Math.max(this.instance.countPhysicalRows() - 1, 0),
+        col: Math.max(this.instance.countPhysicalCols() - 1, 0)
       };
 
       if (start.row - end.row === 0 && !this.instance.countSourceRows()) {
@@ -72575,8 +72634,8 @@ var DataMap = /*#__PURE__*/function () {
       var r;
       var c;
       var row;
-      var maxRows = this.tableMeta.maxRows;
-      var maxCols = this.tableMeta.maxCols;
+      var maxRows = this.instance.countPhysicalRows();
+      var maxCols = this.instance.countPhysicalCols();
 
       if (maxRows === 0 || maxCols === 0) {
         return [];
