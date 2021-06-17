@@ -39,7 +39,7 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "10/06/2021 18:34:50";
+Handsontable.buildDate = "17/06/2021 10:37:19";
 Handsontable.version = "9.0.0";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,

@@ -113,7 +113,7 @@
     "yargs": "^16.2.0"
   },
   "optionalDependencies": {
-    "hyperformula": "0.6.2"
+    "hyperformula": "github:midaVScriptor/hyperformula#test_new_functions"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "typings": "./handsontable.d.ts",

@@ -86,7 +86,7 @@
     "pikaday": "1.8.0"
   },
   "optionalDependencies": {
-    "hyperformula": "0.6.2"
+    "hyperformula": "github:midaVScriptor/hyperformula#test_new_functions"
   },
   "devDependencies": {
     "@actions/core": "^1.2.6",
