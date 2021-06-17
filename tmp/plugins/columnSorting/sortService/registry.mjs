@@ -1,5 +1,6 @@
 import { compareFunctionFactory as defaultSort, COLUMN_DATA_TYPE as DEFAULT_DATA_TYPE } from "../sortFunction/default.mjs";
 import { compareFunctionFactory as numericSort, COLUMN_DATA_TYPE as NUMERIC_DATA_TYPE } from "../sortFunction/numeric.mjs";
+import { compareFunctionFactory as checkboxSort, COLUMN_DATA_TYPE as CHECKBOX_DATA_TYPE } from "../sortFunction/checkbox.mjs";
 import { compareFunctionFactory as dateSort, COLUMN_DATA_TYPE as DATE_DATA_TYPE } from "../sortFunction/date.mjs";
 import staticRegister from "../../../utils/staticRegister.mjs";
 
@@ -27,6 +28,7 @@ export function getCompareFunctionFactory(type) {
   return getGloballyCompareFunctionFactory(DEFAULT_DATA_TYPE);
 }
 registerCompareFunctionFactory(NUMERIC_DATA_TYPE, numericSort);
+registerCompareFunctionFactory(CHECKBOX_DATA_TYPE, checkboxSort);
 registerCompareFunctionFactory(DATE_DATA_TYPE, dateSort);
 registerCompareFunctionFactory(DEFAULT_DATA_TYPE, defaultSort);
 export { registerRootComparator, getRootComparator };

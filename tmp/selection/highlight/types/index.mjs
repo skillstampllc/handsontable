@@ -5,13 +5,14 @@ import "core-js/modules/es.object.get-own-property-descriptor.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 import "core-js/modules/es.object.get-own-property-descriptors.js";
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import staticRegister from "./../../../utils/staticRegister.mjs";
+import { ACTIVE_HEADER_TYPE, AREA_TYPE, CELL_TYPE, CUSTOM_SELECTION_TYPE, FILL_TYPE, HEADER_TYPE } from "../constants.mjs";
 import activeHeaderHighlight from "./activeHeader.mjs";
 import areaHighlight from "./area.mjs";
 import cellHighlight from "./cell.mjs";
@@ -23,12 +24,12 @@ var _staticRegister = staticRegister('highlight/types'),
     register = _staticRegister.register,
     getItem = _staticRegister.getItem;
 
-register('active-header', activeHeaderHighlight);
-register('area', areaHighlight);
-register('cell', cellHighlight);
-register('custom-selection', customSelection);
-register('fill', fillHighlight);
-register('header', headerHighlight);
+register(ACTIVE_HEADER_TYPE, activeHeaderHighlight);
+register(AREA_TYPE, areaHighlight);
+register(CELL_TYPE, cellHighlight);
+register(CUSTOM_SELECTION_TYPE, customSelection);
+register(FILL_TYPE, fillHighlight);
+register(HEADER_TYPE, headerHighlight);
 /**
  * @param {string} highlightType The selection type.
  * @param {object} options The selection options.

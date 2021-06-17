@@ -16,9 +16,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.string.iterator.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -80,6 +80,7 @@ var BottomOverlay = /*#__PURE__*/function (_Overlay) {
     _defineProperty(_assertThisInitialized(_this), "cachedFixedRowsBottom", -1);
 
     _this.clone = _this.makeClone(_constants.CLONE_BOTTOM);
+    _this.cachedFixedRowsBottom = _this.wot.getSetting('fixedRowsBottom');
     return _this;
   }
   /**

@@ -1,8 +1,8 @@
 import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
 import { arrayEach } from "./array.mjs";
 export var KEY_CODES = {
   MOUSE_LEFT: 1,

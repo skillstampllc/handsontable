@@ -24,10 +24,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.object.set-prototype-of.js";
 import "core-js/modules/es.object.get-prototype-of.js";
@@ -156,8 +156,6 @@ export var BindRowsWithHeaders = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.rowIndexMapper.unregisterMap('bindRowsWithHeaders');
-
       _get(_getPrototypeOf(BindRowsWithHeaders.prototype), "destroy", this).call(this);
     }
   }], [{

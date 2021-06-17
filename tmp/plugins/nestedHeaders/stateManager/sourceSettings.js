@@ -15,15 +15,15 @@ require("core-js/modules/web.dom-collections.for-each.js");
 require("core-js/modules/es.object.get-own-property-descriptors.js");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports.default = exports.HEADER_CONFIGURABLE_PROPS = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -33,9 +33,9 @@ var _array = require("../../../helpers/array");
 
 var _settingsNormalizer = require("./settingsNormalizer");
 
-var _constants = require("./constants");
+var _excluded = ["row", "col"];
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -61,12 +61,12 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
-var _data = new WeakMap();
-
-var _dataLength = new WeakMap();
-
-var _columnsLimit = new WeakMap();
-
+/**
+ * List of properties which are configurable. That properties can be changed using public API.
+ *
+ * @type {string[]}
+ */
+var HEADER_CONFIGURABLE_PROPS = ['label', 'collapsible'];
 /**
  * The class manages and normalizes settings passed by the developer
  * into the nested headers plugin. The SourceSettings class is a
@@ -75,6 +75,15 @@ var _columnsLimit = new WeakMap();
  * @class SourceSettings
  * @plugin NestedHeaders
  */
+
+exports.HEADER_CONFIGURABLE_PROPS = HEADER_CONFIGURABLE_PROPS;
+
+var _data = /*#__PURE__*/new WeakMap();
+
+var _dataLength = /*#__PURE__*/new WeakMap();
+
+var _columnsLimit = /*#__PURE__*/new WeakMap();
+
 var SourceSettings = /*#__PURE__*/function () {
   function SourceSettings() {
     _classCallCheck(this, SourceSettings);
@@ -148,12 +157,12 @@ var SourceSettings = /*#__PURE__*/function () {
       (0, _array.arrayEach)(additionalSettings, function (_ref) {
         var row = _ref.row,
             col = _ref.col,
-            rest = _objectWithoutProperties(_ref, ["row", "col"]);
+            rest = _objectWithoutProperties(_ref, _excluded);
 
         var headerSettings = _this.getHeaderSettings(row, col);
 
         if (headerSettings !== null) {
-          (0, _object.extend)(headerSettings, rest, _constants.HEADER_CONFIGURABLE_PROPS);
+          (0, _object.extend)(headerSettings, rest, HEADER_CONFIGURABLE_PROPS);
         }
       });
     }
@@ -174,7 +183,7 @@ var SourceSettings = /*#__PURE__*/function () {
           var propsToExtend = callback(_objectSpread({}, headerSettings));
 
           if ((0, _object.isObject)(propsToExtend)) {
-            (0, _object.extend)(headerSettings, propsToExtend, _constants.HEADER_CONFIGURABLE_PROPS);
+            (0, _object.extend)(headerSettings, propsToExtend, HEADER_CONFIGURABLE_PROPS);
           }
         });
       });
@@ -234,7 +243,7 @@ var SourceSettings = /*#__PURE__*/function () {
       for (var i = columnIndex; i < headersSettings.length; i++) {
         var headerSettings = headersSettings[i];
 
-        if (headerSettings.isHidden === true) {
+        if (headerSettings.isPlaceholder) {
           throw new Error('The first column settings cannot overlap the other header layers');
         }
 

@@ -5,8 +5,9 @@ import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.object.get-own-property-descriptor.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 import "core-js/modules/es.object.get-own-property-descriptors.js";
+var _excluded = ["headerClassName", "rowClassName", "columnClassName"];
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -16,11 +17,16 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
+import { HEADER_TYPE } from "../constants.mjs";
 import VisualSelection from "../visualSelection.mjs";
 /**
  * Creates the new instance of Selection, responsible for highlighting row and column headers. This type of selection
  * can occur multiple times.
  *
+ * @param {object} highlightParams A configuration object to create a highlight.
+ * @param {string} highlightParams.headerClassName Highlighted headers' class name.
+ * @param {string} highlightParams.rowClassName Highlighted row' class name.
+ * @param {string} highlightParams.columnClassName Highlighted column' class name.
  * @returns {Selection}
  */
 
@@ -28,14 +34,17 @@ function createHighlight(_ref) {
   var headerClassName = _ref.headerClassName,
       rowClassName = _ref.rowClassName,
       columnClassName = _ref.columnClassName,
-      restOptions = _objectWithoutProperties(_ref, ["headerClassName", "rowClassName", "columnClassName"]);
+      restOptions = _objectWithoutProperties(_ref, _excluded);
 
-  var s = new VisualSelection(_objectSpread({
+  var s = new VisualSelection(_objectSpread(_objectSpread({
     className: 'highlight',
     highlightHeaderClassName: headerClassName,
     highlightRowClassName: rowClassName,
     highlightColumnClassName: columnClassName
-  }, restOptions));
+  }, restOptions), {}, {
+    highlightOnlyClosestHeader: true,
+    selectionType: HEADER_TYPE
+  }));
   return s;
 }
 

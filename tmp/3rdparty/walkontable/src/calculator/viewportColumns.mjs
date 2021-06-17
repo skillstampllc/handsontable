@@ -4,10 +4,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.weak-map.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import { RENDER_TYPE, FULLY_VISIBLE_TYPE } from "./constants.mjs";
 var privatePool = new WeakMap();
@@ -21,14 +21,14 @@ var privatePool = new WeakMap();
 var ViewportColumnsCalculator = /*#__PURE__*/function () {
   /**
    * @param {object} options Object with all options specified for column viewport calculation.
-   * @param {number} options.viewportWidth Width of the viewport.
+   * @param {number} options.viewportSize Width of the viewport.
    * @param {number} options.scrollOffset Current horizontal scroll position of the viewport.
-   * @param {number} options.totalColumns Total number of columns.
-   * @param {Function} options.columnWidthFn Function that returns the width of the column at a given index (in px).
+   * @param {number} options.totalItems Total number of columns.
+   * @param {Function} options.itemSizeFn Function that returns the width of the column at a given index (in px).
    * @param {Function} options.overrideFn Function that changes calculated this.startRow, this.endRow (used by MergeCells plugin).
    * @param {string} options.calculationType String which describes types of calculation which will be performed.
-   * @param {string} [options.stretchH] Stretch mode 'all' or 'last'.
-   * @param {Function} [options.stretchingColumnWidthFn] Function that returns the new width of the stretched column.
+   * @param {string} [options.stretchMode] Stretch mode 'all' or 'last'.
+   * @param {Function} [options.stretchingItemWidthFn] Function that returns the new width of the stretched column.
    */
   function ViewportColumnsCalculator() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},

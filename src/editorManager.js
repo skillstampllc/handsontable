@@ -75,45 +75,28 @@ class EditorManager {
      */
     this.lastKeyCode = void 0;
 
-    this.instance.addHook("afterDocumentKeyDown", (event) =>
-      this.onAfterDocumentKeyDown(event)
-    );
+    this.instance.addHook('afterDocumentKeyDown', event => this.onAfterDocumentKeyDown(event));
 
     let frame = this.instance.rootWindow;
 
     while (frame) {
-      this.eventManager.addEventListener(
-        frame.document.documentElement,
-        "keydown",
-        (event) => {
-          if (!this.destroyed) {
-            this.instance.runHooks("afterDocumentKeyDown", event);
-          }
+      this.eventManager.addEventListener(frame.document.documentElement, 'keydown', (event) => {
+        if (!this.destroyed) {
+          this.instance.runHooks('afterDocumentKeyDown', event);
         }
-      );
+      });
 
       frame = getParentWindow(frame);
     }
 
     // Open editor when text composition is started (IME editor)
-    this.eventManager.addEventListener(
-      this.instance.rootDocument.documentElement,
-      "compositionstart",
-      (event) => {
-        if (
-          !this.destroyed &&
-          this.activeEditor &&
-          !this.activeEditor.isOpened() &&
-          this.instance.isListening()
-        ) {
-          this.openEditor("", event);
-        }
+    this.eventManager.addEventListener(this.instance.rootDocument.documentElement, 'compositionstart', (event) => {
+      if (!this.destroyed && this.activeEditor && !this.activeEditor.isOpened() && this.instance.isListening()) {
+        this.openEditor('', event);
       }
-    );
+    });
 
-    this.instance.view.wt.update("onCellDblClick", (event, coords, elem) =>
-      this.onCellDblClick(event, coords, elem)
-    );
+    this.instance.view.wt.update('onCellDblClick', (event, coords, elem) => this.onCellDblClick(event, coords, elem));
   }
 
   /**
@@ -139,7 +122,7 @@ class EditorManager {
    *                                 then an editor won't be closed until validation is passed.
    */
   destroyEditor(revertOriginal) {
-    if (!this.lock && this.activeEditor && this.activeEditor._opened) {
+    if (!this.lock) {
       this.closeEditor(revertOriginal);
     }
   }
@@ -250,11 +233,8 @@ class EditorManager {
    */
   closeEditor(restoreOriginalValue, isCtrlPressed, callback) {
     if (this.activeEditor) {
-      this.activeEditor.finishEditing(
-        restoreOriginalValue,
-        isCtrlPressed,
-        callback
-      );
+      this.activeEditor.finishEditing(restoreOriginalValue, isCtrlPressed, callback);
+
     } else if (callback) {
       callback(false);
     }
@@ -374,7 +354,7 @@ class EditorManager {
       return;
     }
 
-    this.instance.runHooks("beforeKeyDown", event);
+    this.instance.runHooks('beforeKeyDown', event);
 
     // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
     // character is entering (using IME editor). It is fired mainly on linux (ubuntu) with installed ibus-pinyin package.
@@ -393,13 +373,8 @@ class EditorManager {
     const isCtrlPressed = (event.ctrlKey || event.metaKey) && !event.altKey;
 
     if (this.activeEditor && !this.activeEditor.isWaiting()) {
-      if (
-        !isMetaKey(event.keyCode) &&
-        !isCtrlMetaKey(event.keyCode) &&
-        !isCtrlPressed &&
-        !this.isEditorOpened()
-      ) {
-        this.openEditor("", event);
+      if (!isMetaKey(event.keyCode) && !isCtrlMetaKey(event.keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
+        this.openEditor('', event);
 
         return;
       }
@@ -407,9 +382,7 @@ class EditorManager {
 
     const isShiftPressed = event.shiftKey;
 
-    const rangeModifier = isShiftPressed
-      ? this.selection.setRangeEnd
-      : this.selection.setRangeStart;
+    const rangeModifier = isShiftPressed ? this.selection.setRangeEnd : this.selection.setRangeStart;
     let tabMoves;
 
     switch (event.keyCode) {
@@ -505,13 +478,16 @@ class EditorManager {
             this.closeEditorAndSaveChanges(isCtrlPressed);
           }
           this.moveSelectionAfterEnter(isShiftPressed);
+
         } else if (this.instance.getSettings().enterBeginsEditing) {
           if (this.cellProperties.readOnly) {
             this.moveSelectionAfterEnter();
+
           } else if (this.activeEditor) {
             this.activeEditor.enableFullEditMode();
             this.openEditor(null, event);
           }
+
         } else {
           this.moveSelectionAfterEnter(isShiftPressed);
         }
@@ -530,15 +506,14 @@ class EditorManager {
 
       case KEY_CODES.HOME:
         if (event.ctrlKey || event.metaKey) {
-          rangeModifier.call(
-            this.selection,
-            new CellCoords(0, this.selection.selectedRange.current().from.col)
-          );
+          rangeModifier.call(this.selection,
+            new CellCoords(
+              this.instance.rowIndexMapper.getFirstNotHiddenIndex(0, 1),
+              this.selection.selectedRange.current().from.col));
         } else {
-          rangeModifier.call(
-            this.selection,
-            new CellCoords(this.selection.selectedRange.current().from.row, 0)
-          );
+          rangeModifier.call(this.selection,
+            new CellCoords(this.selection.selectedRange.current().from.row,
+              this.instance.columnIndexMapper.getFirstNotHiddenIndex(0, 1)));
         }
         event.preventDefault(); // don't scroll the window
         event.stopPropagation();
@@ -548,12 +523,14 @@ class EditorManager {
         if (event.ctrlKey || event.metaKey) {
           rangeModifier.call(
             this.selection,
-            new CellCoords(this.instance.countRows() - 1, this.selection.selectedRange.current().from.col)
+            new CellCoords(this.instance.rowIndexMapper.getFirstNotHiddenIndex(this.instance.countRows() - 1, -1),
+              this.selection.selectedRange.current().from.col)
           );
         } else {
           rangeModifier.call(
             this.selection,
-            new CellCoords(this.selection.selectedRange.current().from.row, this.instance.countCols() - 1)
+            new CellCoords(this.selection.selectedRange.current().from.row,
+              this.instance.columnIndexMapper.getFirstNotHiddenIndex(this.instance.countCols() - 1, -1))
           );
         }
         event.preventDefault(); // don't scroll the window
@@ -587,7 +564,7 @@ class EditorManager {
    */
   onCellDblClick(event, coords, elem) {
     // may be TD or TH
-    if (elem.nodeName === "TD") {
+    if (elem.nodeName === 'TD') {
       if (this.activeEditor) {
         this.activeEditor.enableFullEditMode();
       }

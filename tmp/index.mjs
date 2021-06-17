@@ -1,7 +1,7 @@
 import "core-js/modules/es.object.get-own-property-names.js";
 import Handsontable from "./base.mjs";
 import EventManager, { getListenersCounter } from "./eventManager.mjs";
-import { getRegisteredMapsCounter } from "./translations/mapCollection.mjs";
+import { getRegisteredMapsCounter } from "./translations/index.mjs";
 import Hooks from "./pluginHooks.mjs";
 import { metaSchemaFactory } from "./dataMap/index.mjs";
 import jQueryWrapper from "./helpers/wrappers/jquery.mjs";
@@ -20,11 +20,21 @@ import * as stringHelpers from "./helpers/string.mjs";
 import * as unicodeHelpers from "./helpers/unicode.mjs";
 import * as domHelpers from "./helpers/dom/element.mjs";
 import * as domEventHelpers from "./helpers/dom/event.mjs";
+/* eslint-disable handsontable/restricted-module-imports */
+// Since the Handsontable was modularized, importing some submodules is restricted.
+// Importing the main entry of the submodule can make the "dead" code elimination
+// process more difficult. The "handsontable/restricted-module-imports" rule is on
+// guard. For the index.js file, the rule has to be disabled. This file exports the
+// full version of the Handsontable with build-in all available components, so that's
+// why the rule is disabled here (see more #7506).
+
 import { getRegisteredEditorNames, getEditor, registerEditor, AutocompleteEditor, BaseEditor, CheckboxEditor, DateEditor, DropdownEditor, HandsontableEditor, NumericEditor, PasswordEditor, SelectEditor, TextEditor } from "./editors/index.mjs";
 import { getRegisteredRendererNames, getRenderer, registerRenderer, baseRenderer, autocompleteRenderer, checkboxRenderer, htmlRenderer, numericRenderer, passwordRenderer, textRenderer } from "./renderers/index.mjs";
 import { getRegisteredValidatorNames, getValidator, registerValidator, autocompleteValidator, dateValidator, numericValidator, timeValidator } from "./validators/index.mjs";
 import { getRegisteredCellTypeNames, getCellType, registerCellType, AutocompleteCellType, CheckboxCellType, DateCellType, DropdownCellType, HandsontableCellType, NumericCellType, PasswordCellType, TextCellType, TimeCellType } from "./cellTypes/index.mjs";
-import { AutoColumnSize, AutoRowSize, Autofill, BasePlugin, BindRowsWithHeaders, CollapsibleColumns, ColumnSorting, ColumnSummary, Comments, ContextMenu, CopyPaste, CustomBorders, DragToScroll, DropdownMenu, ExportFile, Filters, Formulas, HeaderTooltips, HiddenColumns, HiddenRows, ManualColumnFreeze, ManualColumnMove, ManualColumnResize, ManualRowMove, ManualRowResize, MergeCells, MultiColumnSorting, MultipleSelectionHandles, NestedHeaders, NestedRows, ObserveChanges, PersistentState, Search, TouchScroll, TrimRows, UndoRedo, getPlugin, getPluginsNames, registerPlugin } from "./plugins/index.mjs";
+import { AutoColumnSize, AutoRowSize, Autofill, BasePlugin, BindRowsWithHeaders, CollapsibleColumns, ColumnSorting, ColumnSummary, Comments, ContextMenu, CopyPaste, CustomBorders, DragToScroll, DropdownMenu, ExportFile, Filters, Formulas, HiddenColumns, HiddenRows, ManualColumnFreeze, ManualColumnMove, ManualColumnResize, ManualRowMove, ManualRowResize, MergeCells, MultiColumnSorting, MultipleSelectionHandles, NestedHeaders, NestedRows, PersistentState, Search, TouchScroll, TrimRows, UndoRedo, getPlugin, getPluginsNames, registerPlugin } from "./plugins/index.mjs";
+/* eslint-enable handsontable/restricted-module-imports */
+
 registerEditor(BaseEditor);
 registerEditor(AutocompleteEditor);
 registerEditor(CheckboxEditor);
@@ -72,7 +82,6 @@ registerPlugin(DropdownMenu);
 registerPlugin(ExportFile);
 registerPlugin(Filters);
 registerPlugin(Formulas);
-registerPlugin(HeaderTooltips);
 registerPlugin(HiddenColumns);
 registerPlugin(HiddenRows);
 registerPlugin(ManualColumnFreeze);
@@ -85,7 +94,6 @@ registerPlugin(MultiColumnSorting);
 registerPlugin(MultipleSelectionHandles);
 registerPlugin(NestedHeaders);
 registerPlugin(NestedRows);
-registerPlugin(ObserveChanges);
 registerPlugin(PersistentState);
 registerPlugin(Search);
 registerPlugin(TouchScroll);

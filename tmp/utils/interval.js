@@ -4,9 +4,9 @@ exports.__esModule = true;
 exports.parseDelay = parseDelay;
 exports.default = void 0;
 
-require("core-js/modules/es.string.replace.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 var _feature = require("./../helpers/feature");
 

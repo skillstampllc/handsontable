@@ -24,10 +24,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.weak-map.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
@@ -679,8 +679,6 @@ export var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.rowIndexMapper.unregisterMap(this.pluginName);
-
       _get(_getPrototypeOf(ManualRowResize.prototype), "destroy", this).call(this);
     }
   }], [{

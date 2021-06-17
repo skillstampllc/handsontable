@@ -4,18 +4,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.weak-map.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/web.timers.js";
 import "core-js/modules/es.array.includes.js";
 import { closestDown, hasClass, isChildOf, getParent } from "./../../../helpers/dom/element.mjs";
 import { partial } from "./../../../helpers/function.mjs";
 import { isTouchSupported } from "./../../../helpers/feature.mjs";
-import { isMobileBrowser } from "./../../../helpers/browser.mjs";
+import { isMobileBrowser, isChromeWebKit, isFirefoxWebKit, isIOS } from "./../../../helpers/browser.mjs";
 import EventManager from "./../../../eventManager.mjs";
+import { isDefined } from "../../../helpers/mixed.mjs";
 var privatePool = new WeakMap();
 /**
  * @class Event
@@ -344,13 +345,30 @@ var Event = /*#__PURE__*/function () {
   }, {
     key: "onTouchEnd",
     value: function onTouchEnd(event) {
-      var excludeTags = ['A', 'BUTTON', 'INPUT'];
-      var target = event.target; // When the standard event was performed on the link element (a cell which contains HTML `a` element) then here
-      // we check if it should be canceled. Click is blocked in a situation when the element is rendered outside
-      // selected cells. This prevents accidentally page reloads while selecting adjacent cells.
+      var _this$parentCell;
 
-      if (this.selectedCellWasTouched(target) === false && excludeTags.includes(target.tagName)) {
-        event.preventDefault();
+      var target = event.target;
+      var parentCellCoords = (_this$parentCell = this.parentCell(target)) === null || _this$parentCell === void 0 ? void 0 : _this$parentCell.coords;
+      var isCellsRange = isDefined(parentCellCoords) && parentCellCoords.row >= 0 && parentCellCoords.col >= 0;
+      var isEventCancelable = event.cancelable && isCellsRange && this.instance.getSetting('isDataViewInstance'); // To prevent accidental redirects or other actions that the interactive elements (e.q "A" link) do
+      // while the cell is highlighted, all touch events that are triggered on different cells are
+      // "preventDefault"'ed. The user can interact with the element (e.q. click on the link that opens
+      // a new page) only when the same cell was previously selected (see related PR #7980).
+
+      if (isEventCancelable) {
+        var interactiveElements = ['A', 'BUTTON', 'INPUT']; // For browsers that use the WebKit as an engine (excluding Safari), there is a bug. The prevent
+        // default has to be called all the time. Otherwise, the second tap won't be triggered (probably
+        // caused by the native ~300ms delay - https://webkit.org/blog/5610/more-responsive-tapping-on-ios/).
+        // To make the interactive elements work, the event target element has to be check. If the element
+        // matches the allow-list, the event is not prevented.
+
+        if (isIOS() && (isChromeWebKit() || isFirefoxWebKit()) && this.selectedCellWasTouched(target) && !interactiveElements.includes(target.tagName)) {
+          event.preventDefault();
+        } else if (!this.selectedCellWasTouched(target)) {
+          // For other browsers, prevent default is fired only for the first tap and only when the previous
+          // highlighted cell was different.
+          event.preventDefault();
+        }
       }
 
       this.onMouseUp(event);

@@ -6,7 +6,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -48,10 +48,10 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.array.includes.js";
@@ -75,7 +75,6 @@ import { warn } from "../../helpers/console.mjs";
 import { addClass, hasClass, fastInnerText } from "../../helpers/dom/element.mjs";
 import EventManager from "../../eventManager.mjs";
 import { stopImmediatePropagation } from "../../helpers/dom/event.mjs";
-import { HidingMap } from "../../translations/index.mjs";
 export var PLUGIN_KEY = 'collapsibleColumns';
 export var PLUGIN_PRIORITY = 290;
 var actionDictionary = new Map([['collapse', {
@@ -128,7 +127,7 @@ var actionDictionary = new Map([['collapse', {
  * ```
  */
 
-var _collapsedColumnsMap = new WeakMap();
+var _collapsedColumnsMap = /*#__PURE__*/new WeakMap();
 
 export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
   _inherits(CollapsibleColumns, _BasePlugin);
@@ -192,9 +191,8 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
         warn('You need to configure the Nested Headers plugin in order to use collapsible headers.');
       }
 
-      _classPrivateFieldSet(this, _collapsedColumnsMap, new HidingMap());
+      _classPrivateFieldSet(this, _collapsedColumnsMap, this.hot.columnIndexMapper.createAndRegisterIndexMap(this.pluginName, 'hiding'));
 
-      this.hot.columnIndexMapper.registerMap(this.pluginName, _classPrivateFieldGet(this, _collapsedColumnsMap));
       this.nestedHeadersPlugin = this.hot.getPlugin('nestedHeaders');
       this.headerStateManager = this.nestedHeadersPlugin.getStateManager();
       this.addHook('init', function () {
@@ -402,12 +400,14 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
       });
       var isActionPossible = filteredCoords.length > 0;
       arrayEach(filteredCoords, function (_ref3) {
+        var _this4$headerStateMan;
+
         var row = _ref3.row,
             column = _ref3.col;
 
-        var _this4$headerStateMan = _this4.headerStateManager.getHeaderSettings(row, column),
-            collapsible = _this4$headerStateMan.collapsible,
-            isCollapsed = _this4$headerStateMan.isCollapsed;
+        var _ref4 = (_this4$headerStateMan = _this4.headerStateManager.getHeaderSettings(row, column)) !== null && _this4$headerStateMan !== void 0 ? _this4$headerStateMan : {},
+            collapsible = _ref4.collapsible,
+            isCollapsed = _ref4.isCollapsed;
 
         if (!collapsible || isCollapsed && action === 'collapse' || !isCollapsed && action === 'expand') {
           isActionPossible = false;
@@ -418,9 +418,9 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
       var affectedColumnsIndexes = [];
 
       if (isActionPossible) {
-        arrayEach(filteredCoords, function (_ref4) {
-          var row = _ref4.row,
-              column = _ref4.col;
+        arrayEach(filteredCoords, function (_ref5) {
+          var row = _ref5.row,
+              column = _ref5.col;
 
           var _this4$headerStateMan2 = _this4.headerStateManager.triggerNodeModification(action, row, column),
               colspanCompensation = _this4$headerStateMan2.colspanCompensation,
@@ -515,13 +515,15 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterGetColHeader",
     value: function onAfterGetColHeader(column, TH) {
+      var _this$headerStateMana;
+
       var TR = TH.parentNode;
       var THEAD = TR.parentNode;
       var row = -1 * THEAD.childNodes.length + Array.prototype.indexOf.call(THEAD.childNodes, TR);
 
-      var _this$headerStateMana = this.headerStateManager.getHeaderSettings(row, column),
-          collapsible = _this$headerStateMana.collapsible,
-          origColspan = _this$headerStateMana.origColspan;
+      var _ref6 = (_this$headerStateMana = this.headerStateManager.getHeaderSettings(row, column)) !== null && _this$headerStateMana !== void 0 ? _this$headerStateMana : {},
+          collapsible = _ref6.collapsible,
+          origColspan = _ref6.origColspan;
 
       if (collapsible && origColspan > 1 && column >= this.hot.getSettings().fixedColumnsLeft) {
         var button = this.generateIndicator(row, column);
@@ -587,8 +589,6 @@ export var CollapsibleColumns = /*#__PURE__*/function (_BasePlugin) {
     key: "destroy",
     value: function destroy() {
       _classPrivateFieldSet(this, _collapsedColumnsMap, null);
-
-      this.hot.columnIndexMapper.unregisterMap(this.pluginName);
 
       _get(_getPrototypeOf(CollapsibleColumns.prototype), "destroy", this).call(this);
     }

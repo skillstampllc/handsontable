@@ -27,9 +27,9 @@ require("core-js/modules/es.number.is-integer.js");
 
 require("core-js/modules/es.number.constructor.js");
 
-require("core-js/modules/es.string.replace.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 require("core-js/modules/es.array.concat.js");
 
@@ -47,15 +47,13 @@ require("core-js/modules/web.timers.js");
 
 require("core-js/modules/web.immediate.js");
 
+var _element = require("./helpers/dom/element");
+
 var _function = require("./helpers/function");
 
 var _mixed = require("./helpers/mixed");
 
 var _browser = require("./helpers/browser");
-
-var _element = require("./helpers/dom/element");
-
-var _console = require("./helpers/console");
 
 var _editorManager = _interopRequireDefault(require("./editorManager"));
 
@@ -113,7 +111,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -123,7 +121,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -313,11 +311,16 @@ function Core(rootElement, userSettings) {
       return _this.view.countRenderableRows();
     },
     visualToRenderableCoords: visualToRenderableCoords,
-    renderableToVisualCoords: renderableToVisualCoords
+    renderableToVisualCoords: renderableToVisualCoords,
+    isDisabledCellSelection: function isDisabledCellSelection(visualRow, visualColumn) {
+      return instance.getCellMeta(visualRow, visualColumn).disableVisualSelection;
+    }
   });
   this.selection = selection;
 
-  var onIndexMapperCacheUpdate = function onIndexMapperCacheUpdate(flag1, flag2, hiddenIndexesChanged) {
+  var onIndexMapperCacheUpdate = function onIndexMapperCacheUpdate(_ref) {
+    var hiddenIndexesChanged = _ref.hiddenIndexesChanged;
+
     if (hiddenIndexesChanged) {
       _this.selection.refresh();
     }
@@ -481,12 +484,12 @@ function Core(rootElement, userSettings) {
         var sortedIndexes = _toConsumableArray(indexes); // Sort the indexes in ascending order.
 
 
-        sortedIndexes.sort(function (_ref, _ref2) {
-          var _ref3 = _slicedToArray(_ref, 1),
-              indexA = _ref3[0];
-
+        sortedIndexes.sort(function (_ref2, _ref3) {
           var _ref4 = _slicedToArray(_ref2, 1),
-              indexB = _ref4[0];
+              indexA = _ref4[0];
+
+          var _ref5 = _slicedToArray(_ref3, 1),
+              indexB = _ref5[0];
 
           if (indexA === indexB) {
             return 0;
@@ -495,10 +498,10 @@ function Core(rootElement, userSettings) {
           return indexA > indexB ? 1 : -1;
         }); // Normalize the {index, amount} groups into bigger groups.
 
-        var normalizedIndexes = (0, _array.arrayReduce)(sortedIndexes, function (acc, _ref5) {
-          var _ref6 = _slicedToArray(_ref5, 2),
-              groupIndex = _ref6[0],
-              groupAmount = _ref6[1];
+        var normalizedIndexes = (0, _array.arrayReduce)(sortedIndexes, function (acc, _ref6) {
+          var _ref7 = _slicedToArray(_ref6, 2),
+              groupIndex = _ref7[0],
+              groupAmount = _ref7[1];
 
           var previousItem = acc[acc.length - 1];
 
@@ -614,10 +617,10 @@ function Core(rootElement, userSettings) {
           var removeRow = function removeRow(indexes) {
             var offset = 0; // Normalize the {index, amount} groups into bigger groups.
 
-            (0, _array.arrayEach)(indexes, function (_ref7) {
-              var _ref8 = _slicedToArray(_ref7, 2),
-                  groupIndex = _ref8[0],
-                  groupAmount = _ref8[1];
+            (0, _array.arrayEach)(indexes, function (_ref8) {
+              var _ref9 = _slicedToArray(_ref8, 2),
+                  groupIndex = _ref9[0],
+                  groupAmount = _ref9[1];
 
               var calcIndex = (0, _mixed.isEmpty)(groupIndex) ? instance.countRows() - 1 : Math.max(groupIndex - offset, 0); // If the 'index' is an integer decrease it by 'offset' otherwise pass it through to make the value
               // compatible with datamap.removeCol method.
@@ -670,10 +673,10 @@ function Core(rootElement, userSettings) {
           var removeCol = function removeCol(indexes) {
             var offset = 0; // Normalize the {index, amount} groups into bigger groups.
 
-            (0, _array.arrayEach)(indexes, function (_ref9) {
-              var _ref10 = _slicedToArray(_ref9, 2),
-                  groupIndex = _ref10[0],
-                  groupAmount = _ref10[1];
+            (0, _array.arrayEach)(indexes, function (_ref10) {
+              var _ref11 = _slicedToArray(_ref10, 2),
+                  groupIndex = _ref11[0],
+                  groupAmount = _ref11[1];
 
               var calcIndex = (0, _mixed.isEmpty)(groupIndex) ? instance.countCols() - 1 : Math.max(groupIndex - offset, 0);
               var physicalColumnIndex = instance.toPhysicalColumn(calcIndex); // If the 'index' is an integer decrease it by 'offset' otherwise pass it through to make the value
@@ -1021,7 +1024,7 @@ function Core(rootElement, userSettings) {
                 continue;
               }
 
-              if (cellMeta.readOnly) {
+              if (cellMeta.readOnly && source !== 'UndoRedo.undo') {
                 current.col += 1;
                 /* eslint-disable no-continue */
 
@@ -1147,7 +1150,7 @@ function Core(rootElement, userSettings) {
     dataSource.setData(tableMeta.data);
     instance.runHooks('beforeInit');
 
-    if ((0, _browser.isMobileBrowser)()) {
+    if ((0, _browser.isMobileBrowser)() || (0, _browser.isIpadOS)()) {
       (0, _element.addClass)(instance.rootElement, 'mobile');
     }
 
@@ -1337,7 +1340,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (tableMeta.allowInsertRow) {
-        while (changes[i][0] > instance.countPhysicalRows() - 1) {
+        while (changes[i][0] > instance.countRows() - 1) {
           var numberOfCreatedRows = datamap.createRow(void 0, void 0, source);
 
           if (numberOfCreatedRows >= 1) {
@@ -1350,7 +1353,7 @@ function Core(rootElement, userSettings) {
       }
 
       if (instance.dataType === 'array' && (!tableMeta.columns || tableMeta.columns.length === 0) && tableMeta.allowInsertColumn) {
-        while (datamap.propToCol(changes[i][1]) > instance.countPhysicalCols() - 1) {
+        while (datamap.propToCol(changes[i][1]) > instance.countCols() - 1) {
           var numberOfCreatedColumns = datamap.createCol(void 0, void 0, source);
 
           if (numberOfCreatedColumns >= 1) {
@@ -1520,10 +1523,11 @@ function Core(rootElement, userSettings) {
       if (newV && typeof newV === 'string' && (0, _parseNumber.isFloat)(newV)) {
         newV = parseFloat(newV);
       } else if (newV && typeof newV === 'string' && Number.isInteger(newV)) {
-        newV = parseInt(newV);
+        newV = parseInt(newV, 10);
       }
 
-      if (oldV !== newV) {
+      if (oldV != newV) {
+        // eslint-disable-line eqeqeq
         changes.push([input[i][0], prop, oldV, newV]);
       }
     }
@@ -1532,10 +1536,10 @@ function Core(rootElement, userSettings) {
       changeSource = column;
     }
 
-    if (changes.length > 0) {
+    instance.runHooks('afterSetDataAtCell', changes, changeSource);
+    validateChanges(changes, changeSource, function () {
       applyChanges(changes, changeSource);
-      instance.runHooks('afterSetDataAtCell', changes, changeSource);
-    }
+    });
   };
   /**
    * @description
@@ -1566,10 +1570,10 @@ function Core(rootElement, userSettings) {
       changeSource = prop;
     }
 
+    instance.runHooks('afterSetDataAtRowProp', changes, changeSource);
     validateChanges(changes, changeSource, function () {
       applyChanges(changes, changeSource);
     });
-    instance.runHooks('afterSetDataAtRowProp', changes, changeSource);
   };
   /**
    * Listen to the keyboard input on document body. This allows Handsontable to capture keyboard events and respond
@@ -1722,9 +1726,9 @@ function Core(rootElement, userSettings) {
   this.getSelected = function () {
     // https://github.com/handsontable/handsontable/issues/44  //cjl
     if (selection.isSelected()) {
-      return (0, _array.arrayMap)(selection.getSelectedRange(), function (_ref11) {
-        var from = _ref11.from,
-            to = _ref11.to;
+      return (0, _array.arrayMap)(selection.getSelectedRange(), function (_ref12) {
+        var from = _ref12.from,
+            to = _ref12.to;
         return [from.row, from.col, to.row, to.col];
       });
     }
@@ -2189,13 +2193,14 @@ function Core(rootElement, userSettings) {
    * @memberof Core#
    * @function loadData
    * @param {Array} data Array of arrays or array of objects containing data.
+   * @param {string} [source] Source of the loadData call.
    * @fires Hooks#beforeLoadData
    * @fires Hooks#afterLoadData
    * @fires Hooks#afterChange
    */
 
 
-  this.loadData = function (data) {
+  this.loadData = function (data, source) {
     if (Array.isArray(tableMeta.dataSchema)) {
       instance.dataType = 'array';
     } else if ((0, _function.isFunction)(tableMeta.dataSchema)) {
@@ -2208,6 +2213,7 @@ function Core(rootElement, userSettings) {
       datamap.destroy();
     }
 
+    data = instance.runHooks('beforeLoadData', data, firstRun, source);
     datamap = new _index.DataMap(instance, data, tableMeta);
 
     if (_typeof(data) === 'object' && data !== null) {
@@ -2251,7 +2257,6 @@ function Core(rootElement, userSettings) {
     }
 
     tableMeta.data = data;
-    instance.runHooks('beforeLoadData', data, firstRun);
     datamap.dataSource = data;
     dataSource.data = data;
     dataSource.dataType = instance.dataType;
@@ -2261,7 +2266,7 @@ function Core(rootElement, userSettings) {
     metaManager.clearCellsCache();
     instance.initIndexMappers();
     grid.adjustRowsAndCols();
-    instance.runHooks('afterLoadData', data, firstRun);
+    instance.runHooks('afterLoadData', data, firstRun, source);
 
     if (firstRun) {
       firstRun = [null, 'loadData'];
@@ -2460,9 +2465,9 @@ function Core(rootElement, userSettings) {
 
 
     if (settings.data === void 0 && tableMeta.data === void 0) {
-      instance.loadData(null); // data source created just now
+      instance.loadData(null, 'updateSettings'); // data source created just now
     } else if (settings.data !== void 0) {
-      instance.loadData(settings.data); // data source given as option
+      instance.loadData(settings.data, 'updateSettings'); // data source given as option
     } else if (settings.columns !== void 0) {
       datamap.createMap(); // The `column` property has changed - dataset may be expanded or narrowed down. The `loadData` do the same.
 
@@ -2868,9 +2873,9 @@ function Core(rootElement, userSettings) {
 
 
   this.getDataAtCol = function (column) {
-    var _ref12;
+    var _ref13;
 
-    return (_ref12 = []).concat.apply(_ref12, _toConsumableArray(datamap.getRange(new _src.CellCoords(0, column), new _src.CellCoords(tableMeta.data.length - 1, column), datamap.DESTINATION_RENDERER)));
+    return (_ref13 = []).concat.apply(_ref13, _toConsumableArray(datamap.getRange(new _src.CellCoords(0, column), new _src.CellCoords(tableMeta.data.length - 1, column), datamap.DESTINATION_RENDERER)));
   };
   /**
    * Given the object property name (e.g. `'first.name'` or `'0'`), returns an array of column's values from the table data.
@@ -2885,10 +2890,10 @@ function Core(rootElement, userSettings) {
 
 
   this.getDataAtProp = function (prop) {
-    var _ref13;
+    var _ref14;
 
     var range = datamap.getRange(new _src.CellCoords(0, datamap.propToCol(prop)), new _src.CellCoords(tableMeta.data.length - 1, datamap.propToCol(prop)), datamap.DESTINATION_RENDERER);
-    return (_ref13 = []).concat.apply(_ref13, _toConsumableArray(range));
+    return (_ref14 = []).concat.apply(_ref14, _toConsumableArray(range));
   };
   /**
    * Returns a clone of the source data object.
@@ -2984,22 +2989,22 @@ function Core(rootElement, userSettings) {
     var changesForHook = [];
 
     if (isThereAnySetSourceListener) {
-      (0, _array.arrayEach)(input, function (_ref14) {
-        var _ref15 = _slicedToArray(_ref14, 3),
-            changeRow = _ref15[0],
-            changeProp = _ref15[1],
-            changeValue = _ref15[2];
+      (0, _array.arrayEach)(input, function (_ref15) {
+        var _ref16 = _slicedToArray(_ref15, 3),
+            changeRow = _ref16[0],
+            changeProp = _ref16[1],
+            changeValue = _ref16[2];
 
         changesForHook.push([changeRow, changeProp, dataSource.getAtCell(changeRow, changeProp), // The previous value.
         changeValue]);
       });
     }
 
-    (0, _array.arrayEach)(input, function (_ref16) {
-      var _ref17 = _slicedToArray(_ref16, 3),
-          changeRow = _ref17[0],
-          changeProp = _ref17[1],
-          changeValue = _ref17[2];
+    (0, _array.arrayEach)(input, function (_ref17) {
+      var _ref18 = _slicedToArray(_ref17, 3),
+          changeRow = _ref18[0],
+          changeProp = _ref18[1],
+          changeValue = _ref18[2];
 
       dataSource.setAtCell(changeRow, changeProp, changeValue);
     });
@@ -3134,9 +3139,9 @@ function Core(rootElement, userSettings) {
 
 
   this.removeCellMeta = function (row, column, key) {
-    var _ref18 = [this.toPhysicalRow(row), this.toPhysicalColumn(column)],
-        physicalRow = _ref18[0],
-        physicalColumn = _ref18[1];
+    var _ref19 = [this.toPhysicalRow(row), this.toPhysicalColumn(column)],
+        physicalRow = _ref19[0],
+        physicalColumn = _ref19[1];
     var cachedValue = metaManager.getCellMeta(physicalRow, physicalColumn, key);
     var hookResult = instance.runHooks('beforeRemoveCellMeta', row, column, key, cachedValue);
 
@@ -3828,18 +3833,6 @@ function Core(rootElement, userSettings) {
     return datamap.getLength();
   };
   /**
-   * Returns the total number of visual rows in the table.
-   *
-   * @memberof Core#
-   * @function countPhysicalRows
-   * @returns {number} Total number of rows.
-   */
-
-
-  this.countPhysicalRows = function () {
-    return datamap.dataSource.length;
-  };
-  /**
    * Returns the total number of visible columns in the table.
    *
    * @memberof Core#
@@ -3852,20 +3845,6 @@ function Core(rootElement, userSettings) {
     var maxCols = tableMeta.maxCols;
     var dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
     return Math.min(maxCols, dataLen);
-  };
-  /**
-   * Returns the total number of physical columns in the table.
-   *
-   * @memberof Core#
-   * @function countCols
-   * @returns {number} Total number of columns.
-   */
-
-
-  this.countPhysicalCols = function () {
-    var maxCols = tableMeta.maxCols;
-    var dataLen = this.columnIndexMapper.getNotTrimmedIndexesLength();
-    return Math.max(maxCols, dataLen);
   };
   /**
    * Returns the number of rendered rows (including rows partially or fully rendered outside viewport).
@@ -4281,9 +4260,11 @@ function Core(rootElement, userSettings) {
 
 
     instance.batchExecution(function () {
-      pluginsRegistry.getItems().forEach(function (_ref19) {
-        var _ref20 = _slicedToArray(_ref19, 2),
-            plugin = _ref20[1];
+      instance.rowIndexMapper.unregisterAll();
+      instance.columnIndexMapper.unregisterAll();
+      pluginsRegistry.getItems().forEach(function (_ref20) {
+        var _ref21 = _slicedToArray(_ref20, 2),
+            plugin = _ref21[1];
 
         plugin.destroy();
       });

@@ -7,8 +7,8 @@ import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
@@ -61,6 +61,7 @@ export var TopOverlay = /*#__PURE__*/function (_Overlay) {
     _defineProperty(_assertThisInitialized(_this), "cachedFixedRowsTop", -1);
 
     _this.clone = _this.makeClone(CLONE_TOP);
+    _this.cachedFixedRowsTop = _this.wot.getSetting('fixedRowsTop');
     return _this;
   }
   /**

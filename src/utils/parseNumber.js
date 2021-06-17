@@ -1,9 +1,15 @@
-export function isFloat(n){
-
-	return Number(n) == n && n % 1 !== 0;
+/**
+ * @param {number} num A number to check.
+ * @returns {boolean}
+ */
+export function isFloat(num) {
+  return Number(num) == num && num % 1 !== 0; // eslint-disable-line eqeqeq
 }
 
-export function isInt(n){
-
-	return Number(n) == n && n % 1 === 0;
+/**
+ * @param {number} num A number to check.
+ * @returns {boolean}
+ */
+export function isInt(num) {
+  return Number(num) == num && num % 1 === 0; // eslint-disable-line eqeqeq
 }

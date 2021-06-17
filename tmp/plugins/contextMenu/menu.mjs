@@ -1,4 +1,5 @@
 import "core-js/modules/es.function.name.js";
+import "core-js/modules/web.timers.js";
 import "core-js/modules/es.object.keys.js";
 import "core-js/modules/es.regexp.constructor.js";
 import "core-js/modules/es.regexp.exec.js";
@@ -19,7 +20,7 @@ import { filterSeparators, hasSubMenu, isDisabled, isItemHidden, isSeparator, is
 import Core from "../../core.mjs";
 import EventManager from "../../eventManager.mjs";
 import { arrayEach, arrayFilter, arrayReduce } from "../../helpers/array.mjs";
-import { isWindowsOS } from "../../helpers/browser.mjs";
+import { isWindowsOS, isMobileBrowser, isIpadOS } from "../../helpers/browser.mjs";
 import { addClass, empty, fastInnerHTML, getScrollbarWidth, isChildOf, isInput, removeClass, getParentWindow, hasClass } from "../../helpers/dom/element.mjs";
 import { stopImmediatePropagation, isRightClick } from "../../helpers/dom/event.mjs";
 import { debounce, isFunction } from "../../helpers/function.mjs";
@@ -241,7 +242,18 @@ var Menu = /*#__PURE__*/function () {
           // after the "contextmenu". So then "mouseup" closes the menu. Otherwise, the closing
           // menu responsibility is forwarded to "afterOnCellContextMenu" callback (#6507#issuecomment-582392301).
           if ((!isWindowsOS() || !isRightClick(event)) && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
-            _this2.close(true);
+            // The timeout is necessary only for mobile devices. For desktop, the click event that is fired
+            // right after the mouseup event gets the event element target the same as the mouseup event.
+            // For mobile devices, the click event is triggered with native delay (~300ms), so when the mouseup
+            // event hides the tapped element, the click event grabs the element below. As a result, the filter
+            // by condition menu is closed and immediately open on tapping the "None" item.
+            if (isMobileBrowser() || isIpadOS()) {
+              setTimeout(function () {
+                return _this2.close(true);
+              }, 325);
+            } else {
+              _this2.close(true);
+            }
           }
         },
         afterUnlisten: function afterUnlisten() {

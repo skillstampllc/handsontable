@@ -4,9 +4,9 @@ exports.__esModule = true;
 exports.parse = parse;
 exports.stringify = stringify;
 
-require("core-js/modules/es.string.match.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.match.js");
 
 require("core-js/modules/es.string.replace.js");
 

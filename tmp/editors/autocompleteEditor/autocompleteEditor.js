@@ -21,13 +21,13 @@ require("core-js/modules/es.symbol.iterator.js");
 exports.__esModule = true;
 exports.AutocompleteEditor = exports.EDITOR_TYPE = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -35,9 +35,9 @@ require("core-js/modules/es.array.index-of.js");
 
 require("core-js/modules/es.array.find.js");
 
-require("core-js/modules/es.string.replace.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 require("core-js/modules/es.array.filter.js");
 
@@ -173,14 +173,10 @@ var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
     value: function open() {
       var _this3 = this;
 
-      var priv = privatePool.get(this); // this.addHook('beforeKeyDown', event => this.onBeforeKeyDown(event));
-      // Ugly fix for handsontable which grab window object for autocomplete scroll listener instead table element.
-
-      this.TEXTAREA_PARENT.style.overflow = 'auto';
+      var priv = privatePool.get(this);
 
       _get(_getPrototypeOf(AutocompleteEditor.prototype), "open", this).call(this);
 
-      this.TEXTAREA_PARENT.style.overflow = '';
       var choicesListHot = this.htEditor.getInstance();
       var trimDropdown = this.cellProperties.trimDropdown === void 0 ? true : this.cellProperties.trimDropdown;
       this.showEditableElement();

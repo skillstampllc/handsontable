@@ -6,7 +6,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -14,8 +14,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.array.map.js";
-import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
@@ -59,7 +59,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-import IndexMap from "./indexMap.mjs";
+import { IndexMap } from "./indexMap.mjs";
 import { getListWithRemovedItems, getListWithInsertedItems } from "./utils/physicallyIndexed.mjs";
 import { getListWithRemovedItems as getListWithoutIndexes } from "./utils/indexesSequence.mjs";
 import { getDecreasedIndexes, getIncreasedIndexes } from "./utils/actionsOnIndexes.mjs";
@@ -71,7 +71,7 @@ import { isFunction } from "../../helpers/function.mjs";
  * such changes.
  */
 
-var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
+export var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   _inherits(LinkedPhysicalIndexToValueMap, _IndexMap);
 
   var _super = _createSuper(LinkedPhysicalIndexToValueMap);
@@ -248,5 +248,3 @@ var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
 
   return LinkedPhysicalIndexToValueMap;
 }(IndexMap);
-
-export default LinkedPhysicalIndexToValueMap;

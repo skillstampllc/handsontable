@@ -17,11 +17,13 @@ exports.default = void 0;
 
 require("core-js/modules/es.object.assign.js");
 
+var _constants = require("../constants");
+
 var _visualSelection = _interopRequireDefault(require("../visualSelection"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -31,17 +33,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * Creates the new instance of Selection, responsible for highlighting cells which are covered by fill handle
  * functionality. This type of selection can present on the table only one at the time.
  *
+ * @param {object} highlightParams A configuration object to create a highlight.
  * @returns {Selection}
  */
 function createHighlight(_ref) {
   var restOptions = Object.assign({}, _ref);
-  var s = new _visualSelection.default(_objectSpread({
+  var s = new _visualSelection.default(_objectSpread(_objectSpread({
     className: 'fill',
     border: {
       width: 1,
       color: '#ff0000'
     }
-  }, restOptions));
+  }, restOptions), {}, {
+    selectionType: _constants.FILL_TYPE
+  }));
   return s;
 }
 

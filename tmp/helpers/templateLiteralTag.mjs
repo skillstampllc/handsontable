@@ -1,5 +1,5 @@
-import "core-js/modules/es.string.replace.js";
 import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
 import "core-js/modules/es.string.trim.js";
 import { arrayReduce } from "../helpers/array.mjs";
 /**

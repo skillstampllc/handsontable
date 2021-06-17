@@ -6,7 +6,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -16,15 +16,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.weak-map.js";
 import "core-js/modules/web.dom-collections.for-each.js";
-import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.array.join.js";
 import "core-js/modules/es.array.index-of.js";
@@ -257,11 +257,12 @@ export var BasePlugin = /*#__PURE__*/function () {
      * On update settings listener.
      *
      * @private
+     * @param {object} newSettings New set of settings passed to the `updateSettings` method.
      */
 
   }, {
     key: "onUpdateSettings",
-    value: function onUpdateSettings() {
+    value: function onUpdateSettings(newSettings) {
       if (this.isEnabled) {
         if (this.enabled && !this.isEnabled()) {
           this.disablePlugin();
@@ -272,7 +273,7 @@ export var BasePlugin = /*#__PURE__*/function () {
         }
 
         if (this.enabled && this.isEnabled()) {
-          this.updatePlugin();
+          this.updatePlugin(newSettings);
         }
       }
     }

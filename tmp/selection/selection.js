@@ -1,7 +1,5 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 require("core-js/modules/es.array.slice.js");
 
 require("core-js/modules/es.object.freeze.js");
@@ -14,20 +12,16 @@ require("core-js/modules/es.symbol.iterator.js");
 
 require("core-js/modules/es.function.name.js");
 
-require("core-js/modules/es.weak-map.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
 exports.__esModule = true;
 exports.default = void 0;
 
-require("core-js/modules/es.set.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
-require("core-js/modules/es.string.iterator.js");
+require("core-js/modules/es.set.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -45,7 +39,9 @@ require("core-js/modules/es.number.constructor.js");
 
 require("core-js/modules/web.dom-collections.for-each.js");
 
-var _highlight = _interopRequireWildcard(require("./highlight/highlight"));
+var _highlight = _interopRequireDefault(require("./highlight/highlight"));
+
+var _constants = require("./highlight/constants");
 
 var _range = _interopRequireDefault(require("./range"));
 
@@ -71,10 +67,6 @@ var _templateObject;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -83,7 +75,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -166,7 +158,9 @@ var Selection = /*#__PURE__*/function () {
       activeHeaderClassName: settings.activeHeaderClassName,
       rowClassName: settings.currentRowClassName,
       columnClassName: settings.currentColClassName,
-      disableHighlight: this.settings.disableVisualSelection,
+      disabledCellSelection: function disabledCellSelection(row, column) {
+        return _this.tableProps.isDisabledCellSelection(row, column);
+      },
       cellCornerVisible: function cellCornerVisible() {
         return _this.isCellCornerVisible.apply(_this, arguments);
       },
@@ -384,7 +378,7 @@ var Selection = /*#__PURE__*/function () {
 
       this.highlight.getCell().clear();
 
-      if (this.highlight.isEnabledFor(_highlight.CELL_TYPE)) {
+      if (this.highlight.isEnabledFor(_constants.CELL_TYPE, cellRange.highlight)) {
         this.highlight.getCell().add(this.selectedRange.current().highlight).commit().adjustCoordinates(cellRange);
       }
 
@@ -411,7 +405,7 @@ var Selection = /*#__PURE__*/function () {
       headerHighlight.clear();
       activeHeaderHighlight.clear();
 
-      if (this.highlight.isEnabledFor(_highlight.AREA_TYPE) && (this.isMultiple() || layerLevel >= 1)) {
+      if (this.highlight.isEnabledFor(_constants.AREA_TYPE, cellRange.highlight) && (this.isMultiple() || layerLevel >= 1)) {
         areaHighlight.add(cellRange.from).add(cellRange.to).commit();
 
         if (layerLevel === 1) {
@@ -425,7 +419,7 @@ var Selection = /*#__PURE__*/function () {
         }
       }
 
-      if (this.highlight.isEnabledFor(_highlight.HEADER_TYPE)) {
+      if (this.highlight.isEnabledFor(_constants.HEADER_TYPE, cellRange.highlight)) {
         // The header selection generally contains cell selection. In a case when all rows (or columns)
         // are hidden that visual coordinates are translated to renderable coordinates that do not exist.
         // Hence no header highlight is generated. In that case, to make a column (or a row) header
@@ -455,21 +449,21 @@ var Selection = /*#__PURE__*/function () {
         } else {
           headerHighlight.add(headerCellRange.from).add(headerCellRange.to).commit();
         }
-      }
 
-      if (this.isEntireRowSelected()) {
-        var isRowSelected = this.tableProps.countCols() === cellRange.getWidth(); // Make sure that the whole row is selected (in case where selectionMode is set to 'single')
+        if (this.isEntireRowSelected()) {
+          var isRowSelected = this.tableProps.countCols() === cellRange.getWidth(); // Make sure that the whole row is selected (in case where selectionMode is set to 'single')
 
-        if (isRowSelected) {
-          activeHeaderHighlight.add(new _src.CellCoords(cellRange.from.row, -1)).add(new _src.CellCoords(cellRange.to.row, -1)).commit();
+          if (isRowSelected) {
+            activeHeaderHighlight.add(new _src.CellCoords(cellRange.from.row, -1)).add(new _src.CellCoords(cellRange.to.row, -1)).commit();
+          }
         }
-      }
 
-      if (this.isEntireColumnSelected()) {
-        var isColumnSelected = this.tableProps.countRows() === cellRange.getHeight(); // Make sure that the whole column is selected (in case where selectionMode is set to 'single')
+        if (this.isEntireColumnSelected()) {
+          var isColumnSelected = this.tableProps.countRows() === cellRange.getHeight(); // Make sure that the whole column is selected (in case where selectionMode is set to 'single')
 
-        if (isColumnSelected) {
-          activeHeaderHighlight.add(new _src.CellCoords(-1, cellRange.from.col)).add(new _src.CellCoords(-1, cellRange.to.col)).commit();
+          if (isColumnSelected) {
+            activeHeaderHighlight.add(new _src.CellCoords(-1, cellRange.from.col)).add(new _src.CellCoords(-1, cellRange.to.col)).commit();
+          }
         }
       }
 
@@ -784,6 +778,9 @@ var Selection = /*#__PURE__*/function () {
      *
      * @param {number|string} startColumn Visual column index or column property from which the selection starts.
      * @param {number|string} [endColumn] Visual column index or column property from to the selection finishes.
+     * @param {number} [headerLevel=-1] A row header index that triggers the column selection. The value can
+     *                                  take -1 to -N, where -1 means the header closest to the cells.
+     *
      * @returns {boolean} Returns `true` if selection was successful, `false` otherwise.
      */
 
@@ -791,6 +788,7 @@ var Selection = /*#__PURE__*/function () {
     key: "selectColumns",
     value: function selectColumns(startColumn) {
       var endColumn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : startColumn;
+      var headerLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
       var start = typeof startColumn === 'string' ? this.tableProps.propToCol(startColumn) : startColumn;
       var end = typeof endColumn === 'string' ? this.tableProps.propToCol(endColumn) : endColumn;
       var nrOfColumns = this.tableProps.countCols();
@@ -798,7 +796,7 @@ var Selection = /*#__PURE__*/function () {
       var isValid = (0, _utils.isValidCoord)(start, nrOfColumns) && (0, _utils.isValidCoord)(end, nrOfColumns);
 
       if (isValid) {
-        this.setRangeStartOnly(new _src.CellCoords(-1, start));
+        this.setRangeStartOnly(new _src.CellCoords(headerLevel, start));
         this.setRangeEnd(new _src.CellCoords(nrOfRows - 1, end));
         this.finish();
       }
@@ -810,6 +808,9 @@ var Selection = /*#__PURE__*/function () {
      *
      * @param {number} startRow Visual row index from which the selection starts.
      * @param {number} [endRow] Visual row index from to the selection finishes.
+     * @param {number} [headerLevel=-1] A column header index that triggers the row selection.
+     *                                  The value can take -1 to -N, where -1 means the header
+     *                                  closest to the cells.
      * @returns {boolean} Returns `true` if selection was successful, `false` otherwise.
      */
 
@@ -817,12 +818,13 @@ var Selection = /*#__PURE__*/function () {
     key: "selectRows",
     value: function selectRows(startRow) {
       var endRow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : startRow;
+      var headerLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
       var nrOfRows = this.tableProps.countRows();
       var nrOfColumns = this.tableProps.countCols();
       var isValid = (0, _utils.isValidCoord)(startRow, nrOfRows) && (0, _utils.isValidCoord)(endRow, nrOfRows);
 
       if (isValid) {
-        this.setRangeStartOnly(new _src.CellCoords(startRow, -1));
+        this.setRangeStartOnly(new _src.CellCoords(startRow, headerLevel));
         this.setRangeEnd(new _src.CellCoords(endRow, nrOfColumns - 1));
         this.finish();
       }

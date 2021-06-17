@@ -4,9 +4,9 @@ exports.__esModule = true;
 exports.getClassesToAdd = getClassesToAdd;
 exports.getClassesToRemove = getClassesToRemove;
 
-require("core-js/modules/es.string.split.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
 
 require("core-js/modules/es.regexp.constructor.js");
 

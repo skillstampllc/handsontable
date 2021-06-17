@@ -13,8 +13,8 @@ import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43,7 +43,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 import { BaseEditor, EDITOR_STATE } from "../baseEditor/index.mjs";
 import EventManager from "../../eventManager.mjs";
-import { isMobileBrowser, isIE, isEdge } from "../../helpers/browser.mjs";
+import { isMobileBrowser, isIE, isEdge, isIOS } from "../../helpers/browser.mjs";
 import { addClass, getCaretPosition, getComputedStyle, getCssTransform, getScrollbarWidth, innerWidth, offset, resetCssTransform, setCaretPosition, hasVerticalScrollbar, hasHorizontalScrollbar, hasClass, removeClass } from "../../helpers/dom/element.mjs";
 import { stopImmediatePropagation, isImmediatePropagationStopped } from "../../helpers/dom/event.mjs";
 import { rangeEach } from "../../helpers/number.mjs";
@@ -509,6 +509,14 @@ export var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       this.eventManager.addEventListener(this.TEXTAREA, 'paste', function (event) {
         return event.stopPropagation();
       });
+
+      if (isIOS()) {
+        // on iOS after click "Done" the edit isn't hidden by default, so we need to handle it manually.
+        this.eventManager.addEventListener(this.TEXTAREA, 'focusout', function () {
+          return _this3.finishEditing(false);
+        });
+      }
+
       this.addHook('afterScrollHorizontally', function () {
         return _this3.refreshDimensions();
       });

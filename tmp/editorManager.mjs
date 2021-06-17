@@ -1,7 +1,7 @@
-import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.weak-map.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
@@ -18,7 +18,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -116,27 +116,27 @@ var EditorManager = /*#__PURE__*/function () {
      */
 
     this.lastKeyCode = void 0;
-    this.instance.addHook("afterDocumentKeyDown", function (event) {
+    this.instance.addHook('afterDocumentKeyDown', function (event) {
       return _this.onAfterDocumentKeyDown(event);
     });
     var frame = this.instance.rootWindow;
 
     while (frame) {
-      this.eventManager.addEventListener(frame.document.documentElement, "keydown", function (event) {
+      this.eventManager.addEventListener(frame.document.documentElement, 'keydown', function (event) {
         if (!_this.destroyed) {
-          _this.instance.runHooks("afterDocumentKeyDown", event);
+          _this.instance.runHooks('afterDocumentKeyDown', event);
         }
       });
       frame = getParentWindow(frame);
     } // Open editor when text composition is started (IME editor)
 
 
-    this.eventManager.addEventListener(this.instance.rootDocument.documentElement, "compositionstart", function (event) {
+    this.eventManager.addEventListener(this.instance.rootDocument.documentElement, 'compositionstart', function (event) {
       if (!_this.destroyed && _this.activeEditor && !_this.activeEditor.isOpened() && _this.instance.isListening()) {
-        _this.openEditor("", event);
+        _this.openEditor('', event);
       }
     });
-    this.instance.view.wt.update("onCellDblClick", function (event, coords, elem) {
+    this.instance.view.wt.update('onCellDblClick', function (event, coords, elem) {
       return _this.onCellDblClick(event, coords, elem);
     });
   }
@@ -171,7 +171,7 @@ var EditorManager = /*#__PURE__*/function () {
   }, {
     key: "destroyEditor",
     value: function destroyEditor(revertOriginal) {
-      if (!this.lock && this.activeEditor && this.activeEditor._opened) {
+      if (!this.lock) {
         this.closeEditor(revertOriginal);
       }
     }
@@ -429,7 +429,7 @@ var EditorManager = /*#__PURE__*/function () {
         return;
       }
 
-      this.instance.runHooks("beforeKeyDown", event); // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
+      this.instance.runHooks('beforeKeyDown', event); // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
       // character is entering (using IME editor). It is fired mainly on linux (ubuntu) with installed ibus-pinyin package.
 
       if (this.destroyed || event.keyCode === 229) {
@@ -451,7 +451,7 @@ var EditorManager = /*#__PURE__*/function () {
 
       if (this.activeEditor && !this.activeEditor.isWaiting()) {
         if (!isMetaKey(event.keyCode) && !isCtrlMetaKey(event.keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
-          this.openEditor("", event);
+          this.openEditor('', event);
           return;
         }
       }
@@ -579,9 +579,9 @@ var EditorManager = /*#__PURE__*/function () {
 
         case KEY_CODES.HOME:
           if (event.ctrlKey || event.metaKey) {
-            rangeModifier.call(this.selection, new CellCoords(0, this.selection.selectedRange.current().from.col));
+            rangeModifier.call(this.selection, new CellCoords(this.instance.rowIndexMapper.getFirstNotHiddenIndex(0, 1), this.selection.selectedRange.current().from.col));
           } else {
-            rangeModifier.call(this.selection, new CellCoords(this.selection.selectedRange.current().from.row, 0));
+            rangeModifier.call(this.selection, new CellCoords(this.selection.selectedRange.current().from.row, this.instance.columnIndexMapper.getFirstNotHiddenIndex(0, 1)));
           }
 
           event.preventDefault(); // don't scroll the window
@@ -591,9 +591,9 @@ var EditorManager = /*#__PURE__*/function () {
 
         case KEY_CODES.END:
           if (event.ctrlKey || event.metaKey) {
-            rangeModifier.call(this.selection, new CellCoords(this.instance.countRows() - 1, this.selection.selectedRange.current().from.col));
+            rangeModifier.call(this.selection, new CellCoords(this.instance.rowIndexMapper.getFirstNotHiddenIndex(this.instance.countRows() - 1, -1), this.selection.selectedRange.current().from.col));
           } else {
-            rangeModifier.call(this.selection, new CellCoords(this.selection.selectedRange.current().from.row, this.instance.countCols() - 1));
+            rangeModifier.call(this.selection, new CellCoords(this.selection.selectedRange.current().from.row, this.instance.columnIndexMapper.getFirstNotHiddenIndex(this.instance.countCols() - 1, -1)));
           }
 
           event.preventDefault(); // don't scroll the window
@@ -632,7 +632,7 @@ var EditorManager = /*#__PURE__*/function () {
     key: "onCellDblClick",
     value: function onCellDblClick(event, coords, elem) {
       // may be TD or TH
-      if (elem.nodeName === "TD") {
+      if (elem.nodeName === 'TD') {
         if (this.activeEditor) {
           this.activeEditor.enableFullEditMode();
         }

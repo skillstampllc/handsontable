@@ -14,7 +14,7 @@ import localHooks from "../../mixins/localHooks.mjs";
  * Map for storing mappings from an index to a value.
  */
 
-var IndexMap = /*#__PURE__*/function () {
+export var IndexMap = /*#__PURE__*/function () {
   function IndexMap() {
     var initValueOrFn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -192,10 +192,19 @@ var IndexMap = /*#__PURE__*/function () {
     value: function remove() {
       this.runLocalHooks('change');
     }
+    /**
+     * Destroys the Map instance.
+     */
+
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.clearLocalHooks();
+      this.indexedValues = null;
+      this.initValueOrFn = null;
+    }
   }]);
 
   return IndexMap;
 }();
-
 mixin(IndexMap, localHooks);
-export default IndexMap;

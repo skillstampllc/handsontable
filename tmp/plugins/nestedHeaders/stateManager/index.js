@@ -19,13 +19,13 @@ exports.default = void 0;
 
 require("core-js/modules/es.array.map.js");
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -35,15 +35,15 @@ var _sourceSettings2 = _interopRequireDefault(require("./sourceSettings"));
 
 var _headersTree2 = _interopRequireDefault(require("./headersTree"));
 
-var _nodeModifiers2 = _interopRequireDefault(require("./nodeModifiers"));
-
-var _constants = require("./constants");
+var _nodeModifiers = require("./nodeModifiers");
 
 var _matrixGenerator = require("./matrixGenerator");
 
+var _excluded = ["row"];
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -69,13 +69,11 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
-var _sourceSettings = new WeakMap();
+var _sourceSettings = /*#__PURE__*/new WeakMap();
 
-var _nodeModifiers = new WeakMap();
+var _headersTree = /*#__PURE__*/new WeakMap();
 
-var _headersTree = new WeakMap();
-
-var _stateMatrix = new WeakMap();
+var _stateMatrix = /*#__PURE__*/new WeakMap();
 
 /**
  * The state manager is a source of truth for nested headers configuration.
@@ -113,11 +111,6 @@ var StateManager = /*#__PURE__*/function () {
     _sourceSettings.set(this, {
       writable: true,
       value: new _sourceSettings2.default()
-    });
-
-    _nodeModifiers.set(this, {
-      writable: true,
-      value: new _nodeModifiers2.default()
     });
 
     _headersTree.set(this, {
@@ -190,7 +183,7 @@ var StateManager = /*#__PURE__*/function () {
 
       var transformedSettings = (0, _array.arrayMap)(settings, function (_ref) {
         var row = _ref.row,
-            rest = _objectWithoutProperties(_ref, ["row"]);
+            rest = _objectWithoutProperties(_ref, _excluded);
 
         return _objectSpread({
           row: row < 0 ? _this.rowCoordsToLevel(row) : row
@@ -249,7 +242,7 @@ var StateManager = /*#__PURE__*/function () {
       }, []);
     }
     /**
-     * Triggers an action (it can be "collapse" or "expand") from the NodeModifiers module. The module
+     * Triggers an action (e.g. "collapse") from the NodeModifiers module. The module
      * modifies a tree structure in such a way as to obtain the correct structure consistent with the
      * called action.
      *
@@ -271,12 +264,27 @@ var StateManager = /*#__PURE__*/function () {
       var actionResult;
 
       if (nodeToProcess) {
-        actionResult = _classPrivateFieldGet(this, _nodeModifiers).triggerAction(action, nodeToProcess);
+        actionResult = (0, _nodeModifiers.triggerNodeModification)(action, nodeToProcess, columnIndex); // TODO (perf-tip): Trigger matrix generation once after multiple node modifications.
 
         _classPrivateFieldSet(this, _stateMatrix, (0, _matrixGenerator.generateMatrix)(_classPrivateFieldGet(this, _headersTree).getRoots()));
       }
 
       return actionResult;
+    }
+    /**
+     * Triggers an action (e.g. "hide-column") from the NodeModifiers module. The action is
+     * triggered starting from the lowest header. The module modifies a tree structure in
+     * such a way as to obtain the correct structure consistent with the called action.
+     *
+     * @param {string} action An action name to trigger.
+     * @param {number} columnIndex A visual column index.
+     * @returns {object|undefined}
+     */
+
+  }, {
+    key: "triggerColumnModification",
+    value: function triggerColumnModification(action, columnIndex) {
+      return this.triggerNodeModification(action, -1, columnIndex);
     }
     /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -359,7 +367,7 @@ var StateManager = /*#__PURE__*/function () {
      *
      * @param {number} headerLevel Header level (there is support for negative and positive values).
      * @param {number} columnIndex A visual column index.
-     * @returns {object}
+     * @returns {object|null}
      */
 
   }, {
@@ -372,10 +380,35 @@ var StateManager = /*#__PURE__*/function () {
       }
 
       if (headerLevel >= this.getLayersCount()) {
-        return _objectSpread({}, _constants.HEADER_DEFAULT_SETTINGS);
+        return null;
       }
 
-      return (_classPrivateFieldGet2 = (_classPrivateFieldGet3 = _classPrivateFieldGet(this, _stateMatrix)[headerLevel]) === null || _classPrivateFieldGet3 === void 0 ? void 0 : _classPrivateFieldGet3[columnIndex]) !== null && _classPrivateFieldGet2 !== void 0 ? _classPrivateFieldGet2 : _objectSpread({}, _constants.HEADER_DEFAULT_SETTINGS);
+      return (_classPrivateFieldGet2 = (_classPrivateFieldGet3 = _classPrivateFieldGet(this, _stateMatrix)[headerLevel]) === null || _classPrivateFieldGet3 === void 0 ? void 0 : _classPrivateFieldGet3[columnIndex]) !== null && _classPrivateFieldGet2 !== void 0 ? _classPrivateFieldGet2 : null;
+    }
+    /**
+     * Gets tree data that is connected to the column header. The returned object contains all information
+     * necessary for modifying tree structure (column collapsing, hiding, etc.). It contains a header
+     * label, colspan length, or visual column index that indicates which column index the node is rendered from.
+     *
+     * @param {number} headerLevel Header level (there is support for negative and positive values).
+     * @param {number} columnIndex A visual column index.
+     * @returns {object|null}
+     */
+
+  }, {
+    key: "getHeaderTreeNodeData",
+    value: function getHeaderTreeNodeData(headerLevel, columnIndex) {
+      if (headerLevel < 0) {
+        headerLevel = this.rowCoordsToLevel(headerLevel);
+      }
+
+      var node = _classPrivateFieldGet(this, _headersTree).getNode(headerLevel, columnIndex);
+
+      if (!node) {
+        return null;
+      }
+
+      return _objectSpread({}, node.data);
     }
     /**
      * The method is helpful in cases where the column index targets in-between currently
@@ -390,20 +423,28 @@ var StateManager = /*#__PURE__*/function () {
   }, {
     key: "findLeftMostColumnIndex",
     value: function findLeftMostColumnIndex(headerLevel, columnIndex) {
-      var _this$getHeaderSettin = this.getHeaderSettings(headerLevel, columnIndex),
-          isBlank = _this$getHeaderSettin.isBlank;
+      var _this$getHeaderSettin;
 
-      if (isBlank === false) {
+      var _ref2 = (_this$getHeaderSettin = this.getHeaderSettings(headerLevel, columnIndex)) !== null && _this$getHeaderSettin !== void 0 ? _this$getHeaderSettin : {
+        isRoot: true
+      },
+          isRoot = _ref2.isRoot;
+
+      if (isRoot) {
         return columnIndex;
       }
 
       var stepBackColumn = columnIndex - 1;
 
       do {
-        var _this$getHeaderSettin2 = this.getHeaderSettings(headerLevel, stepBackColumn),
-            blank = _this$getHeaderSettin2.isBlank;
+        var _this$getHeaderSettin2;
 
-        if (blank === false) {
+        var _ref3 = (_this$getHeaderSettin2 = this.getHeaderSettings(headerLevel, stepBackColumn)) !== null && _this$getHeaderSettin2 !== void 0 ? _this$getHeaderSettin2 : {
+          isRoot: true
+        },
+            isRootNode = _ref3.isRoot;
+
+        if (isRootNode) {
           break;
         }
 

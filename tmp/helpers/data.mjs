@@ -1,6 +1,15 @@
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 import "core-js/modules/es.object.get-prototype-of.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 import { getCellType } from "./../cellTypes/registry.mjs";
 import { deepObjectSize, hasOwnProperty, isObject } from "./object.mjs";
 var COLUMN_LABEL_BASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -160,9 +169,9 @@ export function translateRowsToColumns(input) {
  * If the method/property is not found in an object, searching is continued recursively through prototype chain, until
  * it reaches the Object.prototype.
  *
- *
  * @param {string} methodName Name of the method/property to search (i.e. 'renderer', 'validator', 'copyable').
- * @param {boolean} [allowUndefined] If `false`, the search is continued if methodName has not been found in cell "type".
+ * @param {boolean} [allowUndefined] If `false`, the search is continued if methodName has not been found in cell
+ *   "type".
  * @returns {Function}
  */
 
@@ -197,8 +206,8 @@ export function cellMethodLookupFactory(methodName, allowUndefined) {
   };
 }
 /**
- * Transform a data row (either an array or an object) or an array of data rows to array of changes in a form of `[row, prop/col, value]`.
- * Convenient to use with `setDataAtRowProp` and `setSourceDataAtCell` methods.
+ * Transform a data row (either an array or an object) or an array of data rows to array of changes in a form of `[row,
+ * prop/col, value]`. Convenient to use with `setDataAtRowProp` and `setSourceDataAtCell` methods.
  *
  * @param {Array|object} dataRow Object of row data, array of row data or an array of either.
  * @param {number} rowOffset Row offset to be passed to the resulting change list. Defaults to `0`.
@@ -228,7 +237,8 @@ export function dataRowToChangesArray(dataRow) {
   return changesArray;
 }
 /**
- * Count the number of keys (or, basically, columns when the data is an array or arrays) in the first row of the provided dataset.
+ * Count the number of keys (or, basically, columns when the data is an array or arrays) in the first row of the
+ * provided dataset.
  *
  * @param {Array} data The dataset.
  * @returns {number} Number of keys in the first row of the dataset.
@@ -246,4 +256,28 @@ export function countFirstRowKeys(data) {
   }
 
   return result;
+}
+/**
+ * Check whether the provided dataset is a *non-empty* array of arrays.
+ *
+ * @param {Array} data Dataset to be checked.
+ * @returns {boolean} `true` if data is an array of arrays, `false` otherwise.
+ */
+
+export function isArrayOfArrays(data) {
+  return !!(Array.isArray(data) && data.length && data.every(function (el) {
+    return Array.isArray(el);
+  }));
+}
+/**
+ * Check whether the provided dataset is a *non-empty* array of objects.
+ *
+ * @param {Array} data Dataset to be checked.
+ * @returns {boolean} `true` if data is an array of objects, `false` otherwise.
+ */
+
+export function isArrayOfObjects(data) {
+  return !!(Array.isArray(data) && data.length && data.every(function (el) {
+    return _typeof(el) === 'object' && !Array.isArray(el) && el !== null;
+  }));
 }

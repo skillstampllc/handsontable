@@ -4,16 +4,16 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.array.index-of.js";
@@ -34,15 +34,12 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import { arrayMap } from "../helpers/array.mjs";
-import { getListWithRemovedItems, getListWithInsertedItems } from "./maps/utils/indexesSequence.mjs";
-import IndexesSequence from "./maps/indexesSequence.mjs";
-import TrimmingMap from "./maps/trimmingMap.mjs";
-import HidingMap from "./maps/hidingMap.mjs";
-import MapCollection from "./mapCollection.mjs";
-import AggregatedCollection from "./aggregatedCollection.mjs";
+import { createIndexMap, getListWithInsertedItems, getListWithRemovedItems, HidingMap, IndexesSequence, TrimmingMap } from "./maps/index.mjs";
+import { AggregatedCollection, MapCollection } from "./mapCollections/index.mjs";
 import localHooks from "../mixins/localHooks.mjs";
 import { mixin } from "../helpers/object.mjs";
 import { isDefined } from "../helpers/mixed.mjs";
+import { ChangesObservable } from "./changesObservable/observable.mjs";
 /**
  * Index mapper stores, registers and manages the indexes on the basis of calculations collected from the subsidiary maps.
  * It should be seen as a single source of truth (regarding row and column indexes, for example, their sequence, information if they are skipped in the process of rendering (hidden or trimmed), values linked to them)
@@ -60,7 +57,7 @@ import { isDefined } from "../helpers/mixed.mjs";
  * These are: {@link to IndexesSequence}, {@link to PhysicalIndexToValueMap}, {@link to HidingMap}, and {@link to TrimmingMap}.
  */
 
-var IndexMapper = /*#__PURE__*/function () {
+export var IndexMapper = /*#__PURE__*/function () {
   function IndexMapper() {
     var _this = this;
 
@@ -109,6 +106,19 @@ var IndexMapper = /*#__PURE__*/function () {
      */
 
     this.variousMapsCollection = new MapCollection();
+    /**
+     * The class instance collects row and column index changes that happen while the Handsontable
+     * is running. The object allows creating observers that you can subscribe. Each event represents
+     * the index change (e.g., insert, removing, change index value), which can be consumed by a
+     * developer to update its logic.
+     *
+     * @private
+     * @type {ChangesObservable}
+     */
+
+    this.hidingChangesObservable = new ChangesObservable({
+      initialIndexValue: false
+    });
     /**
      * Cache for list of not trimmed indexes, respecting the indexes sequence (physical indexes).
      *
@@ -234,6 +244,38 @@ var IndexMapper = /*#__PURE__*/function () {
       this.updateCache();
     }
     /**
+     * It creates and returns the new instance of the ChangesObserver object. The object
+     * allows listening to the index changes that happen while the Handsontable is running.
+     *
+     * @param {string} indexMapType The index map type which we want to observe.
+     *                              Currently, only the 'hiding' index map types are observable.
+     * @returns {ChangesObserver}
+     */
+
+  }, {
+    key: "createChangesObserver",
+    value: function createChangesObserver(indexMapType) {
+      if (indexMapType !== 'hiding') {
+        throw new Error("Unsupported index map type \"".concat(indexMapType, "\"."));
+      }
+
+      return this.hidingChangesObservable.createObserver();
+    }
+    /**
+     * Creates and register the new IndexMap for specified IndexMapper instance.
+     *
+     * @param {string} indexName The uniq index name.
+     * @param {string} mapType The index map type (e.q. "hiding, "trimming", "physicalIndexToValue").
+     * @param {*} [initValueOrFn] The initial value for the index map.
+     * @returns {IndexMap}
+     */
+
+  }, {
+    key: "createAndRegisterIndexMap",
+    value: function createAndRegisterIndexMap(indexName, mapType, initValueOrFn) {
+      return this.registerMap(indexName, createIndexMap(mapType, initValueOrFn));
+    }
+    /**
      * Register map which provide some index mappings. Type of map determining to which collection it will be added.
      *
      * @param {string} uniqueName Name of the index map. It should be unique.
@@ -283,6 +325,17 @@ var IndexMapper = /*#__PURE__*/function () {
       this.trimmingMapsCollection.unregister(name);
       this.hidingMapsCollection.unregister(name);
       this.variousMapsCollection.unregister(name);
+    }
+    /**
+     * Unregisters all collected index map instances from all map collection types.
+     */
+
+  }, {
+    key: "unregisterAll",
+    value: function unregisterAll() {
+      this.trimmingMapsCollection.unregisterAll();
+      this.hidingMapsCollection.unregisterAll();
+      this.variousMapsCollection.unregisterAll();
     }
     /**
      * Get a physical index corresponding to the given visual index.
@@ -703,8 +756,17 @@ var IndexMapper = /*#__PURE__*/function () {
         this.notHiddenIndexesCache = this.getNotHiddenIndexes(false);
         this.renderablePhysicalIndexesCache = this.getRenderableIndexes(false);
         this.cacheFromPhysicalToVisualIndexes();
-        this.cacheFromVisualToRenderabIendexes();
-        this.runLocalHooks('cacheUpdated', this.indexesSequenceChanged, this.trimmedIndexesChanged, this.hiddenIndexesChanged);
+        this.cacheFromVisualToRenderabIendexes(); // Currently there's support only for the "hiding" map type.
+
+        if (this.hiddenIndexesChanged) {
+          this.hidingChangesObservable.emit(this.hidingMapsCollection.getMergedValues());
+        }
+
+        this.runLocalHooks('cacheUpdated', {
+          indexesSequenceChanged: this.indexesSequenceChanged,
+          trimmedIndexesChanged: this.trimmedIndexesChanged,
+          hiddenIndexesChanged: this.hiddenIndexesChanged
+        });
         this.indexesSequenceChanged = false;
         this.trimmedIndexesChanged = false;
         this.hiddenIndexesChanged = false;
@@ -752,6 +814,4 @@ var IndexMapper = /*#__PURE__*/function () {
 
   return IndexMapper;
 }();
-
 mixin(IndexMapper, localHooks);
-export default IndexMapper;

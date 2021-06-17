@@ -4,13 +4,13 @@ exports.__esModule = true;
 exports.checkboxRenderer = checkboxRenderer;
 exports.RENDERER_TYPE = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -34,14 +34,50 @@ var _function = require("../../helpers/function");
 
 var _string = require("../../helpers/string");
 
+var _mixed = require("../../helpers/mixed");
+
 var _unicode = require("../../helpers/unicode");
+
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var isListeningKeyDownEvent = new WeakMap();
 var isCheckboxListenerAdded = new WeakMap();
 var BAD_VALUE_CLASS = 'htBadValue';
+var ATTR_ROW = 'data-row';
+var ATTR_COLUMN = 'data-col';
 var RENDERER_TYPE = 'checkbox';
+exports.RENDERER_TYPE = RENDERER_TYPE;
+
+_pluginHooks.default.getSingleton().add('modifyAutoColumnSizeSeed', function (bundleSeed, cellMeta, cellValue) {
+  var label = cellMeta.label,
+      type = cellMeta.type,
+      row = cellMeta.row,
+      column = cellMeta.column,
+      prop = cellMeta.prop;
+
+  if (type !== RENDERER_TYPE) {
+    return;
+  }
+
+  if (label) {
+    var labelValue = label.value,
+        labelProperty = label.property;
+    var labelText = cellValue;
+
+    if (labelValue) {
+      labelText = typeof labelValue === 'function' ? labelValue(row, column, prop, cellValue) : labelValue;
+    } else if (labelProperty) {
+      var labelData = this.getDataAtRowProp(row, labelProperty);
+      labelText = labelData !== null ? labelData : cellValue;
+    }
+
+    bundleSeed = labelText;
+  }
+
+  return bundleSeed;
+});
 /**
  * Checkbox renderer.
  *
@@ -55,7 +91,6 @@ var RENDERER_TYPE = 'checkbox';
  * @param {object} cellProperties The cell meta object ({@see Core#getCellMeta}).
  */
 
-exports.RENDERER_TYPE = RENDERER_TYPE;
 
 function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
   var rootDocument = instance.rootDocument;
@@ -81,7 +116,7 @@ function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
     input.checked = true;
   } else if (value === cellProperties.uncheckedTemplate || (0, _string.equalsIgnoreCase)(value, cellProperties.uncheckedTemplate)) {
     input.checked = false;
-  } else if (value === null) {
+  } else if ((0, _mixed.isEmpty)(value)) {
     // default value
     (0, _element.addClass)(input, 'noValue');
   } else {
@@ -90,8 +125,8 @@ function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
     badValue = true;
   }
 
-  input.setAttribute('data-row', row);
-  input.setAttribute('data-col', col);
+  input.setAttribute(ATTR_ROW, row);
+  input.setAttribute(ATTR_COLUMN, col);
 
   if (!badValue && labelOptions) {
     var labelText = '';
@@ -106,15 +141,27 @@ function checkboxRenderer(instance, TD, row, col, prop, value, cellProperties) {
     var label = createLabel(rootDocument, labelText);
 
     if (labelOptions.position === 'before') {
-      label.appendChild(input);
-    } else {
-      label.insertBefore(input, label.firstChild);
+      if (labelOptions.separated) {
+        TD.appendChild(label);
+        TD.appendChild(input);
+      } else {
+        label.appendChild(input);
+        input = label;
+      }
+    } else if (!labelOptions.position || labelOptions.position === 'after') {
+      if (labelOptions.separated) {
+        TD.appendChild(input);
+        TD.appendChild(label);
+      } else {
+        label.insertBefore(input, label.firstChild);
+        input = label;
+      }
     }
-
-    input = label;
   }
 
-  TD.appendChild(input);
+  if (!labelOptions || labelOptions && !labelOptions.separated) {
+    TD.appendChild(input);
+  }
 
   if (badValue) {
     TD.appendChild(rootDocument.createTextNode('#bad-value#'));
@@ -339,7 +386,13 @@ function createLabel(rootDocument, text) {
 
 
 function onMouseUp(event, instance) {
-  if (!isCheckboxInput(event.target)) {
+  var target = event.target;
+
+  if (!isCheckboxInput(target)) {
+    return;
+  }
+
+  if (!target.hasAttribute(ATTR_ROW) || !target.hasAttribute(ATTR_COLUMN)) {
     return;
   }
 
@@ -349,19 +402,24 @@ function onMouseUp(event, instance) {
  * `click` callback.
  *
  * @private
- * @param {Event} event `click` event.
+ * @param {MouseEvent} event `click` event.
  * @param {Core} instance The Handsontable instance.
- * @returns {boolean|undefined}
  */
 
 
 function onClick(event, instance) {
-  if (!isCheckboxInput(event.target)) {
-    return false;
+  var target = event.target;
+
+  if (!isCheckboxInput(target)) {
+    return;
   }
 
-  var row = parseInt(event.target.getAttribute('data-row'), 10);
-  var col = parseInt(event.target.getAttribute('data-col'), 10);
+  if (!target.hasAttribute(ATTR_ROW) || !target.hasAttribute(ATTR_COLUMN)) {
+    return;
+  }
+
+  var row = parseInt(target.getAttribute(ATTR_ROW), 10);
+  var col = parseInt(target.getAttribute(ATTR_COLUMN), 10);
   var cellProperties = instance.getCellMeta(row, col);
 
   if (cellProperties.readOnly) {
@@ -373,17 +431,22 @@ function onClick(event, instance) {
  *
  * @param {Event} event `change` event.
  * @param {Core} instance The Handsontable instance.
- * @returns {boolean}
  */
 
 
 function onChange(event, instance) {
-  if (!isCheckboxInput(event.target)) {
-    return false;
+  var target = event.target;
+
+  if (!isCheckboxInput(target)) {
+    return;
   }
 
-  var row = parseInt(event.target.getAttribute('data-row'), 10);
-  var col = parseInt(event.target.getAttribute('data-col'), 10);
+  if (!target.hasAttribute(ATTR_ROW) || !target.hasAttribute(ATTR_COLUMN)) {
+    return;
+  }
+
+  var row = parseInt(target.getAttribute(ATTR_ROW), 10);
+  var col = parseInt(target.getAttribute(ATTR_COLUMN), 10);
   var cellProperties = instance.getCellMeta(row, col);
 
   if (!cellProperties.readOnly) {

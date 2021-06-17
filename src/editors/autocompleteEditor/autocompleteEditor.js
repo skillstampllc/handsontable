@@ -91,11 +91,7 @@ export class AutocompleteEditor extends HandsontableEditor {
   open() {
     const priv = privatePool.get(this);
 
-    // this.addHook('beforeKeyDown', event => this.onBeforeKeyDown(event));
-    // Ugly fix for handsontable which grab window object for autocomplete scroll listener instead table element.
-    this.TEXTAREA_PARENT.style.overflow = 'auto';
     super.open();
-    this.TEXTAREA_PARENT.style.overflow = '';
 
     const choicesListHot = this.htEditor.getInstance();
     const trimDropdown = this.cellProperties.trimDropdown === void 0 ? true : this.cellProperties.trimDropdown;
@@ -172,6 +168,7 @@ export class AutocompleteEditor extends HandsontableEditor {
    */
   queryChoices(query) {
     const source = this.cellProperties.source;
+
     this.query = query;
 
     if (typeof source === 'function') {
@@ -511,6 +508,7 @@ AutocompleteEditor.sortByRelevance = function(value, choices, caseSensitive) {
     for (i = 0; i < choicesCount; i++) {
       result.push(i);
     }
+
     return result;
   }
 

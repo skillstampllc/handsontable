@@ -9,10 +9,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.array.splice.js";
@@ -100,13 +100,6 @@ var REGISTERED_HOOKS = [
  * ```
  */
 'afterChange',
-/**
- * Fired by {@link ObserveChanges} plugin after detecting changes in the data source. This hook is fired when
- * {@link Options#observeChanges} option is enabled.
- *
- * @event Hooks#afterChangesObserved
- */
-'afterChangesObserved',
 /**
  * Fired each time user opens {@link ContextMenu} and after setting up the Context Menu's default options. These options are a collection
  * which user can select by setting an array of keys or an array of objects in {@link Options#contextMenu} option.
@@ -305,6 +298,7 @@ var REGISTERED_HOOKS = [
  * @event Hooks#afterLoadData
  * @param {Array} sourceData Array of arrays or array of objects containing data.
  * @param {boolean} initialLoad Flag that determines whether the data has been loaded during the initialization.
+ * @param {string} source Source of the call.
  */
 'afterLoadData',
 /**
@@ -613,10 +607,14 @@ var REGISTERED_HOOKS = [
  * {@link Options#fillHandle} option is enabled.
  *
  * @event Hooks#beforeAutofill
- * @param {CellCoords} start Object containing information about first filled cell: `{row: 2, col: 0}`.
- * @param {CellCoords} end Object containing information about last filled cell: `{row: 4, col: 1}`.
- * @param {Array[]} data 2D array containing information about fill pattern: `[["1", "Ted"], ["1", "John"]]`.
- * @returns {*|boolean} If false is returned the action is canceled.
+ * @param {Array[]} selectionData Data the autofill operation will start from.
+ * @param {CellRange} sourceRange The range values will be filled from.
+ * @param {CellRange} targetRange The range new values will be filled into.
+ * @param {string} direction Declares the direction of the autofill. Possible values: `up`, `down`, `left`, `right`.
+ *
+ * @returns {boolean|Array[]} If false, the operation is cancelled. If array of arrays, the returned data
+ *                              will be passed into `populateFromArray` instead of the default autofill
+ *                              algorithm's result.
  */
 'beforeAutofill',
 /**
@@ -625,9 +623,11 @@ var REGISTERED_HOOKS = [
  *
  * @event Hooks#afterAutofill
  * @since 8.0.0
- * @param {CellCoords} start Object containing information about first filled cell: `{row: 2, col: 0}`.
- * @param {CellCoords} end Object containing information about last filled cell: `{row: 4, col: 1}`.
- * @param {Array[]} data 2D array containing information about fill pattern: `[["1", "Ted"], ["1", "John"]]`.
+ * @param {Array[]} fillData The data that was used to fill the `targetRange`. If `beforeAutofill` was used
+ *                            and returned `[[]]`, this will be the same object that was returned from `beforeAutofill`.
+ * @param {CellRange} sourceRange The range values will be filled from.
+ * @param {CellRange} targetRange The range new values will be filled into.
+ * @param {string} direction Declares the direction of the autofill. Possible values: `up`, `down`, `left`, `right`.
  */
 'afterAutofill',
 /**
@@ -740,6 +740,8 @@ var REGISTERED_HOOKS = [
  * @since 8.0.0
  * @param {Array} sourceData Array of arrays or array of objects containing data.
  * @param {boolean} initialLoad Flag that determines whether the data has been loaded during the initialization.
+ * @param {string} source Source of the call.
+ * @returns {Array} The returned array will be used as new dataset.
  */
 'beforeLoadData',
 /**
@@ -978,6 +980,34 @@ var REGISTERED_HOOKS = [
  *                          from the `top` overlay.
  */
 'modifyGetCellCoords',
+/**
+ * Allows modify the visual row index that is used to retrieve the row header element (TH) before it's
+ * highlighted (proper CSS class names are added). Modifying the visual row index allows building a custom
+ * implementation of the nested headers feature or other features that require highlighting other DOM
+ * elements than that the rendering engine, by default, would have highlighted.
+ *
+ * @event Hooks#beforeHighlightingRowHeader
+ * @since 8.4.0
+ * @param {number} row Visual row index.
+ * @param {number} headerLevel Column header level (0 = most distant to the table).
+ * @param {object} highlightMeta An object that contains additional information about processed selection.
+ * @returns {number|undefined}
+ */
+'beforeHighlightingRowHeader',
+/**
+ * Allows modify the visual column index that is used to retrieve the column header element (TH) before it's
+ * highlighted (proper CSS class names are added). Modifying the visual column index allows building a custom
+ * implementation of the nested headers feature or other features that require highlighting other DOM
+ * elements than that the rendering engine, by default, would have highlighted.
+ *
+ * @event Hooks#beforeHighlightingColumnHeader
+ * @since 8.4.0
+ * @param {number} column Visual column index.
+ * @param {number} headerLevel Row header level (0 = most distant to the table).
+ * @param {object} highlightMeta An object that contains additional information about processed selection.
+ * @returns {number|undefined}
+ */
+'beforeHighlightingColumnHeader',
 /**
  * Fired by {@link PersistentState} plugin, after loading value, saved under given key, from browser local storage. This hook is fired when
  * {@link Options#persistentState} option is enabled.
@@ -1340,6 +1370,58 @@ var REGISTERED_HOOKS = [
 /* eslint-enable jsdoc/require-description-complete-sentence */
 
 /**
+ * Called when a value is updated in the engine.
+ *
+ * @since 9.0.0
+ * @event Hooks#afterFormulasValuesUpdate
+ * @param {Array} changes The values and location of applied changes.
+ */
+'afterFormulasValuesUpdate',
+/**
+ * Called when a named expression is added to the Formulas' engine instance.
+ *
+ * @since 9.0.0
+ * @event Hooks#afterNamedExpressionAdded
+ * @param {string} namedExpressionName The name of the added expression.
+ * @param {Array} changes The values and location of applied changes.
+ */
+'afterNamedExpressionAdded',
+/**
+ * Called when a named expression is removed from the Formulas' engine instance.
+ *
+ * @since 9.0.0
+ * @event Hooks#afterNamedExpressionRemoved
+ * @param {string} namedExpressionName The name of the removed expression.
+ * @param {Array} changes The values and location of applied changes.
+ */
+'afterNamedExpressionRemoved',
+/**
+ * Called when a new sheet is added to the Formulas' engine instance.
+ *
+ * @since 9.0.0
+ * @event Hooks#afterSheetAdded
+ * @param {string} addedSheetDisplayName The name of the added sheet.
+ */
+'afterSheetAdded',
+/**
+ * Called when a sheet in the Formulas' engine instance is renamed.
+ *
+ * @since 9.0.0
+ * @event Hooks#afterSheetRenamed
+ * @param {string} oldDisplayName The old name of the sheet.
+ * @param {string} newDisplayName The new name of the sheet.
+ */
+'afterSheetRenamed',
+/**
+ * Called when a sheet is removed from the Formulas' engine instance.
+ *
+ * @since 9.0.0
+ * @event Hooks#afterSheetRemoved
+ * @param {string} removedSheetDisplayName The removed sheet name.
+ * @param {Array} changes The values and location of applied changes.
+ */
+'afterSheetRemoved',
+/**
  * Fired while retrieving the column header height.
  *
  * @event Hooks#modifyColumnHeaderHeight
@@ -1356,6 +1438,16 @@ var REGISTERED_HOOKS = [
  */
 'beforeUndo',
 /**
+ * Fired by {@link UndoRedo} plugin before changing undo stack.
+ *
+ * @event Hooks#beforeUndoStackChange
+ * @since 8.4.0
+ * @param {Array} doneActions Stack of actions which may be undone.
+ * @param {string} [source] String that identifies source of action ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+ * @returns {*|boolean} If false is returned the action of changing undo stack is canceled.
+ */
+'beforeUndoStackChange',
+/**
  * Fired by {@link UndoRedo} plugin after the undo action. Contains information about the action that is being undone.
  * This hook is fired when {@link Options#undo} option is enabled.
  *
@@ -1364,6 +1456,15 @@ var REGISTERED_HOOKS = [
  *                        property of the object specifies the type of the action in a String format. (e.g. `'remove_row'`).
  */
 'afterUndo',
+/**
+ * Fired by {@link UndoRedo} plugin after changing undo stack.
+ *
+ * @event Hooks#afterUndoStackChange
+ * @since 8.4.0
+ * @param {Array} doneActionsBefore Stack of actions which could be undone before performing new action.
+ * @param {Array} doneActionsAfter Stack of actions which can be undone after performing new action.
+ */
+'afterUndoStackChange',
 /**
  * Fired by {@link UndoRedo} plugin before the redo action. Contains information about the action that is being redone.
  * This hook is fired when {@link Options#undo} option is enabled.
@@ -1375,6 +1476,14 @@ var REGISTERED_HOOKS = [
  */
 'beforeRedo',
 /**
+ * Fired by {@link UndoRedo} plugin before changing redo stack.
+ *
+ * @event Hooks#beforeRedoStackChange
+ * @since 8.4.0
+ * @param {Array} undoneActions Stack of actions which may be redone.
+ */
+'beforeRedoStackChange',
+/**
  * Fired by {@link UndoRedo} plugin after the redo action. Contains information about the action that is being redone.
  * This hook is fired when {@link Options#undo} option is enabled.
  *
@@ -1383,6 +1492,15 @@ var REGISTERED_HOOKS = [
  *                        property of the object specifies the type of the action in a String format (e.g. `'remove_row'`).
  */
 'afterRedo',
+/**
+ * Fired by {@link UndoRedo} plugin after changing redo stack.
+ *
+ * @event Hooks#afterRedoStackChange
+ * @since 8.4.0
+ * @param {Array} undoneActionsBefore Stack of actions which could be redone before performing new action.
+ * @param {Array} undoneActionsAfter Stack of actions which can be redone after performing new action.
+ */
+'afterRedoStackChange',
 /**
  * Fired while retrieving the row header width.
  *
@@ -1393,6 +1511,7 @@ var REGISTERED_HOOKS = [
 /**
  * Fired from the `populateFromArray` method during the `autofill` process. Fired for each "autofilled" cell individually.
  *
+ * @deprecated
  * @event Hooks#beforeAutofillInsidePopulate
  * @param {object} index Object containing `row` and `col` properties, defining the number of rows/columns from the initial cell of the autofill.
  * @param {string} direction Declares the direction of the autofill. Possible values: `up`, `down`, `left`, `right`.
@@ -1767,7 +1886,17 @@ var REGISTERED_HOOKS = [
  * @param {boolean} expandPossible `true`, if all of the column indexes are withing the bounds of the collapsed sections, `false` otherwise.
  * @param {boolean} successfullyExpanded `true`, if the action affected any non-collapsible column, `false` otherwise.
  */
-'afterColumnExpand'];
+'afterColumnExpand',
+/**
+ * Fired by {@link AutoColumnSize} plugin within {@link SampleGenerator} utility.
+ *
+ * @event Hooks#modifyAutoColumnSizeSeed
+ * @since 8.4.0
+ * @param {string|undefined} seed Seed ID, unique name to categorize samples.
+ * @param {object} cellProperties Object containing the cell properties.
+ * @param {*} cellValue Value of the cell.
+ */
+'modifyAutoColumnSizeSeed'];
 /**
  * Template warning message for removed hooks.
  *
@@ -1810,7 +1939,7 @@ var REMOVED_HOOKS = new Map([['modifyRow', '8.0.0'], ['modifyCol', '8.0.0'], ['u
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
 
-var DEPRECATED_HOOKS = new Map([]);
+var DEPRECATED_HOOKS = new Map([['beforeAutofillInsidePopulate', 'The plugin hook "beforeAutofillInsidePopulate" is deprecated and will be removed in the next major release.']]);
 
 var Hooks = /*#__PURE__*/function () {
   /**

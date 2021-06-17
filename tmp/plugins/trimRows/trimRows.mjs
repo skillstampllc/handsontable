@@ -2,9 +2,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 import "core-js/modules/es.array.from.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.array.slice.js";
@@ -365,8 +365,6 @@ export var TrimRows = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.rowIndexMapper.unregisterMap('trimRows');
-
       _get(_getPrototypeOf(TrimRows.prototype), "destroy", this).call(this);
     }
   }], [{

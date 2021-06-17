@@ -24,15 +24,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import "core-js/modules/es.weak-map.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.weak-map.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.array.find.js";
-import "core-js/modules/es.string.replace.js";
 import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.replace.js";
 import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.array.sort.js";
 import "core-js/modules/es.object.set-prototype-of.js";
@@ -140,14 +140,10 @@ export var AutocompleteEditor = /*#__PURE__*/function (_HandsontableEditor) {
     value: function open() {
       var _this3 = this;
 
-      var priv = privatePool.get(this); // this.addHook('beforeKeyDown', event => this.onBeforeKeyDown(event));
-      // Ugly fix for handsontable which grab window object for autocomplete scroll listener instead table element.
-
-      this.TEXTAREA_PARENT.style.overflow = 'auto';
+      var priv = privatePool.get(this);
 
       _get(_getPrototypeOf(AutocompleteEditor.prototype), "open", this).call(this);
 
-      this.TEXTAREA_PARENT.style.overflow = '';
       var choicesListHot = this.htEditor.getInstance();
       var trimDropdown = this.cellProperties.trimDropdown === void 0 ? true : this.cellProperties.trimDropdown;
       this.showEditableElement();

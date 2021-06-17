@@ -3,9 +3,9 @@
 exports.__esModule = true;
 exports.toSingleLine = toSingleLine;
 
-require("core-js/modules/es.string.replace.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 require("core-js/modules/es.string.trim.js");
 

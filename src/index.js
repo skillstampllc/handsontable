@@ -1,6 +1,6 @@
 import Handsontable from './base';
 import EventManager, { getListenersCounter } from './eventManager';
-import { getRegisteredMapsCounter } from './translations/mapCollection';
+import { getRegisteredMapsCounter } from './translations';
 import Hooks from './pluginHooks';
 import { metaSchemaFactory } from './dataMap/index';
 
@@ -22,6 +22,13 @@ import * as unicodeHelpers from './helpers/unicode';
 import * as domHelpers from './helpers/dom/element';
 import * as domEventHelpers from './helpers/dom/event';
 
+/* eslint-disable handsontable/restricted-module-imports */
+// Since the Handsontable was modularized, importing some submodules is restricted.
+// Importing the main entry of the submodule can make the "dead" code elimination
+// process more difficult. The "handsontable/restricted-module-imports" rule is on
+// guard. For the index.js file, the rule has to be disabled. This file exports the
+// full version of the Handsontable with build-in all available components, so that's
+// why the rule is disabled here (see more #7506).
 import {
   getRegisteredEditorNames,
   getEditor,
@@ -90,7 +97,6 @@ import {
   ExportFile,
   Filters,
   Formulas,
-  HeaderTooltips,
   HiddenColumns,
   HiddenRows,
   ManualColumnFreeze,
@@ -103,7 +109,6 @@ import {
   MultipleSelectionHandles,
   NestedHeaders,
   NestedRows,
-  ObserveChanges,
   PersistentState,
   Search,
   TouchScroll,
@@ -113,6 +118,7 @@ import {
   getPluginsNames,
   registerPlugin,
 } from './plugins';
+/* eslint-enable handsontable/restricted-module-imports */
 
 registerEditor(BaseEditor);
 registerEditor(AutocompleteEditor);
@@ -166,7 +172,6 @@ registerPlugin(DropdownMenu);
 registerPlugin(ExportFile);
 registerPlugin(Filters);
 registerPlugin(Formulas);
-registerPlugin(HeaderTooltips);
 registerPlugin(HiddenColumns);
 registerPlugin(HiddenRows);
 registerPlugin(ManualColumnFreeze);
@@ -179,7 +184,6 @@ registerPlugin(MultiColumnSorting);
 registerPlugin(MultipleSelectionHandles);
 registerPlugin(NestedHeaders);
 registerPlugin(NestedRows);
-registerPlugin(ObserveChanges);
 registerPlugin(PersistentState);
 registerPlugin(Search);
 registerPlugin(TouchScroll);

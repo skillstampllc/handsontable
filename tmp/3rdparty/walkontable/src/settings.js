@@ -32,6 +32,9 @@ var Settings = /*#__PURE__*/function () {
 
     this.defaults = {
       table: void 0,
+      // Determines whether the Walkontable instance is used as dataset viewer. When its instance is used as
+      // a context menu, autocomplete list, etc, the returned value is `false`.
+      isDataViewInstance: true,
       // presentation mode
       externalRowCalculator: false,
       stretchH: 'none',
@@ -114,6 +117,12 @@ var Settings = /*#__PURE__*/function () {
       },
       onModifyRowHeaderWidth: null,
       onModifyGetCellCoords: null,
+      onBeforeHighlightingRowHeader: function onBeforeHighlightingRowHeader(sourceRow) {
+        return sourceRow;
+      },
+      onBeforeHighlightingColumnHeader: function onBeforeHighlightingColumnHeader(sourceCol) {
+        return sourceCol;
+      },
       onWindowResize: null,
       // constants
       scrollbarWidth: 10,

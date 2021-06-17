@@ -8,9 +8,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.string.iterator.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -51,7 +51,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -274,50 +274,103 @@ var Selection = /*#__PURE__*/function () {
           bottomRow = _corners[2],
           bottomColumn = _corners[3];
 
-      if (topColumn !== null && bottomColumn !== null) {
+      var _this$settings = this.settings,
+          highlightHeaderClassName = _this$settings.highlightHeaderClassName,
+          highlightColumnClassName = _this$settings.highlightColumnClassName,
+          highlightRowClassName = _this$settings.highlightRowClassName,
+          highlightOnlyClosestHeader = _this$settings.highlightOnlyClosestHeader,
+          selectionType = _this$settings.selectionType;
+      var isHeaderSelectionType = selectionType === void 0 || ['active-header', 'header'].includes(selectionType);
+
+      if (isHeaderSelectionType && topColumn !== null && bottomColumn !== null) {
+        var selectionColumnCursor = 0;
+
         for (var column = 0; column < renderedColumns; column += 1) {
           var sourceCol = wotInstance.wtTable.columnFilter.renderedToSource(column);
 
           if (sourceCol >= topColumn && sourceCol <= bottomColumn) {
-            var TH = wotInstance.wtTable.getColumnHeader(sourceCol);
+            var THs = wotInstance.wtTable.getColumnHeaders(sourceCol);
+            var closestHeaderLevel = THs.length - 1;
 
-            if (TH) {
+            if (highlightOnlyClosestHeader && THs.length > 1) {
+              THs = [THs[closestHeaderLevel]];
+            }
+
+            for (var headerLevel = 0; headerLevel < THs.length; headerLevel += 1) {
               var newClasses = [];
+              var TH = THs[headerLevel];
 
-              if (this.settings.highlightHeaderClassName) {
-                newClasses.push(this.settings.highlightHeaderClassName);
+              if (highlightHeaderClassName) {
+                newClasses.push(highlightHeaderClassName);
               }
 
-              if (this.settings.highlightColumnClassName) {
-                newClasses.push(this.settings.highlightColumnClassName);
+              if (highlightColumnClassName) {
+                newClasses.push(highlightColumnClassName);
+              }
+
+              headerLevel = highlightOnlyClosestHeader ? closestHeaderLevel : headerLevel;
+              var newSourceCol = wotInstance.getSetting('onBeforeHighlightingColumnHeader', sourceCol, headerLevel, {
+                selectionType: selectionType,
+                columnCursor: selectionColumnCursor,
+                selectionWidth: bottomColumn - topColumn + 1,
+                classNames: newClasses
+              });
+
+              if (newSourceCol !== sourceCol) {
+                TH = wotInstance.wtTable.getColumnHeader(newSourceCol, headerLevel);
               }
 
               (0, _element.addClass)(TH, newClasses);
             }
+
+            selectionColumnCursor += 1;
           }
         }
       }
 
       if (topRow !== null && bottomRow !== null) {
+        var selectionRowCursor = 0;
+
         for (var row = 0; row < renderedRows; row += 1) {
           var sourceRow = wotInstance.wtTable.rowFilter.renderedToSource(row);
 
-          if (sourceRow >= topRow && sourceRow <= bottomRow) {
-            var _TH = wotInstance.wtTable.getRowHeader(sourceRow);
+          if (isHeaderSelectionType && sourceRow >= topRow && sourceRow <= bottomRow) {
+            var _THs = wotInstance.wtTable.getRowHeaders(sourceRow);
 
-            if (_TH) {
+            var _closestHeaderLevel = _THs.length - 1;
+
+            if (highlightOnlyClosestHeader && _THs.length > 1) {
+              _THs = [_THs[_closestHeaderLevel]];
+            }
+
+            for (var _headerLevel = 0; _headerLevel < _THs.length; _headerLevel += 1) {
               var _newClasses = [];
+              var _TH = _THs[_headerLevel];
 
-              if (this.settings.highlightHeaderClassName) {
-                _newClasses.push(this.settings.highlightHeaderClassName);
+              if (highlightHeaderClassName) {
+                _newClasses.push(highlightHeaderClassName);
               }
 
-              if (this.settings.highlightRowClassName) {
-                _newClasses.push(this.settings.highlightRowClassName);
+              if (highlightRowClassName) {
+                _newClasses.push(highlightRowClassName);
+              }
+
+              _headerLevel = highlightOnlyClosestHeader ? _closestHeaderLevel : _headerLevel;
+              var newSourceRow = wotInstance.getSetting('onBeforeHighlightingRowHeader', sourceRow, _headerLevel, {
+                selectionType: selectionType,
+                rowCursor: selectionRowCursor,
+                selectionHeight: bottomRow - topRow + 1,
+                classNames: _newClasses
+              });
+
+              if (newSourceRow !== sourceRow) {
+                _TH = wotInstance.wtTable.getRowHeader(newSourceRow, _headerLevel);
               }
 
               (0, _element.addClass)(_TH, _newClasses);
             }
+
+            selectionRowCursor += 1;
           }
 
           if (topColumn !== null && bottomColumn !== null) {
@@ -331,13 +384,13 @@ var Selection = /*#__PURE__*/function () {
                 }
               } else if (sourceRow >= topRow && sourceRow <= bottomRow) {
                 // selection is in this row
-                if (this.settings.highlightRowClassName) {
-                  this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.highlightRowClassName);
+                if (highlightRowClassName) {
+                  this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, highlightRowClassName);
                 }
               } else if (_sourceCol >= topColumn && _sourceCol <= bottomColumn) {
                 // selection is in this column
-                if (this.settings.highlightColumnClassName) {
-                  this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, this.settings.highlightColumnClassName);
+                if (highlightColumnClassName) {
+                  this.addClassAtCoords(wotInstance, sourceRow, _sourceCol, highlightColumnClassName);
                 }
               }
 

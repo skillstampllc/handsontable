@@ -31,11 +31,11 @@ require("core-js/modules/es.array.from.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.set.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.set.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -45,9 +45,9 @@ require("core-js/modules/es.number.constructor.js");
 
 require("core-js/modules/es.array.index-of.js");
 
-require("core-js/modules/es.string.split.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
 
 require("core-js/modules/es.array.splice.js");
 
@@ -178,9 +178,9 @@ var PLUGIN_PRIORITY = 320;
 
 exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 
-var _settings = new WeakMap();
+var _settings = /*#__PURE__*/new WeakMap();
 
-var _hiddenRowsMap = new WeakMap();
+var _hiddenRowsMap = /*#__PURE__*/new WeakMap();
 
 var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
   _inherits(HiddenRows, _BasePlugin);
@@ -646,8 +646,6 @@ var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.rowIndexMapper.unregisterMap(this.pluginName);
-
       _classPrivateFieldSet(this, _settings, null);
 
       _classPrivateFieldSet(this, _hiddenRowsMap, null);

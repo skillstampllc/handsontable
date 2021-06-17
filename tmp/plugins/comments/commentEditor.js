@@ -167,14 +167,9 @@ var CommentEditor = /*#__PURE__*/function () {
     value: function createEditor() {
       var editor = this.rootDocument.createElement('div');
       var textArea = this.rootDocument.createElement('textarea');
-      this.container = this.rootDocument.querySelector(".".concat(CommentEditor.CLASS_EDITOR_CONTAINER));
-
-      if (!this.container) {
-        this.container = this.rootDocument.createElement('div');
-        (0, _element.addClass)(this.container, CommentEditor.CLASS_EDITOR_CONTAINER);
-        this.rootDocument.body.appendChild(this.container);
-      }
-
+      this.container = this.rootDocument.createElement('div');
+      (0, _element.addClass)(this.container, CommentEditor.CLASS_EDITOR_CONTAINER);
+      this.rootDocument.body.appendChild(this.container);
       (0, _element.addClass)(editor, CommentEditor.CLASS_EDITOR);
       (0, _element.addClass)(textArea, CommentEditor.CLASS_INPUT);
       editor.appendChild(textArea);

@@ -3,13 +3,13 @@
 exports.__esModule = true;
 exports.default = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -32,14 +32,14 @@ var privatePool = new WeakMap();
 var ViewportColumnsCalculator = /*#__PURE__*/function () {
   /**
    * @param {object} options Object with all options specified for column viewport calculation.
-   * @param {number} options.viewportWidth Width of the viewport.
+   * @param {number} options.viewportSize Width of the viewport.
    * @param {number} options.scrollOffset Current horizontal scroll position of the viewport.
-   * @param {number} options.totalColumns Total number of columns.
-   * @param {Function} options.columnWidthFn Function that returns the width of the column at a given index (in px).
+   * @param {number} options.totalItems Total number of columns.
+   * @param {Function} options.itemSizeFn Function that returns the width of the column at a given index (in px).
    * @param {Function} options.overrideFn Function that changes calculated this.startRow, this.endRow (used by MergeCells plugin).
    * @param {string} options.calculationType String which describes types of calculation which will be performed.
-   * @param {string} [options.stretchH] Stretch mode 'all' or 'last'.
-   * @param {Function} [options.stretchingColumnWidthFn] Function that returns the new width of the stretched column.
+   * @param {string} [options.stretchMode] Stretch mode 'all' or 'last'.
+   * @param {Function} [options.stretchingItemWidthFn] Function that returns the new width of the stretched column.
    */
   function ViewportColumnsCalculator() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},

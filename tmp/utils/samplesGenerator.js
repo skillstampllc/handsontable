@@ -3,13 +3,13 @@
 exports.__esModule = true;
 exports.default = void 0;
 
+require("core-js/modules/es.array.iterator.js");
+
 require("core-js/modules/es.map.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -188,31 +188,29 @@ var SamplesGenerator = /*#__PURE__*/function () {
       (0, _number.rangeEach)(range.from, range.to, function (index) {
         var _ref2 = type === 'row' ? _this2.dataFactory(specifierValue, index) : _this2.dataFactory(index, specifierValue),
             value = _ref2.value,
-            bundleCountSeed = _ref2.bundleCountSeed;
+            bundleSeed = _ref2.bundleSeed;
 
-        var hasCustomBundleSeed = bundleCountSeed > 0;
-        var length;
-
-        if ((0, _object.isObject)(value)) {
-          length = Object.keys(value).length;
-        } else if (Array.isArray(value)) {
-          length = value.length;
-        } else {
-          length = (0, _mixed.stringify)(value).length;
-        }
+        var hasCustomBundleSeed = typeof bundleSeed === 'string' && bundleSeed.length > 0;
+        var seed;
 
         if (hasCustomBundleSeed) {
-          length += bundleCountSeed;
+          seed = bundleSeed;
+        } else if ((0, _object.isObject)(value)) {
+          seed = "".concat(Object.keys(value).length);
+        } else if (Array.isArray(value)) {
+          seed = "".concat(value.length);
+        } else {
+          seed = "".concat((0, _mixed.stringify)(value).length);
         }
 
-        if (!samples.has(length)) {
-          samples.set(length, {
+        if (!samples.has(seed)) {
+          samples.set(seed, {
             needed: _this2.getSampleCount(),
             strings: []
           });
         }
 
-        var sample = samples.get(length);
+        var sample = samples.get(seed);
 
         if (sample.needed) {
           var duplicate = sampledValues.indexOf(value) > -1;

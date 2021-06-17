@@ -27,15 +27,15 @@ require("core-js/modules/es.array.slice.js");
 require("core-js/modules/es.function.name.js");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports.LinkedPhysicalIndexToValueMap = void 0;
 
 require("core-js/modules/es.array.concat.js");
 
 require("core-js/modules/es.array.map.js");
 
-require("core-js/modules/es.object.to-string.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -45,7 +45,7 @@ require("core-js/modules/es.string.includes.js");
 
 require("core-js/modules/es.array.splice.js");
 
-var _indexMap = _interopRequireDefault(require("./indexMap"));
+var _indexMap = require("./indexMap");
 
 var _physicallyIndexed = require("./utils/physicallyIndexed");
 
@@ -55,15 +55,13 @@ var _actionsOnIndexes = require("./utils/actionsOnIndexes");
 
 var _function = require("../../helpers/function");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -277,7 +275,6 @@ var LinkedPhysicalIndexToValueMap = /*#__PURE__*/function (_IndexMap) {
   }]);
 
   return LinkedPhysicalIndexToValueMap;
-}(_indexMap.default);
+}(_indexMap.IndexMap);
 
-var _default = LinkedPhysicalIndexToValueMap;
-exports.default = _default;
+exports.LinkedPhysicalIndexToValueMap = LinkedPhysicalIndexToValueMap;

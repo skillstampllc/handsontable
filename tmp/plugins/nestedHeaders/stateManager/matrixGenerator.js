@@ -2,28 +2,26 @@
 
 require("core-js/modules/es.object.keys.js");
 
+require("core-js/modules/es.array.index-of.js");
+
 require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.object.get-own-property-descriptor.js");
-
-require("core-js/modules/web.dom-collections.for-each.js");
-
-require("core-js/modules/es.object.get-own-property-descriptors.js");
 
 exports.__esModule = true;
 exports.generateMatrix = generateMatrix;
 
+require("core-js/modules/es.array.includes.js");
+
+require("core-js/modules/es.string.includes.js");
+
 var _array = require("../../../helpers/array");
 
-var _constants = require("./constants");
+var _utils = require("./utils");
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+var _excluded = ["crossHiddenColumns"];
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 /**
  * A function that dump a tree structure into multidimensional array. That structure is
@@ -59,37 +57,45 @@ function generateMatrix(headerRoots) {
   var matrix = [];
   (0, _array.arrayEach)(headerRoots, function (rootNode) {
     rootNode.walkDown(function (node) {
-      var _node$data = node.data,
-          colspan = _node$data.colspan,
-          origColspan = _node$data.origColspan,
-          label = _node$data.label,
-          isHidden = _node$data.isHidden,
-          headerLevel = _node$data.headerLevel,
-          collapsible = _node$data.collapsible,
-          isCollapsed = _node$data.isCollapsed;
+      var nodeData = node.data;
+      var origColspan = nodeData.origColspan,
+          columnIndex = nodeData.columnIndex,
+          headerLevel = nodeData.headerLevel,
+          crossHiddenColumns = nodeData.crossHiddenColumns;
       var colspanHeaderLayer = createNestedArrayIfNecessary(matrix, headerLevel);
-      colspanHeaderLayer.push({
-        label: label,
-        colspan: colspan,
-        origColspan: origColspan,
-        collapsible: collapsible,
-        isCollapsed: isCollapsed,
-        isHidden: isHidden,
-        isBlank: false
-      });
+      var isRootSettingsFound = false;
 
-      if (origColspan > 1) {
-        for (var i = 0; i < origColspan - 1; i++) {
-          colspanHeaderLayer.push(_objectSpread(_objectSpread({}, _constants.HEADER_DEFAULT_SETTINGS), {}, {
-            origColspan: origColspan,
-            isHidden: true,
-            isBlank: true
-          }));
+      for (var i = columnIndex; i < columnIndex + origColspan; i++) {
+        var isColumnHidden = crossHiddenColumns.includes(i);
+
+        if (isColumnHidden || isRootSettingsFound) {
+          colspanHeaderLayer.push((0, _utils.createPlaceholderHeaderSettings)(nodeData));
+        } else {
+          var headerRootSettings = createHeaderSettings(nodeData);
+          headerRootSettings.isRoot = true;
+          colspanHeaderLayer.push(headerRootSettings);
+          isRootSettingsFound = true;
         }
       }
     });
   });
   return matrix;
+}
+/**
+ * Creates header settings object.
+ *
+ * @param {object} nodeData The tree data object.
+ * @returns {object}
+ */
+
+
+function createHeaderSettings(nodeData) {
+  // For the matrix module we do not need to export "crossHiddenColumns" key. It's redundant here.
+  var _createDefaultHeaderS = (0, _utils.createDefaultHeaderSettings)(nodeData),
+      crossHiddenColumns = _createDefaultHeaderS.crossHiddenColumns,
+      headerRootSettings = _objectWithoutProperties(_createDefaultHeaderS, _excluded);
+
+  return headerRootSettings;
 }
 /**
  * Internal helper which ensures that subarray exists under specified index.

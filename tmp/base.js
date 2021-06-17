@@ -15,6 +15,11 @@ var _textType = require("./cellTypes/textType");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// FIXME: Bug in eslint-plugin-import: https://github.com/benmosher/eslint-plugin-import/issues/1883
+
+/* eslint-disable import/named */
+
+/* eslint-enable import/named */
 (0, _registry2.registerCellType)(_textType.TextCellType);
 /**
  * @param {HTMLElement} rootElement The element to which the Handsontable instance is injected.
@@ -34,8 +39,8 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "22/04/2021 17:25:50";
-Handsontable.version = "8.3.1";
+Handsontable.buildDate = "17/06/2021 14:56:29";
+Handsontable.version = "9.0.0";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,
   getLanguageDictionary: _registry.getLanguageDictionary,

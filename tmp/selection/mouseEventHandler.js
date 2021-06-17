@@ -5,13 +5,13 @@ exports.mouseDown = mouseDown;
 exports.mouseOver = mouseOver;
 exports.handleMouseEvent = handleMouseEvent;
 
+require("core-js/modules/es.array.iterator.js");
+
 require("core-js/modules/es.map.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -52,9 +52,9 @@ function mouseDown(_ref) {
     } else if (selectedRow && coords.col < 0 && !controller.row) {
       selection.setRangeEnd(new _src.CellCoords(coords.row, currentSelection.to.col));
     } else if ((!selectedCorner && !selectedRow && coords.col < 0 || selectedCorner && coords.col < 0) && !controller.row) {
-      selection.selectRows(Math.max(currentSelection.from.row, 0), coords.row);
+      selection.selectRows(Math.max(currentSelection.from.row, 0), coords.row, coords.col);
     } else if ((!selectedCorner && !selectedRow && coords.row < 0 || selectedRow && coords.row < 0) && !controller.column) {
-      selection.selectColumns(Math.max(currentSelection.from.col, 0), coords.col);
+      selection.selectColumns(Math.max(currentSelection.from.col, 0), coords.col, coords.row);
     }
   } else {
     var allowRightClickSelection = !selection.inInSelection(coords);
@@ -62,12 +62,12 @@ function mouseDown(_ref) {
 
     if (coords.row < 0 && coords.col >= 0 && !controller.column) {
       if (performSelection) {
-        selection.selectColumns(coords.col);
+        selection.selectColumns(coords.col, coords.col, coords.row);
       } // clicked column header and when some row was selected
 
     } else if (coords.col < 0 && coords.row >= 0 && !controller.row) {
       if (performSelection) {
-        selection.selectRows(coords.row);
+        selection.selectRows(coords.row, coords.row, coords.col);
       }
     } else if (coords.col >= 0 && coords.row >= 0 && !controller.cells) {
       if (performSelection) {

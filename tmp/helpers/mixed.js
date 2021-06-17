@@ -18,9 +18,9 @@ require("core-js/modules/es.regexp.to-string.js");
 
 require("core-js/modules/es.string.code-point-at.js");
 
-require("core-js/modules/es.string.replace.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 require("core-js/modules/es.string.split.js");
 
@@ -32,9 +32,9 @@ require("core-js/modules/es.symbol.description.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.string.iterator.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -194,7 +194,7 @@ var domMessages = {
 function _injectProductInfo(key, element) {
   var hasValidType = !isEmpty(key);
   var isNonCommercial = typeof key === 'string' && key.toLowerCase() === 'non-commercial-and-evaluation';
-  var hotVersion = "8.3.1";
+  var hotVersion = "9.0.0";
   var keyValidityDate;
   var consoleMessageState = 'invalid';
   var domMessageState = 'invalid';
@@ -204,7 +204,7 @@ function _injectProductInfo(key, element) {
 
   if (hasValidType || isNonCommercial || schemaValidity) {
     if (schemaValidity) {
-      var releaseDate = (0, _moment.default)("10/02/2021", 'DD/MM/YYYY');
+      var releaseDate = (0, _moment.default)("01/06/2021", 'DD/MM/YYYY');
       var releaseDays = Math.floor(releaseDate.toDate().getTime() / 8.64e7);
 
       var keyValidityDays = _extractTime(key);

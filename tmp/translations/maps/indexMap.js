@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.default = void 0;
+exports.IndexMap = void 0;
 
 require("core-js/modules/es.array.slice.js");
 
@@ -202,11 +202,21 @@ var IndexMap = /*#__PURE__*/function () {
     value: function remove() {
       this.runLocalHooks('change');
     }
+    /**
+     * Destroys the Map instance.
+     */
+
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.clearLocalHooks();
+      this.indexedValues = null;
+      this.initValueOrFn = null;
+    }
   }]);
 
   return IndexMap;
 }();
 
+exports.IndexMap = IndexMap;
 (0, _object.mixin)(IndexMap, _localHooks.default);
-var _default = IndexMap;
-exports.default = _default;

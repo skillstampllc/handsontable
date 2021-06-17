@@ -16,9 +16,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.string.iterator.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -541,6 +541,14 @@ var TextEditor = /*#__PURE__*/function (_BaseEditor) {
       this.eventManager.addEventListener(this.TEXTAREA, 'paste', function (event) {
         return event.stopPropagation();
       });
+
+      if ((0, _browser.isIOS)()) {
+        // on iOS after click "Done" the edit isn't hidden by default, so we need to handle it manually.
+        this.eventManager.addEventListener(this.TEXTAREA, 'focusout', function () {
+          return _this3.finishEditing(false);
+        });
+      }
+
       this.addHook('afterScrollHorizontally', function () {
         return _this3.refreshDimensions();
       });

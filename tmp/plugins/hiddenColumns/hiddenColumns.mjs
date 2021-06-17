@@ -5,15 +5,15 @@ import "core-js/modules/es.array.slice.js";
 import "core-js/modules/es.array.map.js";
 import "core-js/modules/es.array.from.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.number.is-integer.js";
 import "core-js/modules/es.number.constructor.js";
 import "core-js/modules/es.array.index-of.js";
-import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.array.splice.js";
 import "core-js/modules/es.array.join.js";
 import "core-js/modules/es.weak-map.js";
@@ -128,9 +128,9 @@ export var PLUGIN_PRIORITY = 310;
  * ```
  */
 
-var _settings = new WeakMap();
+var _settings = /*#__PURE__*/new WeakMap();
 
-var _hiddenColumnsMap = new WeakMap();
+var _hiddenColumnsMap = /*#__PURE__*/new WeakMap();
 
 export var HiddenColumns = /*#__PURE__*/function (_BasePlugin) {
   _inherits(HiddenColumns, _BasePlugin);
@@ -603,8 +603,6 @@ export var HiddenColumns = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.columnIndexMapper.unregisterMap(this.pluginName);
-
       _classPrivateFieldSet(this, _settings, null);
 
       _classPrivateFieldSet(this, _hiddenColumnsMap, null);

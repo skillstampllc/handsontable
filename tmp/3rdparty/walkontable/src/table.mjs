@@ -2,7 +2,7 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -14,13 +14,14 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 import "core-js/modules/es.array.from.js";
 import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.array.includes.js";
+import "core-js/modules/web.dom-collections.for-each.js";
 import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
 import "core-js/modules/es.object.to-string.js";
@@ -671,30 +672,82 @@ var Table = /*#__PURE__*/function () {
     value: function getColumnHeader(col) {
       var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       var TR = this.THEAD.childNodes[level];
+      return TR === null || TR === void 0 ? void 0 : TR.childNodes[this.columnFilter.sourceColumnToVisibleRowHeadedColumn(col)];
+    }
+    /**
+     * Gets all columns headers (TH elements) from the table.
+     *
+     * @param {number} column A source column index.
+     * @returns {HTMLTableCellElement[]}
+     */
 
-      if (TR) {
-        return TR.childNodes[this.columnFilter.sourceColumnToVisibleRowHeadedColumn(col)];
-      }
+  }, {
+    key: "getColumnHeaders",
+    value: function getColumnHeaders(column) {
+      var THs = [];
+      var visibleColumn = this.columnFilter.sourceColumnToVisibleRowHeadedColumn(column);
+      this.THEAD.childNodes.forEach(function (TR) {
+        var TH = TR.childNodes[visibleColumn];
+
+        if (TH) {
+          THs.push(TH);
+        }
+      });
+      return THs;
     }
     /**
      * GetRowHeader.
      *
      * @param {number} row Row index.
+     * @param {number} [level=0] Header level (0 = most distant to the table).
      * @returns {HTMLElement} HTMLElement on success or Number one of the exit codes on error: `null table doesn't have row headers`.
      */
 
   }, {
     key: "getRowHeader",
     value: function getRowHeader(row) {
+      var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
       if (this.columnFilter.sourceColumnToVisibleRowHeadedColumn(0) === 0) {
-        return null;
+        return;
+      }
+
+      var rowHeadersCount = this.wot.getSetting('rowHeaders').length;
+
+      if (level >= rowHeadersCount) {
+        return;
       }
 
       var TR = this.TBODY.childNodes[this.rowFilter.sourceToRendered(row)];
+      return TR === null || TR === void 0 ? void 0 : TR.childNodes[level];
+    }
+    /**
+     * Gets all rows headers (TH elements) from the table.
+     *
+     * @param {number} row A source row index.
+     * @returns {HTMLTableCellElement[]}
+     */
 
-      if (TR) {
-        return TR.childNodes[0];
+  }, {
+    key: "getRowHeaders",
+    value: function getRowHeaders(row) {
+      if (this.columnFilter.sourceColumnToVisibleRowHeadedColumn(0) === 0) {
+        return [];
       }
+
+      var THs = [];
+      var rowHeadersCount = this.wot.getSetting('rowHeaders').length;
+
+      for (var renderedRowIndex = 0; renderedRowIndex < rowHeadersCount; renderedRowIndex++) {
+        var TR = this.TBODY.childNodes[this.rowFilter.sourceToRendered(row)];
+        var TH = TR === null || TR === void 0 ? void 0 : TR.childNodes[renderedRowIndex];
+
+        if (TH) {
+          THs.push(TH);
+        }
+      }
+
+      return THs;
     }
     /**
      * Returns cell coords object for a given TD (or a child element of a TD element).

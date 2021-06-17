@@ -15,9 +15,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.regexp.to-string.js");
 
-require("core-js/modules/es.string.replace.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 var _dompurify = _interopRequireDefault(require("dompurify"));
 

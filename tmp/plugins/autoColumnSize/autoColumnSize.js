@@ -23,13 +23,13 @@ require("core-js/modules/es.function.name.js");
 exports.__esModule = true;
 exports.AutoColumnSize = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -49,6 +49,8 @@ var _feature = require("../../helpers/feature");
 
 var _ghostTable = _interopRequireDefault(require("../../utils/ghostTable"));
 
+var _pluginHooks = _interopRequireDefault(require("../../pluginHooks"));
+
 var _object = require("../../helpers/object");
 
 var _number = require("../../helpers/number");
@@ -61,6 +63,8 @@ var _src = require("../../3rdparty/walkontable/src");
 
 var _translations = require("../../translations");
 
+var _mixed = require("../../helpers/mixed");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -71,7 +75,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -98,6 +102,8 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+_pluginHooks.default.getSingleton().register('modifyAutoColumnSizeSeed');
 
 var PLUGIN_KEY = 'autoColumnSize';
 exports.PLUGIN_KEY = PLUGIN_KEY;
@@ -130,6 +136,24 @@ var COLUMN_SIZE_MAP_NAME = 'autoColumnSize';
  *
  * // as a string (percent)
  * autoColumnSize: {syncLimit: '40%'},
+ * ```
+ *
+ * The plugin uses {@link GhostTable} and {@link SamplesGenerator} for calculations.
+ * First, {@link SamplesGenerator} prepares samples of data with its coordinates.
+ * Next {@link GhostTable} uses coordinates to get cells' renderers and append all to the DOM through DocumentFragment.
+ *
+ * Sampling accepts additional options:
+ * - *samplingRatio* - Defines how many samples for the same length will be used to calculate. Default is `3`.
+ *   ```js
+ *   autoColumnSize: {
+ *     samplingRatio: 10,
+ *   }
+ *   ```
+ * - *allowSampleDuplicates* - Defines if duplicated values might be used in sampling. Default is `false`.
+ *   ```js
+ *   autoColumnSize: {
+ *     allowSampleDuplicates: true,
+ *   }
  * ```
  *
  * To configure this plugin see {@link Options#autoColumnSize}.
@@ -187,6 +211,7 @@ var AutoColumnSize = /*#__PURE__*/function (_BasePlugin) {
      *
      * @private
      * @type {SamplesGenerator}
+     * @fires Hooks#modifyAutoColumnSizeSeed
      */
 
     _this.samplesGenerator = new _samplesGenerator.default(function (row, column) {
@@ -198,28 +223,15 @@ var AutoColumnSize = /*#__PURE__*/function (_BasePlugin) {
         cellValue = _this.hot.getDataAtCell(row, column);
       }
 
-      var bundleCountSeed = 0;
+      var bundleSeed = '';
 
-      if (cellMeta.label) {
-        var _cellMeta$label = cellMeta.label,
-            labelValue = _cellMeta$label.value,
-            labelProperty = _cellMeta$label.property;
-        var labelText = '';
-
-        if (labelValue) {
-          labelText = typeof labelValue === 'function' ? labelValue(row, column, _this.hot.colToProp(column), cellValue) : labelValue;
-        } else if (labelProperty) {
-          var labelData = _this.hot.getDataAtRowProp(row, labelProperty);
-
-          labelText = labelData !== null ? labelData : '';
-        }
-
-        bundleCountSeed = labelText.length;
+      if (_this.hot.hasHook('modifyAutoColumnSizeSeed')) {
+        bundleSeed = _this.hot.runHooks('modifyAutoColumnSizeSeed', bundleSeed, cellMeta, cellValue);
       }
 
       return {
         value: cellValue,
-        bundleCountSeed: bundleCountSeed
+        bundleSeed: bundleSeed
       };
     });
     /**
@@ -301,6 +313,9 @@ var AutoColumnSize = /*#__PURE__*/function (_BasePlugin) {
       });
       this.addHook('beforeChange', function (changes) {
         return _this2.onBeforeChange(changes);
+      });
+      this.addHook('afterFormulasValuesUpdate', function (changes) {
+        return _this2.onAfterFormulasValuesUpdate(changes);
       });
       this.addHook('beforeRender', function (force) {
         return _this2.onBeforeRender(force);
@@ -809,13 +824,32 @@ var AutoColumnSize = /*#__PURE__*/function (_BasePlugin) {
       privatePool.get(this).cachedColumnHeaders = this.hot.getColHeader();
     }
     /**
+     * After formulas values updated listener.
+     *
+     * @private
+     * @param {Array} changes An array of modified data.
+     */
+
+  }, {
+    key: "onAfterFormulasValuesUpdate",
+    value: function onAfterFormulasValuesUpdate(changes) {
+      var filteredChanges = (0, _array.arrayFilter)(changes, function (change) {
+        var _change$address;
+
+        return (0, _mixed.isDefined)((_change$address = change.address) === null || _change$address === void 0 ? void 0 : _change$address.col);
+      });
+      var changedColumns = (0, _array.arrayMap)(filteredChanges, function (change) {
+        return change.address.col;
+      });
+      this.clearCache(Array.from(new Set(changedColumns)));
+    }
+    /**
      * Destroys the plugin instance.
      */
 
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.columnIndexMapper.unregisterMap(COLUMN_SIZE_MAP_NAME);
       this.ghostTable.clean();
 
       _get(_getPrototypeOf(AutoColumnSize.prototype), "destroy", this).call(this);

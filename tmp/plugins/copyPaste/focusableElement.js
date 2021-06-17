@@ -5,13 +5,13 @@ exports.createElement = createElement;
 exports.deactivateElement = deactivateElement;
 exports.destroyElement = destroyElement;
 
-require("core-js/modules/es.weak-set.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-set.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 

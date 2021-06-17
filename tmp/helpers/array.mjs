@@ -6,12 +6,12 @@ import "core-js/modules/es.array.slice.js";
 import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
 import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
 
 /**
  * @param {Array} arr An array to process.
@@ -364,37 +364,64 @@ export function getUnionOfArrays() {
  */
 
 export function stringToArray(value) {
-  var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : " ";
+  var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
   return value.split(delimiter);
 }
+/**
+ * @param {any} property A property to sort.
+ * @returns {function(*, *): number}
+ */
+
 export function dynamicSort(property) {
   return function (obj1, obj2) {
-    return obj1[property] > obj2[property] ? 1 : obj1[property] < obj2[property] ? -1 : 0;
+    if (obj1[property] > obj2[property]) {
+      return 1;
+    } else if (obj1[property] < obj2[property]) {
+      return -1;
+    } else {
+      return 0;
+    }
   };
 }
+/**
+ * @param {Array} args A full list of arguments.
+ * @returns {function(*=, *=): number}
+ */
+
 export function dynamicSortMultiple() {
+  for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+    args[_key4] = arguments[_key4];
+  }
+
   /*
    * save the arguments object as it will be overwritten
    * note that arguments object is an array-like object
    * consisting of the names of the properties to sort by
    */
-  var props = arguments;
+  var props = args;
   return function (obj1, obj2) {
-    var i = 0,
-        result = 0,
-        numberOfProperties = props.length;
+    var i = 0;
+    var result = 0;
+    var numberOfProperties = props.length;
     /* try getting a different result from 0 (equal)
      * as long as we have extra properties to compare
      */
 
     while (result === 0 && i < numberOfProperties) {
       result = dynamicSort(props[i])(obj1, obj2);
-      i++;
+      i += 1;
     }
 
     return result;
   };
 }
+/**
+ * @param {Array} sortedArray Sorted array for search.
+ * @param {number} row A row for search.
+ * @param {number} col A column for search.
+ * @returns {null|*}
+ */
+
 export function binarySearch(sortedArray, row, col) {
   var start = 0;
   var end = sortedArray.length - 1;

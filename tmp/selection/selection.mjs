@@ -15,16 +15,16 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-import "core-js/modules/es.set.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.set.js";
+import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.array.from.js";
@@ -40,7 +40,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-import Highlight, { AREA_TYPE, HEADER_TYPE, CELL_TYPE } from "./highlight/highlight.mjs";
+import Highlight from "./highlight/highlight.mjs";
+import { AREA_TYPE, HEADER_TYPE, CELL_TYPE } from "./highlight/constants.mjs";
 import SelectionRange from "./range.mjs";
 import { CellCoords } from "./../3rdparty/walkontable/src/index.mjs";
 import { isPressedCtrlKey } from "./../utils/keyStateObserver.mjs";
@@ -123,7 +124,9 @@ var Selection = /*#__PURE__*/function () {
       activeHeaderClassName: settings.activeHeaderClassName,
       rowClassName: settings.currentRowClassName,
       columnClassName: settings.currentColClassName,
-      disableHighlight: this.settings.disableVisualSelection,
+      disabledCellSelection: function disabledCellSelection(row, column) {
+        return _this.tableProps.isDisabledCellSelection(row, column);
+      },
       cellCornerVisible: function cellCornerVisible() {
         return _this.isCellCornerVisible.apply(_this, arguments);
       },
@@ -341,7 +344,7 @@ var Selection = /*#__PURE__*/function () {
 
       this.highlight.getCell().clear();
 
-      if (this.highlight.isEnabledFor(CELL_TYPE)) {
+      if (this.highlight.isEnabledFor(CELL_TYPE, cellRange.highlight)) {
         this.highlight.getCell().add(this.selectedRange.current().highlight).commit().adjustCoordinates(cellRange);
       }
 
@@ -368,7 +371,7 @@ var Selection = /*#__PURE__*/function () {
       headerHighlight.clear();
       activeHeaderHighlight.clear();
 
-      if (this.highlight.isEnabledFor(AREA_TYPE) && (this.isMultiple() || layerLevel >= 1)) {
+      if (this.highlight.isEnabledFor(AREA_TYPE, cellRange.highlight) && (this.isMultiple() || layerLevel >= 1)) {
         areaHighlight.add(cellRange.from).add(cellRange.to).commit();
 
         if (layerLevel === 1) {
@@ -382,7 +385,7 @@ var Selection = /*#__PURE__*/function () {
         }
       }
 
-      if (this.highlight.isEnabledFor(HEADER_TYPE)) {
+      if (this.highlight.isEnabledFor(HEADER_TYPE, cellRange.highlight)) {
         // The header selection generally contains cell selection. In a case when all rows (or columns)
         // are hidden that visual coordinates are translated to renderable coordinates that do not exist.
         // Hence no header highlight is generated. In that case, to make a column (or a row) header
@@ -412,21 +415,21 @@ var Selection = /*#__PURE__*/function () {
         } else {
           headerHighlight.add(headerCellRange.from).add(headerCellRange.to).commit();
         }
-      }
 
-      if (this.isEntireRowSelected()) {
-        var isRowSelected = this.tableProps.countCols() === cellRange.getWidth(); // Make sure that the whole row is selected (in case where selectionMode is set to 'single')
+        if (this.isEntireRowSelected()) {
+          var isRowSelected = this.tableProps.countCols() === cellRange.getWidth(); // Make sure that the whole row is selected (in case where selectionMode is set to 'single')
 
-        if (isRowSelected) {
-          activeHeaderHighlight.add(new CellCoords(cellRange.from.row, -1)).add(new CellCoords(cellRange.to.row, -1)).commit();
+          if (isRowSelected) {
+            activeHeaderHighlight.add(new CellCoords(cellRange.from.row, -1)).add(new CellCoords(cellRange.to.row, -1)).commit();
+          }
         }
-      }
 
-      if (this.isEntireColumnSelected()) {
-        var isColumnSelected = this.tableProps.countRows() === cellRange.getHeight(); // Make sure that the whole column is selected (in case where selectionMode is set to 'single')
+        if (this.isEntireColumnSelected()) {
+          var isColumnSelected = this.tableProps.countRows() === cellRange.getHeight(); // Make sure that the whole column is selected (in case where selectionMode is set to 'single')
 
-        if (isColumnSelected) {
-          activeHeaderHighlight.add(new CellCoords(-1, cellRange.from.col)).add(new CellCoords(-1, cellRange.to.col)).commit();
+          if (isColumnSelected) {
+            activeHeaderHighlight.add(new CellCoords(-1, cellRange.from.col)).add(new CellCoords(-1, cellRange.to.col)).commit();
+          }
         }
       }
 
@@ -741,6 +744,9 @@ var Selection = /*#__PURE__*/function () {
      *
      * @param {number|string} startColumn Visual column index or column property from which the selection starts.
      * @param {number|string} [endColumn] Visual column index or column property from to the selection finishes.
+     * @param {number} [headerLevel=-1] A row header index that triggers the column selection. The value can
+     *                                  take -1 to -N, where -1 means the header closest to the cells.
+     *
      * @returns {boolean} Returns `true` if selection was successful, `false` otherwise.
      */
 
@@ -748,6 +754,7 @@ var Selection = /*#__PURE__*/function () {
     key: "selectColumns",
     value: function selectColumns(startColumn) {
       var endColumn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : startColumn;
+      var headerLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
       var start = typeof startColumn === 'string' ? this.tableProps.propToCol(startColumn) : startColumn;
       var end = typeof endColumn === 'string' ? this.tableProps.propToCol(endColumn) : endColumn;
       var nrOfColumns = this.tableProps.countCols();
@@ -755,7 +762,7 @@ var Selection = /*#__PURE__*/function () {
       var isValid = isValidCoord(start, nrOfColumns) && isValidCoord(end, nrOfColumns);
 
       if (isValid) {
-        this.setRangeStartOnly(new CellCoords(-1, start));
+        this.setRangeStartOnly(new CellCoords(headerLevel, start));
         this.setRangeEnd(new CellCoords(nrOfRows - 1, end));
         this.finish();
       }
@@ -767,6 +774,9 @@ var Selection = /*#__PURE__*/function () {
      *
      * @param {number} startRow Visual row index from which the selection starts.
      * @param {number} [endRow] Visual row index from to the selection finishes.
+     * @param {number} [headerLevel=-1] A column header index that triggers the row selection.
+     *                                  The value can take -1 to -N, where -1 means the header
+     *                                  closest to the cells.
      * @returns {boolean} Returns `true` if selection was successful, `false` otherwise.
      */
 
@@ -774,12 +784,13 @@ var Selection = /*#__PURE__*/function () {
     key: "selectRows",
     value: function selectRows(startRow) {
       var endRow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : startRow;
+      var headerLevel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
       var nrOfRows = this.tableProps.countRows();
       var nrOfColumns = this.tableProps.countCols();
       var isValid = isValidCoord(startRow, nrOfRows) && isValidCoord(endRow, nrOfRows);
 
       if (isValid) {
-        this.setRangeStartOnly(new CellCoords(startRow, -1));
+        this.setRangeStartOnly(new CellCoords(startRow, headerLevel));
         this.setRangeEnd(new CellCoords(endRow, nrOfColumns - 1));
         this.finish();
       }

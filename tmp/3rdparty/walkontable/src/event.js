@@ -3,13 +3,13 @@
 exports.__esModule = true;
 exports.default = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -26,6 +26,8 @@ var _feature = require("./../../../helpers/feature");
 var _browser = require("./../../../helpers/browser");
 
 var _eventManager = _interopRequireDefault(require("./../../../eventManager"));
+
+var _mixed = require("../../../helpers/mixed");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -363,13 +365,30 @@ var Event = /*#__PURE__*/function () {
   }, {
     key: "onTouchEnd",
     value: function onTouchEnd(event) {
-      var excludeTags = ['A', 'BUTTON', 'INPUT'];
-      var target = event.target; // When the standard event was performed on the link element (a cell which contains HTML `a` element) then here
-      // we check if it should be canceled. Click is blocked in a situation when the element is rendered outside
-      // selected cells. This prevents accidentally page reloads while selecting adjacent cells.
+      var _this$parentCell;
 
-      if (this.selectedCellWasTouched(target) === false && excludeTags.includes(target.tagName)) {
-        event.preventDefault();
+      var target = event.target;
+      var parentCellCoords = (_this$parentCell = this.parentCell(target)) === null || _this$parentCell === void 0 ? void 0 : _this$parentCell.coords;
+      var isCellsRange = (0, _mixed.isDefined)(parentCellCoords) && parentCellCoords.row >= 0 && parentCellCoords.col >= 0;
+      var isEventCancelable = event.cancelable && isCellsRange && this.instance.getSetting('isDataViewInstance'); // To prevent accidental redirects or other actions that the interactive elements (e.q "A" link) do
+      // while the cell is highlighted, all touch events that are triggered on different cells are
+      // "preventDefault"'ed. The user can interact with the element (e.q. click on the link that opens
+      // a new page) only when the same cell was previously selected (see related PR #7980).
+
+      if (isEventCancelable) {
+        var interactiveElements = ['A', 'BUTTON', 'INPUT']; // For browsers that use the WebKit as an engine (excluding Safari), there is a bug. The prevent
+        // default has to be called all the time. Otherwise, the second tap won't be triggered (probably
+        // caused by the native ~300ms delay - https://webkit.org/blog/5610/more-responsive-tapping-on-ios/).
+        // To make the interactive elements work, the event target element has to be check. If the element
+        // matches the allow-list, the event is not prevented.
+
+        if ((0, _browser.isIOS)() && ((0, _browser.isChromeWebKit)() || (0, _browser.isFirefoxWebKit)()) && this.selectedCellWasTouched(target) && !interactiveElements.includes(target.tagName)) {
+          event.preventDefault();
+        } else if (!this.selectedCellWasTouched(target)) {
+          // For other browsers, prevent default is fired only for the first tap and only when the previous
+          // highlighted cell was different.
+          event.preventDefault();
+        }
       }
 
       this.onMouseUp(event);

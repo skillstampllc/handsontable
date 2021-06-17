@@ -20,9 +20,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.string.iterator.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -31,9 +31,9 @@ exports.ColumnSummary = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
 
 require("core-js/modules/es.array.concat.js");
 
-require("core-js/modules/es.string.split.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
 
 require("core-js/modules/es.array.index-of.js");
 

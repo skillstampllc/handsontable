@@ -3,13 +3,13 @@
 exports.__esModule = true;
 exports.default = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -32,13 +32,13 @@ var privatePool = new WeakMap();
 var ViewportRowsCalculator = /*#__PURE__*/function () {
   /**
    * @param {object} options Object with all options specified for row viewport calculation.
-   * @param {number} options.viewportHeight Height of the viewport.
+   * @param {number} options.viewportSize Height of the viewport.
    * @param {number} options.scrollOffset Current vertical scroll position of the viewport.
-   * @param {number} options.totalRows Total number of rows.
-   * @param {Function} options.rowHeightFn Function that returns the height of the row at a given index (in px).
+   * @param {number} options.totalItems Total number of rows.
+   * @param {Function} options.itemSizeFn Function that returns the height of the row at a given index (in px).
    * @param {Function} options.overrideFn Function that changes calculated this.startRow, this.endRow (used by MergeCells plugin).
    * @param {string} options.calculationType String which describes types of calculation which will be performed.
-   * @param {number} options.horizontalScrollbarHeight The scrollbar height.
+   * @param {number} options.scrollbarHeight The scrollbar height.
    */
   function ViewportRowsCalculator() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},

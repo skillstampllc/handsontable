@@ -2,13 +2,13 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -29,7 +29,7 @@ var _base = _interopRequireDefault(require("./base"));
 
 var _eventManager = _interopRequireWildcard(require("./eventManager"));
 
-var _mapCollection = require("./translations/mapCollection");
+var _translations = require("./translations");
 
 var _pluginHooks = _interopRequireDefault(require("./pluginHooks"));
 
@@ -77,12 +77,21 @@ var _cellTypes = require("./cellTypes");
 
 var _plugins = require("./plugins");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable handsontable/restricted-module-imports */
+// Since the Handsontable was modularized, importing some submodules is restricted.
+// Importing the main entry of the submodule can make the "dead" code elimination
+// process more difficult. The "handsontable/restricted-module-imports" rule is on
+// guard. For the index.js file, the rule has to be disabled. This file exports the
+// full version of the Handsontable with build-in all available components, so that's
+// why the rule is disabled here (see more #7506).
+
+/* eslint-enable handsontable/restricted-module-imports */
 (0, _editors.registerEditor)(_editors.BaseEditor);
 (0, _editors.registerEditor)(_editors.AutocompleteEditor);
 (0, _editors.registerEditor)(_editors.CheckboxEditor);
@@ -130,7 +139,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _plugins.registerPlugin)(_plugins.ExportFile);
 (0, _plugins.registerPlugin)(_plugins.Filters);
 (0, _plugins.registerPlugin)(_plugins.Formulas);
-(0, _plugins.registerPlugin)(_plugins.HeaderTooltips);
 (0, _plugins.registerPlugin)(_plugins.HiddenColumns);
 (0, _plugins.registerPlugin)(_plugins.HiddenRows);
 (0, _plugins.registerPlugin)(_plugins.ManualColumnFreeze);
@@ -143,7 +151,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _plugins.registerPlugin)(_plugins.MultipleSelectionHandles);
 (0, _plugins.registerPlugin)(_plugins.NestedHeaders);
 (0, _plugins.registerPlugin)(_plugins.NestedRows);
-(0, _plugins.registerPlugin)(_plugins.ObserveChanges);
 (0, _plugins.registerPlugin)(_plugins.PersistentState);
 (0, _plugins.registerPlugin)(_plugins.Search);
 (0, _plugins.registerPlugin)(_plugins.TouchScroll);
@@ -153,7 +160,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _base.default.__GhostTable = _ghostTable.default;
 _base.default._getListenersCounter = _eventManager.getListenersCounter; // For MemoryLeak tests
 
-_base.default._getRegisteredMapsCounter = _mapCollection.getRegisteredMapsCounter; // For MemoryLeak tests
+_base.default._getRegisteredMapsCounter = _translations.getRegisteredMapsCounter; // For MemoryLeak tests
 
 _base.default.DefaultSettings = (0, _index.metaSchemaFactory)();
 _base.default.EventManager = _eventManager.default; // Export Hooks singleton

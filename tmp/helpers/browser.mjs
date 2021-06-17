@@ -16,11 +16,20 @@ var browsers = {
   chrome: tester(function (ua, vendor) {
     return /Chrome/.test(ua) && /Google/.test(vendor);
   }),
+  chromeWebKit: tester(function (ua) {
+    return /CriOS/.test(ua);
+  }),
   edge: tester(function (ua) {
     return /Edge/.test(ua);
   }),
+  edgeWebKit: tester(function (ua) {
+    return /EdgiOS/.test(ua);
+  }),
   firefox: tester(function (ua) {
     return /Firefox/.test(ua);
+  }),
+  firefoxWebKit: tester(function (ua) {
+    return /FxiOS/.test(ua);
   }),
   ie: tester(function (ua) {
     return /Trident/.test(ua);
@@ -45,6 +54,9 @@ var platforms = {
   }),
   linux: tester(function (platform) {
     return /^Linux/.test(platform);
+  }),
+  ios: tester(function (ua) {
+    return /iPhone|iPad|iPod/i.test(ua);
   })
 };
 /**
@@ -93,8 +105,43 @@ export function isChrome() {
  * @returns {boolean}
  */
 
+export function isChromeWebKit() {
+  return browsers.chromeWebKit.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+export function isFirefox() {
+  return browsers.firefox.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+export function isFirefoxWebKit() {
+  return browsers.firefoxWebKit.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+export function isSafari() {
+  return browsers.safari.value;
+}
+/**
+ * @returns {boolean}
+ */
+
 export function isEdge() {
   return browsers.edge.value;
+}
+/**
+ * @returns {boolean}
+ */
+
+export function isEdgeWebKit() {
+  return browsers.edgeWebKit.value;
 }
 /**
  * @returns {boolean}
@@ -128,15 +175,23 @@ export function isMobileBrowser() {
  * @returns {boolean}
  */
 
-export function isSafari() {
-  return browsers.safari.value;
+export function isIOS() {
+  return platforms.ios.value;
 }
 /**
+ * A hacky way to recognize the iPad. Since iOS 13, the iPad on Safari mimics macOS behavior and user agent.
+ *
+ * @see {@https://stackoverflow.com/a/57838385}
+ * @param {object} [metaObject] The browser identity collection.
+ * @param {number} [metaObject.maxTouchPoints] The maximum number of simultanous touch points.
  * @returns {boolean}
  */
 
-export function isFirefox() {
-  return browsers.firefox.value;
+export function isIpadOS() {
+  var _ref5 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : navigator,
+      maxTouchPoints = _ref5.maxTouchPoints;
+
+  return maxTouchPoints > 2 && platforms.mac.value;
 }
 /**
  * @returns {boolean}

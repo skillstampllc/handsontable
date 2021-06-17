@@ -132,6 +132,7 @@ class DataMap {
         if (isObject(column)) {
           if (typeof column.data !== "undefined") {
             const index = columnsAsFunc ? filteredIndex : i;
+
             this.colToPropCache[index] = column.data;
             this.propToColCache.set(column.data, index);
           }
@@ -250,6 +251,7 @@ class DataMap {
       if (typeof schema === "function") {
         return schema();
       }
+
       return schema;
     }
 
@@ -597,6 +599,7 @@ class DataMap {
 
     extendArray(elements, after);
     let i = 0;
+
     while (i < amount) {
       elements.push(null); // add null in place of removed elements
       i += 1;
@@ -630,6 +633,7 @@ class DataMap {
 
     extendArray(elements, after);
     let i = 0;
+
     while (i < amount) {
       elements.push(null); // add null in place of removed elements
       i += 1;

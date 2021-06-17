@@ -8,6 +8,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- UNVERSIONED -->
 
+## [9.0.0] - 2021-06-01
+
+### Changed
+- **Breaking change** New Formulas plugin, with an entirely different API. See the migration guide for a full list of changes. Removed the required `hot-formula-parser` dependency for the sake of an optional one, `hyperformula`. [#6466](https://github.com/handsontable/handsontable/issues/6466)
+- **Breaking change** Changed the `afterAutofill` and `beforeAutofill` hooks' signatures. [#7987](https://github.com/handsontable/handsontable/issues/7987)
+- Upgraded `eslint` and eslint-related modules. [#7531](https://github.com/handsontable/handsontable/issues/7531)
+- Added `fit` & `fdescribe` to restricted globals in test files. [#8088](https://github.com/handsontable/handsontable/issues/8088)
+
+### Fixed
+- Fixed a problem with the column indicator of the Collapsible Columns plugin not being displayed properly on styled headers. [#7970](https://github.com/handsontable/handsontable/issues/7970)
+- Fixed a problem with duplicated `afterCreateCol` hooks being triggered after undoing a removal of a column. [#8076](https://github.com/handsontable/handsontable/issues/8076)
+
+### Removed
+- **Breaking change** Removed the deprecated plugins - Header Tooltips and Observe Changes. [#8083](https://github.com/handsontable/handsontable/issues/8083)
+
+### Deprecated
+- Deprecated the `beforeAutofillInsidePopulate` hook. It will be removed in the next major release. [#8095](https://github.com/handsontable/handsontable/issues/8095)
+
+## [8.4.0] - 2021-05-11
+
+### Added
+- Introduced a `separated` attribute for the label options (the `label` DOM element may wrap `input` or be placed next to it). [#3172](https://github.com/handsontable/handsontable/issues/3172)
+- Introduced the `modifyAutoColumnSizeSeed` hook to let developers overwrite the default behaviour of the AutoColumnSize sampling. [#3339](https://github.com/handsontable/handsontable/issues/3339)
+- Added support for hiding columns for the _NestedHeaders_ plugin. [#6879](https://github.com/handsontable/handsontable/issues/6879)
+- Added ability to skip stacking actions by the `UndoRedo` plugin and introduced new hooks. [#6948](https://github.com/handsontable/handsontable/issues/6948)
+
+### Fixed
+- Fixed a problem with sorting the `checkbox`-typed cells and an issue with empty cells not being displayed properly. [#4047](https://github.com/handsontable/handsontable/issues/4047)
+- Fixed a problem where undoing the removal of row with `readOnly` cells was not performed properly. [#4754](https://github.com/handsontable/handsontable/issues/4754)
+- Fixed state-change resolving for externally added checkboxes. [#5934](https://github.com/handsontable/handsontable/issues/5934)
+- Fixed a problem with the native selection being removed with the `fragmentSelection` option enabled. [#6083](https://github.com/handsontable/handsontable/issues/6083)
+- Fixed a bug where number of columns rendered in the viewport was not correct. [#6115](https://github.com/handsontable/handsontable/issues/6115)
+- Fixed a bug with the Dropdown Menu not opening on Android devices. [#6212](https://github.com/handsontable/handsontable/issues/6212)
+- Fixed the double-tap issue on iOS. [#6961](https://github.com/handsontable/handsontable/issues/6961)
+- Fixed a problem with the Comments editor being destroyed after destroying another Handsontable instance. [#7091](https://github.com/handsontable/handsontable/issues/7091)
+- Fixed incorrect `numericFormat`'s type definition. [#7420](https://github.com/handsontable/handsontable/issues/7420)
+- Fixed the `trimWhitespace` tests on Firefox. [#7593](https://github.com/handsontable/handsontable/issues/7593)
+- Fixed the [NPM Audit] Github Action job to report found vulnerabilities. [#7621](https://github.com/handsontable/handsontable/issues/7621)
+- Fixed some minor iOS problems. [#7659](https://github.com/handsontable/handsontable/issues/7659)
+- Fixed the TypeScript definition for the suspended rendering feature. [#7666](https://github.com/handsontable/handsontable/issues/7666)
+- Fixed the `postbuild` and `examples:install` scripts on Windows. [#7680](https://github.com/handsontable/handsontable/issues/7680)
+- Fixed the contents of the production `package.json`. [#7723](https://github.com/handsontable/handsontable/issues/7723)
+- Fixed an issue, where the callbacks for the UndoRedo plugin were called twice. [#7825](https://github.com/handsontable/handsontable/issues/7825)
+- *Vue:* Fixed a problem with displaying and removing rows in the Nested Rows plugin. [#7548](https://github.com/handsontable/handsontable/issues/7548)
+- *React:* Fixed an incompatibility in the property type definitions for the HotColumn component. [#7612](https://github.com/handsontable/handsontable/issues/7612)
+
+### Changed
+- Enhanced the ESLint config file by adding a rule that checks if there are new lines missing before some keywords or statements. [#7691](https://github.com/handsontable/handsontable/issues/7691)
+
+## [8.3.2] - 2021-03-16
+
+### Fixed
+- Fixed a bug where it was impossible to enable `disableVisualSelection` for cells/columns. [#5082](https://github.com/handsontable/handsontable/issues/5082)
+- Fixed wrong paddings for multi-level headers. [#5086](https://github.com/handsontable/handsontable/issues/5086)
+- Fixed problems with the `current` option of the `disableVisualSelection` setting. [#5869](https://github.com/handsontable/handsontable/issues/5869)
+- Fixed problems with the `header` option of the `disableVisualSelection` setting. [#6025](https://github.com/handsontable/handsontable/issues/6025)
+- Fixed a bug where the "double-tap-to-zoom" gesture prevented the editor from opening properly on some mobile devices. [#7142](https://github.com/handsontable/handsontable/issues/7142)
+- Fixed a bug where calling the `updateSettings` method in the body of some callbacks would break the table. [#7231](https://github.com/handsontable/handsontable/issues/7231)
+- Fixed an issue where the `maxRows` and `maxCols` options interfered with hidden index calculations. [#7350](https://github.com/handsontable/handsontable/issues/7350)
+- Fixed problems with doubled borders being displayed when `window` was a scrollable container. [#7356](https://github.com/handsontable/handsontable/issues/7356)
+- Fixed a bug where value population from an edited cell would result in a console error. [#7382](https://github.com/handsontable/handsontable/issues/7382)
+- Fixed a bug where the dropdown cell type would not work on Safari 14+. [#7413](https://github.com/handsontable/handsontable/issues/7413)
+- Fixed a bug where the `AutoRowSize` plugin would break the table when placed in an iframe. [#7424](https://github.com/handsontable/handsontable/issues/7424)
+- Fixed bugs in navigation by `HOME` and `END` keys with hidden rows/columns enabled. [#7454](https://github.com/handsontable/handsontable/issues/7454)
+- Fixed a bug with the `trimWhitespace` option not working properly. [#7458](https://github.com/handsontable/handsontable/issues/7458)
+- Fixed an issue with inconsistent documentation and TypeScript definitions for `colWidths` and `rowHeights` options. [#7507](https://github.com/handsontable/handsontable/issues/7507)
+- Fixed the incorrect `cellTypes` module paths in the `exports` entry of the `package.json` file. [#7597](https://github.com/handsontable/handsontable/issues/7597)
+- *Vue:* Fixed Remote Code Execution vulnerability in the dev dependencies. [#7620](https://github.com/handsontable/handsontable/issues/7620)
+
+### Added
+- Introduced the monorepo to this repository. From now on, `handsontable`, `@handsontable/angular`, `@handsontable/react`, and `@handsontable/vue` will all be developed in the same repo - `handsontable`. [#7380](https://github.com/handsontable/handsontable/issues/7380)
+- Added a custom ESLint rule which allows restricting specified modules from loading by `import` or re-exporting. [#7473](https://github.com/handsontable/handsontable/issues/7473)
+
 ## [8.3.1] - 2021-02-10
 
 ### Fixed
@@ -23,7 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - editors
   - renderers
   - validators
-    
+
   as separate modules, along with the Handsontable _base_. This change allows utilizing only the parts of Handsontable the end application is actually using, without the overhead of the full bundle. [#7403](https://github.com/handsontable/handsontable/issues/7403)
 - Added a new workflow for managing and generating changelogs. [#7405](https://github.com/handsontable/handsontable/issues/7405)
 

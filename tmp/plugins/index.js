@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.registerPlugin = exports.getPluginsNames = exports.getPlugin = exports.TrimRows = exports.HiddenRows = exports.HiddenColumns = exports.NestedRows = exports.CollapsibleColumns = exports.NestedHeaders = exports.HeaderTooltips = exports.Formulas = exports.Filters = exports.ExportFile = exports.DropdownMenu = exports.ColumnSummary = exports.BindRowsWithHeaders = exports.BasePlugin = exports.UndoRedo = exports.TouchScroll = exports.Search = exports.ObserveChanges = exports.MultiColumnSorting = exports.MultipleSelectionHandles = exports.MergeCells = exports.ManualRowMove = exports.ManualColumnResize = exports.ManualColumnMove = exports.ManualColumnFreeze = exports.DragToScroll = exports.CustomBorders = exports.CopyPaste = exports.ContextMenu = exports.Comments = exports.ColumnSorting = exports.AutoRowSize = exports.ManualRowResize = exports.Autofill = exports.AutoColumnSize = exports.PersistentState = void 0;
+exports.registerPlugin = exports.getPluginsNames = exports.getPlugin = exports.TrimRows = exports.HiddenRows = exports.HiddenColumns = exports.NestedRows = exports.CollapsibleColumns = exports.NestedHeaders = exports.Formulas = exports.Filters = exports.ExportFile = exports.DropdownMenu = exports.ColumnSummary = exports.BindRowsWithHeaders = exports.BasePlugin = exports.UndoRedo = exports.TouchScroll = exports.Search = exports.MultiColumnSorting = exports.MultipleSelectionHandles = exports.MergeCells = exports.ManualRowMove = exports.ManualColumnResize = exports.ManualColumnMove = exports.ManualColumnFreeze = exports.DragToScroll = exports.CustomBorders = exports.CopyPaste = exports.ContextMenu = exports.Comments = exports.ColumnSorting = exports.AutoRowSize = exports.ManualRowResize = exports.Autofill = exports.AutoColumnSize = exports.PersistentState = void 0;
 
 var _persistentState = require("./persistentState");
 
@@ -75,10 +75,6 @@ var _multiColumnSorting = require("./multiColumnSorting");
 
 exports.MultiColumnSorting = _multiColumnSorting.MultiColumnSorting;
 
-var _observeChanges = require("./observeChanges");
-
-exports.ObserveChanges = _observeChanges.ObserveChanges;
-
 var _search = require("./search");
 
 exports.Search = _search.Search;
@@ -118,10 +114,6 @@ exports.Filters = _filters.Filters;
 var _formulas = require("./formulas");
 
 exports.Formulas = _formulas.Formulas;
-
-var _headerTooltips = require("./headerTooltips");
-
-exports.HeaderTooltips = _headerTooltips.HeaderTooltips;
 
 var _nestedHeaders = require("./nestedHeaders");
 

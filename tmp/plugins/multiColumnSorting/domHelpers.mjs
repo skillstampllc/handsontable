@@ -1,5 +1,5 @@
-import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
 import "core-js/modules/es.regexp.constructor.js";
 import "core-js/modules/es.regexp.to-string.js";
 import "core-js/modules/es.array.filter.js";

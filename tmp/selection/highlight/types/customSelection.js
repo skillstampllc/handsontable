@@ -1,5 +1,9 @@
 "use strict";
 
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.index-of.js");
+
 require("core-js/modules/es.symbol.js");
 
 require("core-js/modules/es.array.filter.js");
@@ -13,15 +17,15 @@ require("core-js/modules/es.object.get-own-property-descriptors.js");
 exports.__esModule = true;
 exports.default = void 0;
 
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.array.index-of.js");
+var _constants = require("../constants");
 
 var _visualSelection = _interopRequireDefault(require("../visualSelection"));
 
+var _excluded = ["border", "visualCellRange"];
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -35,14 +39,19 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
  * Creates the new instance of Selection responsible for highlighting currently selected cell. This type of selection
  * can present on the table only one at the time.
  *
+ * @param {object} highlightParams A configuration object to create a highlight.
+ * @param {object} highlightParams.border Border configuration.
+ * @param {object} highlightParams.visualCellRange Function to translate visual to renderable coords.
  * @returns {Selection}
  */
 function createHighlight(_ref) {
   var border = _ref.border,
       visualCellRange = _ref.visualCellRange,
-      restOptions = _objectWithoutProperties(_ref, ["border", "visualCellRange"]);
+      restOptions = _objectWithoutProperties(_ref, _excluded);
 
-  var s = new _visualSelection.default(_objectSpread(_objectSpread({}, border), restOptions), visualCellRange);
+  var s = new _visualSelection.default(_objectSpread(_objectSpread(_objectSpread({}, border), restOptions), {}, {
+    selectionType: _constants.CUSTOM_SELECTION_TYPE
+  }), visualCellRange);
   return s;
 }
 

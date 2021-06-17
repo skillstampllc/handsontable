@@ -1,5 +1,4 @@
-import "core-js/modules/es.string.replace.js";
-import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.trim.js";
 import { baseRenderer } from "../baseRenderer/index.mjs";
 import { empty, fastInnerText } from "../../helpers/dom/element.mjs";
 import { stringify } from "../../helpers/mixed.mjs";
@@ -27,9 +26,8 @@ export function textRenderer(instance, TD, row, col, prop, value, cellProperties
 
   escaped = stringify(escaped);
 
-  if (!instance.getSettings().trimWhitespace && !instance.getSettings().wordWrap) {
-    // 160 is &nbsp; which won't wrap and preserves sequences of whitespace
-    escaped = escaped.replace(/ /g, String.fromCharCode(160));
+  if (instance.getSettings().trimWhitespace) {
+    escaped = escaped.trim();
   }
 
   if (cellProperties.rendererTemplate) {

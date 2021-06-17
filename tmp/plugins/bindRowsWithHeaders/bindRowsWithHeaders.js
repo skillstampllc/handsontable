@@ -21,13 +21,13 @@ require("core-js/modules/es.symbol.iterator.js");
 exports.__esModule = true;
 exports.BindRowsWithHeaders = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
 
+require("core-js/modules/es.array.iterator.js");
+
 require("core-js/modules/es.map.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -181,8 +181,6 @@ var BindRowsWithHeaders = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.rowIndexMapper.unregisterMap('bindRowsWithHeaders');
-
       _get(_getPrototypeOf(BindRowsWithHeaders.prototype), "destroy", this).call(this);
     }
   }], [{

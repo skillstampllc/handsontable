@@ -23,13 +23,13 @@ require("core-js/modules/es.object.get-own-property-descriptor.js");
 exports.__esModule = true;
 exports.default = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -47,9 +47,11 @@ var _src = _interopRequireWildcard(require("./3rdparty/walkontable/src"));
 
 var _mouseEventHandler = require("./selection/mouseEventHandler");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+var _rootInstance = require("./utils/rootInstance");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57,7 +59,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -73,7 +75,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -505,6 +507,29 @@ var TableView = /*#__PURE__*/function () {
       return [visualRow, visualColumn];
     }
     /**
+     * Returns the number of renderable indexes.
+     *
+     * @private
+     * @param {IndexMapper} indexMapper The IndexMapper instance for specific axis.
+     * @param {number} maxElements Maximum number of elements (rows or columns).
+     *
+     * @returns {number|*}
+     */
+
+  }, {
+    key: "countRenderableIndexes",
+    value: function countRenderableIndexes(indexMapper, maxElements) {
+      var consideredElements = Math.min(indexMapper.getNotTrimmedIndexesLength(), maxElements); // Don't take hidden indexes into account. We are looking just for renderable indexes.
+
+      var firstNotHiddenIndex = indexMapper.getFirstNotHiddenIndex(consideredElements - 1, -1); // There are no renderable indexes.
+
+      if (firstNotHiddenIndex === null) {
+        return 0;
+      }
+
+      return indexMapper.getRenderableFromVisualIndex(firstNotHiddenIndex) + 1;
+    }
+    /**
      * Returns the number of renderable columns.
      *
      * @returns {number}
@@ -513,7 +538,7 @@ var TableView = /*#__PURE__*/function () {
   }, {
     key: "countRenderableColumns",
     value: function countRenderableColumns() {
-      return Math.min(this.instance.columnIndexMapper.getRenderableIndexesLength(), this.settings.maxCols);
+      return this.countRenderableIndexes(this.instance.columnIndexMapper, this.settings.maxCols);
     }
     /**
      * Returns the number of renderable rows.
@@ -524,7 +549,7 @@ var TableView = /*#__PURE__*/function () {
   }, {
     key: "countRenderableRows",
     value: function countRenderableRows() {
-      return Math.min(this.instance.rowIndexMapper.getRenderableIndexesLength(), this.settings.maxRows);
+      return this.countRenderableIndexes(this.instance.rowIndexMapper, this.settings.maxRows);
     }
     /**
      * Returns number of not hidden row indexes counting from the passed starting index.
@@ -605,6 +630,9 @@ var TableView = /*#__PURE__*/function () {
       var walkontableConfig = {
         externalRowCalculator: this.instance.getPlugin('autoRowSize') && this.instance.getPlugin('autoRowSize').isEnabled(),
         table: priv.table,
+        isDataViewInstance: function isDataViewInstance() {
+          return (0, _rootInstance.isRootInstance)(_this2.instance);
+        },
         preventOverflow: function preventOverflow() {
           return _this2.settings.preventOverflow;
         },
@@ -853,9 +881,13 @@ var TableView = /*#__PURE__*/function () {
 
           _this2.activeWt = wt;
 
-          _this2.instance.runHooks('beforeOnCellMouseUp', event, visualCoords, TD);
+          _this2.instance.runHooks('beforeOnCellMouseUp', event, visualCoords, TD); // TODO: The second condition check is a workaround. Callback corresponding the method `updateSettings`
+          // disable plugin and enable it again. Disabling plugin closes the menu. Thus, calling the
+          // `updateSettings` in a body of any callback executed right after some context-menu action
+          // breaks the table (#7231).
 
-          if ((0, _event.isImmediatePropagationStopped)(event)) {
+
+          if ((0, _event.isImmediatePropagationStopped)(event) || _this2.instance.isDestroyed) {
             return;
           }
 
@@ -887,6 +919,22 @@ var TableView = /*#__PURE__*/function () {
         },
         onBeforeRemoveCellClassNames: function onBeforeRemoveCellClassNames() {
           return _this2.instance.runHooks('beforeRemoveCellClassNames');
+        },
+        onBeforeHighlightingRowHeader: function onBeforeHighlightingRowHeader(renderableRow, headerLevel, highlightMeta) {
+          var rowMapper = _this2.instance.rowIndexMapper;
+          var visualRow = rowMapper.getVisualFromRenderableIndex(renderableRow);
+
+          var newVisualRow = _this2.instance.runHooks('beforeHighlightingRowHeader', visualRow, headerLevel, highlightMeta);
+
+          return rowMapper.getRenderableFromVisualIndex(rowMapper.getFirstNotHiddenIndex(newVisualRow, 1));
+        },
+        onBeforeHighlightingColumnHeader: function onBeforeHighlightingColumnHeader(renderableColumn, headerLevel, highlightMeta) {
+          var columnMapper = _this2.instance.columnIndexMapper;
+          var visualColumn = columnMapper.getVisualFromRenderableIndex(renderableColumn);
+
+          var newVisualColumn = _this2.instance.runHooks('beforeHighlightingColumnHeader', visualColumn, headerLevel, highlightMeta);
+
+          return columnMapper.getRenderableFromVisualIndex(columnMapper.getFirstNotHiddenIndex(newVisualColumn, 1));
         },
         onAfterDrawSelection: function onAfterDrawSelection(currentRow, currentColumn, layerLevel) {
           var cornersOfSelection;
@@ -962,16 +1010,18 @@ var TableView = /*#__PURE__*/function () {
           }
 
           if (viewportOffset > 0 || viewportOffset === 'auto') {
-            var rows = _this2.countRenderableRows();
+            var renderableRows = _this2.countRenderableRows();
+
+            var firstRenderedRow = calc.startRow;
+            var lastRenderedRow = calc.endRow;
 
             if (typeof viewportOffset === 'number') {
-              calc.startRow = Math.max(calc.startRow - viewportOffset, 0);
-              calc.endRow = Math.min(calc.endRow + viewportOffset, rows - 1);
+              calc.startRow = Math.max(firstRenderedRow - viewportOffset, 0);
+              calc.endRow = Math.min(lastRenderedRow + viewportOffset, renderableRows - 1);
             } else if (viewportOffset === 'auto') {
-              var center = calc.startRow + calc.endRow - calc.startRow;
-              var offset = Math.ceil(center / rows * 12);
-              calc.startRow = Math.max(calc.startRow - offset, 0);
-              calc.endRow = Math.min(calc.endRow + offset, rows - 1);
+              var offset = Math.ceil(lastRenderedRow / renderableRows * 12);
+              calc.startRow = Math.max(firstRenderedRow - offset, 0);
+              calc.endRow = Math.min(lastRenderedRow + offset, renderableRows - 1);
             }
           }
 
@@ -985,18 +1035,20 @@ var TableView = /*#__PURE__*/function () {
           }
 
           if (viewportOffset > 0 || viewportOffset === 'auto') {
-            var cols = _this2.countRenderableColumns();
+            var renderableColumns = _this2.countRenderableColumns();
+
+            var firstRenderedColumn = calc.startColumn;
+            var lastRenderedColumn = calc.endColumn;
 
             if (typeof viewportOffset === 'number') {
-              calc.startColumn = Math.max(calc.startColumn - viewportOffset, 0);
-              calc.endColumn = Math.min(calc.endColumn + viewportOffset, cols - 1);
+              calc.startColumn = Math.max(firstRenderedColumn - viewportOffset, 0);
+              calc.endColumn = Math.min(lastRenderedColumn + viewportOffset, renderableColumns - 1);
             }
 
             if (viewportOffset === 'auto') {
-              var center = calc.startColumn + calc.endColumn - calc.startColumn;
-              var offset = Math.ceil(center / cols * 12);
-              calc.startRow = Math.max(calc.startColumn - offset, 0);
-              calc.endColumn = Math.min(calc.endColumn + offset, cols - 1);
+              var offset = Math.ceil(lastRenderedColumn / renderableColumns * 6);
+              calc.startColumn = Math.max(firstRenderedColumn - offset, 0);
+              calc.endColumn = Math.min(lastRenderedColumn + offset, renderableColumns - 1);
             }
           }
 

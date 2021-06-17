@@ -1,8 +1,3 @@
-import "core-js/modules/es.weak-map.js";
-import "core-js/modules/es.object.to-string.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.object.keys.js";
 import "core-js/modules/es.array.index-of.js";
 import "core-js/modules/es.symbol.js";
@@ -10,8 +5,14 @@ import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.object.get-own-property-descriptor.js";
 import "core-js/modules/web.dom-collections.for-each.js";
 import "core-js/modules/es.object.get-own-property-descriptors.js";
+var _excluded = ["row", "col"];
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/es.weak-map.js";
+import "core-js/modules/web.dom-collections.iterator.js";
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -40,7 +41,13 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 import { extend, isObject } from "../../../helpers/object.mjs";
 import { arrayEach } from "../../../helpers/array.mjs";
 import { normalizeSettings } from "./settingsNormalizer.mjs";
-import { HEADER_CONFIGURABLE_PROPS } from "./constants.mjs";
+/**
+ * List of properties which are configurable. That properties can be changed using public API.
+ *
+ * @type {string[]}
+ */
+
+export var HEADER_CONFIGURABLE_PROPS = ['label', 'collapsible'];
 /**
  * The class manages and normalizes settings passed by the developer
  * into the nested headers plugin. The SourceSettings class is a
@@ -50,11 +57,11 @@ import { HEADER_CONFIGURABLE_PROPS } from "./constants.mjs";
  * @plugin NestedHeaders
  */
 
-var _data = new WeakMap();
+var _data = /*#__PURE__*/new WeakMap();
 
-var _dataLength = new WeakMap();
+var _dataLength = /*#__PURE__*/new WeakMap();
 
-var _columnsLimit = new WeakMap();
+var _columnsLimit = /*#__PURE__*/new WeakMap();
 
 var SourceSettings = /*#__PURE__*/function () {
   function SourceSettings() {
@@ -129,7 +136,7 @@ var SourceSettings = /*#__PURE__*/function () {
       arrayEach(additionalSettings, function (_ref) {
         var row = _ref.row,
             col = _ref.col,
-            rest = _objectWithoutProperties(_ref, ["row", "col"]);
+            rest = _objectWithoutProperties(_ref, _excluded);
 
         var headerSettings = _this.getHeaderSettings(row, col);
 
@@ -215,7 +222,7 @@ var SourceSettings = /*#__PURE__*/function () {
       for (var i = columnIndex; i < headersSettings.length; i++) {
         var headerSettings = headersSettings[i];
 
-        if (headerSettings.isHidden === true) {
+        if (headerSettings.isPlaceholder) {
           throw new Error('The first column settings cannot overlap the other header layers');
         }
 

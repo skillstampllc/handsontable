@@ -1,6 +1,11 @@
 import Core from "./core.mjs";
-import { rootInstanceSymbol } from "./utils/rootInstance.mjs";
+import { rootInstanceSymbol } from "./utils/rootInstance.mjs"; // FIXME: Bug in eslint-plugin-import: https://github.com/benmosher/eslint-plugin-import/issues/1883
+
+/* eslint-disable import/named */
+
 import { dictionaryKeys, getTranslatedPhrase, registerLanguageDictionary, getLanguagesDictionaries, getLanguageDictionary } from "./i18n/registry.mjs";
+/* eslint-enable import/named */
+
 import { registerCellType } from "./cellTypes/registry.mjs";
 import { TextCellType } from "./cellTypes/textType/index.mjs";
 registerCellType(TextCellType);
@@ -22,8 +27,8 @@ Handsontable.Core = function (rootElement) {
 };
 
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "22/04/2021 17:26:44";
-Handsontable.version = "8.3.1";
+Handsontable.buildDate = "17/06/2021 15:00:19";
+Handsontable.version = "9.0.0";
 Handsontable.languages = {
   dictionaryKeys: dictionaryKeys,
   getLanguageDictionary: getLanguageDictionary,

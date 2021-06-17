@@ -4,7 +4,7 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -16,7 +16,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -33,8 +33,8 @@ import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.slice.js";
 import "core-js/modules/es.function.name.js";
@@ -68,8 +68,9 @@ import { BasePlugin } from "../base/index.mjs";
 import Hooks from "../../pluginHooks.mjs";
 import { offset, outerHeight, outerWidth } from "../../helpers/dom/element.mjs";
 import { arrayEach, arrayMap } from "../../helpers/array.mjs";
+import { isObjectEqual } from "../../helpers/object.mjs";
 import EventManager from "../../eventManager.mjs";
-import { CellCoords } from "../../3rdparty/walkontable/src/index.mjs";
+import { CellCoords, CellRange } from "../../3rdparty/walkontable/src/index.mjs";
 import { getDeltas, getDragDirectionAndRange, DIRECTIONS, getMappedFillHandleSetting } from "./utils.mjs";
 Hooks.getSingleton().register('modifyAutofillRange');
 Hooks.getSingleton().register('beforeAutofill');
@@ -192,7 +193,7 @@ export var Autofill = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('afterOnCellCornerDblClick', function (event) {
         return _this2.onCellCornerDblClick(event);
       });
-      this.addHook('beforeOnCellMouseOver', function (event, coords) {
+      this.addHook('beforeOnCellMouseOver', function (_, coords) {
         return _this2.onBeforeCellMouseOver(coords);
       });
 
@@ -305,10 +306,9 @@ export var Autofill = /*#__PURE__*/function (_BasePlugin) {
       var selectionRangeLast = this.hot.getSelectedRangeLast();
       var topLeftCorner = selectionRangeLast.getTopLeftCorner();
       var bottomRightCorner = selectionRangeLast.getBottomRightCorner();
-      var cornersOfSelectionAndDragAreas = [Math.min(topLeftCorner.row, fillStartRow), Math.min(topLeftCorner.col, fillStartColumn), Math.max(bottomRightCorner.row, fillEndRow), Math.max(bottomRightCorner.col, fillEndColumn)];
       this.resetSelectionOfDraggedArea();
       var cornersOfSelectedCells = [topLeftCorner.row, topLeftCorner.col, bottomRightCorner.row, bottomRightCorner.col];
-      cornersOfSelectionAndDragAreas = this.hot.runHooks('modifyAutofillRange', cornersOfSelectionAndDragAreas, cornersOfSelectedCells);
+      var cornersOfSelectionAndDragAreas = this.hot.runHooks('modifyAutofillRange', [Math.min(topLeftCorner.row, fillStartRow), Math.min(topLeftCorner.col, fillStartColumn), Math.max(bottomRightCorner.row, fillEndRow), Math.max(bottomRightCorner.col, fillEndColumn)], cornersOfSelectedCells);
 
       var _getDragDirectionAndR = getDragDirectionAndRange(cornersOfSelectedCells, cornersOfSelectionAndDragAreas),
           directionOfDrag = _getDragDirectionAndR.directionOfDrag,
@@ -317,38 +317,49 @@ export var Autofill = /*#__PURE__*/function (_BasePlugin) {
 
       if (startOfDragCoords && startOfDragCoords.row > -1 && startOfDragCoords.col > -1) {
         var selectionData = this.getSelectionData();
-        var beforeAutofillHook = this.hot.runHooks('beforeAutofill', startOfDragCoords, endOfDragCoords, selectionData);
+        var sourceRange = selectionRangeLast.clone();
+        var targetRange = new CellRange(startOfDragCoords, startOfDragCoords, endOfDragCoords);
+        var beforeAutofillHookResult = this.hot.runHooks('beforeAutofill', selectionData, sourceRange, targetRange, directionOfDrag);
 
-        if (beforeAutofillHook === false) {
+        if (beforeAutofillHookResult === false) {
           this.hot.selection.highlight.getFill().clear();
           this.hot.render();
           return false;
-        }
+        } // TODO: The `hasFillDataChanged` hook argument allows skipping processing of the autofill
+        // handler when the user modifies the fillData in the `beforeAutofill` hook. The workaround
+        // is necessary for the Formulas plugin and can be removed after implementing the missing
+        // feature for the HF (such as `getFillRangeData` method). With that the last argument could
+        // be removed from the `afterAutofill` hook.
 
+
+        var sourceFrom = sourceRange.from,
+            sourceTo = sourceRange.to;
+        var refData = this.hot.getData(sourceFrom.row, sourceFrom.col, sourceTo.row, sourceTo.col);
+        var hasFillDataChanged = !isObjectEqual(refData, beforeAutofillHookResult);
         var deltas = getDeltas(startOfDragCoords, endOfDragCoords, selectionData, directionOfDrag);
-        var fillData = selectionData;
+        var fillData = beforeAutofillHookResult;
+        var res = beforeAutofillHookResult;
 
-        if (['up', 'left'].indexOf(directionOfDrag) > -1) {
+        if (['up', 'left'].indexOf(directionOfDrag) > -1 && !(res.length === 1 && res[0].length === 0)) {
           fillData = [];
-          var dragLength = null;
-          var fillOffset = null;
 
           if (directionOfDrag === 'up') {
-            dragLength = endOfDragCoords.row - startOfDragCoords.row + 1;
-            fillOffset = dragLength % selectionData.length;
+            var dragLength = endOfDragCoords.row - startOfDragCoords.row + 1;
+            var fillOffset = dragLength % res.length;
 
             for (var i = 0; i < dragLength; i++) {
-              fillData.push(selectionData[(i + (selectionData.length - fillOffset)) % selectionData.length]);
+              fillData.push(res[(i + (res.length - fillOffset)) % res.length]);
             }
           } else {
-            dragLength = endOfDragCoords.col - startOfDragCoords.col + 1;
-            fillOffset = dragLength % selectionData[0].length;
+            var _dragLength = endOfDragCoords.col - startOfDragCoords.col + 1;
 
-            for (var _i2 = 0; _i2 < selectionData.length; _i2++) {
+            var _fillOffset = _dragLength % res[0].length;
+
+            for (var _i2 = 0; _i2 < res.length; _i2++) {
               fillData.push([]);
 
-              for (var j = 0; j < dragLength; j++) {
-                fillData[_i2].push(selectionData[_i2][(j + (selectionData[_i2].length - fillOffset)) % selectionData[_i2].length]);
+              for (var j = 0; j < _dragLength; j++) {
+                fillData[_i2].push(res[_i2][(j + (res[_i2].length - _fillOffset)) % res[_i2].length]);
               }
             }
           }
@@ -356,7 +367,8 @@ export var Autofill = /*#__PURE__*/function (_BasePlugin) {
 
         this.hot.populateFromArray(startOfDragCoords.row, startOfDragCoords.col, fillData, endOfDragCoords.row, endOfDragCoords.col, "".concat(this.pluginName, ".fill"), null, directionOfDrag, deltas);
         this.setSelection(cornersOfSelectionAndDragAreas);
-        this.hot.runHooks('afterAutofill', startOfDragCoords, endOfDragCoords, selectionData);
+        this.hot.runHooks('afterAutofill', fillData, sourceRange, targetRange, directionOfDrag, hasFillDataChanged);
+        this.hot.render();
       } else {
         // reset to avoid some range bug
         this.hot._refreshBorders();

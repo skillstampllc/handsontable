@@ -4,9 +4,9 @@ exports.__esModule = true;
 exports.numericRenderer = numericRenderer;
 exports.RENDERER_TYPE = void 0;
 
-require("core-js/modules/es.string.split.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.split.js");
 
 require("core-js/modules/es.string.replace.js");
 

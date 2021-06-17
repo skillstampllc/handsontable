@@ -18,9 +18,9 @@ exports.filterSeparators = filterSeparators;
 
 require("core-js/modules/es.array.index-of.js");
 
-require("core-js/modules/es.string.replace.js");
-
 require("core-js/modules/es.regexp.exec.js");
+
+require("core-js/modules/es.string.replace.js");
 
 require("core-js/modules/es.array.concat.js");
 

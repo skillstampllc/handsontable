@@ -12,24 +12,22 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.string.iterator.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports.TrimmingMap = void 0;
 
 require("core-js/modules/es.object.set-prototype-of.js");
 
 require("core-js/modules/es.object.get-prototype-of.js");
 
-var _physicalIndexToValueMap = _interopRequireDefault(require("./physicalIndexToValueMap"));
+var _physicalIndexToValueMap = require("./physicalIndexToValueMap");
 
 var _array = require("../../helpers/array");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -90,7 +88,6 @@ var TrimmingMap = /*#__PURE__*/function (_PhysicalIndexToValue) {
   }]);
 
   return TrimmingMap;
-}(_physicalIndexToValueMap.default);
+}(_physicalIndexToValueMap.PhysicalIndexToValueMap);
 
-var _default = TrimmingMap;
-exports.default = _default;
+exports.TrimmingMap = TrimmingMap;

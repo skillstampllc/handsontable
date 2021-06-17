@@ -4,23 +4,23 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import "core-js/modules/es.array.fill.js";
+import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/es.map.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/es.array.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
@@ -44,13 +44,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import { createHighlight } from "./types/index.mjs";
+import { ACTIVE_HEADER_TYPE, AREA_TYPE, CELL_TYPE, CUSTOM_SELECTION_TYPE, FILL_TYPE, HEADER_TYPE } from "./constants.mjs";
 import { arrayEach } from "./../../helpers/array.mjs";
-export var ACTIVE_HEADER_TYPE = 'active-header';
-export var AREA_TYPE = 'area';
-export var CELL_TYPE = 'cell';
-export var FILL_TYPE = 'fill';
-export var HEADER_TYPE = 'header';
-export var CUSTOM_SELECTION = 'custom-selection';
 /**
  * Highlight class responsible for managing Walkontable Selection classes.
  *
@@ -142,16 +137,21 @@ var Highlight = /*#__PURE__*/function () {
    * Check if highlight cell rendering is disabled for specified highlight type.
    *
    * @param {string} highlightType Highlight type. Possible values are: `cell`, `area`, `fill` or `header`.
+   * @param {CellCoords} coords The CellCoords instance with defined visual coordinates.
    * @returns {boolean}
    */
 
 
   _createClass(Highlight, [{
     key: "isEnabledFor",
-    value: function isEnabledFor(highlightType) {
-      // Legacy compatibility.
-      var type = highlightType === 'current' ? CELL_TYPE : highlightType;
-      var disableHighlight = this.options.disableHighlight;
+    value: function isEnabledFor(highlightType, coords) {
+      var type = highlightType; // Legacy compatibility.
+
+      if (highlightType === CELL_TYPE) {
+        type = 'current'; // One from settings for `disableVisualSelection` up to Handsontable 0.36/Handsontable Pro 1.16.0.
+      }
+
+      var disableHighlight = this.options.disabledCellSelection(coords.row, coords.col);
 
       if (typeof disableHighlight === 'string') {
         disableHighlight = [disableHighlight];
@@ -316,7 +316,7 @@ var Highlight = /*#__PURE__*/function () {
   }, {
     key: "addCustomSelection",
     value: function addCustomSelection(selectionInstance) {
-      this.customSelections.push(createHighlight(CUSTOM_SELECTION, _objectSpread(_objectSpread({}, this.options), selectionInstance)));
+      this.customSelections.push(createHighlight(CUSTOM_SELECTION_TYPE, _objectSpread(_objectSpread({}, this.options), selectionInstance)));
     }
     /**
      * Perform cleaning visual highlights for the whole table.

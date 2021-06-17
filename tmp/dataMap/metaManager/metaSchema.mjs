@@ -2,13 +2,13 @@ import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-import { isDefined } from "../../helpers/mixed.mjs";
+import { isEmpty } from "../../helpers/mixed.mjs";
 import { isObjectEqual } from "../../helpers/object.mjs";
 /* eslint-disable jsdoc/require-description-complete-sentence */
 
@@ -299,8 +299,14 @@ export default (function () {
      * (if you want to define column width separately for each column) or a function (if you want to set column width
      * dynamically on each render).
      *
+     * The default width for columns in the rendering process equals 50px.
+     *
+     * An `undefined` value is for detection in {@link Hooks#modifyColWidth} hook if plugin or setting changed the default size.
+     *
+     * Note: This option will forcely disable {@link AutoColumnSize} plugin.
+     *
      * @memberof Options#
-     * @type {number|number[]|string|string[]|Function}
+     * @type {number|number[]|string|string[]|Array<undefined>|Function}
      * @default undefined
      *
      * @example
@@ -311,8 +317,8 @@ export default (function () {
      * // as a string, for each column.
      * colWidths: '100px',
      *
-     * // as an array, based on visual indexes. The rest of the columns have a default width.
-     * colWidths: [100, 120, 90],
+     * // as an array, based on visual indexes. Unspecified columns have a default width.
+     * colWidths: [100, 120, undefined, 90],
      *
      * // as a function, based on visual indexes.
      * colWidths: function(index) {
@@ -330,10 +336,13 @@ export default (function () {
      * If the {@link ManualRowResize} or {@link AutoRowSize} plugins are enabled, this is also the minimum height that can
      * be set via either of those two plugins.
      *
+     * The default height for rows in the rendering process equals 23px.
      * Height should be equal or greater than 23px. Table is rendered incorrectly if height is less than 23px.
      *
+     * An `undefined` value is for detection in {@link Hooks#modifyRowHeight} hook if plugin or setting changed the default size.
+     *
      * @memberof Options#
-     * @type {number|number[]|string|string[]|Function}
+     * @type {number|number[]|string|string[]|Array<undefined>|Function}
      * @default undefined
      *
      * @example
@@ -1121,7 +1130,7 @@ export default (function () {
       for (col = 0, colLen = this.countCols(); col < colLen; col++) {
         value = this.getDataAtCell(row, col);
 
-        if (value !== '' && value !== null && isDefined(value)) {
+        if (isEmpty(value) === false) {
           if (_typeof(value) === 'object') {
             meta = this.getCellMeta(row, col);
             return isObjectEqual(this.getSchema()[meta.prop], value);
@@ -1158,7 +1167,7 @@ export default (function () {
       for (row = 0, rowLen = this.countRows(); row < rowLen; row++) {
         value = this.getDataAtCell(row, col);
 
-        if (value !== '' && value !== null && isDefined(value)) {
+        if (isEmpty(value) === false) {
           return false;
         }
       }
@@ -1769,7 +1778,7 @@ export default (function () {
      * * `headerAction` - allow to click on the headers to sort
      *   * `true` = turn on possibility to click on the headers to sort
      *   * `false` = turn off possibility to click on the headers to sort
-     * * `sortEmptyCells` - how empty values should be handled
+     * * `sortEmptyCells` - how empty values (more information here: https://handsontable.com/docs/tutorial-cell-types.html#empty-cells) should be handled
      *   * `true` = the table sorts empty cells
      *   * `false` = the table moves all empty cells to the end of the table
      * * `compareFunctionFactory` - curry function returning compare function; compare function should work in the same way as function which is handled by native `Array.sort` method); please take a look at below examples for more information.
@@ -1923,7 +1932,7 @@ export default (function () {
      * * `headerAction` - allow to click on the headers to sort
      *   * `true` = turn on possibility to click on the headers to sort
      *   * `false` = turn off possibility to click on the headers to sort
-     * * `sortEmptyCells` - how empty values should be handled
+     * * `sortEmptyCells` - how empty values (more information here: https://handsontable.com/docs/tutorial-cell-types.html#empty-cells) should be handled
      *   * `true` = the table sorts empty cells
      *   * `false` = the table moves all empty cells to the end of the table
      * * `compareFunctionFactory` - curry function returning compare function; compare function should work in the same way as function which is handled by native `Array.sort` method); please take a look at below examples for more information.
@@ -2048,7 +2057,7 @@ export default (function () {
      * Disables visual cells selection.
      *
      * Possible values:
-     *  * `true` - Disables any type of visual selection (current and area selection),
+     *  * `true` - Disables any type of visual selection (current, header and area selection),
      *  * `false` - Enables any type of visual selection. This is default value.
      *  * `'current'` - Disables the selection of a currently selected cell, the area selection is still present.
      *  * `'area'` - Disables the area selection, the currently selected cell selection is still present.
@@ -2207,6 +2216,7 @@ export default (function () {
      *  * `position` - String which describes where to place the label text (before or after checkbox element).
      * Valid values are `'before'` and '`after`' (defaults to `'after'`).
      *  * `value` - String or a Function which will be used as label text.
+     *  * `separated` - Boolean which describes that checkbox & label elements are separated or not. Default value is `false`.
      *
      * @memberof Options#
      * @type {object}
@@ -2217,7 +2227,7 @@ export default (function () {
      * columns: [{
      *   type: 'checkbox',
      *   // add "My label:" after the checkbox
-     *   label: {position: 'after', value: 'My label: '}
+     *   label: { position: 'after', value: 'My label: ', separated: true }
      * }],
      * ```
      */
@@ -2295,9 +2305,10 @@ export default (function () {
     selectOptions: void 0,
 
     /**
-     * Enables or disables the {@link AutoColumnSize} plugin. Default value is `undefined`, which has the same effect as `true`,
-     * meaning, the `syncLimit` is set to 50.
+     * Enables or disables the {@link AutoColumnSize} plugin. Default value `undefined`
+     * is an equivalent of `true`, sets `syncLimit` to 50.
      * Disabling this plugin can increase performance, as no size-related calculations would be done.
+     * To disable plugin it's necessary to set `false`.
      *
      * Column width calculations are divided into sync and async part. Each of those parts has their own advantages and
      * disadvantages. Synchronous calculations are faster but they block the browser UI, while the slower asynchronous
@@ -2307,20 +2318,28 @@ export default (function () {
      *
      * You can also use the `useHeaders` option to take the column headers width into calculation.
      *
+     * Note: Using {@link Core#colWidths} option will forcely disable {@link AutoColumnSize}.
+     *
      * @memberof Options#
      * @type {object|boolean}
-     * @default {syncLimit: 50}
+     * @default undefined
      *
      * @example
      * ```js
      * // as a number (300 columns in sync, rest async)
-     * autoColumnSize: {syncLimit: 300},
+     * autoColumnSize: { syncLimit: 300 },
      *
      * // as a string (percent)
-     * autoColumnSize: {syncLimit: '40%'},
+     * autoColumnSize: { syncLimit: '40%' },
      *
      * // use headers width while calculating the column width
-     * autoColumnSize: {useHeaders: true},
+     * autoColumnSize: { useHeaders: true },
+     *
+     * // defines how many samples for the same length will be caught to calculations
+     * autoColumnSize: { samplingRatio: 10 },
+     *
+     * // defines if duplicated samples are allowed in calculations
+     * autoColumnSize: { allowSampleDuplicates: true },
      * ```
      */
     autoColumnSize: void 0,
@@ -2659,35 +2678,6 @@ export default (function () {
     formulas: void 0,
 
     /**
-     * @description
-     * Allows adding a tooltip to the table headers.
-     *
-     * Available options:
-     * * the `rows` property defines if tooltips should be added to row headers,
-     * * the `columns` property defines if tooltips should be added to column headers,
-     * * the `onlyTrimmed` property defines if tooltips should be added only to headers, which content is trimmed by the header itself (the content being wider then the header).
-     *
-     * @memberof Options#
-     * @type {boolean|object}
-     * @default undefined
-     * @deprecated This plugin is deprecated and will be removed in the next major release.
-     *
-     * @example
-     * ```js
-     * // enable tooltips for all headers
-     * headerTooltips: true,
-     *
-     * // or
-     * headerTooltips: {
-     *   rows: false,
-     *   columns: true,
-     *   onlyTrimmed: true
-     * }
-     * ```
-     */
-    headerTooltips: void 0,
-
-    /**
      * The {@link HiddenColumns} plugin allows hiding of certain columns. You can pass additional configuration with an
      * object notation. Options that are then available are:
      *  * `columns` - an array of rows that should be hidden on plugin initialization
@@ -2823,25 +2813,6 @@ export default (function () {
      * ```
      */
     columnHeaderHeight: void 0,
-
-    /**
-     * @description
-     * Enables the {@link ObserveChanges} plugin switches table into one-way data binding where changes are applied into
-     * data source (from outside table) will be automatically reflected in the table.
-     *
-     * For every data change [afterChangesObserved](Hooks.html#event:afterChangesObserved) hook will be fired.
-     *
-     * @memberof Options#
-     * @type {boolean}
-     * @default undefined
-     * @deprecated This plugin is deprecated and will be removed in the next major release.
-     *
-     * @example
-     * ```js
-     * observeChanges: true,
-     * ```
-     */
-    observeChanges: void 0,
 
     /**
      * If defined as `true`, the Autocomplete's suggestion list would be sorted by relevance (the closer to the left the

@@ -5,6 +5,8 @@ exports.default = void 0;
 
 require("core-js/modules/es.function.name.js");
 
+require("core-js/modules/web.timers.js");
+
 require("core-js/modules/es.object.keys.js");
 
 require("core-js/modules/es.regexp.constructor.js");
@@ -269,7 +271,18 @@ var Menu = /*#__PURE__*/function () {
           // after the "contextmenu". So then "mouseup" closes the menu. Otherwise, the closing
           // menu responsibility is forwarded to "afterOnCellContextMenu" callback (#6507#issuecomment-582392301).
           if ((!(0, _browser.isWindowsOS)() || !(0, _event.isRightClick)(event)) && shouldAutoCloseMenu && _this2.hasSelectedItem()) {
-            _this2.close(true);
+            // The timeout is necessary only for mobile devices. For desktop, the click event that is fired
+            // right after the mouseup event gets the event element target the same as the mouseup event.
+            // For mobile devices, the click event is triggered with native delay (~300ms), so when the mouseup
+            // event hides the tapped element, the click event grabs the element below. As a result, the filter
+            // by condition menu is closed and immediately open on tapping the "None" item.
+            if ((0, _browser.isMobileBrowser)() || (0, _browser.isIpadOS)()) {
+              setTimeout(function () {
+                return _this2.close(true);
+              }, 325);
+            } else {
+              _this2.close(true);
+            }
           }
         },
         afterUnlisten: function afterUnlisten() {

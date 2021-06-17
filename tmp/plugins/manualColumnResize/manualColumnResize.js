@@ -21,13 +21,13 @@ require("core-js/modules/es.symbol.iterator.js");
 exports.__esModule = true;
 exports.ManualColumnResize = exports.PLUGIN_PRIORITY = exports.PLUGIN_KEY = void 0;
 
-require("core-js/modules/es.weak-map.js");
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
 
-require("core-js/modules/es.array.iterator.js");
+require("core-js/modules/es.weak-map.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -752,8 +752,6 @@ var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "destroy",
     value: function destroy() {
-      this.hot.columnIndexMapper.unregisterMap(this.pluginName);
-
       _get(_getPrototypeOf(ManualColumnResize.prototype), "destroy", this).call(this);
     }
   }], [{

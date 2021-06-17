@@ -8,6 +8,8 @@ var _default = require("../sortFunction/default");
 
 var _numeric = require("../sortFunction/numeric");
 
+var _checkbox = require("../sortFunction/checkbox");
+
 var _date = require("../sortFunction/date");
 
 var _staticRegister3 = _interopRequireDefault(require("../../../utils/staticRegister"));
@@ -42,5 +44,6 @@ function getCompareFunctionFactory(type) {
 }
 
 registerCompareFunctionFactory(_numeric.COLUMN_DATA_TYPE, _numeric.compareFunctionFactory);
+registerCompareFunctionFactory(_checkbox.COLUMN_DATA_TYPE, _checkbox.compareFunctionFactory);
 registerCompareFunctionFactory(_date.COLUMN_DATA_TYPE, _date.compareFunctionFactory);
 registerCompareFunctionFactory(_default.COLUMN_DATA_TYPE, _default.compareFunctionFactory);

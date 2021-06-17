@@ -1,5 +1,9 @@
 "use strict";
 
+require("core-js/modules/es.object.keys.js");
+
+require("core-js/modules/es.array.index-of.js");
+
 require("core-js/modules/es.symbol.js");
 
 require("core-js/modules/es.array.filter.js");
@@ -13,15 +17,15 @@ require("core-js/modules/es.object.get-own-property-descriptors.js");
 exports.__esModule = true;
 exports.default = void 0;
 
-require("core-js/modules/es.object.keys.js");
-
-require("core-js/modules/es.array.index-of.js");
+var _constants = require("../constants");
 
 var _visualSelection = _interopRequireDefault(require("../visualSelection"));
 
+var _excluded = ["headerClassName", "rowClassName", "columnClassName"];
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -35,20 +39,27 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
  * Creates the new instance of Selection, responsible for highlighting row and column headers. This type of selection
  * can occur multiple times.
  *
+ * @param {object} highlightParams A configuration object to create a highlight.
+ * @param {string} highlightParams.headerClassName Highlighted headers' class name.
+ * @param {string} highlightParams.rowClassName Highlighted row' class name.
+ * @param {string} highlightParams.columnClassName Highlighted column' class name.
  * @returns {Selection}
  */
 function createHighlight(_ref) {
   var headerClassName = _ref.headerClassName,
       rowClassName = _ref.rowClassName,
       columnClassName = _ref.columnClassName,
-      restOptions = _objectWithoutProperties(_ref, ["headerClassName", "rowClassName", "columnClassName"]);
+      restOptions = _objectWithoutProperties(_ref, _excluded);
 
-  var s = new _visualSelection.default(_objectSpread({
+  var s = new _visualSelection.default(_objectSpread(_objectSpread({
     className: 'highlight',
     highlightHeaderClassName: headerClassName,
     highlightRowClassName: rowClassName,
     highlightColumnClassName: columnClassName
-  }, restOptions));
+  }, restOptions), {}, {
+    highlightOnlyClosestHeader: true,
+    selectionType: _constants.HEADER_TYPE
+  }));
   return s;
 }
 

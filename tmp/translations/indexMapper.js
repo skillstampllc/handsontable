@@ -13,15 +13,15 @@ require("core-js/modules/es.array.slice.js");
 require("core-js/modules/es.function.name.js");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports.IndexMapper = void 0;
+
+require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/es.map.js");
 
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -37,23 +37,17 @@ require("core-js/modules/es.array.fill.js");
 
 var _array = require("../helpers/array");
 
-var _indexesSequence = require("./maps/utils/indexesSequence");
+var _maps = require("./maps");
 
-var _indexesSequence2 = _interopRequireDefault(require("./maps/indexesSequence"));
-
-var _trimmingMap = _interopRequireDefault(require("./maps/trimmingMap"));
-
-var _hidingMap = _interopRequireDefault(require("./maps/hidingMap"));
-
-var _mapCollection = _interopRequireDefault(require("./mapCollection"));
-
-var _aggregatedCollection = _interopRequireDefault(require("./aggregatedCollection"));
+var _mapCollections = require("./mapCollections");
 
 var _localHooks = _interopRequireDefault(require("../mixins/localHooks"));
 
 var _object = require("../helpers/object");
 
 var _mixed = require("../helpers/mixed");
+
+var _observable = require("./changesObservable/observable");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -63,7 +57,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -105,7 +99,7 @@ var IndexMapper = /*#__PURE__*/function () {
      * @private
      * @type {IndexesSequence}
      */
-    this.indexesSequence = new _indexesSequence2.default();
+    this.indexesSequence = new _maps.IndexesSequence();
     /**
      * Collection for different trimming maps. Indexes marked as trimmed in any map WILL NOT be included in
      * the {@link DataMap} and won't be rendered.
@@ -114,7 +108,7 @@ var IndexMapper = /*#__PURE__*/function () {
      * @type {MapCollection}
      */
 
-    this.trimmingMapsCollection = new _aggregatedCollection.default(function (valuesForIndex) {
+    this.trimmingMapsCollection = new _mapCollections.AggregatedCollection(function (valuesForIndex) {
       return valuesForIndex.some(function (value) {
         return value === true;
       });
@@ -127,7 +121,7 @@ var IndexMapper = /*#__PURE__*/function () {
      * @type {MapCollection}
      */
 
-    this.hidingMapsCollection = new _aggregatedCollection.default(function (valuesForIndex) {
+    this.hidingMapsCollection = new _mapCollections.AggregatedCollection(function (valuesForIndex) {
       return valuesForIndex.some(function (value) {
         return value === true;
       });
@@ -139,7 +133,20 @@ var IndexMapper = /*#__PURE__*/function () {
      * @type {MapCollection}
      */
 
-    this.variousMapsCollection = new _mapCollection.default();
+    this.variousMapsCollection = new _mapCollections.MapCollection();
+    /**
+     * The class instance collects row and column index changes that happen while the Handsontable
+     * is running. The object allows creating observers that you can subscribe. Each event represents
+     * the index change (e.g., insert, removing, change index value), which can be consumed by a
+     * developer to update its logic.
+     *
+     * @private
+     * @type {ChangesObservable}
+     */
+
+    this.hidingChangesObservable = new _observable.ChangesObservable({
+      initialIndexValue: false
+    });
     /**
      * Cache for list of not trimmed indexes, respecting the indexes sequence (physical indexes).
      *
@@ -265,6 +272,38 @@ var IndexMapper = /*#__PURE__*/function () {
       this.updateCache();
     }
     /**
+     * It creates and returns the new instance of the ChangesObserver object. The object
+     * allows listening to the index changes that happen while the Handsontable is running.
+     *
+     * @param {string} indexMapType The index map type which we want to observe.
+     *                              Currently, only the 'hiding' index map types are observable.
+     * @returns {ChangesObserver}
+     */
+
+  }, {
+    key: "createChangesObserver",
+    value: function createChangesObserver(indexMapType) {
+      if (indexMapType !== 'hiding') {
+        throw new Error("Unsupported index map type \"".concat(indexMapType, "\"."));
+      }
+
+      return this.hidingChangesObservable.createObserver();
+    }
+    /**
+     * Creates and register the new IndexMap for specified IndexMapper instance.
+     *
+     * @param {string} indexName The uniq index name.
+     * @param {string} mapType The index map type (e.q. "hiding, "trimming", "physicalIndexToValue").
+     * @param {*} [initValueOrFn] The initial value for the index map.
+     * @returns {IndexMap}
+     */
+
+  }, {
+    key: "createAndRegisterIndexMap",
+    value: function createAndRegisterIndexMap(indexName, mapType, initValueOrFn) {
+      return this.registerMap(indexName, (0, _maps.createIndexMap)(mapType, initValueOrFn));
+    }
+    /**
      * Register map which provide some index mappings. Type of map determining to which collection it will be added.
      *
      * @param {string} uniqueName Name of the index map. It should be unique.
@@ -279,9 +318,9 @@ var IndexMapper = /*#__PURE__*/function () {
         throw Error("Map with name \"".concat(uniqueName, "\" has been already registered."));
       }
 
-      if (indexMap instanceof _trimmingMap.default) {
+      if (indexMap instanceof _maps.TrimmingMap) {
         this.trimmingMapsCollection.register(uniqueName, indexMap);
-      } else if (indexMap instanceof _hidingMap.default) {
+      } else if (indexMap instanceof _maps.HidingMap) {
         this.hidingMapsCollection.register(uniqueName, indexMap);
       } else {
         this.variousMapsCollection.register(uniqueName, indexMap);
@@ -314,6 +353,17 @@ var IndexMapper = /*#__PURE__*/function () {
       this.trimmingMapsCollection.unregister(name);
       this.hidingMapsCollection.unregister(name);
       this.variousMapsCollection.unregister(name);
+    }
+    /**
+     * Unregisters all collected index map instances from all map collection types.
+     */
+
+  }, {
+    key: "unregisterAll",
+    value: function unregisterAll() {
+      this.trimmingMapsCollection.unregisterAll();
+      this.hidingMapsCollection.unregisterAll();
+      this.variousMapsCollection.unregisterAll();
     }
     /**
      * Get a physical index corresponding to the given visual index.
@@ -633,7 +683,7 @@ var IndexMapper = /*#__PURE__*/function () {
       var notTrimmedIndexesLength = this.getNotTrimmedIndexesLength();
       var movedIndexesLength = movedIndexes.length; // Removing indexes without re-indexing.
 
-      var listWithRemovedItems = (0, _indexesSequence.getListWithRemovedItems)(this.getIndexesSequence(), physicalMovedIndexes); // When item(s) are moved after the last visible item we assign the last possible index.
+      var listWithRemovedItems = (0, _maps.getListWithRemovedItems)(this.getIndexesSequence(), physicalMovedIndexes); // When item(s) are moved after the last visible item we assign the last possible index.
 
       var destinationPosition = notTrimmedIndexesLength - movedIndexesLength; // Otherwise, we find proper index for inserted item(s).
 
@@ -646,7 +696,7 @@ var IndexMapper = /*#__PURE__*/function () {
       } // Adding indexes without re-indexing.
 
 
-      this.setIndexesSequence((0, _indexesSequence.getListWithInsertedItems)(listWithRemovedItems, destinationPosition, physicalMovedIndexes));
+      this.setIndexesSequence((0, _maps.getListWithInsertedItems)(listWithRemovedItems, destinationPosition, physicalMovedIndexes));
     }
     /**
      * Get whether index is trimmed. Index marked as trimmed isn't included in a {@link DataMap} and isn't rendered.
@@ -734,8 +784,17 @@ var IndexMapper = /*#__PURE__*/function () {
         this.notHiddenIndexesCache = this.getNotHiddenIndexes(false);
         this.renderablePhysicalIndexesCache = this.getRenderableIndexes(false);
         this.cacheFromPhysicalToVisualIndexes();
-        this.cacheFromVisualToRenderabIendexes();
-        this.runLocalHooks('cacheUpdated', this.indexesSequenceChanged, this.trimmedIndexesChanged, this.hiddenIndexesChanged);
+        this.cacheFromVisualToRenderabIendexes(); // Currently there's support only for the "hiding" map type.
+
+        if (this.hiddenIndexesChanged) {
+          this.hidingChangesObservable.emit(this.hidingMapsCollection.getMergedValues());
+        }
+
+        this.runLocalHooks('cacheUpdated', {
+          indexesSequenceChanged: this.indexesSequenceChanged,
+          trimmedIndexesChanged: this.trimmedIndexesChanged,
+          hiddenIndexesChanged: this.hiddenIndexesChanged
+        });
         this.indexesSequenceChanged = false;
         this.trimmedIndexesChanged = false;
         this.hiddenIndexesChanged = false;
@@ -784,6 +843,5 @@ var IndexMapper = /*#__PURE__*/function () {
   return IndexMapper;
 }();
 
+exports.IndexMapper = IndexMapper;
 (0, _object.mixin)(IndexMapper, _localHooks.default);
-var _default = IndexMapper;
-exports.default = _default;

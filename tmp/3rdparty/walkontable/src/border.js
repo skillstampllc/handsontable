@@ -8,9 +8,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.string.iterator.js");
-
 require("core-js/modules/es.array.iterator.js");
+
+require("core-js/modules/es.string.iterator.js");
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
@@ -24,10 +24,6 @@ exports.__esModule = true;
 exports.default = void 0;
 
 require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.includes.js");
-
-require("core-js/modules/es.string.includes.js");
 
 var _element = require("./../../../helpers/dom/element");
 
@@ -51,7 +47,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -426,6 +422,8 @@ var Border = /*#__PURE__*/function () {
       var toRow;
       var fromColumn;
       var toColumn;
+      var rowHeader;
+      var columnHeader;
       var rowsCount = wtTable.getRenderedRowsCount();
 
       for (var i = 0; i < rowsCount; i += 1) {
@@ -433,6 +431,7 @@ var Border = /*#__PURE__*/function () {
 
         if (s >= corners[0] && s <= corners[2]) {
           fromRow = s;
+          rowHeader = corners[0];
           break;
         }
       }
@@ -453,6 +452,7 @@ var Border = /*#__PURE__*/function () {
 
         if (_s2 >= corners[1] && _s2 <= corners[3]) {
           fromColumn = _s2;
+          columnHeader = corners[1];
           break;
         }
       }
@@ -483,7 +483,7 @@ var Border = /*#__PURE__*/function () {
       var width = toOffset.left + (0, _element.outerWidth)(toTD) - minLeft;
 
       if (this.isEntireColumnSelected(fromRow, toRow)) {
-        var modifiedValues = this.getDimensionsFromHeader('columns', fromColumn, toColumn, containerOffset);
+        var modifiedValues = this.getDimensionsFromHeader('columns', fromColumn, toColumn, rowHeader, containerOffset);
         var fromTH = null;
 
         if (modifiedValues) {
@@ -503,7 +503,7 @@ var Border = /*#__PURE__*/function () {
       var height = toOffset.top + (0, _element.outerHeight)(toTD) - minTop;
 
       if (this.isEntireRowSelected(fromColumn, toColumn)) {
-        var _modifiedValues2 = this.getDimensionsFromHeader('rows', fromRow, toRow, containerOffset);
+        var _modifiedValues2 = this.getDimensionsFromHeader('rows', fromRow, toRow, columnHeader, containerOffset);
 
         var _fromTH = null;
 
@@ -645,13 +645,14 @@ var Border = /*#__PURE__*/function () {
      * @param {string} direction `rows` or `columns`, defines if an entire column or row is selected.
      * @param {number} fromIndex Start index of the selection.
      * @param {number} toIndex End index of the selection.
+     * @param {number} headerIndex The header index as negative value.
      * @param {number} containerOffset Offset of the container.
      * @returns {Array|boolean} Returns an array of [headerElement, left, width] or [headerElement, top, height], depending on `direction` (`false` in case of an error getting the headers).
      */
 
   }, {
     key: "getDimensionsFromHeader",
-    value: function getDimensionsFromHeader(direction, fromIndex, toIndex, containerOffset) {
+    value: function getDimensionsFromHeader(direction, fromIndex, toIndex, headerIndex, containerOffset) {
       var wtTable = this.wot.wtTable;
       var rootHotElement = wtTable.wtRootElement.parentNode;
       var getHeaderFn = null;
@@ -693,10 +694,10 @@ var Border = /*#__PURE__*/function () {
         default:
       }
 
-      if (rootHotElement.className.includes(entireSelectionClassname)) {
+      if (rootHotElement.classList.contains(entireSelectionClassname)) {
         var columnHeaderLevelCount = this.wot.getSetting('columnHeaders').length;
-        startHeader = getHeaderFn(fromIndex, columnHeaderLevelCount - 1);
-        endHeader = getHeaderFn(toIndex, columnHeaderLevelCount - 1);
+        startHeader = getHeaderFn(fromIndex, columnHeaderLevelCount - headerIndex);
+        endHeader = getHeaderFn(toIndex, columnHeaderLevelCount - headerIndex);
 
         if (!startHeader || !endHeader) {
           return false;
