@@ -18,59 +18,6 @@ export function isImmediatePropagationStopped(event) {
   return event.isImmediatePropagationEnabled === false;
 }
 /**
- * Prevent further propagation of the current event (prevent bubbling).
- *
- * @param event {Event}
- */
-
-export function stopPropagation(event) {
-  // ie8
-  // http://msdn.microsoft.com/en-us/library/ie/ff975462(v=vs.85).aspx
-  if (typeof event.stopPropagation === 'function') {
-    event.stopPropagation();
-  } else {
-    event.cancelBubble = true;
-  }
-}
-/**
- * Get horizontal coordinate of the event object relative to the whole document.
- *
- * @param {Event} event
- * @returns {Number}
- */
-
-export function pageX(event) {
-  if (event.pageX) {
-    return event.pageX;
-  }
-
-  var rootWindow = event.target.ownerDocument.defaultView;
-  return event.clientX + getWindowScrollLeft(rootWindow);
-}
-/**
- * Get vertical coordinate of the event object relative to the whole document.
- *
- * @param {Event} event
- * @returns {Number}
- */
-
-export function pageY(event) {
-  if (event.pageY) {
-    return event.pageY;
-  }
-
-  var frame = event.target.ownerDocument.defaultView;
-  var offset = getWindowScrollTop(frame);
-  frame = getParentWindow(frame);
-
-  while (frame) {
-    offset -= getWindowScrollTop(frame);
-    frame = getParentWindow(frame);
-  }
-
-  return event.clientY + offset;
-}
-/**
  * Check if provided event was triggered by clicking the right mouse button.
  *
  * @param {Event} event The mouse event object.
