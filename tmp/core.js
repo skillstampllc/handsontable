@@ -97,7 +97,7 @@ var _keyStateObserver = require("./utils/keyStateObserver");
 
 var _selection = require("./selection");
 
-var _index = require("./dataMap/index");
+var _dataMap = require("./dataMap");
 
 var _uniqueMap = require("./utils/dataStructures/uniqueMap");
 
@@ -136,23 +136,17 @@ var activeGuid = null;
  * @core
  * @class Core
  * @description
- * After Handsontable is constructed, you can modify the grid behavior using the available public methods.
  *
- * ## How to call methods.
+ * The `Handsontable` class to which we refer as to `Core`, allows you to modify the grid's behavior by using one of the available public methods.
  *
- * These are 2 equal ways to call a Handsontable method:
+ * ## How to call a method
  *
  * ```js
- * // all following examples assume that you constructed Handsontable like this
- * const hot = new Handsontable(document.getElementById('example1'), options);
+ * // First, let's contruct Handsontable
+ * const hot = new Handsontable(document.getElementById('example'), options);
  *
- * // now, to use setDataAtCell method, you can either:
+ * // Then, let's use the setDataAtCell method
  * hot.setDataAtCell(0, 0, 'new value');
- * ```
- *
- * Alternatively, you can call the method using jQuery wrapper (__obsolete__, requires initialization using our jQuery guide
- * ```js
- * $('#example1').handsontable('setDataAtCell', 0, 0, 'new value');
  * ```
  *
  * @param {HTMLElement} rootElement The element to which the Handsontable instance is injected.
@@ -173,7 +167,7 @@ function Core(rootElement, userSettings) {
   var editorManager;
   var firstRun = true;
   userSettings.language = (0, _registry4.getValidLanguageCode)(userSettings.language);
-  var metaManager = new _index.MetaManager(userSettings);
+  var metaManager = new _dataMap.MetaManager(instance, userSettings, [_dataMap.DynamicCellMetaMod]);
   var tableMeta = metaManager.getTableMeta();
   var globalMeta = metaManager.getGlobalMeta();
   var pluginsRegistry = (0, _uniqueMap.createUniqueMap)();
@@ -1245,10 +1239,6 @@ function Core(rootElement, userSettings) {
 
     var waitingForValidator = new ValidatorsQueue();
 
-    var isNumericData = function isNumericData(value) {
-      return value.length > 0 && /^\s*[+-.]?\s*(?:(?:\d+(?:(\.|,)\d+)?(?:e[+-]?\d+)?)|(?:0x[a-f\d]+))\s*$/.test(value);
-    };
-
     waitingForValidator.onQueueEmpty = function (isValid) {
       if (activeEditor && shouldBeCanceled) {
         activeEditor.cancelChanges();
@@ -1269,7 +1259,7 @@ function Core(rootElement, userSettings) {
         var col = datamap.propToCol(prop);
         var cellProperties = instance.getCellMeta(row, col);
 
-        if (cellProperties.type === 'numeric' && typeof newValue === 'string' && isNumericData(newValue)) {
+        if (cellProperties.type === 'numeric' && typeof newValue === 'string' && (0, _number.isNumericLike)(newValue)) {
           changes[i][3] = getParsedNumber(newValue);
         }
         /* eslint-disable no-loop-func */
@@ -1406,6 +1396,7 @@ function Core(rootElement, userSettings) {
     /**
      * @param {boolean} valid Indicates if the validation was successful.
      * @param {boolean} [canBeValidated=true] Flag which controls the validation process.
+     * @private
      */
 
     function done(valid) {
@@ -1665,7 +1656,7 @@ function Core(rootElement, userSettings) {
     return grid.populateFromArray(new _src.CellCoords(row, column), input, c, source, method, direction, deltas);
   };
   /**
-   * Adds/removes data from the column. This method works the same as Array.splice for arrays (see {@link DataMap#spliceCol}).
+   * Adds/removes data from the column. This method works the same as Array.splice for arrays.
    *
    * @memberof Core#
    * @function spliceCol
@@ -1687,7 +1678,7 @@ function Core(rootElement, userSettings) {
     return (_datamap = datamap).spliceCol.apply(_datamap, [column, index, amount].concat(elements));
   };
   /**
-   * Adds/removes data from the row. This method works the same as Array.splice for arrays (see {@link DataMap#spliceRow}).
+   * Adds/removes data from the row. This method works the same as Array.splice for arrays.
    *
    * @memberof Core#
    * @function spliceRow
@@ -2214,7 +2205,7 @@ function Core(rootElement, userSettings) {
     }
 
     data = instance.runHooks('beforeLoadData', data, firstRun, source);
-    datamap = new _index.DataMap(instance, data, tableMeta);
+    datamap = new _dataMap.DataMap(instance, data, tableMeta);
 
     if (_typeof(data) === 'object' && data !== null) {
       if (!(data.push && data.splice)) {
@@ -2350,7 +2341,7 @@ function Core(rootElement, userSettings) {
   };
   /**
    * Returns a string value of the selected range. Each column is separated by tab, each row is separated by a new
-   * line character (see {@link DataMap#getCopyableText}).
+   * line character.
    *
    * @memberof Core#
    * @function getCopyableText
@@ -2366,7 +2357,7 @@ function Core(rootElement, userSettings) {
     return datamap.getCopyableText(new _src.CellCoords(startRow, startCol), new _src.CellCoords(endRow, endCol));
   };
   /**
-   * Returns the data's copyable value at specified `row` and `column` index (see {@link DataMap#getCopyable}).
+   * Returns the data's copyable value at specified `row` and `column` index.
    *
    * @memberof Core#
    * @function getCopyableData
@@ -2570,6 +2561,7 @@ function Core(rootElement, userSettings) {
 
       instance._refreshBorders(null);
 
+      instance.view.wt.wtOverlays.adjustElementsSize();
       editorManager.unlockEditor();
     }
 
@@ -2630,10 +2622,12 @@ function Core(rootElement, userSettings) {
    * @memberof Core#
    * @function alter
    * @param {string} action Possible alter operations:
-   *  * `'insert_row'`
-   *  * `'insert_col'`
-   *  * `'remove_row'`
-   *  * `'remove_col'`.
+   *  <ul>
+   *    <li> `'insert_row'` </li>
+   *    <li> `'insert_col'` </li>
+   *    <li> `'remove_row'` </li>
+   *    <li> `'remove_col'` </li>
+   * </ul>.
    * @param {number|number[]} index Visual index of the row/column before which the new row/column will be
    *                                inserted/removed or an array of arrays in format `[[index, amount],...]`.
    * @param {number} [amount=1] Amount of rows/columns to be inserted or removed.
@@ -2736,7 +2730,7 @@ function Core(rootElement, userSettings) {
     return new _src.CellCoords(visualRow, visualColumn);
   };
   /**
-   * Returns the property name that corresponds with the given column index (see {@link DataMap#colToProp}).
+   * Returns the property name that corresponds with the given column index.
    * If the data source is an array of arrays, it returns the columns index.
    *
    * @memberof Core#
@@ -2750,7 +2744,7 @@ function Core(rootElement, userSettings) {
     return datamap.colToProp(column);
   };
   /**
-   * Returns column index that corresponds with the given property (see {@link DataMap#propToCol}).
+   * Returns column index that corresponds with the given property.
    *
    * @memberof Core#
    * @function propToCol
@@ -2844,7 +2838,7 @@ function Core(rootElement, userSettings) {
     return datamap.get(row, datamap.colToProp(column));
   };
   /**
-   * Returns value at visual `row` and `prop` indexes (see {@link DataMap#get}).
+   * Returns value at visual `row` and `prop` indexes.
    *
    * __Note__: If data is reordered, sorted or trimmed, the currently visible order will be used.
    *
@@ -3070,7 +3064,7 @@ function Core(rootElement, userSettings) {
   };
   /**
    * @description
-   * Returns a data type defined in the Handsontable settings under the `type` key ([Options#type](https://handsontable.com/docs/Options.html#type)).
+   * Returns a data type defined in the Handsontable settings under the `type` key ({@link Options#type}).
    * If there are cells with different types in the selected range, it returns `'mixed'`.
    *
    * __Note__: If data is reordered, sorted or trimmed, the currently visible order will be used.
@@ -3142,7 +3136,7 @@ function Core(rootElement, userSettings) {
     var _ref19 = [this.toPhysicalRow(row), this.toPhysicalColumn(column)],
         physicalRow = _ref19[0],
         physicalColumn = _ref19[1];
-    var cachedValue = metaManager.getCellMeta(physicalRow, physicalColumn, key);
+    var cachedValue = metaManager.getCellMetaKeyValue(physicalRow, physicalColumn, key);
     var hookResult = instance.runHooks('beforeRemoveCellMeta', row, column, key, cachedValue);
 
     if (hookResult !== false) {
@@ -3189,6 +3183,8 @@ function Core(rootElement, userSettings) {
         });
       });
     }
+
+    instance.render();
   };
   /**
    * Set cell meta data object defined by `prop` to the corresponding params `row` and `column`.
@@ -3282,33 +3278,10 @@ function Core(rootElement, userSettings) {
       physicalColumn = column;
     }
 
-    var prop = datamap.colToProp(column);
-    var cellProperties = metaManager.getCellMeta(physicalRow, physicalColumn); // TODO(perf): Add assigning this props and executing below code only once per table render cycle.
-
-    cellProperties.row = physicalRow;
-    cellProperties.col = physicalColumn;
-    cellProperties.visualRow = row;
-    cellProperties.visualCol = column;
-    cellProperties.prop = prop;
-    cellProperties.instance = instance;
-    instance.runHooks('beforeGetCellMeta', row, column, cellProperties); // for `type` added or changed in beforeGetCellMeta
-
-    if (instance.hasHook('beforeGetCellMeta') && (0, _object.hasOwnProperty)(cellProperties, 'type')) {
-      metaManager.updateCellMeta(physicalRow, physicalColumn, {
-        type: cellProperties.type
-      });
-    }
-
-    if (cellProperties.cells) {
-      var settings = cellProperties.cells(physicalRow, physicalColumn, prop);
-
-      if (settings) {
-        metaManager.updateCellMeta(physicalRow, physicalColumn, settings);
-      }
-    }
-
-    instance.runHooks('afterGetCellMeta', row, column, cellProperties);
-    return cellProperties;
+    return metaManager.getCellMeta(physicalRow, physicalColumn, {
+      visualRow: row,
+      visualColumn: column
+    });
   };
   /**
    * Returns an array of cell meta objects for specified physical row index.
@@ -3781,6 +3754,8 @@ function Core(rootElement, userSettings) {
   };
   /**
    * Returns the row height.
+   *
+   * Mind that this method is different from the [AutoRowSize](@/api/autorowsize.md) plugin's [`getRowHeight()`](@/api/autorowsize.md#getrowheight) method.
    *
    * @memberof Core#
    * @function getRowHeight

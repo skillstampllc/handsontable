@@ -436,7 +436,7 @@ var StateManager = /*#__PURE__*/function () {
 
       var stepBackColumn = columnIndex - 1;
 
-      do {
+      while (stepBackColumn >= 0) {
         var _this$getHeaderSettin2;
 
         var _ref3 = (_this$getHeaderSettin2 = this.getHeaderSettings(headerLevel, stepBackColumn)) !== null && _this$getHeaderSettin2 !== void 0 ? _this$getHeaderSettin2 : {
@@ -449,7 +449,7 @@ var StateManager = /*#__PURE__*/function () {
         }
 
         stepBackColumn -= 1;
-      } while (columnIndex >= 0);
+      }
 
       return stepBackColumn;
     }

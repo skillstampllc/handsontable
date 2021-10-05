@@ -50,6 +50,7 @@ export var PLUGIN_KEY = 'trimRows';
 export var PLUGIN_PRIORITY = 330;
 /**
  * @plugin TrimRows
+ * @class TrimRows
  *
  * @description
  * The plugin allows to trim certain rows. The trimming is achieved by applying the transformation algorithm to the data

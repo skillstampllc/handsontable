@@ -68,7 +68,6 @@ import { BasePlugin } from "../base/index.mjs";
 import Hooks from "../../pluginHooks.mjs";
 import { offset, outerHeight, outerWidth } from "../../helpers/dom/element.mjs";
 import { arrayEach, arrayMap } from "../../helpers/array.mjs";
-import { isObjectEqual } from "../../helpers/object.mjs";
 import EventManager from "../../eventManager.mjs";
 import { CellCoords, CellRange } from "../../3rdparty/walkontable/src/index.mjs";
 import { getDeltas, getDragDirectionAndRange, DIRECTIONS, getMappedFillHandleSetting } from "./utils.mjs";
@@ -325,17 +324,8 @@ export var Autofill = /*#__PURE__*/function (_BasePlugin) {
           this.hot.selection.highlight.getFill().clear();
           this.hot.render();
           return false;
-        } // TODO: The `hasFillDataChanged` hook argument allows skipping processing of the autofill
-        // handler when the user modifies the fillData in the `beforeAutofill` hook. The workaround
-        // is necessary for the Formulas plugin and can be removed after implementing the missing
-        // feature for the HF (such as `getFillRangeData` method). With that the last argument could
-        // be removed from the `afterAutofill` hook.
+        }
 
-
-        var sourceFrom = sourceRange.from,
-            sourceTo = sourceRange.to;
-        var refData = this.hot.getData(sourceFrom.row, sourceFrom.col, sourceTo.row, sourceTo.col);
-        var hasFillDataChanged = !isObjectEqual(refData, beforeAutofillHookResult);
         var deltas = getDeltas(startOfDragCoords, endOfDragCoords, selectionData, directionOfDrag);
         var fillData = beforeAutofillHookResult;
         var res = beforeAutofillHookResult;
@@ -367,7 +357,7 @@ export var Autofill = /*#__PURE__*/function (_BasePlugin) {
 
         this.hot.populateFromArray(startOfDragCoords.row, startOfDragCoords.col, fillData, endOfDragCoords.row, endOfDragCoords.col, "".concat(this.pluginName, ".fill"), null, directionOfDrag, deltas);
         this.setSelection(cornersOfSelectionAndDragAreas);
-        this.hot.runHooks('afterAutofill', fillData, sourceRange, targetRange, directionOfDrag, hasFillDataChanged);
+        this.hot.runHooks('afterAutofill', fillData, sourceRange, targetRange, directionOfDrag);
         this.hot.render();
       } else {
         // reset to avoid some range bug

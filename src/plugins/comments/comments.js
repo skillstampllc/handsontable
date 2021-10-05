@@ -28,8 +28,8 @@ const META_READONLY = 'readOnly';
 
 /* eslint-disable jsdoc/require-description-complete-sentence */
 /**
- * @class Comments
  * @plugin Comments
+ * @class Comments
  *
  * @description
  * This plugin allows setting and managing cell comments by either an option in the context menu or with the use of
@@ -44,7 +44,12 @@ const META_READONLY = 'readOnly';
  *
  * ```js
  * comments: {
- *   displayDelay: 1000
+ *   displayDelay: 1000,
+ *   readOnly: true,
+ *   style: {
+ *     width: 300,
+ *     height: 100
+ *   }
  * }
  * ```
  *
@@ -308,7 +313,7 @@ export class Comments extends BasePlugin {
       throw new Error('Before using this method, first set cell range (hot.getPlugin("comment").setRange())');
     }
 
-    this.hot.setCellMeta(this.range.from.row, this.range.from.col, META_COMMENT, void 0);
+    this.hot.setCellMeta(this.range.from.row, this.range.from.col, META_COMMENT);
 
     if (forceRender) {
       this.hot.render();

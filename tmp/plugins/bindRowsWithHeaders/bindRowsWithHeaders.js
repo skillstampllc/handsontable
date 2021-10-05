@@ -71,6 +71,7 @@ var DEFAULT_BIND = 'loose';
 var bindTypeToMapStrategy = new Map([['loose', _looseBindsMap.default], ['strict', _strictBindsMap.default]]);
 /**
  * @plugin BindRowsWithHeaders
+ * @class BindRowsWithHeaders
  *
  * @description
  * Plugin allows binding the table rows with their headers.

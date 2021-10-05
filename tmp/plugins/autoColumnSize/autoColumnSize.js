@@ -130,6 +130,7 @@ var COLUMN_SIZE_MAP_NAME = 'autoColumnSize';
  * operations don't block the browser UI.
  *
  * To configure the sync/async distribution, you can pass an absolute value (number of columns) or a percentage value to a config object:
+ *
  * ```js
  * // as a number (300 columns in sync, rest async)
  * autoColumnSize: {syncLimit: 300},.
@@ -144,13 +145,16 @@ var COLUMN_SIZE_MAP_NAME = 'autoColumnSize';
  *
  * Sampling accepts additional options:
  * - *samplingRatio* - Defines how many samples for the same length will be used to calculate. Default is `3`.
- *   ```js
+ *
+ * ```js
  *   autoColumnSize: {
  *     samplingRatio: 10,
  *   }
- *   ```
+ * ```
+ *
  * - *allowSampleDuplicates* - Defines if duplicated values might be used in sampling. Default is `false`.
- *   ```js
+ *
+ * ```js
  *   autoColumnSize: {
  *     allowSampleDuplicates: true,
  *   }
@@ -159,6 +163,7 @@ var COLUMN_SIZE_MAP_NAME = 'autoColumnSize';
  * To configure this plugin see {@link Options#autoColumnSize}.
  *
  * @example
+ *
  * ```js
  * const hot = new Handsontable(document.getElementById('example'), {
  *   data: getData(),
@@ -277,7 +282,7 @@ var AutoColumnSize = /*#__PURE__*/function (_BasePlugin) {
   }
   /**
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
-   * hook and if it returns `true` than the {@link AutoColumnSize#enablePlugin} method is called.
+   * hook and if it returns `true` than the {@link #enablePlugin} method is called.
    *
    * @returns {boolean}
    */
@@ -317,8 +322,8 @@ var AutoColumnSize = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('afterFormulasValuesUpdate', function (changes) {
         return _this2.onAfterFormulasValuesUpdate(changes);
       });
-      this.addHook('beforeRender', function (force) {
-        return _this2.onBeforeRender(force);
+      this.addHook('beforeViewRender', function (force) {
+        return _this2.onBeforeViewRender(force);
       });
       this.addHook('modifyColWidth', function (width, col) {
         return _this2.getColumnWidth(col, width);
@@ -734,14 +739,14 @@ var AutoColumnSize = /*#__PURE__*/function (_BasePlugin) {
       }).length;
     }
     /**
-     * On before render listener.
+     * On before view render listener.
      *
      * @private
      */
 
   }, {
-    key: "onBeforeRender",
-    value: function onBeforeRender() {
+    key: "onBeforeViewRender",
+    value: function onBeforeViewRender() {
       this.calculateVisibleColumnsWidth();
 
       if (this.isNeedRecalculate() && !this.inProgress) {

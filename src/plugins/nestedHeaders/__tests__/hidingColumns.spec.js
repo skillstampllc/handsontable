@@ -1111,6 +1111,8 @@ describe('NestedHeaders', () => {
             <th class="hiddenHeader"></th>
             <th class="hiddenHeader"></th>
             <th class="hiddenHeader"></th>
+            <th class="hiddenHeader"></th>
+            <th class="">BC1</th>
           </tr>
           <tr>
             <th class="" colspan="3">AL2</th>
@@ -1126,6 +1128,8 @@ describe('NestedHeaders', () => {
             <th class="" colspan="4">AY2</th>
             <th class="hiddenHeader"></th>
             <th class="hiddenHeader"></th>
+            <th class="hiddenHeader"></th>
+            <th class="">BC2</th>
           </tr>
           <tr>
             <th class="" colspan="2">AL3</th>
@@ -1141,6 +1145,8 @@ describe('NestedHeaders', () => {
             <th class="" colspan="2">AY3</th>
             <th class="hiddenHeader"></th>
             <th class="" colspan="2">BA3</th>
+            <th class="hiddenHeader"></th>
+            <th class="">BC3</th>
           </tr>
           <tr>
             <th class="">AL4</th>
@@ -1156,6 +1162,8 @@ describe('NestedHeaders', () => {
             <th class="">AY4</th>
             <th class="">AZ4</th>
             <th class="">BA4</th>
+            <th class="">BB4</th>
+            <th class="">BC4</th>
           </tr>
         </thead>
         <tbody>
@@ -1173,6 +1181,8 @@ describe('NestedHeaders', () => {
             <td class="">AY1</td>
             <td class="">AZ1</td>
             <td class="">BA1</td>
+            <td class="">BB1</td>
+            <td class="">BC1</td>
           </tr>
         </tbody>
         `);
@@ -1707,6 +1717,83 @@ describe('NestedHeaders', () => {
           </tr>
         </tbody>
         `);
+    });
+
+    it('should allow scrolling (and lazy loading) the columns properly, ' +
+      'when some of the leftmost columns are hidden', async() => {
+      $('.jasmine_html-reporter').hide(); // Workaround for making the test more predictable.
+      const nestedHeaders = [
+        [
+          {
+            label: 'A',
+            colspan: 20
+          }, {
+            label: 'B',
+            colspan: 40
+          }
+        ],
+        []
+      ];
+
+      for (let i = 0; i < 60; i += 1) {
+        nestedHeaders[1].push(`-${i + 1}-`);
+      }
+
+      const hot = handsontable({
+        data: Handsontable.helper.createSpreadsheetData(10, 60),
+        colHeaders: true,
+        nestedHeaders,
+        width: 500,
+        height: 400
+      });
+
+      const onErrorFn = window.onerror;
+      const errorSpy = jasmine.createSpy('bound to error when scrolling the table horizontally');
+
+      window.onerror = () => {
+        errorSpy();
+
+        return true;
+      };
+
+      const hidingMap = hot.columnIndexMapper.createAndRegisterIndexMap('my-hiding-map', 'hiding');
+
+      hidingMap.setValues([true, true, true]);
+      hot.render();
+
+      await sleep(200);
+
+      hot.scrollViewportTo(0, 7);
+
+      await sleep(200);
+
+      // Gets the topmost header around the middle of the table - checks if the widest parent headers are rendered
+      // correctly.
+      const topHeaderInTheMiddle =
+        document.elementFromPoint(
+          hot.rootElement.offsetLeft + (hot.rootElement.offsetWidth / 2),
+          hot.rootElement.offsetTop + 5
+        );
+
+      expect(
+        topHeaderInTheMiddle.nodeName === 'TH' ||
+        topHeaderInTheMiddle.parentNode.nodeName === 'TH'
+      ).toEqual(true);
+
+      hidingMap.setValues([true, true, true, true, true, true]);
+      hot.render();
+
+      await sleep(200);
+
+      hot.scrollViewportTo(0, 15);
+
+      await sleep(300);
+
+      window.onerror = onErrorFn;
+
+      expect(errorSpy).not.toHaveBeenCalled();
+
+      $('.jasmine_html-reporter').show();
     });
 
     describe('with cooperation with the HidingColumns plugin', () => {

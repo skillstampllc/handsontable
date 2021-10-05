@@ -3,9 +3,9 @@
 exports.__esModule = true;
 exports.default = void 0;
 
-var _array = require("./../helpers/array");
-
 var _object = require("./../helpers/object");
+
+var _function = require("./../helpers/function");
 
 var MIXIN_NAME = 'localHooks';
 /**
@@ -40,20 +40,23 @@ var localHooks = {
   /**
    * Run hooks.
    *
-   * @param {string} key The hook name.
-   * @param {*} params Additional parameters passed to callback function.
+   * @param {string} key The name of the hook to run.
+   * @param {*} [arg1] An additional parameter passed to the callback function.
+   * @param {*} [arg2] An additional parameter passed to the callback function.
+   * @param {*} [arg3] An additional parameter passed to the callback function.
+   * @param {*} [arg4] An additional parameter passed to the callback function.
+   * @param {*} [arg5] An additional parameter passed to the callback function.
+   * @param {*} [arg6] An additional parameter passed to the callback function.
    */
-  runLocalHooks: function runLocalHooks(key) {
-    var _this = this;
-
-    for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      params[_key - 1] = arguments[_key];
-    }
-
+  runLocalHooks: function runLocalHooks(key, arg1, arg2, arg3, arg4, arg5, arg6) {
     if (this._localHooks[key]) {
-      (0, _array.arrayEach)(this._localHooks[key], function (callback) {
-        return callback.apply(_this, params);
-      });
+      var length = this._localHooks[key].length; // don't optimize this loop with the `arrayEach()` method or arrow functions
+      // otherwise, performance will decrease because of garbage collection
+      // using the `...rest` syntax (ES6 and later) will decrease performance as well
+
+      for (var i = 0; i < length; i++) {
+        (0, _function.fastCall)(this._localHooks[key][i], this, arg1, arg2, arg3, arg4, arg5, arg6);
+      }
     }
   },
 

@@ -29,9 +29,9 @@ const ROW_WIDTHS_MAP_NAME = 'autoRowSize';
  * disadvantages. Synchronous calculations are faster but they block the browser UI, while the slower asynchronous
  * operations don't block the browser UI.
  *
- * To configure the sync/async distribution, you can pass an absolute value (number of columns) or a percentage value to a config object:
+ * To configure the sync/async distribution, you can pass an absolute value (number of rows) or a percentage value to a config object:
  * ```js
- * // as a number (300 columns in sync, rest async)
+ * // as a number (300 rows in sync, rest async)
  * autoRowSize: {syncLimit: 300},.
  *
  * // as a string (percent)
@@ -180,7 +180,7 @@ export class AutoRowSize extends BasePlugin {
     this.addHook('afterLoadData', () => this.onAfterLoadData());
     this.addHook('beforeChange', changes => this.onBeforeChange(changes));
     this.addHook('beforeColumnResize', () => this.recalculateAllRowsHeight());
-    this.addHook('beforeRender', force => this.onBeforeRender(force));
+    this.addHook('beforeViewRender', force => this.onBeforeViewRender(force));
     this.addHook('modifyRowHeight', (height, row) => this.getRowHeight(row, height));
     this.addHook('modifyColumnHeaderHeight', () => this.getColumnHeaderHeight());
 
@@ -364,6 +364,8 @@ export class AutoRowSize extends BasePlugin {
   /**
    * Gets the calculated row height.
    *
+   * Mind that this method is different from the [Core](@/api/core.md)'s [`getRowHeight()`](@/api/core.md#getrowheight) method.
+   *
    * @param {number} row Visual row index.
    * @param {number} [defaultHeight] Default row height. It will be picked up if no calculated height found.
    * @returns {number}
@@ -457,11 +459,11 @@ export class AutoRowSize extends BasePlugin {
   }
 
   /**
-   * On before render listener.
+   * On before view render listener.
    *
    * @private
    */
-  onBeforeRender() {
+  onBeforeViewRender() {
     const force = this.hot.renderCall;
     const fixedRowsBottom = this.hot.getSettings().fixedRowsBottom;
     const firstVisibleRow = this.getFirstVisibleRow();

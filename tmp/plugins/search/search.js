@@ -120,6 +120,7 @@ var DEFAULT_QUERY_METHOD = function DEFAULT_QUERY_METHOD(query, value) {
 };
 /**
  * @plugin Search
+ * @class Search
  *
  * @description
  * The search plugin provides an easy interface to search data across Handsontable.
@@ -235,7 +236,7 @@ var Search = /*#__PURE__*/function (_BasePlugin) {
       };
 
       this.hot.addHook('beforeRenderer', beforeRendererCallback);
-      this.hot.addHookOnce('afterRender', function () {
+      this.hot.addHookOnce('afterViewRender', function () {
         _this3.hot.removeHook('beforeRenderer', beforeRendererCallback);
       });
 

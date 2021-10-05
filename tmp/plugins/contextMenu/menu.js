@@ -975,7 +975,7 @@ var Menu = /*#__PURE__*/function () {
 
       if (this.options.standalone && this.hotMenu && !(0, _element.isChildOf)(event.target, this.hotMenu.rootElement)) {
         this.close(true); // Automatically close menu when clicked element is not belongs to menu or submenu (not necessarily to itself)
-      } else if ((this.isAllSubMenusClosed() || this.isSubMenu()) && !(0, _element.isChildOf)(event.target, '.htMenu') && ((0, _element.isChildOf)(event.target, this.container.ownerDocument) || (0, _element.isChildOf)(event.target, this.hot.rootDocument))) {
+      } else if ((this.isAllSubMenusClosed() || this.isSubMenu()) && !(0, _element.isChildOf)(event.target, '.htMenu')) {
         this.close(true);
       }
     }

@@ -452,10 +452,11 @@ var EditorManager = /*#__PURE__*/function () {
         return;
       }
 
-      this.instance.runHooks('beforeKeyDown', event); // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
+      this.instance.runHooks('beforeKeyDown', event);
+      var keyCode = event.keyCode; // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
       // character is entering (using IME editor). It is fired mainly on linux (ubuntu) with installed ibus-pinyin package.
 
-      if (this.destroyed || event.keyCode === 229) {
+      if (this.destroyed || keyCode === 229) {
         return;
       }
 
@@ -463,7 +464,7 @@ var EditorManager = /*#__PURE__*/function () {
         return;
       }
 
-      this.lastKeyCode = event.keyCode;
+      this.lastKeyCode = keyCode;
 
       if (!this.selection.isSelected()) {
         return;
@@ -473,7 +474,7 @@ var EditorManager = /*#__PURE__*/function () {
       var isCtrlPressed = (event.ctrlKey || event.metaKey) && !event.altKey;
 
       if (this.activeEditor && !this.activeEditor.isWaiting()) {
-        if (!(0, _unicode.isMetaKey)(event.keyCode) && !(0, _unicode.isCtrlMetaKey)(event.keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
+        if (!(0, _unicode.isFunctionKey)(keyCode) && !(0, _unicode.isCtrlMetaKey)(keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
           this.openEditor('', event);
           return;
         }
@@ -483,7 +484,7 @@ var EditorManager = /*#__PURE__*/function () {
       var rangeModifier = isShiftPressed ? this.selection.setRangeEnd : this.selection.setRangeStart;
       var tabMoves;
 
-      switch (event.keyCode) {
+      switch (keyCode) {
         case _unicode.KEY_CODES.A:
           if (!this.isEditorOpened() && isCtrlPressed) {
             this.instance.selectAll();

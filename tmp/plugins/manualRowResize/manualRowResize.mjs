@@ -54,6 +54,9 @@ export var PLUGIN_PRIORITY = 30;
 var PERSISTENT_STATE_KEY = 'manualRowHeights';
 var privatePool = new WeakMap();
 /**
+ * @plugin ManualRowResize
+ * @class ManualRowResize
+ *
  * @description
  * This plugin allows to change rows height. To make rows height persistent the {@link Options#persistentState}
  * plugin should be enabled.
@@ -61,8 +64,6 @@ var privatePool = new WeakMap();
  * The plugin creates additional components to make resizing possibly using user interface:
  * - handle - the draggable element that sets the desired height of the row.
  * - guide - the helper guide that shows the desired height as a horizontal guide.
- *
- * @plugin ManualRowResize
  */
 
 export var ManualRowResize = /*#__PURE__*/function (_BasePlugin) {

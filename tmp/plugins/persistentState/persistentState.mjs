@@ -47,6 +47,7 @@ export var PLUGIN_KEY = 'persistentState';
 export var PLUGIN_PRIORITY = 0;
 /**
  * @plugin PersistentState
+ * @class PersistentState
  *
  * @description
  * Save the state of column sorting, column positions and column sizes in local storage to preserve table state

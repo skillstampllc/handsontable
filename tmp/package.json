@@ -10,7 +10,7 @@
     "url": "https://github.com/handsontable/handsontable/issues"
   },
   "author": "Handsoncode <hello@handsontable.com>",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "main": "tmp/index",
   "module": "tmp/index.mjs",
   "jsnext:main": "tmp/index.mjs",
@@ -97,7 +97,7 @@
     "on-build-webpack": "^0.1.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "progress-bar-webpack-plugin": "^1.10.0",
-    "puppeteer": "^2.1.1",
+    "puppeteer": "^10.2.0",
     "replace-in-file": "^6.1.0",
     "rimraf": "^2.5.4",
     "semver": "^5.7.1",
@@ -113,7 +113,7 @@
     "yargs": "^16.2.0"
   },
   "optionalDependencies": {
-    "hyperformula": "^0.6.2"
+    "hyperformula": "^1.2.0"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "typings": "./handsontable.d.ts",

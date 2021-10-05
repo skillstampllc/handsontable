@@ -29,7 +29,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 import { CellCoords } from "./3rdparty/walkontable/src/index.mjs";
-import { KEY_CODES, isMetaKey, isCtrlMetaKey } from "./helpers/unicode.mjs";
+import { KEY_CODES, isFunctionKey, isCtrlMetaKey } from "./helpers/unicode.mjs";
 import { stopImmediatePropagation, isImmediatePropagationStopped } from "./helpers/dom/event.mjs";
 import { getEditorInstance } from "./editors/registry.mjs";
 import EventManager from "./eventManager.mjs";
@@ -429,10 +429,11 @@ var EditorManager = /*#__PURE__*/function () {
         return;
       }
 
-      this.instance.runHooks('beforeKeyDown', event); // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
+      this.instance.runHooks('beforeKeyDown', event);
+      var keyCode = event.keyCode; // keyCode 229 aka 'uninitialized' doesn't take into account with editors. This key code is produced when unfinished
       // character is entering (using IME editor). It is fired mainly on linux (ubuntu) with installed ibus-pinyin package.
 
-      if (this.destroyed || event.keyCode === 229) {
+      if (this.destroyed || keyCode === 229) {
         return;
       }
 
@@ -440,7 +441,7 @@ var EditorManager = /*#__PURE__*/function () {
         return;
       }
 
-      this.lastKeyCode = event.keyCode;
+      this.lastKeyCode = keyCode;
 
       if (!this.selection.isSelected()) {
         return;
@@ -450,7 +451,7 @@ var EditorManager = /*#__PURE__*/function () {
       var isCtrlPressed = (event.ctrlKey || event.metaKey) && !event.altKey;
 
       if (this.activeEditor && !this.activeEditor.isWaiting()) {
-        if (!isMetaKey(event.keyCode) && !isCtrlMetaKey(event.keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
+        if (!isFunctionKey(keyCode) && !isCtrlMetaKey(keyCode) && !isCtrlPressed && !this.isEditorOpened()) {
           this.openEditor('', event);
           return;
         }
@@ -460,7 +461,7 @@ var EditorManager = /*#__PURE__*/function () {
       var rangeModifier = isShiftPressed ? this.selection.setRangeEnd : this.selection.setRangeStart;
       var tabMoves;
 
-      switch (event.keyCode) {
+      switch (keyCode) {
         case KEY_CODES.A:
           if (!this.isEditorOpened() && isCtrlPressed) {
             this.instance.selectAll();

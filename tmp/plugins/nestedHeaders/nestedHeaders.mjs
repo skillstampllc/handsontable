@@ -60,6 +60,7 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
 import { addClass, removeClass, fastInnerHTML, empty } from "../../helpers/dom/element.mjs";
+import { isNumeric } from "../../helpers/number.mjs";
 import { isLeftClick, isRightClick } from "../../helpers/dom/event.mjs";
 import { toSingleLine } from "../../helpers/templateLiteralTag.mjs";
 import { warn } from "../../helpers/console.mjs";
@@ -71,6 +72,8 @@ export var PLUGIN_KEY = 'nestedHeaders';
 export var PLUGIN_PRIORITY = 280;
 /**
  * @plugin NestedHeaders
+ * @class NestedHeaders
+ *
  * @description
  * The plugin allows to create a nested header structure, using the HTML's colspan attribute.
  *
@@ -472,19 +475,19 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
      * @param {MouseEvent} event Mouse event.
      * @param {CellCoords} coords Cell coords object containing the visual coordinates of the clicked cell.
      * @param {CellCoords} TD The table cell or header element.
-     * @param {object} blockCalculations An object with keys `row`, `column` and `cell` which contains boolean values.
-     *                                   This object allows or disallows changing the selection for the particular axies.
+     * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+     *                            a boolean value that allows or disallows changing the selection for that particular area.
      */
 
   }, {
     key: "onBeforeOnCellMouseDown",
-    value: function onBeforeOnCellMouseDown(event, coords, TD, blockCalculations) {
+    value: function onBeforeOnCellMouseDown(event, coords, TD, controller) {
       var headerNodeData = this._getHeaderTreeNodeDataByCoords(coords);
 
       if (headerNodeData) {
         // Block the Selection module in controlling how the columns are selected. Pass the
         // responsibility of the column selection to this plugin (see "onAfterOnCellMouseDown" hook).
-        blockCalculations.column = true;
+        controller.column = true;
       }
     }
     /**
@@ -537,13 +540,13 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
      * @param {MouseEvent} event Mouse event.
      * @param {CellCoords} coords Cell coords object containing the visual coordinates of the clicked cell.
      * @param {HTMLElement} TD The cell element.
-     * @param {object} blockCalculations An object with keys `row`, `column` and `cell` which contains boolean values.
-     *                                   This object allows or disallows changing the selection for the particular axies.
+     * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+     *                            a boolean value that allows or disallows changing the selection for that particular area.
      */
 
   }, {
     key: "onBeforeOnCellMouseOver",
-    value: function onBeforeOnCellMouseOver(event, coords, TD, blockCalculations) {
+    value: function onBeforeOnCellMouseOver(event, coords, TD, controller) {
       var _this$hot;
 
       if (!this.hot.view.isMouseDown()) {
@@ -564,8 +567,8 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
       var from = selectedRange.from; // Block the Selection module in controlling how the columns and cells are selected.
       // From now on, the plugin is responsible for the selection.
 
-      blockCalculations.column = true;
-      blockCalculations.cell = true;
+      controller.column = true;
+      controller.cell = true;
       var columnsToSelect = [];
 
       if (coords.col < from.col) {
@@ -606,20 +609,32 @@ export var NestedHeaders = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onAfterViewportColumnCalculatorOverride",
     value: function onAfterViewportColumnCalculatorOverride(calc) {
-      var newStartColumn = calc.startColumn;
+      var headerLayersCount = _classPrivateFieldGet(this, _stateManager).getLayersCount();
 
-      for (var headerLayer = 0; headerLayer < _classPrivateFieldGet(this, _stateManager).getLayersCount(); headerLayer++) {
+      var newStartColumn = calc.startColumn;
+      var nonRenderable = !!headerLayersCount;
+
+      for (var headerLayer = 0; headerLayer < headerLayersCount; headerLayer++) {
         var startColumn = _classPrivateFieldGet(this, _stateManager).findLeftMostColumnIndex(headerLayer, calc.startColumn);
 
-        var renderedStartColumn = this.hot.columnIndexMapper.getRenderableFromVisualIndex(startColumn);
+        var renderedStartColumn = this.hot.columnIndexMapper.getRenderableFromVisualIndex(startColumn); // If any of the headers for that column index is rendered, all of them should be rendered properly, see
+        // comment below.
 
-        if (renderedStartColumn < calc.startColumn) {
+        if (startColumn >= 0) {
+          nonRenderable = false;
+        } // `renderedStartColumn` can be `null` if the leftmost columns are hidden. In that case -> ignore that header
+        // level, as it should be handled by the "parent" header
+
+
+        if (isNumeric(renderedStartColumn) && renderedStartColumn < calc.startColumn) {
           newStartColumn = renderedStartColumn;
           break;
         }
-      }
+      } // If no headers for the provided column index are renderable, start rendering from the beginning of the upmost
+      // header for that position.
 
-      calc.startColumn = newStartColumn;
+
+      calc.startColumn = nonRenderable ? _classPrivateFieldGet(this, _stateManager).getHeaderTreeNodeData(0, newStartColumn).columnIndex : newStartColumn;
     }
     /**
      * `modifyColWidth` hook callback - returns width from cache, when is greater than incoming from hook.

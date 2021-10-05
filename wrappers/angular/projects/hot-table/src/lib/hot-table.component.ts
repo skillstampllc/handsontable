@@ -10,7 +10,10 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import Handsontable from 'handsontable';
-import { HotTableRegisterer } from './hot-table-registerer.service';
+import {
+  HotTableRegisterer,
+  HOT_DESTROYED_WARNING
+} from './hot-table-registerer.service';
 import { HotSettingsResolver } from './hot-settings-resolver.service';
 import { HotColumnComponent } from './hot-column.component';
 
@@ -23,7 +26,7 @@ import { HotColumnComponent } from './hot-column.component';
 export class HotTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('container', { static: false }) public container;
 
-  private hotInstance: Handsontable;
+  private __hotInstance: Handsontable = null;
   private columnsComponents: HotColumnComponent[] = [];
   // component inputs
   @Input() settings: Handsontable.GridSettings;
@@ -232,6 +235,7 @@ export class HotTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() afterValidate: Handsontable.GridSettings['afterValidate'];
   @Input() afterViewportColumnCalculatorOverride: Handsontable.GridSettings['afterViewportColumnCalculatorOverride'];
   @Input() afterViewportRowCalculatorOverride: Handsontable.GridSettings['afterViewportRowCalculatorOverride'];
+  @Input() afterViewRender: Handsontable.GridSettings['afterViewRender'];
   @Input() beforeAddChild: Handsontable.GridSettings['beforeAddChild'];
   @Input() beforeAutofill: Handsontable.GridSettings['beforeAutofill'];
   @Input() beforeAutofillInsidePopulate: Handsontable.GridSettings['beforeAutofillInsidePopulate'];
@@ -295,6 +299,7 @@ export class HotTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() beforeUntrimRow: Handsontable.GridSettings['beforeUntrimRow'];
   @Input() beforeValidate: Handsontable.GridSettings['beforeValidate'];
   @Input() beforeValueRender: Handsontable.GridSettings['beforeValueRender'];
+  @Input() beforeViewRender: Handsontable.GridSettings['beforeViewRender'];
   @Input() construct: Handsontable.GridSettings['construct'];
   @Input() init: Handsontable.GridSettings['init'];
   @Input() modifyAutoColumnSizeSeed: Handsontable.GridSettings['modifyAutoColumnSizeSeed'];
@@ -322,6 +327,25 @@ export class HotTableComponent implements AfterViewInit, OnChanges, OnDestroy {
     private _hotSettingsResolver: HotSettingsResolver,
   ) {}
 
+  private get hotInstance(): Handsontable | null {
+    if (!this.__hotInstance || (this.__hotInstance && !this.__hotInstance.isDestroyed)) {
+
+      // Will return the Handsontable instance or `null` if it's not yet been created.
+      return this.__hotInstance;
+
+    } else {
+      this._hotTableRegisterer.removeInstance(this.hotId);
+
+      console.warn(HOT_DESTROYED_WARNING);
+
+      return null;
+    }
+  }
+
+  private set hotInstance(hotInstance) {
+    this.__hotInstance = hotInstance;
+  }
+
   ngAfterViewInit(): void {
     const options: Handsontable.GridSettings = this._hotSettingsResolver.mergeSettings(this);
 
@@ -347,7 +371,7 @@ export class HotTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.hotInstance === void 0) {
+    if (this.hotInstance === null) {
       return;
     }
 
@@ -358,7 +382,9 @@ export class HotTableComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this._ngZone.runOutsideAngular(() => {
-      this.hotInstance.destroy();
+      if (this.hotInstance) {
+        this.hotInstance.destroy();
+      }
     });
 
     if (this.hotId) {

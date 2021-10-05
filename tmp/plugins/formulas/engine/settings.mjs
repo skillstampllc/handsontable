@@ -15,9 +15,7 @@ import { PLUGIN_KEY } from "../formulas.mjs";
 export var DEFAULT_LICENSE_KEY = 'internal-use-in-handsontable';
 var DEFAULT_SETTINGS = {
   licenseKey: DEFAULT_LICENSE_KEY,
-  binarySearchThreshold: 20,
-  matrixDetection: false,
-  matrixDetectionThreshold: 100,
+  useArrayArithmetic: true,
   useColumnIndex: false,
   useStats: false,
   evaluateNullToZero: true,

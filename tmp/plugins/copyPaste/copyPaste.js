@@ -123,8 +123,8 @@ var PLUGIN_KEY = 'copyPaste';
 exports.PLUGIN_KEY = PLUGIN_KEY;
 var PLUGIN_PRIORITY = 80;
 exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
-var ROWS_LIMIT = 1000;
-var COLUMNS_LIMIT = 1000;
+var ROWS_LIMIT = Infinity;
+var COLUMNS_LIMIT = Infinity;
 var privatePool = new WeakMap();
 var META_HEAD = ['<meta name="generator" content="Handsontable"/>', '<style type="text/css">td{white-space:normal}br{mso-data-placement:same-cell}</style>'].join('');
 /* eslint-disable jsdoc/require-description-complete-sentence */
@@ -143,7 +143,7 @@ var META_HEAD = ['<meta name="generator" content="Handsontable"/>', '<style type
  * * `'pasteMode'` (see {@link CopyPaste#pasteMode})
  * * `'uiContainer'` (see {@link CopyPaste#uiContainer}).
  *
- * See [the copy/paste demo](https://handsontable.com/docs/demo-copy-paste.html) for examples.
+ * See [the copy/paste demo](@/guides/cell-features/clipboard.md) for examples.
  *
  * @example
  * ```js
@@ -178,7 +178,7 @@ var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
      * Maximum number of columns than can be copied to clipboard using <kbd>CTRL</kbd> + <kbd>C</kbd>.
      *
      * @type {number}
-     * @default 1000
+     * @default Infinity
      */
 
     _this.columnsLimit = COLUMNS_LIMIT;
@@ -212,7 +212,7 @@ var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
      * Maximum number of rows than can be copied to clipboard using <kbd>CTRL</kbd> + <kbd>C</kbd>.
      *
      * @type {number}
-     * @default 1000
+     * @default Infinity
      */
 
     _this.rowsLimit = ROWS_LIMIT;
@@ -729,7 +729,7 @@ var CopyPaste = /*#__PURE__*/function (_BasePlugin) {
       this.hot.runHooks('afterPaste', pastedData, this.copyableRanges);
     }
     /**
-     * Add copy, cut and paste options to the Context Menu.
+     * Add copy and cut options to the Context Menu.
      *
      * @private
      * @param {object} options Contains default added options of the Context Menu.

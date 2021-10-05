@@ -110,7 +110,7 @@ export var ColumnStatesManager = /*#__PURE__*/function () {
   /**
    * Update column properties which affect the sorting result.
    *
-   * **Note**: All column properties can be overwritten by [columns](https://handsontable.com/docs/Options.html#columns) option.
+   * **Note**: All column properties can be overwritten by {@link Options#columns} option.
    *
    * @param {object} allSortSettings Column sorting plugin's configuration object.
    */

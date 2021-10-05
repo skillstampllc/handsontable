@@ -36,6 +36,7 @@ const COLUMN_SIZE_MAP_NAME = 'autoColumnSize';
  * operations don't block the browser UI.
  *
  * To configure the sync/async distribution, you can pass an absolute value (number of columns) or a percentage value to a config object:
+ *
  * ```js
  * // as a number (300 columns in sync, rest async)
  * autoColumnSize: {syncLimit: 300},.
@@ -50,13 +51,16 @@ const COLUMN_SIZE_MAP_NAME = 'autoColumnSize';
  *
  * Sampling accepts additional options:
  * - *samplingRatio* - Defines how many samples for the same length will be used to calculate. Default is `3`.
- *   ```js
+ *
+ * ```js
  *   autoColumnSize: {
  *     samplingRatio: 10,
  *   }
- *   ```
+ * ```
+ *
  * - *allowSampleDuplicates* - Defines if duplicated values might be used in sampling. Default is `false`.
- *   ```js
+ *
+ * ```js
  *   autoColumnSize: {
  *     allowSampleDuplicates: true,
  *   }
@@ -65,6 +69,7 @@ const COLUMN_SIZE_MAP_NAME = 'autoColumnSize';
  * To configure this plugin see {@link Options#autoColumnSize}.
  *
  * @example
+ *
  * ```js
  * const hot = new Handsontable(document.getElementById('example'), {
  *   data: getData(),
@@ -176,7 +181,7 @@ export class AutoColumnSize extends BasePlugin {
 
   /**
    * Checks if the plugin is enabled in the handsontable settings. This method is executed in {@link Hooks#beforeInit}
-   * hook and if it returns `true` than the {@link AutoColumnSize#enablePlugin} method is called.
+   * hook and if it returns `true` than the {@link #enablePlugin} method is called.
    *
    * @returns {boolean}
    */
@@ -203,7 +208,7 @@ export class AutoColumnSize extends BasePlugin {
     this.addHook('afterLoadData', () => this.onAfterLoadData());
     this.addHook('beforeChange', changes => this.onBeforeChange(changes));
     this.addHook('afterFormulasValuesUpdate', changes => this.onAfterFormulasValuesUpdate(changes));
-    this.addHook('beforeRender', force => this.onBeforeRender(force));
+    this.addHook('beforeViewRender', force => this.onBeforeViewRender(force));
     this.addHook('modifyColWidth', (width, col) => this.getColumnWidth(col, width));
     this.addHook('afterInit', () => this.onAfterInit());
     super.enablePlugin();
@@ -551,11 +556,11 @@ export class AutoColumnSize extends BasePlugin {
   }
 
   /**
-   * On before render listener.
+   * On before view render listener.
    *
    * @private
    */
-  onBeforeRender() {
+  onBeforeViewRender() {
     this.calculateVisibleColumnsWidth();
 
     if (this.isNeedRecalculate() && !this.inProgress) {

@@ -176,12 +176,15 @@ var TableView = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       if (!this.instance.isRenderSuspended()) {
+        this.instance.runHooks('beforeRender', this.instance.forceFullRender);
+
         if (this.postponedAdjustElementsSize) {
           this.postponedAdjustElementsSize = false;
           this.adjustElementsSize(true);
         }
 
         this.wt.draw(!this.instance.forceFullRender);
+        this.instance.runHooks('afterRender', this.instance.forceFullRender);
         this.instance.forceFullRender = false;
         this.instance.renderCall = false;
       }
@@ -750,7 +753,7 @@ var TableView = /*#__PURE__*/function () {
         onCellMouseDown: function onCellMouseDown(event, coords, TD, wt) {
           var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
 
-          var blockCalculations = {
+          var controller = {
             row: false,
             column: false,
             cell: false
@@ -761,7 +764,7 @@ var TableView = /*#__PURE__*/function () {
           _this2.activeWt = wt;
           priv.mouseDown = true;
 
-          _this2.instance.runHooks('beforeOnCellMouseDown', event, visualCoords, TD, blockCalculations);
+          _this2.instance.runHooks('beforeOnCellMouseDown', event, visualCoords, TD, controller);
 
           if (isImmediatePropagationStopped(event)) {
             return;
@@ -770,7 +773,7 @@ var TableView = /*#__PURE__*/function () {
           handleMouseEvent(event, {
             coords: visualCoords,
             selection: _this2.instance.selection,
-            controller: blockCalculations
+            controller: controller
           });
 
           _this2.instance.runHooks('afterOnCellMouseDown', event, visualCoords, TD);
@@ -815,14 +818,14 @@ var TableView = /*#__PURE__*/function () {
         onCellMouseOver: function onCellMouseOver(event, coords, TD, wt) {
           var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
 
-          var blockCalculations = {
+          var controller = {
             row: false,
             column: false,
             cell: false
           };
           _this2.activeWt = wt;
 
-          _this2.instance.runHooks('beforeOnCellMouseOver', event, visualCoords, TD, blockCalculations);
+          _this2.instance.runHooks('beforeOnCellMouseOver', event, visualCoords, TD, controller);
 
           if (isImmediatePropagationStopped(event)) {
             return;
@@ -832,7 +835,7 @@ var TableView = /*#__PURE__*/function () {
             handleMouseEvent(event, {
               coords: visualCoords,
               selection: _this2.instance.selection,
-              controller: blockCalculations
+              controller: controller
             });
           }
 
@@ -873,7 +876,7 @@ var TableView = /*#__PURE__*/function () {
           return _this2.beforeRender(force, skipRender);
         },
         onDraw: function onDraw(force) {
-          return _this2.onDraw(force);
+          return _this2.afterRender(force);
         },
         onScrollVertically: function onScrollVertically() {
           return _this2.instance.runHooks('afterScrollVertically');
@@ -1135,7 +1138,8 @@ var TableView = /*#__PURE__*/function () {
      * @private
      * @param {boolean} force If `true` rendering was triggered by a change of settings or data or `false` if
      *                        rendering was triggered by scrolling or moving selection.
-     * @param {boolean} skipRender Indicates whether the rendering is skipped.
+     * @param {object} skipRender Object with `skipRender` property, if it is set to `true ` the next rendering
+     *                            cycle will be skipped.
      */
 
   }, {
@@ -1143,11 +1147,11 @@ var TableView = /*#__PURE__*/function () {
     value: function beforeRender(force, skipRender) {
       if (force) {
         // this.instance.forceFullRender = did Handsontable request full render?
-        this.instance.runHooks('beforeRender', this.instance.forceFullRender, skipRender);
+        this.instance.runHooks('beforeViewRender', this.instance.forceFullRender, skipRender);
       }
     }
     /**
-     * `onDraw` callback.
+     * `afterRender` callback.
      *
      * @private
      * @param {boolean} force If `true` rendering was triggered by a change of settings or data or `false` if
@@ -1155,11 +1159,11 @@ var TableView = /*#__PURE__*/function () {
      */
 
   }, {
-    key: "onDraw",
-    value: function onDraw(force) {
+    key: "afterRender",
+    value: function afterRender(force) {
       if (force) {
         // this.instance.forceFullRender = did Handsontable request full render?
-        this.instance.runHooks('afterRender', this.instance.forceFullRender);
+        this.instance.runHooks('afterViewRender', this.instance.forceFullRender);
       }
     }
     /**

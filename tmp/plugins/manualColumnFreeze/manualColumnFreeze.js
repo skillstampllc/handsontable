@@ -69,6 +69,10 @@ var PLUGIN_PRIORITY = 110;
 exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;
 var privatePool = new WeakMap();
 /**
+ * @plugin ManualColumnFreeze
+ * @class ManualColumnFreeze
+ *
+ * @description
  * This plugin allows to manually "freeze" and "unfreeze" a column using an entry in the Context Menu or using API.
  * You can turn it on by setting a {@link Options#manualColumnFreeze} property to `true`.
  *
@@ -77,8 +81,6 @@ var privatePool = new WeakMap();
  * // Enables the plugin
  * manualColumnFreeze: true,
  * ```
- *
- * @plugin ManualColumnFreeze
  */
 
 var ManualColumnFreeze = /*#__PURE__*/function (_BasePlugin) {
@@ -157,7 +159,10 @@ var ManualColumnFreeze = /*#__PURE__*/function (_BasePlugin) {
       _get(_getPrototypeOf(ManualColumnFreeze.prototype), "updatePlugin", this).call(this);
     }
     /**
-     * Freezes the given column (add it to fixed columns).
+     * Freezes the specified column (adds it to fixed columns).
+     *
+     * `freezeColumn()` doesn't re-render the table,
+     * so you need to call the `render()` method afterward.
      *
      * @param {number} column Visual column index.
      */

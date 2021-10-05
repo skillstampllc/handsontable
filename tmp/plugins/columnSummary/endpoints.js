@@ -274,13 +274,13 @@ var Endpoints = /*#__PURE__*/function () {
       if (this.settingsType === 'function') {
         // We need to run it on a next avaiable hook, because the TrimRows' `afterCreateRow` hook triggers after this one,
         // and it needs to be run to properly calculate the endpoint value.
-        var beforeRenderCallback = function beforeRenderCallback() {
-          _this2.hot.removeHook('beforeRender', beforeRenderCallback);
+        var beforeViewRenderCallback = function beforeViewRenderCallback() {
+          _this2.hot.removeHook('beforeViewRender', beforeViewRenderCallback);
 
           return _this2.refreshAllEndpoints();
         };
 
-        this.hot.addHookOnce('beforeRender', beforeRenderCallback);
+        this.hot.addHookOnce('beforeViewRender', beforeViewRenderCallback);
         return;
       }
 

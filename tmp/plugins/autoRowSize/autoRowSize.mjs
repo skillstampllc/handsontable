@@ -83,9 +83,9 @@ var ROW_WIDTHS_MAP_NAME = 'autoRowSize';
  * disadvantages. Synchronous calculations are faster but they block the browser UI, while the slower asynchronous
  * operations don't block the browser UI.
  *
- * To configure the sync/async distribution, you can pass an absolute value (number of columns) or a percentage value to a config object:
+ * To configure the sync/async distribution, you can pass an absolute value (number of rows) or a percentage value to a config object:
  * ```js
- * // as a number (300 columns in sync, rest async)
+ * // as a number (300 rows in sync, rest async)
  * autoRowSize: {syncLimit: 300},.
  *
  * // as a string (percent)
@@ -253,8 +253,8 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('beforeColumnResize', function () {
         return _this2.recalculateAllRowsHeight();
       });
-      this.addHook('beforeRender', function (force) {
-        return _this2.onBeforeRender(force);
+      this.addHook('beforeViewRender', function (force) {
+        return _this2.onBeforeViewRender(force);
       });
       this.addHook('modifyRowHeight', function (height, row) {
         return _this2.getRowHeight(row, height);
@@ -486,6 +486,8 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
     /**
      * Gets the calculated row height.
      *
+     * Mind that this method is different from the [Core](@/api/core.md)'s [`getRowHeight()`](@/api/core.md#getrowheight) method.
+     *
      * @param {number} row Visual row index.
      * @param {number} [defaultHeight] Default row height. It will be picked up if no calculated height found.
      * @returns {number}
@@ -605,14 +607,14 @@ export var AutoRowSize = /*#__PURE__*/function (_BasePlugin) {
       }).length;
     }
     /**
-     * On before render listener.
+     * On before view render listener.
      *
      * @private
      */
 
   }, {
-    key: "onBeforeRender",
-    value: function onBeforeRender() {
+    key: "onBeforeViewRender",
+    value: function onBeforeViewRender() {
       var force = this.hot.renderCall;
       var fixedRowsBottom = this.hot.getSettings().fixedRowsBottom;
       var firstVisibleRow = this.getFirstVisibleRow();

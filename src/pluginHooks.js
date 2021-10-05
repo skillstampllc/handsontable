@@ -3,6 +3,7 @@ import { objectEach } from './helpers/object';
 import { substitute } from './helpers/string';
 import { warn } from './helpers/console';
 import { toSingleLine } from './helpers/templateLiteralTag';
+import { fastCall } from './helpers/function';
 
 /**
  * @description
@@ -68,7 +69,7 @@ const REGISTERED_HOOKS = [
    *
    * @event Hooks#afterChange
    * @param {Array} changes 2D array containing information about each of the edited cells `[[row, prop, oldVal, newVal], ...]`.
-   * @param {string} [source] String that identifies source of hook call ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   * @param {string} [source] String that identifies source of hook call ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @example
    * ```js
    * new Handsontable(element, {
@@ -167,7 +168,7 @@ const REGISTERED_HOOKS = [
    * @param {number} index Represents the visual index of first newly created column in the data source array.
    * @param {number} amount Number of newly created columns in the data source array.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link http://docs.handsontable.com/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @returns {*} If `false` then creating columns is cancelled.
    * @example
    * ```js
@@ -188,7 +189,7 @@ const REGISTERED_HOOKS = [
    * @param {number} index Represents the visual index of first newly created column in the data source.
    * @param {number} amount Number of newly created columns in the data source.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'afterCreateCol',
 
@@ -199,7 +200,7 @@ const REGISTERED_HOOKS = [
    * @param {number} index Represents the visual index of first newly created row in the data source array.
    * @param {number} amount Number of newly created rows in the data source array.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @returns {*|boolean} If false is returned the action is canceled.
    */
   'beforeCreateRow',
@@ -211,7 +212,7 @@ const REGISTERED_HOOKS = [
    * @param {number} index Represents the visual index of first newly created row in the data source array.
    * @param {number} amount Number of newly created rows in the data source array.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'afterCreateRow',
 
@@ -401,7 +402,8 @@ const REGISTERED_HOOKS = [
    * @param {number} index Visual index of starter column.
    * @param {number} amount An amount of removed columns.
    * @param {number[]} physicalColumns An array of physical columns removed from the data source.
-   * @param {string} [source] String that identifies source of hook call ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   * @param {string} [source] String that identifies source of hook call
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'afterRemoveCol',
 
@@ -412,18 +414,10 @@ const REGISTERED_HOOKS = [
    * @param {number} index Visual index of starter row.
    * @param {number} amount An amount of removed rows.
    * @param {number[]} physicalRows An array of physical rows removed from the data source.
-   * @param {string} [source] String that identifies source of hook call ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   * @param {string} [source] String that identifies source of hook call
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'afterRemoveRow',
-
-  /**
-   * Fired after the Handsontable table is rendered.
-   *
-   * @event Hooks#afterRender
-   * @param {boolean} isForced Is `true` if rendering was triggered by a change of settings or data; or `false` if
-   *                           rendering was triggered by scrolling or moving selection.
-   */
-  'afterRender',
 
   /**
    * Fired before starting rendering the cell.
@@ -565,7 +559,7 @@ const REGISTERED_HOOKS = [
    * @event Hooks#afterSetDataAtCell
    * @param {Array} changes An array of changes in format `[[row, column, oldValue, value], ...]`.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'afterSetDataAtCell',
 
@@ -576,7 +570,7 @@ const REGISTERED_HOOKS = [
    * @event Hooks#afterSetDataAtRowProp
    * @param {Array} changes An array of changes in format `[[row, prop, oldValue, value], ...]`.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'afterSetDataAtRowProp',
 
@@ -611,7 +605,7 @@ const REGISTERED_HOOKS = [
    * @param {number} row Visual row index.
    * @param {string|number} prop Property name / visual column index.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @returns {void | boolean} If `false` the cell will be marked as invalid, `true` otherwise.
    */
   'afterValidate',
@@ -690,7 +684,7 @@ const REGISTERED_HOOKS = [
    * @event Hooks#beforeChange
    * @param {Array[]} changes 2D array containing information about each of the edited cells.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @returns {void | boolean} If `false` all changes were cancelled, `true` otherwise.
    * @example
    * ```js
@@ -725,7 +719,7 @@ const REGISTERED_HOOKS = [
    * @event Hooks#beforeChangeRender
    * @param {Array[]} changes Array in form of `[row, prop, oldValue, newValue]`.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'beforeChangeRender',
 
@@ -805,8 +799,8 @@ const REGISTERED_HOOKS = [
    * @param {Event} event The `mousedown` event object.
    * @param {CellCoords} coords Cell coords object containing the visual coordinates of the clicked cell.
    * @param {HTMLTableCellElement} TD TD element.
-   * @param {object} controller An object with keys `row`, `column` and `cells` which contains boolean values. This
-   *                            object allows or disallows changing the selection for the particular axies.
+   * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+   *                            a boolean value that allows or disallows changing the selection for that particular area.
    */
   'beforeOnCellMouseDown',
 
@@ -838,8 +832,8 @@ const REGISTERED_HOOKS = [
    * @param {Event} event The `mouseover` event object.
    * @param {CellCoords} coords CellCoords object containing the visual coordinates of the clicked cell.
    * @param {HTMLTableCellElement} TD TD element.
-   * @param {object} controller An object with keys `row`, `column` and `cells` which contains boolean values. This
-   *                            object allows or disallows changing the selection for the particular axies.
+   * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+   *                            a boolean value that allows or disallows changing the selection for that particular area.
    */
   'beforeOnCellMouseOver',
 
@@ -860,7 +854,8 @@ const REGISTERED_HOOKS = [
    * @param {number} index Visual index of starter column.
    * @param {number} amount Amount of columns to be removed.
    * @param {number[]} physicalColumns An array of physical columns removed from the data source.
-   * @param {string} [source] String that identifies source of hook call ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   * @param {string} [source] String that identifies source of hook call
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @returns {*|boolean} If false is returned the action is canceled.
    */
   'beforeRemoveCol',
@@ -872,20 +867,65 @@ const REGISTERED_HOOKS = [
    * @param {number} index Visual index of starter row.
    * @param {number} amount Amount of rows to be removed.
    * @param {number[]} physicalRows An array of physical rows removed from the data source.
-   * @param {string} [source] String that identifies source of hook call ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   * @param {string} [source] String that identifies source of hook call
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @returns {*|boolean} If false is returned the action is canceled.
    */
   'beforeRemoveRow',
 
   /**
-   * Fired before the Handsontable table is rendered.
+   * Fired before Handsontable's view-rendering engine is rendered.
    *
-   * @event Hooks#beforeRender
-   * @param {boolean} isForced If `true` rendering was triggered by a change of settings or data; or `false` if
-   *                           rendering was triggered by scrolling or moving selection.
+   * __Note:__ In Handsontable 9.x and earlier, the `beforeViewRender` hook was named `beforeRender`.
+   *
+   * @event Hooks#beforeViewRender
+   * @since 10.0.0
+   * @param {boolean} isForced If set to `true`, the rendering gets triggered by a change of settings, a change of
+   *                           data, or a logic that needs a full Handsontable render cycle.
+   *                           If set to `false`, the rendering gets triggered by scrolling or moving the selection.
    * @param {object} skipRender Object with `skipRender` property, if it is set to `true ` the next rendering cycle will be skipped.
    */
+  'beforeViewRender',
+
+  /**
+   * Fired after Handsontable's view-rendering engine is rendered,
+   * but before redrawing the selection borders and before scroll syncing.
+   *
+   * __Note:__ In Handsontable 9.x and earlier, the `afterViewRender` hook was named `afterRender`.
+   *
+   * @event Hooks#afterViewRender
+   * @since 10.0.0
+   * @param {boolean} isForced If set to `true`, the rendering gets triggered by a change of settings, a change of
+   *                           data, or a logic that needs a full Handsontable render cycle.
+   *                           If set to `false`, the rendering gets triggered by scrolling or moving the selection.
+   */
+  'afterViewRender',
+
+  /* eslint-disable jsdoc/require-description-complete-sentence */
+  /**
+   * Fired before Handsontable's view-rendering engine updates the view.
+   *
+   * The `beforeRender` event is fired right after the Handsontable
+   * business logic is executed and right before the rendering engine starts calling
+   * the Core logic, renderers, cell meta objects etc. to update the view.
+   *
+   * @event Hooks#beforeRender
+   * @param {boolean} isForced If set to `true`, the rendering gets triggered by a change of settings, a change of
+   *                           data, or a logic that needs a full Handsontable render cycle.
+   *                           If set to `false`, the rendering gets triggered by scrolling or moving the selection.
+   */
+  /* eslint-enable jsdoc/require-description-complete-sentence */
   'beforeRender',
+
+  /**
+   * Fired after Handsontable's view-rendering engine updates the view.
+   *
+   * @event Hooks#afterRender
+   * @param {boolean} isForced If set to `true`, the rendering gets triggered by a change of settings, a change of
+   *                           data, or a logic that needs a full Handsontable render cycle.
+   *                           If set to `false`, the rendering gets triggered by scrolling or moving the selection.
+   */
+  'afterRender',
 
   /**
    * Fired before cell meta is changed.
@@ -942,7 +982,7 @@ const REGISTERED_HOOKS = [
    * @param {number} row Visual row index.
    * @param {string|number} prop Property name / column index.
    * @param {string} [source] String that identifies source of hook call
-   *                          ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    */
   'beforeValidate',
 
@@ -1283,21 +1323,35 @@ const REGISTERED_HOOKS = [
    *
    * @event Hooks#beforeColumnMove
    * @param {Array} movedColumns Array of visual column indexes to be moved.
-   * @param {number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action. To check visualization of final index please take a look at [documentation](/docs/demo-moving.html).
-   * @param {number|undefined} dropIndex Visual column index, being a drop index for the moved columns. Points to where we are going to drop the moved elements. To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html). It's `undefined` when `dragColumns` function wasn't called.
+   * @param {number} finalIndex Visual column index, being a start index for the moved columns.
+   *                            Points to where the elements will be placed after the moving action.
+   *                            To check visualization of final index please take a look at
+   *                            [documentation](@/guides/columns/column-moving.md).
+   * @param {number|undefined} dropIndex Visual column index, being a drop index for the moved columns.
+   *                                     Points to where we are going to drop the moved elements. To check
+   *                                     visualization of drop index please take a look at
+   *                                     [documentation](@/guides/columns/column-moving.md).
+   *                                     It's `undefined` when `dragColumns` function wasn't called.
    * @param {boolean} movePossible Indicates if it's possible to move rows to the desired position.
    * @returns {void | boolean} If `false` the column will not be moved, `true` otherwise.
    */
   'beforeColumnMove',
 
   /**
-   * Fired by {@link ManualColumnMove} plugin after changing order of the visual indexes. This hook is fired when
-   * {@link Options#manualColumnMove} option is enabled.
+   * Fired by {@link ManualColumnMove} plugin after changing order of the visual indexes.
+   * This hook is fired when {@link Options#manualColumnMove} option is enabled.
    *
    * @event Hooks#afterColumnMove
    * @param {Array} movedColumns Array of visual column indexes to be moved.
-   * @param {number} finalIndex Visual column index, being a start index for the moved columns. Points to where the elements will be placed after the moving action. To check visualization of final index please take a look at [documentation](/docs/demo-moving.html).
-   * @param {number|undefined} dropIndex Visual column index, being a drop index for the moved columns. Points to where we are going to drop the moved elements. To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html). It's `undefined` when `dragColumns` function wasn't called.
+   * @param {number} finalIndex Visual column index, being a start index for the moved columns.
+   *                            Points to where the elements will be placed after the moving action.
+   *                            To check visualization of final index please take a look at
+   *                            [documentation](@/guides/columns/column-moving.md).
+   * @param {number|undefined} dropIndex Visual column index, being a drop index for the moved columns.
+   *                                     Points to where we are going to drop the moved elements.
+   *                                     To check visualization of drop index please take a look at
+   *                                     [documentation](@/guides/columns/column-moving.md).
+   *                                     It's `undefined` when `dragColumns` function wasn't called.
    * @param {boolean} movePossible Indicates if it was possible to move columns to the desired position.
    * @param {boolean} orderChanged Indicates if order of columns was changed by move.
    */
@@ -1309,21 +1363,35 @@ const REGISTERED_HOOKS = [
    *
    * @event Hooks#beforeRowMove
    * @param {Array} movedRows Array of visual row indexes to be moved.
-   * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action. To check visualization of final index please take a look at [documentation](/docs/demo-moving.html).
-   * @param {number|undefined} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements. To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html). It's `undefined` when `dragRows` function wasn't called.
+   * @param {number} finalIndex Visual row index, being a start index for the moved rows.
+   *                            Points to where the elements will be placed after the moving action.
+   *                            To check visualization of final index please take a look at
+   *                            [documentation](@/guides/rows/row-moving.md).
+   * @param {number|undefined} dropIndex Visual row index, being a drop index for the moved rows.
+   *                                     Points to where we are going to drop the moved elements.
+   *                                     To check visualization of drop index please take a look at
+   *                                     [documentation](@/guides/rows/row-moving.md).
+   *                                     It's `undefined` when `dragRows` function wasn't called.
    * @param {boolean} movePossible Indicates if it's possible to move rows to the desired position.
    * @returns {*|boolean} If false is returned the action is canceled.
    */
   'beforeRowMove',
 
   /**
-   * Fired by {@link ManualRowMove} plugin after changing the order of the visual indexes. This hook is fired when
-   * {@link Options#manualRowMove} option is enabled.
+   * Fired by {@link ManualRowMove} plugin after changing the order of the visual indexes.
+   * This hook is fired when {@link Options#manualRowMove} option is enabled.
    *
    * @event Hooks#afterRowMove
    * @param {Array} movedRows Array of visual row indexes to be moved.
-   * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action. To check visualization of final index please take a look at [documentation](/docs/demo-moving.html).
-   * @param {number|undefined} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements. To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html). It's `undefined` when `dragRows` function wasn't called.
+   * @param {number} finalIndex Visual row index, being a start index for the moved rows.
+   *                            Points to where the elements will be placed after the moving action.
+   *                            To check visualization of final index please take a look at
+   *                            [documentation](@/guides/rows/row-moving.md).
+   * @param {number|undefined} dropIndex Visual row index, being a drop index for the moved rows.
+   *                                     Points to where we are going to drop the moved elements.
+   *                                     To check visualization of drop index please take a look at
+   *                                     [documentation](@/guides/rows/row-moving.md).
+   *                                     It's `undefined` when `dragRows` function wasn't called.
    * @param {boolean} movePossible Indicates if it was possible to move rows to the desired position.
    * @param {boolean} orderChanged Indicates if order of rows was changed by move.
    */
@@ -1403,8 +1471,8 @@ const REGISTERED_HOOKS = [
 
   /* eslint-disable jsdoc/require-description-complete-sentence */
   /**
-   * Fired by {@link Filters} plugin before applying [filtering]{@link https://handsontable.com/docs/demo-filtering.html}. This hook is fired when
-   * {@link Options#filters} option is enabled.
+   * Fired by {@link Filters} plugin before applying [filtering](@/guides/columns/column-filter.md).
+   * This hook is fired when {@link Options#filters} option is enabled.
    *
    * @event Hooks#beforeFilter
    * @param {object[]} conditionsStack An array of objects with added formulas.
@@ -1435,8 +1503,8 @@ const REGISTERED_HOOKS = [
 
   /* eslint-disable jsdoc/require-description-complete-sentence */
   /**
-   * Fired by {@link Filters} plugin after applying [filtering]{@link https://handsontable.com/docs/demo-filtering.html}. This hook is fired when
-   * {@link Options#filters} option is enabled.
+   * Fired by {@link Filters} plugin after applying [filtering](@/guides/columns/column-filter.md).
+   * This hook is fired when {@link Options#filters} option is enabled.
    *
    * @event Hooks#afterFilter
    * @param {object[]} conditionsStack An array of objects with added conditions.
@@ -1545,7 +1613,8 @@ const REGISTERED_HOOKS = [
    * @event Hooks#beforeUndoStackChange
    * @since 8.4.0
    * @param {Array} doneActions Stack of actions which may be undone.
-   * @param {string} [source] String that identifies source of action ([list of all available sources]{@link https://handsontable.com/docs/tutorial-using-callbacks.html#page-source-definition}).
+   * @param {string} [source] String that identifies source of action
+   *                          ([list of all available sources](@/guides/getting-started/events-and-hooks.md#definition-for-source-argument)).
    * @returns {*|boolean} If false is returned the action of changing undo stack is canceled.
    */
   'beforeUndoStackChange',
@@ -1899,6 +1968,7 @@ const REGISTERED_HOOKS = [
    * @event Hooks#afterDetachChild
    * @param {object} parent An object representing the parent from which the element was detached.
    * @param {object} element The detached element.
+   * @param {number} finalElementPosition The final row index of the detached element.
    */
   'afterDetachChild',
 
@@ -2038,7 +2108,7 @@ const REGISTERED_HOOKS = [
   'afterColumnExpand',
 
   /**
-   * Fired by {@link AutoColumnSize} plugin within {@link SampleGenerator} utility.
+   * Fired by {@link AutoColumnSize} plugin within SampleGenerator utility.
    *
    * @event Hooks#modifyAutoColumnSizeSeed
    * @since 8.4.0
@@ -2334,8 +2404,8 @@ class Hooks {
             /* eslint-disable no-continue */
             continue;
           }
-          // performance considerations - http://jsperf.com/call-vs-apply-for-a-plugin-architecture
-          const res = globalHandlers[index].call(context, p1, p2, p3, p4, p5, p6);
+
+          const res = fastCall(globalHandlers[index], context, p1, p2, p3, p4, p5, p6);
 
           if (res !== void 0) {
             // eslint-disable-next-line no-param-reassign
@@ -2362,8 +2432,8 @@ class Hooks {
             /* eslint-disable no-continue */
             continue;
           }
-          // performance considerations - http://jsperf.com/call-vs-apply-for-a-plugin-architecture
-          const res = localHandlers[index].call(context, p1, p2, p3, p4, p5, p6);
+
+          const res = fastCall(localHandlers[index], context, p1, p2, p3, p4, p5, p6);
 
           if (res !== void 0) {
             // eslint-disable-next-line no-param-reassign
@@ -2402,7 +2472,7 @@ class Hooks {
   /**
    * Registers a hook name (adds it to the list of the known hook names). Used by plugins.
    * It is not necessary to call register, but if you use it, your plugin hook will be used returned by
-   * the `getRegistered` method. (which itself is used in the demo https://handsontable.com/docs/tutorial-using-callbacks.html).
+   * the `getRegistered` method. (which itself is used in the [demo](@/guides/getting-started/events-and-hooks.md)).
    *
    * @param {string} key The hook name.
    *

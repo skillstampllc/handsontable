@@ -50,6 +50,7 @@ export var PLUGIN_PRIORITY = 160;
 /**
  * @private
  * @plugin MultipleSelectionHandles
+ * @class MultipleSelectionHandles
  */
 
 export var MultipleSelectionHandles = /*#__PURE__*/function (_BasePlugin) {

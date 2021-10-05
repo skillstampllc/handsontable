@@ -209,9 +209,9 @@ var MergedCellsCollection = /*#__PURE__*/function () {
     value: function remove(row, column) {
       var mergedCells = this.mergedCells;
       var wantedCollection = this.get(row, column);
-      var wantedCollectionIndex = wantedCollection ? this.mergedCells.indexOf(wantedCollection) : null;
+      var wantedCollectionIndex = wantedCollection ? this.mergedCells.indexOf(wantedCollection) : -1;
 
-      if (wantedCollection && wantedCollectionIndex !== false) {
+      if (wantedCollection && wantedCollectionIndex !== -1) {
         mergedCells.splice(wantedCollectionIndex, 1);
         return wantedCollection;
       }

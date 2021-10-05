@@ -53,6 +53,9 @@ export var PLUGIN_PRIORITY = 130;
 var PERSISTENT_STATE_KEY = 'manualColumnWidths';
 var privatePool = new WeakMap();
 /**
+ * @plugin ManualColumnResize
+ * @class ManualColumnResize
+ *
  * @description
  * This plugin allows to change columns width. To make columns width persistent the {@link Options#persistentState}
  * plugin should be enabled.
@@ -60,8 +63,6 @@ var privatePool = new WeakMap();
  * The plugin creates additional components to make resizing possibly using user interface:
  * - handle - the draggable element that sets the desired width of the column.
  * - guide - the helper guide that shows the desired width as a vertical guide.
- *
- * @plugin ManualColumnResize
  */
 
 export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
@@ -451,7 +452,7 @@ export var ManualColumnResize = /*#__PURE__*/function (_BasePlugin) {
 
         var colspan = th.getAttribute('colspan');
 
-        if (th && (colspan === null || colspan === 1)) {
+        if (th && (colspan === null || colspan === '1')) {
           if (!this.pressed) {
             this.setupHandlePosition(th);
           }

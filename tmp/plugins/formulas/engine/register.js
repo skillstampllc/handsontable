@@ -28,6 +28,8 @@ require("core-js/modules/web.dom-collections.iterator.js");
 
 require("core-js/modules/es.array.from.js");
 
+require("core-js/modules/es.array.map.js");
+
 require("core-js/modules/es.array.includes.js");
 
 require("core-js/modules/es.string.includes.js");
@@ -171,8 +173,10 @@ function registerEngine(engineClass, hotSettings, hotInstance) {
   return engineInstance;
 }
 /**
+ * Returns the list of the Handsontable instances linked to the specific engine instance.
+ *
  * @param {object} engine The engine instance.
- * @returns {Handsontable[]} Returns an array with Handsontable instances.
+ * @returns {Map<number, Handsontable>} Returns Map with Handsontable instances.
  */
 
 
@@ -180,7 +184,10 @@ function getRegisteredHotInstances(engine) {
   var _engineRegistry$get;
 
   var engineRegistry = getEngineRelationshipRegistry();
-  return engineRegistry.size === 0 ? [] : Array.from((_engineRegistry$get = engineRegistry.get(engine)) !== null && _engineRegistry$get !== void 0 ? _engineRegistry$get : []);
+  var hotInstances = engineRegistry.size === 0 ? [] : Array.from((_engineRegistry$get = engineRegistry.get(engine)) !== null && _engineRegistry$get !== void 0 ? _engineRegistry$get : []);
+  return new Map(hotInstances.map(function (hot) {
+    return [hot.getPlugin('formulas').sheetId, hot];
+  }));
 }
 /**
  * Removes the HOT instance from the global register's engine usage array, and if there are no HOT instances left,

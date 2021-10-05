@@ -4,6 +4,7 @@ import {
   fastInnerHTML,
   empty,
 } from '../../helpers/dom/element';
+import { isNumeric } from '../../helpers/number';
 import { isLeftClick, isRightClick } from '../../helpers/dom/event';
 import { toSingleLine } from '../../helpers/templateLiteralTag';
 import { warn } from '../../helpers/console';
@@ -22,6 +23,8 @@ export const PLUGIN_PRIORITY = 280;
 
 /**
  * @plugin NestedHeaders
+ * @class NestedHeaders
+ *
  * @description
  * The plugin allows to create a nested header structure, using the HTML's colspan attribute.
  *
@@ -383,16 +386,16 @@ export class NestedHeaders extends BasePlugin {
    * @param {MouseEvent} event Mouse event.
    * @param {CellCoords} coords Cell coords object containing the visual coordinates of the clicked cell.
    * @param {CellCoords} TD The table cell or header element.
-   * @param {object} blockCalculations An object with keys `row`, `column` and `cell` which contains boolean values.
-   *                                   This object allows or disallows changing the selection for the particular axies.
+   * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+   *                            a boolean value that allows or disallows changing the selection for that particular area.
    */
-  onBeforeOnCellMouseDown(event, coords, TD, blockCalculations) {
+  onBeforeOnCellMouseDown(event, coords, TD, controller) {
     const headerNodeData = this._getHeaderTreeNodeDataByCoords(coords);
 
     if (headerNodeData) {
       // Block the Selection module in controlling how the columns are selected. Pass the
       // responsibility of the column selection to this plugin (see "onAfterOnCellMouseDown" hook).
-      blockCalculations.column = true;
+      controller.column = true;
     }
   }
 
@@ -450,10 +453,10 @@ export class NestedHeaders extends BasePlugin {
    * @param {MouseEvent} event Mouse event.
    * @param {CellCoords} coords Cell coords object containing the visual coordinates of the clicked cell.
    * @param {HTMLElement} TD The cell element.
-   * @param {object} blockCalculations An object with keys `row`, `column` and `cell` which contains boolean values.
-   *                                   This object allows or disallows changing the selection for the particular axies.
+   * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+   *                            a boolean value that allows or disallows changing the selection for that particular area.
    */
-  onBeforeOnCellMouseOver(event, coords, TD, blockCalculations) {
+  onBeforeOnCellMouseOver(event, coords, TD, controller) {
     if (!this.hot.view.isMouseDown()) {
       return;
     }
@@ -476,8 +479,8 @@ export class NestedHeaders extends BasePlugin {
 
     // Block the Selection module in controlling how the columns and cells are selected.
     // From now on, the plugin is responsible for the selection.
-    blockCalculations.column = true;
-    blockCalculations.cell = true;
+    controller.column = true;
+    controller.cell = true;
 
     const columnsToSelect = [];
 
@@ -517,19 +520,34 @@ export class NestedHeaders extends BasePlugin {
    * @param {object} calc Viewport column calculator.
    */
   onAfterViewportColumnCalculatorOverride(calc) {
+    const headerLayersCount = this.#stateManager.getLayersCount();
     let newStartColumn = calc.startColumn;
+    let nonRenderable = !!headerLayersCount;
 
-    for (let headerLayer = 0; headerLayer < this.#stateManager.getLayersCount(); headerLayer++) {
+    for (let headerLayer = 0; headerLayer < headerLayersCount; headerLayer++) {
       const startColumn = this.#stateManager.findLeftMostColumnIndex(headerLayer, calc.startColumn);
       const renderedStartColumn = this.hot.columnIndexMapper.getRenderableFromVisualIndex(startColumn);
 
-      if (renderedStartColumn < calc.startColumn) {
+      // If any of the headers for that column index is rendered, all of them should be rendered properly, see
+      // comment below.
+      if (startColumn >= 0) {
+        nonRenderable = false;
+      }
+
+      // `renderedStartColumn` can be `null` if the leftmost columns are hidden. In that case -> ignore that header
+      // level, as it should be handled by the "parent" header
+      if (isNumeric(renderedStartColumn) && renderedStartColumn < calc.startColumn) {
         newStartColumn = renderedStartColumn;
         break;
       }
     }
 
-    calc.startColumn = newStartColumn;
+    // If no headers for the provided column index are renderable, start rendering from the beginning of the upmost
+    // header for that position.
+    calc.startColumn =
+      nonRenderable ?
+        this.#stateManager.getHeaderTreeNodeData(0, newStartColumn).columnIndex :
+        newStartColumn;
   }
 
   /**

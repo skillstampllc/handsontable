@@ -6,8 +6,6 @@ require("core-js/modules/es.symbol.description.js");
 
 require("core-js/modules/es.symbol.iterator.js");
 
-require("core-js/modules/es.array.from.js");
-
 require("core-js/modules/es.function.name.js");
 
 exports.__esModule = true;
@@ -26,6 +24,8 @@ require("core-js/modules/web.dom-collections.iterator.js");
 require("core-js/modules/es.array.index-of.js");
 
 require("core-js/modules/es.array.splice.js");
+
+require("core-js/modules/es.array.from.js");
 
 require("core-js/modules/es.array.concat.js");
 
@@ -501,6 +501,21 @@ var DataManager = /*#__PURE__*/function () {
       return this.getRowParent(index) !== null;
     }
     /**
+     * Get child at a provided index from the parent element.
+     *
+     * @param {object} parent The parent row object.
+     * @param {number} index Index of the child element to be retrieved.
+     * @returns {object|null} The child element or `null` if the child doesn't exist.
+     */
+
+  }, {
+    key: "getChild",
+    value: function getChild(parent, index) {
+      var _parent$__children;
+
+      return ((_parent$__children = parent.__children) === null || _parent$__children === void 0 ? void 0 : _parent$__children[index]) || null;
+    }
+    /**
      * Return `true` of the row at the provided index is located at the topmost level.
      *
      * @param {number} index Row index.
@@ -585,6 +600,7 @@ var DataManager = /*#__PURE__*/function () {
     key: "addChildAtIndex",
     value: function addChildAtIndex(parent, index, element) {
       var childElement = element;
+      var flattenedIndex;
 
       if (!childElement) {
         childElement = this.mockNode();
@@ -593,23 +609,28 @@ var DataManager = /*#__PURE__*/function () {
       this.hot.runHooks('beforeAddChild', parent, childElement, index);
 
       if (parent) {
-        this.hot.runHooks('beforeCreateRow', index, 1);
+        var parentIndex = this.getRowIndex(parent);
+        var finalChildIndex = parentIndex + index + 1;
+        this.hot.runHooks('beforeCreateRow', finalChildIndex, 1);
 
         parent.__children.splice(index, null, childElement);
 
+        this.rewriteCache();
         this.plugin.disableCoreAPIModifiers();
         this.hot.setSourceDataAtCell(this.getRowIndexWithinParent(parent), '__children', parent.__children, 'NestedRows.addChildAtIndex');
+        this.hot.rowIndexMapper.insertIndexes(finalChildIndex, 1);
         this.plugin.enableCoreAPIModifiers();
-        this.hot.runHooks('afterCreateRow', index, 1);
+        this.hot.runHooks('afterCreateRow', finalChildIndex, 1);
+        flattenedIndex = finalChildIndex;
       } else {
         this.plugin.disableCoreAPIModifiers();
         this.hot.alter('insert_row', index, 1, 'NestedRows.addChildAtIndex');
         this.plugin.enableCoreAPIModifiers();
-      }
+        flattenedIndex = this.getRowIndex(this.data[index]);
+      } // Workaround for refreshing cache losing the reference to the mocked row.
 
-      this.updateWithData(this.getRawSourceData()); // Workaround for refreshing cache losing the reference to the mocked row.
 
-      childElement = this.getDataObject(index);
+      childElement = this.getDataObject(flattenedIndex);
       this.hot.runHooks('afterAddChild', parent, childElement, index);
     }
     /**
@@ -671,6 +692,7 @@ var DataManager = /*#__PURE__*/function () {
       }
 
       var childRowIndex = this.getRowIndex(element);
+      var childCount = this.countChildren(element);
       var indexWithinParent = this.getRowIndexWithinParent(element);
       var parent = this.getRowParent(element);
       var grandparent = this.getRowParent(parent);
@@ -679,28 +701,31 @@ var DataManager = /*#__PURE__*/function () {
       this.hot.runHooks('beforeDetachChild', parent, element);
 
       if (indexWithinParent !== null && indexWithinParent !== void 0) {
-        this.hot.runHooks('beforeRemoveRow', childRowIndex, 1, [childRowIndex], this.plugin.pluginName);
+        var removedRowIndexes = Array.from(new Array(childRowIndex + childCount + 1).keys()).splice(-1 * (childCount + 1));
+        this.hot.runHooks('beforeRemoveRow', childRowIndex, childCount + 1, removedRowIndexes, this.plugin.pluginName);
 
         parent.__children.splice(indexWithinParent, 1);
 
         this.rewriteCache();
-        this.hot.runHooks('afterRemoveRow', childRowIndex, 1, [childRowIndex], this.plugin.pluginName);
+        this.hot.runHooks('afterRemoveRow', childRowIndex, childCount + 1, removedRowIndexes, this.plugin.pluginName);
 
         if (grandparent) {
           movedElementRowIndex = grandparentRowIndex + this.countChildren(grandparent);
-          this.hot.runHooks('beforeCreateRow', movedElementRowIndex, 1, this.plugin.pluginName);
+          var lastGrandparentChild = this.getChild(grandparent, this.countChildren(grandparent) - 1);
+          var lastGrandparentChildIndex = this.getRowIndex(lastGrandparentChild);
+          this.hot.runHooks('beforeCreateRow', lastGrandparentChildIndex + 1, childCount + 1, this.plugin.pluginName);
 
           grandparent.__children.push(element);
         } else {
           movedElementRowIndex = this.hot.countRows() + 1;
-          this.hot.runHooks('beforeCreateRow', movedElementRowIndex, 1, this.plugin.pluginName);
+          this.hot.runHooks('beforeCreateRow', movedElementRowIndex - 2, childCount + 1, this.plugin.pluginName);
           this.data.push(element);
         }
       }
 
       this.rewriteCache();
-      this.hot.runHooks('afterCreateRow', movedElementRowIndex, 1, this.plugin.pluginName);
-      this.hot.runHooks('afterDetachChild', parent, element);
+      this.hot.runHooks('afterCreateRow', movedElementRowIndex - 2, childCount + 1, this.plugin.pluginName);
+      this.hot.runHooks('afterDetachChild', parent, element, this.getRowIndex(element));
 
       if (forceRender) {
         this.hot.render();

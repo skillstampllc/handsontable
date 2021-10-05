@@ -77,6 +77,7 @@ var PLUGIN_PRIORITY = 160;
 /**
  * @private
  * @plugin MultipleSelectionHandles
+ * @class MultipleSelectionHandles
  */
 
 exports.PLUGIN_PRIORITY = PLUGIN_PRIORITY;

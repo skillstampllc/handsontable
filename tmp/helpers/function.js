@@ -9,6 +9,7 @@ exports.pipe = pipe;
 exports.partial = partial;
 exports.curry = curry;
 exports.curryRight = curryRight;
+exports.fastCall = fastCall;
 
 require("core-js/modules/web.timers.js");
 
@@ -19,6 +20,8 @@ require("core-js/modules/es.array.concat.js");
 require("core-js/modules/es.array.reverse.js");
 
 var _array = require("./array");
+
+var _mixed = require("./mixed");
 
 /**
  * Checks if given variable is function.
@@ -323,4 +326,39 @@ function curryRight(func) {
   }
 
   return given([]);
+}
+/**
+ * Calls a function in the quickest way available.
+ *
+ * In contrast to the `apply()` method that passes arguments as an array,
+ * the `call()` method passes arguments directly, to avoid garbage collection costs.
+ *
+ * @param {Function} func The function to call.
+ * @param {*} context The value to use as `this` when calling the `func` function.
+ * @param {*} [arg1] An argument passed to the `func` function.
+ * @param {*} [arg2] An argument passed to `func` function.
+ * @param {*} [arg3] An argument passed to `func` function.
+ * @param {*} [arg4] An argument passed to `func` function.
+ * @param {*} [arg5] An argument passed to `func` function.
+ * @param {*} [arg6] An argument passed to `func` function.
+ * @returns {*}
+ */
+
+
+function fastCall(func, context, arg1, arg2, arg3, arg4, arg5, arg6) {
+  if ((0, _mixed.isDefined)(arg6)) {
+    return func.call(context, arg1, arg2, arg3, arg4, arg5, arg6);
+  } else if ((0, _mixed.isDefined)(arg5)) {
+    return func.call(context, arg1, arg2, arg3, arg4, arg5);
+  } else if ((0, _mixed.isDefined)(arg4)) {
+    return func.call(context, arg1, arg2, arg3, arg4);
+  } else if ((0, _mixed.isDefined)(arg3)) {
+    return func.call(context, arg1, arg2, arg3);
+  } else if ((0, _mixed.isDefined)(arg2)) {
+    return func.call(context, arg1, arg2);
+  } else if ((0, _mixed.isDefined)(arg1)) {
+    return func.call(context, arg1);
+  }
+
+  return func.call(context);
 }

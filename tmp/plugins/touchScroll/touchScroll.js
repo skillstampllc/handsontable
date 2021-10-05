@@ -142,8 +142,8 @@ var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.addHook('afterRender', function () {
-        return _this2.onAfterRender();
+      this.addHook('afterViewRender', function () {
+        return _this2.onAfterViewRender();
       });
       this.registerEvents();
 
@@ -188,14 +188,14 @@ var TouchScroll = /*#__PURE__*/function (_BasePlugin) {
       });
     }
     /**
-     * After render listener.
+     * After view render listener.
      *
      * @private
      */
 
   }, {
-    key: "onAfterRender",
-    value: function onAfterRender() {
+    key: "onAfterViewRender",
+    value: function onAfterViewRender() {
       if (this.lockedCollection) {
         return;
       }

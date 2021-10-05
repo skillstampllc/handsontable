@@ -24,6 +24,7 @@ const DEFAULT_QUERY_METHOD = function(query, value) {
 
 /**
  * @plugin Search
+ * @class Search
  *
  * @description
  * The search plugin provides an easy interface to search data across Handsontable.
@@ -120,7 +121,7 @@ export class Search extends BasePlugin {
     const beforeRendererCallback = (...args) => this.onBeforeRenderer(...args);
 
     this.hot.addHook('beforeRenderer', beforeRendererCallback);
-    this.hot.addHookOnce('afterRender', () => {
+    this.hot.addHookOnce('afterViewRender', () => {
       this.hot.removeHook('beforeRenderer', beforeRendererCallback);
     });
 

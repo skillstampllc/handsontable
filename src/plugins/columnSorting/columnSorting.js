@@ -35,6 +35,7 @@ Hooks.getSingleton().register('afterColumnSort');
 // DIFF - MultiColumnSorting & ColumnSorting: changed configuration documentation.
 /**
  * @plugin ColumnSorting
+ * @class ColumnSorting
  *
  * @description
  * This plugin sorts the view by columns (but does not sort the data source!). To enable the plugin, set the
@@ -78,7 +79,8 @@ Hooks.getSingleton().register('afterColumnSort');
  *       }
  *     }
  *   }
- * }]```
+ * }]
+ * ```
  */
 export class ColumnSorting extends BasePlugin {
   static get PLUGIN_KEY() {
@@ -153,8 +155,7 @@ export class ColumnSorting extends BasePlugin {
     this.hot.columnIndexMapper.registerMap(`${this.pluginKey}.columnMeta`, this.columnMetaCache);
 
     this.addHook('afterGetColHeader', (column, TH) => this.onAfterGetColHeader(column, TH));
-    this.addHook('beforeOnCellMouseDown', (event, coords, TD, controller) =>
-      this.onBeforeOnCellMouseDown(event, coords, TD, controller));
+    this.addHook('beforeOnCellMouseDown', (...args) => this.onBeforeOnCellMouseDown(...args));
     this.addHook('afterOnCellMouseDown', (event, target) => this.onAfterOnCellMouseDown(event, target));
     this.addHook('afterInit', () => this.loadOrSortBySettings());
     this.addHook('afterLoadData', (sourceData, initialLoad) => this.onAfterLoadData(initialLoad));
@@ -183,7 +184,7 @@ export class ColumnSorting extends BasePlugin {
 
     // Changing header width and removing indicator.
     this.hot.addHook('afterGetColHeader', clearColHeader);
-    this.hot.addHookOnce('afterRender', () => {
+    this.hot.addHookOnce('afterViewRender', () => {
       this.hot.removeHook('afterGetColHeader', clearColHeader);
     });
 
@@ -305,7 +306,8 @@ export class ColumnSorting extends BasePlugin {
    *   this.loadData(newData); // Load new data set and re-render the table.
    *
    *   return false; // The blockade for the default sort action.
-   * }```
+   * }
+   * ```
    *
    * @param {undefined|object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
    * The configuration object contains `column` and `sortOrder` properties. First of them contains visual column index, the second one contains
@@ -754,16 +756,16 @@ export class ColumnSorting extends BasePlugin {
    * @param {MouseEvent} event The `mousedown` event.
    * @param {CellCoords} coords Visual coordinates.
    * @param {HTMLElement} TD The cell element.
-   * @param {object} blockCalculations A literal object which holds boolean values which controls
-   *                                   how the selection while selecting neighboring cells.
+   * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+   *                            a boolean value that allows or disallows changing the selection for that particular area.
    */
-  onBeforeOnCellMouseDown(event, coords, TD, blockCalculations) {
+  onBeforeOnCellMouseDown(event, coords, TD, controller) {
     if (wasHeaderClickedProperly(coords.row, coords.col, event) === false) {
       return;
     }
 
     if (this.wasClickableHeaderClicked(event, coords.col) && isPressedCtrlKey()) {
-      blockCalculations.column = true;
+      controller.column = true;
     }
   }
 

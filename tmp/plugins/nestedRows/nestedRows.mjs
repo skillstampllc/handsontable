@@ -41,6 +41,7 @@ import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/es.weak-map.js";
 import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.slice.js";
 import "core-js/modules/web.timers.js";
 import "core-js/modules/es.array.from.js";
 import "core-js/modules/es.array.reduce.js";
@@ -54,20 +55,27 @@ import "core-js/modules/es.object.get-own-property-descriptor.js";
 import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
 import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.slice.js";
 import "core-js/modules/es.function.name.js";
 import { BasePlugin } from "../base/index.mjs";
 import DataManager from "./data/dataManager.mjs";
 import CollapsingUI from "./ui/collapsing.mjs";
 import HeadersUI from "./ui/headers.mjs";
 import ContextMenuUI from "./ui/contextMenu.mjs";
+import { error } from "../../helpers/console.mjs";
+import { isArrayOfObjects } from "../../helpers/data.mjs";
 import { TrimmingMap } from "../../translations/index.mjs";
 import RowMoveController from "./utils/rowMoveController.mjs";
 export var PLUGIN_KEY = 'nestedRows';
 export var PLUGIN_PRIORITY = 300;
 var privatePool = new WeakMap();
 /**
+ * Error message for the wrong data type error.
+ */
+
+var WRONG_DATA_TYPE_ERROR = 'The Nested Rows plugin requires an Array of Objects as a dataset to be' + ' provided. The plugin has been disabled.';
+/**
  * @plugin NestedRows
+ * @class NestedRows
  *
  * @description
  * Plugin responsible for displaying and operating on data sources with nested structures.
@@ -150,8 +158,8 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('afterInit', function () {
         return _this2.onAfterInit.apply(_this2, arguments);
       });
-      this.addHook('beforeRender', function () {
-        return _this2.onBeforeRender.apply(_this2, arguments);
+      this.addHook('beforeViewRender', function () {
+        return _this2.onBeforeViewRender.apply(_this2, arguments);
       });
       this.addHook('modifyRowData', function () {
         return _this2.onModifyRowData.apply(_this2, arguments);
@@ -162,8 +170,8 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('beforeDataSplice', function () {
         return _this2.onBeforeDataSplice.apply(_this2, arguments);
       });
-      this.addHook('beforeDataFilter', function () {
-        return _this2.onBeforeDataFilter.apply(_this2, arguments);
+      this.addHook('filterData', function () {
+        return _this2.onFilterData.apply(_this2, arguments);
       });
       this.addHook('afterContextMenuDefaultOptions', function () {
         return _this2.onAfterContextMenuDefaultOptions.apply(_this2, arguments);
@@ -225,10 +233,12 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "updatePlugin",
     value: function updatePlugin() {
-      this.disablePlugin();
-      var vanillaSourceData = this.hot.getSourceData();
-      this.enablePlugin();
-      this.dataManager.updateWithData(vanillaSourceData);
+      this.disablePlugin(); // We store a state of the data manager.
+
+      var currentSourceData = this.dataManager.getData();
+      this.enablePlugin(); // After enabling plugin previously stored data is restored.
+
+      this.dataManager.updateWithData(currentSourceData);
 
       _get(_getPrototypeOf(NestedRows.prototype), "updatePlugin", this).call(this);
     }
@@ -239,10 +249,10 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
      * @param {Array} rows Array of visual row indexes to be moved.
      * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements
      *   will be placed after the moving action. To check the visualization of the final index, please take a look at
-     *   [documentation](/docs/demo-moving.html).
+     *   [documentation](@/guides/rows/row-summary.md).
      * @param {undefined|number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we
      *   are going to drop the moved elements. To check visualization of drop index please take a look at
-     *   [documentation](/docs/demo-moving.html).
+     *   [documentation](@/guides/rows/row-summary.md).
      * @param {boolean} movePossible Indicates if it's possible to move rows to the desired position.
      * @fires Hooks#afterRowMove
      * @returns {boolean}
@@ -346,25 +356,25 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
       return false;
     }
     /**
-     * Called before the source data filtering. Returning `false` stops the native filtering.
+     * Provide custom source data filtering. It's handled by core method and replaces the native filtering.
      *
      * @private
      * @param {number} index The index where the data filtering starts.
      * @param {number} amount An amount of rows which filtering applies to.
      * @param {number} physicalRows Physical row indexes.
-     * @returns {boolean}
+     * @returns {Array}
      */
 
   }, {
-    key: "onBeforeDataFilter",
-    value: function onBeforeDataFilter(index, amount, physicalRows) {
+    key: "onFilterData",
+    value: function onFilterData(index, amount, physicalRows) {
       var priv = privatePool.get(this);
       this.collapsingUI.collapsedRowsStash.stash();
       this.collapsingUI.collapsedRowsStash.trimStash(physicalRows[0], amount);
       this.collapsingUI.collapsedRowsStash.shiftStash(physicalRows[0], null, -1 * amount);
       this.dataManager.filterData(index, amount, physicalRows);
       priv.skipRender = true;
-      return false;
+      return this.dataManager.getData().slice(); // Data contains reference sometimes.
     }
     /**
      * `afterContextMenuDefaultOptions` hook callback.
@@ -515,12 +525,13 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
      * @private
      * @param {object} parent Parent element.
      * @param {object} element New child element.
+     * @param {number} finalElementRowIndex The final row index of the detached element.
      */
 
   }, {
     key: "onAfterDetachChild",
-    value: function onAfterDetachChild(parent, element) {
-      this.collapsingUI.collapsedRowsStash.shiftStash(this.dataManager.getRowIndex(element), null, -1);
+    value: function onAfterDetachChild(parent, element, finalElementRowIndex) {
+      this.collapsingUI.collapsedRowsStash.shiftStash(finalElementRowIndex, null, -1);
       this.collapsingUI.collapsedRowsStash.applyStash();
       this.headersUI.updateRowHeaderWidth();
     }
@@ -528,19 +539,12 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
      * `afterCreateRow` hook callback.
      *
      * @private
-     * @param {number} index Represents the visual index of first newly created row in the data source array.
-     * @param {number} amount Number of newly created rows in the data source array.
-     * @param {string} source String that identifies source of hook call.
      */
 
   }, {
     key: "onAfterCreateRow",
-    value: function onAfterCreateRow(index, amount, source) {
-      if (source === this.pluginName) {
-        return;
-      }
-
-      this.dataManager.updateWithData(this.dataManager.getRawSourceData());
+    value: function onAfterCreateRow() {
+      this.dataManager.rewriteCache();
     }
     /**
      * `afterInit` hook callback.
@@ -558,7 +562,7 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
       }
     }
     /**
-     * `beforeRender` hook callback.
+     * `beforeViewRender` hook callback.
      *
      * @param {boolean} force Indicates if the render call was trigered by a change of settings or data.
      * @param {object} skipRender An object, holder for skipRender functionality.
@@ -566,8 +570,8 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
      */
 
   }, {
-    key: "onBeforeRender",
-    value: function onBeforeRender(force, skipRender) {
+    key: "onBeforeViewRender",
+    value: function onBeforeViewRender(force, skipRender) {
       var priv = privatePool.get(this);
 
       if (priv.skipRender) {
@@ -593,6 +597,12 @@ export var NestedRows = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onBeforeLoadData",
     value: function onBeforeLoadData(data) {
+      if (!isArrayOfObjects(data)) {
+        error(WRONG_DATA_TYPE_ERROR);
+        this.disablePlugin();
+        return;
+      }
+
       this.dataManager.setData(data);
       this.dataManager.rewriteCache();
     }

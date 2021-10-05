@@ -116,7 +116,7 @@ function detectSelectionType(selectionRanges) {
 /**
  * Factory function designed for normalization data schema from different data structures of the selection ranges.
  *
- * @param {string} type Selection type which will be processed.
+ * @param {number} type Selection type which will be processed.
  * @param {object} [options] The normalization options.
  * @param {boolean} [options.keepDirection=false] If `true`, the coordinates which contain the direction of the
  *                                                selected cells won't be changed. Otherwise, the selection will be

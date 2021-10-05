@@ -33,7 +33,7 @@ var _translations = require("./translations");
 
 var _pluginHooks = _interopRequireDefault(require("./pluginHooks"));
 
-var _index = require("./dataMap/index");
+var _dataMap = require("./dataMap");
 
 var _jquery = _interopRequireDefault(require("./helpers/wrappers/jquery"));
 
@@ -162,7 +162,7 @@ _base.default._getListenersCounter = _eventManager.getListenersCounter; // For M
 
 _base.default._getRegisteredMapsCounter = _translations.getRegisteredMapsCounter; // For MemoryLeak tests
 
-_base.default.DefaultSettings = (0, _index.metaSchemaFactory)();
+_base.default.DefaultSettings = (0, _dataMap.metaSchemaFactory)();
 _base.default.EventManager = _eventManager.default; // Export Hooks singleton
 
 _base.default.hooks = _pluginHooks.default.getSingleton(); // Export all helpers to the Handsontable object
