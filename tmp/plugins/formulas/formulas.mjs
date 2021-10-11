@@ -669,9 +669,12 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
         // where the user directly changes the values - the Core triggers those validators.
 
         if (sheetId !== void 0 && !changedCellsSet.has(addressId)) {
-          var hot = getRegisteredHotInstances(_this12.engine).get(sheetId); // It will just re-render certain cell when necessary.
+          var hot = getRegisteredHotInstances(_this12.engine).get(sheetId);
 
-          hot.validateCell(hot.getDataAtCell(visualRow, visualColumn), hot.getCellMeta(visualRow, visualColumn), function () {});
+          if (hot) {
+            // It will just re-render certain cell when necessary.
+            hot.validateCell(hot.getDataAtCell(visualRow, visualColumn), hot.getCellMeta(visualRow, visualColumn), function () {});
+          }
         }
       });
     }
