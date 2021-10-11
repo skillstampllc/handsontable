@@ -511,12 +511,15 @@ export class Formulas extends BasePlugin {
       if (sheetId !== void 0 && !changedCellsSet.has(addressId)) {
         const hot = getRegisteredHotInstances(this.engine).get(sheetId);
 
-        // It will just re-render certain cell when necessary.
-        hot.validateCell(
-          hot.getDataAtCell(visualRow, visualColumn),
-          hot.getCellMeta(visualRow, visualColumn),
-          () => {}
-        );
+        if (hot) {
+          // It will just re-render certain cell when necessary.
+          hot.validateCell(
+            hot.getDataAtCell(visualRow, visualColumn),
+            hot.getCellMeta(visualRow, visualColumn),
+            () => {
+            }
+          );
+        }
       }
     });
   }
