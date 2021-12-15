@@ -1379,7 +1379,7 @@ export default function Core(rootElement, userSettings, rootInstanceSymbol = fal
     }
 
     if (!changeSource && typeof row === 'object') {
-      changeSource = column;
+      changeSource = column || input[3];
     }
 
     instance.runHooks('afterSetDataAtCell', changes, changeSource);
