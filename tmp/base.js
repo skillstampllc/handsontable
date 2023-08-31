@@ -43,7 +43,7 @@ Handsontable.hooks = _pluginHooks.default.getSingleton();
 Handsontable.CellCoords = _src.CellCoords;
 Handsontable.CellRange = _src.CellRange;
 Handsontable.packageName = 'handsontable';
-Handsontable.buildDate = "31/08/2023 12:17:02";
+Handsontable.buildDate = "31/08/2023 16:56:26";
 Handsontable.version = "13.1.0";
 Handsontable.languages = {
   dictionaryKeys: _registry.dictionaryKeys,

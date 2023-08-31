@@ -1,7 +1,7 @@
 import path from 'path';
 import fse from 'fs-extra';
 import glob from 'glob';
-import { displayErrorMessage } from '../../scripts/utils/console.mjs';
+import { displayErrorMessage } from './utils/console.mjs';
 
 const TARGET_PATH = './tmp/';
 const PACKAGE_PATH = path.resolve('package.json');
