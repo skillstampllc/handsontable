@@ -1,5 +1,6 @@
 {
   "name": "handsontable",
+  "version": "13.1.0",
   "private": true,
   "description": "Handsontable is a JavaScript Spreadsheet Component available for React, Angular and Vue.",
   "homepage": "https://handsontable.com/",
