@@ -1,11 +1,20 @@
-.DS_Store
-.grunt
-.idea
-.vscode
-.cache
+.eslintcache
+.stylelintcache
+test/E2ERunner.html
+test/UnitRunner.html
+test/MobileRunner.html
+test/dist/
+src/3rdparty/walkontable/test/SpecRunner.html
+src/3rdparty/walkontable/test/dist/
+src/3rdparty/walkontable/dist/
 dev*.html
 dev*.js
+dev*.ts
 npm-debug.log
 
-.parcel-cache/
+!dist/README.md
+dist/hyperformula/
 node_modules/
+commonjs/
+es/
+coverage/
