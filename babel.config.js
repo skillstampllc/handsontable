@@ -20,8 +20,29 @@ const allowedE2EModules = [
   '../MemoryLeakTest',
 ];
 
+const babelPresetConfig = () => ({
+  targets: {
+    chrome: '110',
+    firefox: '110',
+    safari: '14.1',
+    node: '11', // support for Webpack 4 and similar oldish bundlers
+  },
+  modules: false,
+  debug: false,
+  useBuiltIns: 'usage',
+  corejs: {
+    version: '3.31'
+  }
+});
+
 module.exports = {
-  extends: '../babel.config.js',
+  presets: [
+    ['@babel/preset-env', babelPresetConfig()]
+  ],
+  plugins: [
+    ['transform-inline-environment-variables']
+  ],
+  extends: './base-babel.config.js',
   assumptions: {
     // save 21 kB (July 12, 2023) https://babeljs.io/docs/assumptions#noincompletensimportdetection
     noIncompleteNsImportDetection: true,

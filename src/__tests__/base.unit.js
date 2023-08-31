@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import Handsontable from 'handsontable/base';
-import { HOT_PACKAGE_NAME, HOT_VERSION } from '../../../hot.config.js';
+import { HOT_PACKAGE_NAME, HOT_VERSION } from '../../hot.config.js';
 import { getRegisteredCellTypeNames } from '../cellTypes/registry';
 import { getRegisteredEditorNames } from '../editors/registry';
 import { getPluginsNames } from '../plugins/registry';

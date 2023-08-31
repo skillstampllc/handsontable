@@ -4,7 +4,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const compilationDoneMarker = require('./plugin/webpack/compilation-done-marker');
 
-let licenseBody = fs.readFileSync(path.resolve(__dirname, '../../LICENSE.txt'), 'utf8');
+let licenseBody = fs.readFileSync(path.resolve(__dirname, '../LICENSE.txt'), 'utf8');
 
 licenseBody += '\nVersion: ' + process.env.HOT_VERSION;
 licenseBody += '\nRelease date: ' + process.env.HOT_RELEASE_DATE + ' (built at ' + process.env.HOT_BUILD_DATE + ')';
