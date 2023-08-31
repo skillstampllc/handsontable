@@ -12,6 +12,11 @@
     "url": "https://github.com/handsontable/handsontable/issues"
   },
   "author": "Handsoncode <hello@handsontable.com>",
+  "main": "handsontable/tmp/index",
+  "module": "handsontable/tmp/index.mjs",
+  "jsnext:main": "handsontable/tmp/ndex.mjs",
+  "jsdelivr": "handsontable/dist/handsontable.full.min.js",
+  "unpkg": "handsontable/dist/handsontable.full.min.js",
   "scripts": {
     "in": "cross-env-shell COMMAND_ENV=in node scripts/translate-to-native-npm.mjs",
     "all": "cross-env-shell COMMAND_ENV=all node scripts/translate-to-native-npm.mjs",
