@@ -42,13 +42,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
@@ -79,16 +83,24 @@ export var PLUGIN_KEY = 'hiddenRows';
 export var PLUGIN_PRIORITY = 320;
 /**
  * @plugin HiddenRows
+ * @class HiddenRows
  *
  * @description
- * Plugin allows to hide certain rows. The hiding is achieved by rendering the rows with height set as 0px.
- * The plugin not modifies the source data and do not participate in data transformation (the shape of data returned
- * by `getData*` methods stays intact).
+ * The `HiddenRows` plugin lets you [hide specified rows](@/guides/rows/row-hiding.md).
  *
- * Possible plugin settings:
- *  * `copyPasteEnabled` as `Boolean` (default `true`)
- *  * `rows` as `Array`
- *  * `indicators` as `Boolean` (default `false`).
+ * "Hiding a row" means that the hidden row doesn't get rendered as a DOM element.
+ *
+ * The `HiddenRows` plugin doesn't modify the source data,
+ * and doesn't participate in data transformation
+ * (the shape of the data returned by the [`getData*()` methods](@/api/core.md#getdata) stays intact).
+ *
+ * You can set the following configuration options:
+ *
+ * | Option | Required | Type | Default | Description |
+ * |---|---|---|---|---|
+ * | `rows` | No | Array | - | [Hides specified rows by default](@/guides/rows/row-hiding.md#step-1-specify-rows-hidden-by-default) |
+ * | `indicators` | No | Boolean | `false` | [Shows UI indicators](@/guides/rows/row-hiding.md#step-2-show-ui-indicators) |
+ * | `copyPasteEnabled` | No | Boolean | `true` | [Sets up copy/paste behavior](@/guides/rows/row-hiding.md#step-4-set-up-copy-and-paste-behavior) |
  *
  * @example
  *
@@ -103,28 +115,28 @@ export var PLUGIN_PRIORITY = 320;
  *   }
  * });
  *
- * // access to hiddenRows plugin instance
+ * // access the `HiddenRows` plugin's instance
  * const hiddenRowsPlugin = hot.getPlugin('hiddenRows');
  *
- * // show single row
- * hiddenRowsPlugin.showRow(1);
- *
- * // show multiple rows
- * hiddenRowsPlugin.showRow(1, 2, 9);
- *
- * // or as an array
- * hiddenRowsPlugin.showRows([1, 2, 9]);
- *
- * // hide single row
+ * // hide a single row
  * hiddenRowsPlugin.hideRow(1);
  *
  * // hide multiple rows
  * hiddenRowsPlugin.hideRow(1, 2, 9);
  *
- * // or as an array
+ * // hide multiple rows as an array
  * hiddenRowsPlugin.hideRows([1, 2, 9]);
  *
- * // rerender the table to see all changes
+ * // unhide a single row
+ * hiddenRowsPlugin.showRow(1);
+ *
+ * // unhide multiple rows
+ * hiddenRowsPlugin.showRow(1, 2, 9);
+ *
+ * // unhide multiple rows as an array
+ * hiddenRowsPlugin.showRows([1, 2, 9]);
+ *
+ * // to see your changes, re-render your Handsontable instance
  * hot.render();
  * ```
  */
@@ -149,12 +161,12 @@ export var HiddenRows = /*#__PURE__*/function (_BasePlugin) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _settings.set(_assertThisInitialized(_this), {
+    _classPrivateFieldInitSpec(_assertThisInitialized(_this), _settings, {
       writable: true,
       value: {}
     });
 
-    _hiddenRowsMap.set(_assertThisInitialized(_this), {
+    _classPrivateFieldInitSpec(_assertThisInitialized(_this), _hiddenRowsMap, {
       writable: true,
       value: null
     });

@@ -107,7 +107,7 @@ export function checkboxRenderer(instance, TD, row, col, prop, value, cellProper
       labelText = labelValue !== null ? labelValue : '';
     }
 
-    var label = createLabel(rootDocument, labelText);
+    var label = createLabel(rootDocument, labelText, labelOptions.separated !== true);
 
     if (labelOptions.position === 'before') {
       if (labelOptions.separated) {
@@ -334,13 +334,14 @@ function createInput(rootDocument) {
  *
  * @param {Document} rootDocument The document owner.
  * @param {string} text The label text.
+ * @param {boolean} fullWidth Determines whether label should have full width.
  * @returns {Node}
  */
 
 
-function createLabel(rootDocument, text) {
+function createLabel(rootDocument, text, fullWidth) {
   var label = rootDocument.createElement('label');
-  label.className = 'htCheckboxRendererLabel';
+  label.className = "htCheckboxRendererLabel ".concat(fullWidth ? 'fullWidth' : '');
   label.appendChild(rootDocument.createTextNode(text));
   return label.cloneNode(true);
 }

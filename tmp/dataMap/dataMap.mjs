@@ -1,57 +1,23 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.map.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.number.is-integer.js");
-
-require("core-js/modules/es.number.constructor.js");
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.array.splice.js");
-
-require("core-js/modules/es.array.sort.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.array.filter.js");
-
-require("core-js/modules/es.array.index-of.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.split.js");
-
-var _SheetClip = require("./3rdparty/SheetClip");
-
-var _data = require("./helpers/data");
-
-var _object = require("./helpers/object");
-
-var _array = require("./helpers/array");
-
-var _number = require("./helpers/number");
-
-var _mixed = require("./helpers/mixed");
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.map.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.number.is-integer.js";
+import "core-js/modules/es.number.constructor.js";
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.array.splice.js";
+import "core-js/modules/es.array.sort.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.array.index-of.js";
+import "core-js/modules/es.regexp.exec.js";
+import "core-js/modules/es.string.split.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.symbol.iterator.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -59,7 +25,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var copyableLookup = (0, _data.cellMethodLookupFactory)('copyable', false);
+import { stringify } from "../3rdparty/SheetClip/index.mjs";
+import { cellMethodLookupFactory, countFirstRowKeys as _countFirstRowKeys } from "../helpers/data.mjs";
+import { createObjectPropListener, deepClone, deepExtend, deepObjectSize, duckSchema, hasOwnProperty, isObject, objectEach } from "../helpers/object.mjs";
+import { extendArray, to2dArray } from "../helpers/array.mjs";
+import { rangeEach } from "../helpers/number.mjs";
+import { isDefined } from "../helpers/mixed.mjs";
+var copyableLookup = cellMethodLookupFactory('copyable', false);
 /**
  * Utility class that gets and saves data from/to the data source using mapping of columns numbers to object property names.
  *
@@ -108,7 +80,7 @@ var DataMap = /*#__PURE__*/function () {
      * @type {object}
      */
 
-    this.duckSchema = this.dataSource && this.dataSource[0] ? (0, _object.duckSchema)(this.dataSource[0]) : {};
+    this.duckSchema = this.dataSource && this.dataSource[0] ? duckSchema(this.dataSource[0]) : {};
     /**
      * Cached array of properties to columns.
      *
@@ -150,7 +122,7 @@ var DataMap = /*#__PURE__*/function () {
         var columnsAsFunc = false;
 
         if (typeof columns === 'function') {
-          var schemaLen = (0, _object.deepObjectSize)(schema);
+          var schemaLen = deepObjectSize(schema);
           columnsLen = schemaLen > 0 ? schemaLen : this.countFirstRowKeys();
           columnsAsFunc = true;
         } else {
@@ -161,7 +133,7 @@ var DataMap = /*#__PURE__*/function () {
         for (i = 0; i < columnsLen; i++) {
           var column = columnsAsFunc ? columns(i) : columns[i];
 
-          if ((0, _object.isObject)(column)) {
+          if (isObject(column)) {
             if (typeof column.data !== 'undefined') {
               var index = columnsAsFunc ? filteredIndex : i;
               this.colToPropCache[index] = column.data;
@@ -184,7 +156,7 @@ var DataMap = /*#__PURE__*/function () {
   }, {
     key: "countFirstRowKeys",
     value: function countFirstRowKeys() {
-      return (0, _data.countFirstRowKeys)(this.dataSource);
+      return _countFirstRowKeys(this.dataSource);
     }
     /**
      * Generates columns' translation cache.
@@ -210,7 +182,7 @@ var DataMap = /*#__PURE__*/function () {
       }
 
       if (_typeof(schema) === 'object' && !Array.isArray(schema)) {
-        (0, _object.objectEach)(schema, function (value, key) {
+        objectEach(schema, function (value, key) {
           if (value === null) {
             prop = propertyParent + key;
 
@@ -250,7 +222,7 @@ var DataMap = /*#__PURE__*/function () {
       } // Cached property.
 
 
-      if (this.colToPropCache && (0, _mixed.isDefined)(this.colToPropCache[physicalColumn])) {
+      if (this.colToPropCache && isDefined(this.colToPropCache[physicalColumn])) {
         return this.colToPropCache[physicalColumn];
       }
 
@@ -268,7 +240,7 @@ var DataMap = /*#__PURE__*/function () {
     value: function propToCol(prop) {
       var cachedPhysicalIndex = this.propToColCache.get(prop);
 
-      if ((0, _mixed.isDefined)(cachedPhysicalIndex)) {
+      if (isDefined(cachedPhysicalIndex)) {
         return this.instance.toVisualColumn(cachedPhysicalIndex);
       } // Property may be a physical column index.
 
@@ -348,12 +320,12 @@ var DataMap = /*#__PURE__*/function () {
         if (_this2.instance.dataType === 'array') {
           if (_this2.tableMeta.dataSchema) {
             // Clone template array
-            row = (0, _object.deepClone)(_this2.getSchema());
+            row = deepClone(_this2.getSchema());
           } else {
             row = [];
             /* eslint-disable no-loop-func */
 
-            (0, _number.rangeEach)(columnCount - 1, function () {
+            rangeEach(columnCount - 1, function () {
               return row.push(null);
             });
           }
@@ -361,7 +333,7 @@ var DataMap = /*#__PURE__*/function () {
           row = _this2.tableMeta.dataSchema(rowIndex + numberOfCreatedRows);
         } else {
           row = {};
-          (0, _object.deepExtend)(row, _this2.getSchema());
+          deepExtend(row, _this2.getSchema());
         }
 
         rowsToAdd.push(row);
@@ -480,22 +452,15 @@ var DataMap = /*#__PURE__*/function () {
 
       if (actionWasNotCancelled === false) {
         return false;
-      }
+      } // List of removed indexes might be changed in the `beforeRemoveRow` hook. There may be new values.
 
-      var data = this.dataSource; // List of removed indexes might be changed in the `beforeRemoveRow` hook. There may be new values.
 
       var numberOfRemovedIndexes = removedPhysicalIndexes.length;
-      var newData = this.filterData(rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes);
-
-      if (newData) {
-        data.length = 0;
-        Array.prototype.push.apply(data, newData);
-      } // TODO: Function `removeRow` should validate fully, probably above.
-
+      this.filterData(rowIndex, numberOfRemovedIndexes, removedPhysicalIndexes); // TODO: Function `removeRow` should validate fully, probably above.
 
       if (rowIndex < this.instance.countRows()) {
         this.instance.rowIndexMapper.removeIndexes(removedPhysicalIndexes);
-        var customDefinedColumns = (0, _mixed.isDefined)(this.tableMeta.columns) || (0, _mixed.isDefined)(this.tableMeta.dataSchema); // All rows have been removed. There shouldn't be any columns.
+        var customDefinedColumns = isDefined(this.tableMeta.columns) || isDefined(this.tableMeta.dataSchema); // All rows have been removed. There shouldn't be any columns.
 
         if (this.instance.rowIndexMapper.getNotTrimmedIndexesLength() === 0 && customDefinedColumns === false) {
           this.instance.columnIndexMapper.setIndexesSequence([]);
@@ -597,7 +562,7 @@ var DataMap = /*#__PURE__*/function () {
         elements[_key - 3] = arguments[_key];
       }
 
-      (0, _array.extendArray)(elements, after);
+      extendArray(elements, after);
       var i = 0;
 
       while (i < amount) {
@@ -606,7 +571,7 @@ var DataMap = /*#__PURE__*/function () {
         i += 1;
       }
 
-      (0, _array.to2dArray)(elements);
+      to2dArray(elements);
       this.instance.populateFromArray(index, col, elements, null, null, 'spliceCol');
       return removed;
     }
@@ -631,7 +596,7 @@ var DataMap = /*#__PURE__*/function () {
         elements[_key2 - 3] = arguments[_key2];
       }
 
-      (0, _array.extendArray)(elements, after);
+      extendArray(elements, after);
       var i = 0;
 
       while (i < amount) {
@@ -672,20 +637,22 @@ var DataMap = /*#__PURE__*/function () {
      * @param {number} index Visual index of the element to remove.
      * @param {number} amount Number of rows to add/remove.
      * @param {number} physicalRows Physical row indexes.
-     * @returns {Array}
      */
 
   }, {
     key: "filterData",
     value: function filterData(index, amount, physicalRows) {
-      var continueSplicing = this.instance.runHooks('beforeDataFilter', index, amount, physicalRows);
+      // Custom data filtering (run as a consequence of calling the below hook) provide an array containing new data.
+      var data = this.instance.runHooks('filterData', index, amount, physicalRows); // Hooks by default returns first argument (when there is no callback changing execution result).
 
-      if (continueSplicing !== false) {
-        var newData = this.dataSource.filter(function (row, rowIndex) {
+      if (Array.isArray(data) === false) {
+        data = this.dataSource.filter(function (row, rowIndex) {
           return physicalRows.indexOf(rowIndex) === -1;
         });
-        return newData;
       }
+
+      this.dataSource.length = 0;
+      Array.prototype.push.apply(this.dataSource, data);
     }
     /**
      * Returns single value from the data array.
@@ -706,7 +673,7 @@ var DataMap = /*#__PURE__*/function () {
 
       var value = null; // try to get value under property `prop` (includes dot)
 
-      if (dataRow && dataRow.hasOwnProperty && (0, _object.hasOwnProperty)(dataRow, prop)) {
+      if (dataRow && dataRow.hasOwnProperty && hasOwnProperty(dataRow, prop)) {
         value = dataRow[prop];
       } else if (typeof prop === 'string' && prop.indexOf('.') > -1) {
         var sliced = prop.split('.');
@@ -743,7 +710,7 @@ var DataMap = /*#__PURE__*/function () {
       }
 
       if (this.instance.hasHook('modifyData')) {
-        var valueHolder = (0, _object.createObjectPropListener)(value);
+        var valueHolder = createObjectPropListener(value);
         this.instance.runHooks('modifyData', physicalRow, this.propToCol(prop), valueHolder, 'get');
 
         if (valueHolder.isTouched()) {
@@ -789,7 +756,7 @@ var DataMap = /*#__PURE__*/function () {
       dataRow = isNaN(modifiedRowData) ? modifiedRowData : dataRow; //
 
       if (this.instance.hasHook('modifyData')) {
-        var valueHolder = (0, _object.createObjectPropListener)(newValue);
+        var valueHolder = createObjectPropListener(newValue);
         this.instance.runHooks('modifyData', physicalRow, this.propToCol(prop), valueHolder, 'set');
 
         if (valueHolder.isTouched()) {
@@ -798,7 +765,7 @@ var DataMap = /*#__PURE__*/function () {
       } // try to set value under property `prop` (includes dot)
 
 
-      if (dataRow && dataRow.hasOwnProperty && (0, _object.hasOwnProperty)(dataRow, prop)) {
+      if (dataRow && dataRow.hasOwnProperty && hasOwnProperty(dataRow, prop)) {
         dataRow[prop] = newValue;
       } else if (typeof prop === 'string' && prop.indexOf('.') > -1) {
         var sliced = prop.split('.');
@@ -1001,7 +968,7 @@ var DataMap = /*#__PURE__*/function () {
   }, {
     key: "getText",
     value: function getText(start, end) {
-      return (0, _SheetClip.stringify)(this.getRange(start, end, DataMap.DESTINATION_RENDERER));
+      return stringify(this.getRange(start, end, DataMap.DESTINATION_RENDERER));
     }
     /**
      * Return data as copyable text (tab separated columns intended for clipboard copy to an external application).
@@ -1014,7 +981,7 @@ var DataMap = /*#__PURE__*/function () {
   }, {
     key: "getCopyableText",
     value: function getCopyableText(start, end) {
-      return (0, _SheetClip.stringify)(this.getRange(start, end, DataMap.DESTINATION_CLIPBOARD_GENERATOR));
+      return stringify(this.getRange(start, end, DataMap.DESTINATION_CLIPBOARD_GENERATOR));
     }
     /**
      * Destroy instance.
@@ -1054,5 +1021,4 @@ var DataMap = /*#__PURE__*/function () {
   return DataMap;
 }();
 
-var _default = DataMap;
-exports.default = _default;
+export default DataMap;

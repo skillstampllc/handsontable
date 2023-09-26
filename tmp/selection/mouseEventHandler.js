@@ -43,9 +43,9 @@ function mouseDown(_ref) {
   var selectedRow = selection.isSelectedByRowHeader();
 
   if (isShiftKey && currentSelection) {
-    if (coords.row >= 0 && coords.col >= 0 && !controller.cells) {
+    if (coords.row >= 0 && coords.col >= 0 && !controller.cell) {
       selection.setRangeEnd(coords);
-    } else if ((selectedCorner || selectedRow) && coords.row >= 0 && coords.col >= 0 && !controller.cells) {
+    } else if ((selectedCorner || selectedRow) && coords.row >= 0 && coords.col >= 0 && !controller.cell) {
       selection.setRangeEnd(new _src.CellCoords(coords.row, coords.col));
     } else if (selectedCorner && coords.row < 0 && !controller.column) {
       selection.setRangeEnd(new _src.CellCoords(currentSelection.to.row, coords.col));
@@ -69,7 +69,7 @@ function mouseDown(_ref) {
       if (performSelection) {
         selection.selectRows(coords.row, coords.row, coords.col);
       }
-    } else if (coords.col >= 0 && coords.row >= 0 && !controller.cells) {
+    } else if (coords.col >= 0 && coords.row >= 0 && !controller.cell) {
       if (performSelection) {
         selection.setRangeStart(coords);
       }

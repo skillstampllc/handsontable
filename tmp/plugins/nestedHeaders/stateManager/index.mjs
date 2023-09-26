@@ -29,6 +29,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
 function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
@@ -84,17 +88,17 @@ var StateManager = /*#__PURE__*/function () {
   function StateManager() {
     _classCallCheck(this, StateManager);
 
-    _sourceSettings.set(this, {
+    _classPrivateFieldInitSpec(this, _sourceSettings, {
       writable: true,
       value: new SourceSettings()
     });
 
-    _headersTree.set(this, {
+    _classPrivateFieldInitSpec(this, _headersTree, {
       writable: true,
       value: new HeadersTree(_classPrivateFieldGet(this, _sourceSettings))
     });
 
-    _stateMatrix.set(this, {
+    _classPrivateFieldInitSpec(this, _stateMatrix, {
       writable: true,
       value: [[]]
     });
@@ -412,7 +416,7 @@ var StateManager = /*#__PURE__*/function () {
 
       var stepBackColumn = columnIndex - 1;
 
-      do {
+      while (stepBackColumn >= 0) {
         var _this$getHeaderSettin2;
 
         var _ref3 = (_this$getHeaderSettin2 = this.getHeaderSettings(headerLevel, stepBackColumn)) !== null && _this$getHeaderSettin2 !== void 0 ? _this$getHeaderSettin2 : {
@@ -425,7 +429,7 @@ var StateManager = /*#__PURE__*/function () {
         }
 
         stepBackColumn -= 1;
-      } while (columnIndex >= 0);
+      }
 
       return stepBackColumn;
     }

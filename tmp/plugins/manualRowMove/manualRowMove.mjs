@@ -16,7 +16,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
@@ -58,6 +58,7 @@ var CSS_ON_MOVING = 'on-moving--rows';
 var CSS_AFTER_SELECTION = 'after-selection--rows';
 /**
  * @plugin ManualRowMove
+ * @class ManualRowMove
  *
  * @description
  * This plugin allows to change rows order. To make rows order persistent the {@link Options#persistentState}
@@ -69,7 +70,7 @@ var CSS_AFTER_SELECTION = 'after-selection--rows';
  * - `dragRow` - drag single row to the new position.
  * - `dragRows` - drag many rows (as an array of indexes) to the new position.
  *
- * [Documentation](/docs/demo-moving.html) explain differences between drag and move actions. Please keep in mind that if you want apply visual changes,
+ * [Documentation](@/guides/rows/row-moving.md) explain differences between drag and move actions. Please keep in mind that if you want apply visual changes,
  * you have to call manually the `render` method on the instance of Handsontable.
  *
  * The plugin creates additional components to make moving possibly using user interface:
@@ -158,11 +159,11 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
-      this.addHook('beforeOnCellMouseDown', function (event, coords, TD, blockCalculations) {
-        return _this2.onBeforeOnCellMouseDown(event, coords, TD, blockCalculations);
+      this.addHook('beforeOnCellMouseDown', function () {
+        return _this2.onBeforeOnCellMouseDown.apply(_this2, arguments);
       });
-      this.addHook('beforeOnCellMouseOver', function (event, coords, TD, blockCalculations) {
-        return _this2.onBeforeOnCellMouseOver(event, coords, TD, blockCalculations);
+      this.addHook('beforeOnCellMouseOver', function () {
+        return _this2.onBeforeOnCellMouseOver.apply(_this2, arguments);
       });
       this.addHook('afterScrollHorizontally', function () {
         return _this2.onAfterScrollHorizontally();
@@ -209,7 +210,7 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      *
      * @param {number} row Visual row index to be moved.
      * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
+     * To check the visualization of the final index, please take a look at [documentation](@/guides/rows/row-moving.md#drag-and-move-actions-of-manualrowmove-plugin).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
      * @returns {boolean}
@@ -225,7 +226,7 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      *
      * @param {Array} rows Array of visual row indexes to be moved.
      * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
+     * To check the visualization of the final index, please take a look at [documentation](@/guides/rows/row-moving.md#drag-and-move-actions-of-manualrowmove-plugin).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
      * @returns {boolean}
@@ -257,7 +258,7 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      *
      * @param {number} row Visual row index to be dragged.
      * @param {number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
-     * To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html).
+     * To check visualization of drop index please take a look at [documentation](@/guides/rows/row-moving.md#drag-and-move-actions-of-manualrowmove-plugin).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
      * @returns {boolean}
@@ -273,7 +274,7 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      *
      * @param {Array} rows Array of visual row indexes to be dragged.
      * @param {number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we are going to drop the moved elements.
-     * To check visualization of drop index please take a look at [documentation](/docs/demo-moving.html).
+     * To check visualization of drop index please take a look at [documentation](@/guides/rows/row-moving.md#drag-and-move-actions-of-manualrowmove-plugin).
      * @fires Hooks#beforeRowMove
      * @fires Hooks#afterRowMove
      * @returns {boolean}
@@ -292,7 +293,7 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      *
      * @param {Array} movedRows Array of visual row indexes to be moved.
      * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
+     * To check the visualization of the final index, please take a look at [documentation](@/guides/rows/row-moving.md#drag-and-move-actions-of-manualrowmove-plugin).
      * @returns {boolean}
      */
 
@@ -322,7 +323,7 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      * @private
      * @param {Array} movedRows Array of visual row indexes to be moved.
      * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements will be placed after the moving action.
-     * To check the visualization of the final index, please take a look at [documentation](/docs/demo-moving.html).
+     * To check the visualization of the final index, please take a look at [documentation](@/guides/rows/row-moving.md#drag-and-move-actions-of-manualrowmove-plugin).
      * @returns {boolean}
      */
 
@@ -601,12 +602,13 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      * @param {MouseEvent} event `mousedown` event properties.
      * @param {CellCoords} coords Visual cell coordinates where was fired event.
      * @param {HTMLElement} TD Cell represented as HTMLElement.
-     * @param {object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
+     * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+     *                            a boolean value that allows or disallows changing the selection for that particular area.
      */
 
   }, {
     key: "onBeforeOnCellMouseDown",
-    value: function onBeforeOnCellMouseDown(event, coords, TD, blockCalculations) {
+    value: function onBeforeOnCellMouseDown(event, coords, TD, controller) {
       var _this$hot$view$wt = this.hot.view.wt,
           wtTable = _this$hot$view$wt.wtTable,
           wtViewport = _this$hot$view$wt.wtViewport;
@@ -635,7 +637,7 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
       var end = Math.max(from.row, to.row);
 
       if (coords.col < 0 && coords.row >= start && coords.row <= end) {
-        blockCalculations.row = true;
+        controller.row = true;
         priv.pressed = true;
         priv.target.eventPageY = event.pageY;
         priv.target.coords = coords;
@@ -688,12 +690,13 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
      * @param {MouseEvent} event `mouseover` event properties.
      * @param {CellCoords} coords Visual cell coordinates where was fired event.
      * @param {HTMLElement} TD Cell represented as HTMLElement.
-     * @param {object} blockCalculations Object which contains information about blockCalculation for row, column or cells.
+     * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+     *                            a boolean value that allows or disallows changing the selection for that particular area.
      */
 
   }, {
     key: "onBeforeOnCellMouseOver",
-    value: function onBeforeOnCellMouseOver(event, coords, TD, blockCalculations) {
+    value: function onBeforeOnCellMouseOver(event, coords, TD, controller) {
       var selectedRange = this.hot.getSelectedRangeLast();
       var priv = privatePool.get(this);
 
@@ -707,9 +710,9 @@ export var ManualRowMove = /*#__PURE__*/function (_BasePlugin) {
         addClass(this.hot.rootElement, CSS_SHOW_UI);
       }
 
-      blockCalculations.row = true;
-      blockCalculations.column = true;
-      blockCalculations.cell = true;
+      controller.row = true;
+      controller.column = true;
+      controller.cell = true;
       priv.target.coords = coords;
       priv.target.TD = TD;
     }

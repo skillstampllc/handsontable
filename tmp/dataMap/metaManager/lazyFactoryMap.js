@@ -159,7 +159,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 
 /* eslint-enable jsdoc/require-description-complete-sentence */
-var LazyFactoryMap = /*#__PURE__*/function () {
+var LazyFactoryMap = /*#__PURE__*/function (_Symbol$iterator) {
   function LazyFactoryMap(valueFactory) {
     _classCallCheck(this, LazyFactoryMap);
 
@@ -390,13 +390,13 @@ var LazyFactoryMap = /*#__PURE__*/function () {
      */
 
   }, {
-    key: Symbol.iterator,
+    key: _Symbol$iterator,
     value: function value() {
       return this.entries();
     }
   }]);
 
   return LazyFactoryMap;
-}();
+}(Symbol.iterator);
 
 exports.default = LazyFactoryMap;

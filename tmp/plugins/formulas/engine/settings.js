@@ -32,9 +32,7 @@ var DEFAULT_LICENSE_KEY = 'internal-use-in-handsontable';
 exports.DEFAULT_LICENSE_KEY = DEFAULT_LICENSE_KEY;
 var DEFAULT_SETTINGS = {
   licenseKey: DEFAULT_LICENSE_KEY,
-  binarySearchThreshold: 20,
-  matrixDetection: false,
-  matrixDetectionThreshold: 100,
+  useArrayArithmetic: true,
   useColumnIndex: false,
   useStats: false,
   evaluateNullToZero: true,

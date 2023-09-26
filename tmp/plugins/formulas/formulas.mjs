@@ -6,6 +6,10 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -16,7 +20,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -27,7 +31,6 @@ import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.set.js";
 import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
-import "core-js/modules/es.map.js";
 import "core-js/modules/es.array.map.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
@@ -45,6 +48,9 @@ import "core-js/modules/es.symbol.iterator.js";
 import "core-js/modules/es.array.slice.js";
 import "core-js/modules/es.function.name.js";
 import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.array.filter.js";
+import "core-js/modules/es.object.get-own-property-descriptors.js";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -62,7 +68,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
@@ -71,6 +77,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 
 function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 
@@ -83,9 +93,9 @@ function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!priva
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
 import { BasePlugin } from "../base/index.mjs";
-import { createAutofillHooks } from "./autofill.mjs";
 import staticRegister from "../../utils/staticRegister.mjs";
 import { error, warn } from "../../helpers/console.mjs";
+import { isNumeric } from "../../helpers/number.mjs";
 import { isDefined, isUndefined } from "../../helpers/mixed.mjs";
 import { setupEngine, setupSheet, unregisterEngine, getRegisteredHotInstances } from "./engine/register.mjs";
 import { isEscapedFormulaExpression, unescapeFormulaExpression } from "./utils.mjs";
@@ -95,19 +105,31 @@ import { toUpperCaseFirst } from "../../helpers/string.mjs";
 import Hooks from "../../pluginHooks.mjs";
 export var PLUGIN_KEY = 'formulas';
 export var PLUGIN_PRIORITY = 260;
+var ROW_MOVE_UNDO_REDO_NAME = 'row_move';
 Hooks.getSingleton().register('afterNamedExpressionAdded');
 Hooks.getSingleton().register('afterNamedExpressionRemoved');
 Hooks.getSingleton().register('afterSheetAdded');
 Hooks.getSingleton().register('afterSheetRemoved');
 Hooks.getSingleton().register('afterSheetRenamed');
-Hooks.getSingleton().register('afterFormulasValuesUpdate');
+Hooks.getSingleton().register('afterFormulasValuesUpdate'); // This function will be used for detecting changes coming from the `UndoRedo` plugin. This kind of change won't be
+// handled by whole body of listeners and therefore won't change undo/redo stack inside engine provided by HyperFormula.
+// HyperFormula's `undo` and `redo` methods will do it instead. Please keep in mind that undo/redo stacks inside
+// instances of Handsontable and HyperFormula should be synced (number of actions should be the same).
+
+var isBlockedSource = function isBlockedSource(source) {
+  return source === 'UndoRedo.undo' || source === 'UndoRedo.redo' || source === 'auto';
+};
 /**
  * This plugin allows you to perform Excel-like calculations in your business applications. It does it by an
  * integration with our other product, [HyperFormula](https://github.com/handsontable/hyperformula/), which is a
  * powerful calculation engine with an extensive number of features.
  *
+ * To test out HyperFormula, see [this guide](@/guides/formulas/formula-calculation.md#available-functions).
+ *
  * @plugin Formulas
+ * @class Formulas
  */
+
 
 var _internalOperationPending = /*#__PURE__*/new WeakMap();
 
@@ -131,17 +153,17 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
 
     _this = _super.call.apply(_super, [this].concat(_args));
 
-    _internalOperationPending.set(_assertThisInitialized(_this), {
+    _classPrivateFieldInitSpec(_assertThisInitialized(_this), _internalOperationPending, {
       writable: true,
       value: false
     });
 
-    _hotWasInitializedWithEmptyData.set(_assertThisInitialized(_this), {
+    _classPrivateFieldInitSpec(_assertThisInitialized(_this), _hotWasInitializedWithEmptyData, {
       writable: true,
       value: false
     });
 
-    _engineListeners.set(_assertThisInitialized(_this), {
+    _classPrivateFieldInitSpec(_assertThisInitialized(_this), _engineListeners, {
       writable: true,
       value: [['valuesUpdated', function () {
         var _this2;
@@ -226,7 +248,11 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
 
 
       if (this.sheetName !== null && !this.engine.doesSheetExist(this.sheetName)) {
-        this.sheetName = this.addSheet(this.sheetName, this.hot.getSourceDataArray());
+        var newSheetName = this.addSheet(this.sheetName, this.hot.getSourceDataArray());
+
+        if (newSheetName !== false) {
+          this.sheetName = newSheetName;
+        }
       }
 
       this.addHook('beforeLoadData', function () {
@@ -241,14 +267,17 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('modifySourceData', function () {
         return _this8.onModifySourceData.apply(_this8, arguments);
       });
+      this.addHook('beforeValidate', function () {
+        return _this8.onBeforeValidate.apply(_this8, arguments);
+      });
       this.addHook('afterSetSourceDataAtCell', function () {
         return _this8.onAfterSetSourceDataAtCell.apply(_this8, arguments);
       });
-      this.addHook('beforeChange', function () {
-        return _this8.onBeforeChange.apply(_this8, arguments);
+      this.addHook('afterSetDataAtCell', function () {
+        return _this8.onAfterSetDataAtCell.apply(_this8, arguments);
       });
-      this.addHook('beforeValidate', function () {
-        return _this8.onBeforeValidate.apply(_this8, arguments);
+      this.addHook('afterSetDataAtRowProp', function () {
+        return _this8.onAfterSetDataAtCell.apply(_this8, arguments);
       });
       this.addHook('beforeCreateRow', function () {
         return _this8.onBeforeCreateRow.apply(_this8, arguments);
@@ -273,10 +302,31 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
       });
       this.addHook('afterRemoveCol', function () {
         return _this8.onAfterRemoveCol.apply(_this8, arguments);
+      }); // Handling undo actions on data just using HyperFormula's UndoRedo mechanism
+
+      this.addHook('beforeUndo', function (action) {
+        // TODO: Move action isn't handled by HyperFormula.
+        if ((action === null || action === void 0 ? void 0 : action.actionType) === ROW_MOVE_UNDO_REDO_NAME) {
+          return;
+        }
+
+        _this8.engine.undo();
+      }); // Handling redo actions on data just using HyperFormula's UndoRedo mechanism
+
+      this.addHook('beforeRedo', function (action) {
+        // TODO: Move action isn't handled by HyperFormula.
+        if ((action === null || action === void 0 ? void 0 : action.actionType) === ROW_MOVE_UNDO_REDO_NAME) {
+          return;
+        }
+
+        _this8.engine.redo();
       });
-      var autofillHooks = createAutofillHooks(this);
-      this.addHook('beforeAutofill', autofillHooks.beforeAutofill);
-      this.addHook('afterAutofill', autofillHooks.afterAutofill);
+      this.addHook('afterDetachChild', function () {
+        return _this8.onAfterDetachChild.apply(_this8, arguments);
+      });
+      this.addHook('beforeAutofill', function () {
+        return _this8.onBeforeAutofill.apply(_this8, arguments);
+      });
 
       _classPrivateFieldGet(this, _engineListeners).forEach(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
@@ -306,6 +356,7 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
       });
 
       unregisterEngine(this.engine, this.hot);
+      this.engine = null;
 
       _get(_getPrototypeOf(Formulas.prototype), "disablePlugin", this).call(this);
     }
@@ -362,6 +413,7 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
       _classPrivateFieldSet(this, _engineListeners, null);
 
       unregisterEngine(this.engine, this.hot);
+      this.engine = null;
 
       _get(_getPrototypeOf(Formulas.prototype), "destroy", this).call(this);
     }
@@ -451,7 +503,7 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
         var actualSheetName = this.engine.addSheet(sheetName !== null && sheetName !== void 0 ? sheetName : void 0);
 
         if (sheetData) {
-          this.engine.setSheetContent(actualSheetName, sheetData);
+          this.engine.setSheetContent(this.engine.getSheetId(actualSheetName), sheetData);
         }
 
         return actualSheetName;
@@ -488,18 +540,26 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
      * @param {number} row Visual row index.
      * @param {number} column Visual column index.
      * @param {number} [sheet] The target sheet id, defaults to the current sheet.
-     * @returns {string} Possible values: 'FORMULA' | 'VALUE' | 'MATRIX' | 'EMPTY'.
+     * @returns {string} Possible values: 'FORMULA' | 'VALUE' | 'ARRAYFORMULA' | 'EMPTY'.
      */
 
   }, {
     key: "getCellType",
     value: function getCellType(row, column) {
       var sheet = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.sheetId;
-      return this.engine.getCellType({
-        sheet: sheet,
-        row: this.hot.toPhysicalRow(row),
-        col: this.hot.toPhysicalColumn(column)
-      });
+      var physicalRow = this.hot.toPhysicalRow(row);
+      var physicalColumn = this.hot.toPhysicalColumn(column);
+
+      if (physicalRow !== null && physicalColumn !== null) {
+        return this.engine.getCellType({
+          sheet: sheet,
+          row: physicalRow,
+          col: physicalColumn
+        });
+      } else {
+        // Should return `EMPTY` when out of bounds (according to the test cases).
+        return 'EMPTY';
+      }
     }
     /**
      * Returns `true` if under specified visual coordinates is formula.
@@ -514,26 +574,36 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
     key: "isFormulaCellType",
     value: function isFormulaCellType(row, column) {
       var sheet = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.sheetId;
-      var cellType = this.getCellType(row, column, sheet);
-      return cellType === 'FORMULA' || cellType === 'MATRIX';
+      var physicalRow = this.hot.toPhysicalRow(row);
+      var physicalColumn = this.hot.toPhysicalColumn(column);
+
+      if (physicalRow === null || physicalColumn === null) {
+        return false;
+      }
+
+      return this.engine.doesCellHaveFormula({
+        sheet: sheet,
+        row: physicalRow,
+        col: physicalColumn
+      });
     }
     /**
      * Renders dependent sheets (handsontable instances) based on the changes - list of the
      * recalculated dependent cells.
      *
      * @private
-     * @param {object[]} changedCells The values and location of applied changes within HF engine.
+     * @param {object[]} dependentCells The values and location of applied changes within HF engine.
      * @param {boolean} [renderSelf] `true` if it's supposed to render itself, `false` otherwise.
      */
 
   }, {
     key: "renderDependentSheets",
-    value: function renderDependentSheets(changedCells) {
+    value: function renderDependentSheets(dependentCells) {
       var _this11 = this;
 
       var renderSelf = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var affectedSheetIds = new Set();
-      changedCells.forEach(function (change) {
+      dependentCells.forEach(function (change) {
         var _change$address;
 
         // For the Named expression the address is empty, hence the `sheetId` is undefined.
@@ -543,25 +613,69 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
           if (!affectedSheetIds.has(sheetId)) {
             affectedSheetIds.add(sheetId);
           }
-
-          if (!_classPrivateFieldGet(_this11, _internalOperationPending) && sheetId === _this11.sheetId) {
-            var _change$address2 = change.address,
-                row = _change$address2.row,
-                col = _change$address2.col; // It will just re-render certain cell when necessary.
-
-            _this11.hot.validateCell(_this11.hot.getDataAtCell(row, col), _this11.hot.getCellMeta(row, col), function () {});
-          }
         }
       });
-      var hotInstances = new Map(getRegisteredHotInstances(this.engine).map(function (hot) {
-        return [hot.getPlugin('formulas').sheetId, hot];
-      }));
-      hotInstances.forEach(function (relatedHot, sheetId) {
+      getRegisteredHotInstances(this.engine).forEach(function (relatedHot, sheetId) {
         if ((renderSelf || sheetId !== _this11.sheetId) && affectedSheetIds.has(sheetId)) {
           var _relatedHot$view;
 
           relatedHot.render();
           (_relatedHot$view = relatedHot.view) === null || _relatedHot$view === void 0 ? void 0 : _relatedHot$view.adjustElementsSize();
+        }
+      });
+    }
+    /**
+     * Validates dependent cells based on the cells that are modified by the change.
+     *
+     * @private
+     * @param {object[]} dependentCells The values and location of applied changes within HF engine.
+     * @param {object[]} [changedCells] The values and location of applied changes by developer (through API or UI).
+     */
+
+  }, {
+    key: "validateDependentCells",
+    value: function validateDependentCells(dependentCells) {
+      var _this12 = this;
+
+      var changedCells = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+      var stringifyAddress = function stringifyAddress(change) {
+        var _change$address2;
+
+        var _ref7 = (_change$address2 = change === null || change === void 0 ? void 0 : change.address) !== null && _change$address2 !== void 0 ? _change$address2 : {},
+            row = _ref7.row,
+            col = _ref7.col,
+            sheet = _ref7.sheet;
+
+        return isDefined(sheet) ? "".concat(sheet, ":").concat(row, "x").concat(col) : '';
+      };
+
+      var changedCellsSet = new Set(changedCells.map(function (change) {
+        return stringifyAddress(change);
+      }));
+      dependentCells.forEach(function (change) {
+        var _change$address3, _change$address4;
+
+        var _ref8 = (_change$address3 = change.address) !== null && _change$address3 !== void 0 ? _change$address3 : {},
+            row = _ref8.row,
+            col = _ref8.col;
+
+        var visualRow = isDefined(row) ? _this12.hot.toVisualRow(row) : null;
+        var visualColumn = isDefined(col) ? _this12.hot.toVisualColumn(col) : null; // Don't try to validate cells outside of the visual part of the table.
+
+        if (visualRow === null || visualColumn === null) {
+          return;
+        } // For the Named expression the address is empty, hence the `sheetId` is undefined.
+
+
+        var sheetId = change === null || change === void 0 ? void 0 : (_change$address4 = change.address) === null || _change$address4 === void 0 ? void 0 : _change$address4.sheet;
+        var addressId = stringifyAddress(change); // Validate the cells that depend on the calculated formulas. Skip that cells
+        // where the user directly changes the values - the Core triggers those validators.
+
+        if (sheetId !== void 0 && !changedCellsSet.has(addressId)) {
+          var hot = getRegisteredHotInstances(_this12.engine).get(sheetId); // It will just re-render certain cell when necessary.
+
+          hot.validateCell(hot.getDataAtCell(visualRow, visualColumn), hot.getCellMeta(visualRow, visualColumn), function () {});
         }
       });
     }
@@ -613,10 +727,50 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
           col: this.hot.toPhysicalColumn(visualColumn),
           sheet: this.sheetId
         };
-        return this.engine.getCellValue(address);
+        var cellValue = this.engine.getCellValue(address); // If `cellValue` is an object it is expected to be an error
+
+        return _typeof(cellValue) === 'object' && cellValue !== null ? cellValue.value : cellValue;
       }
 
       return value;
+    }
+    /**
+     * `onBeforeAutofill` hook callback.
+     *
+     * @private
+     * @param {Array[]} fillData The data that was used to fill the `targetRange`. If `beforeAutofill` was used
+     * and returned `[[]]`, this will be the same object that was returned from `beforeAutofill`.
+     * @param {CellRange} sourceRange The range values will be filled from.
+     * @param {CellRange} targetRange The range new values will be filled into.
+     * @returns {boolean|*}
+     */
+
+  }, {
+    key: "onBeforeAutofill",
+    value: function onBeforeAutofill(fillData, sourceRange, targetRange) {
+      var _this13 = this;
+
+      var withSheetId = function withSheetId(range) {
+        return _objectSpread(_objectSpread({}, range), {}, {
+          sheet: _this13.sheetId
+        });
+      };
+
+      var engineSourceRange = {
+        start: withSheetId(sourceRange.getTopLeftCorner()),
+        end: withSheetId(sourceRange.getBottomRightCorner())
+      };
+      var engineTargetRange = {
+        start: withSheetId(targetRange.getTopLeftCorner()),
+        end: withSheetId(targetRange.getBottomRightCorner())
+      }; // Blocks the autofill operation if HyperFormula says that at least one of
+      // the underlying cell's contents cannot be set.
+
+      if (this.engine.isItPossibleToSetCellContents(engineTargetRange) === false) {
+        return false;
+      }
+
+      return this.engine.getFillRangeData(engineSourceRange, engineTargetRange);
     }
     /**
      * `beforeLoadData` hook callback.
@@ -663,10 +817,10 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
       if (!_classPrivateFieldGet(this, _hotWasInitializedWithEmptyData)) {
         var sourceDataArray = this.hot.getSourceDataArray();
 
-        if (this.engine.isItPossibleToReplaceSheetContent(this.sheetName, sourceDataArray)) {
+        if (this.engine.isItPossibleToReplaceSheetContent(this.sheetId, sourceDataArray)) {
           _classPrivateFieldSet(this, _internalOperationPending, true);
 
-          var dependentCells = this.engine.setSheetContent(this.sheetName, this.hot.getSourceDataArray());
+          var dependentCells = this.engine.setSheetContent(this.sheetId, this.hot.getSourceDataArray());
           this.renderDependentSheets(dependentCells);
 
           _classPrivateFieldSet(this, _internalOperationPending, false);
@@ -691,18 +845,23 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
     value: function onModifyData(row, column, valueHolder, ioMode) {
       if (ioMode !== 'get' || _classPrivateFieldGet(this, _internalOperationPending) || this.sheetName === null || !this.engine.doesSheetExist(this.sheetName)) {
         return;
-      } // `column` is here as visual index because of inconsistencies related to hook execution in `src/dataMap`.
+      }
 
+      var visualRow = this.hot.toVisualRow(row); // `column` is here as visual index because of inconsistencies related to hook execution in `src/dataMap`.
 
-      var isFormulaCellType = this.isFormulaCellType(this.hot.toVisualRow(row), column);
+      var isFormulaCellType = this.isFormulaCellType(visualRow, column);
 
       if (!isFormulaCellType) {
-        if (isEscapedFormulaExpression(valueHolder.value)) {
-          valueHolder.value = unescapeFormulaExpression(valueHolder.value);
-        }
+        var cellType = this.getCellType(visualRow, column);
 
-        return;
-      } // `toPhysicalColumn` is here because of inconsistencies related to hook execution in `src/dataMap`.
+        if (cellType !== 'ARRAY') {
+          if (isEscapedFormulaExpression(valueHolder.value)) {
+            valueHolder.value = unescapeFormulaExpression(valueHolder.value);
+          }
+
+          return;
+        }
+      } // `toPhysicalColumn` is here because of inconsistencies related to hook execution in `DataMap`.
 
 
       var address = {
@@ -733,12 +892,17 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
         return;
       }
 
+      var visualRow = this.hot.toVisualRow(row);
       var visualColumn = this.hot.propToCol(columnOrProp); // `column` is here as visual index because of inconsistencies related to hook execution in `src/dataMap`.
 
-      var isFormulaCellType = this.isFormulaCellType(this.hot.toVisualRow(row), visualColumn);
+      var isFormulaCellType = this.isFormulaCellType(visualRow, visualColumn);
 
       if (!isFormulaCellType) {
-        return;
+        var cellType = this.getCellType(visualRow, visualColumn);
+
+        if (cellType !== 'ARRAY') {
+          return;
+        }
       }
 
       var dimensions = this.engine.getSheetDimensions(this.engine.getSheetId(this.sheetName)); // Don't actually change the source data if HyperFormula is not
@@ -759,87 +923,128 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
       valueHolder.value = this.engine.getCellSerialized(address);
     }
     /**
-     * `onBeforeChange` hook callback.
+     * `onAfterSetDataAtCell` hook callback.
      *
      * @private
      * @param {Array[]} changes An array of changes in format [[row, prop, oldValue, value], ...].
+     * @param {string} [source] String that identifies source of hook call
+     *                          ([list of all available sources]{@link http://docs.handsontable.com/tutorial-using-callbacks.html#page-source-definition}).
      */
 
   }, {
-    key: "onBeforeChange",
-    value: function onBeforeChange(changes) {
-      var _this12 = this;
+    key: "onAfterSetDataAtCell",
+    value: function onAfterSetDataAtCell(changes, source) {
+      var _this14 = this;
 
-      var dependentCells = [];
+      if (isBlockedSource(source)) {
+        return;
+      }
+
       var outOfBoundsChanges = [];
-      changes.forEach(function (_ref7) {
-        var _ref8 = _slicedToArray(_ref7, 4),
-            row = _ref8[0],
-            prop = _ref8[1],
-            newValue = _ref8[3];
+      var changedCells = [];
+      var dependentCells = this.engine.batch(function () {
+        changes.forEach(function (_ref9) {
+          var _ref10 = _slicedToArray(_ref9, 4),
+              row = _ref10[0],
+              prop = _ref10[1],
+              newValue = _ref10[3];
 
-        var column = _this12.hot.propToCol(prop);
+          var column = _this14.hot.propToCol(prop);
 
-        if (_this12.hot.toPhysicalRow(row) !== null && _this12.hot.toPhysicalColumn(column) !== null) {
-          dependentCells.push.apply(dependentCells, _toConsumableArray(_this12.syncChangeWithEngine(row, column, newValue)));
-        } else {
-          outOfBoundsChanges.push([row, column, newValue]);
-        }
+          var physicalRow = _this14.hot.toPhysicalRow(row);
+
+          var physicalColumn = _this14.hot.toPhysicalColumn(column);
+
+          var address = {
+            row: physicalRow,
+            col: physicalColumn,
+            sheet: _this14.sheetId
+          };
+
+          if (physicalRow !== null && physicalColumn !== null) {
+            _this14.syncChangeWithEngine(row, column, newValue);
+          } else {
+            outOfBoundsChanges.push([row, column, newValue]);
+          }
+
+          changedCells.push({
+            address: address
+          });
+        });
       });
 
       if (outOfBoundsChanges.length) {
         // Workaround for rows/columns being created two times (by HOT and the engine).
         // (unfortunately, this requires an extra re-render)
         this.hot.addHookOnce('afterChange', function () {
-          var outOfBoundsDependentCells = [];
-          outOfBoundsChanges.forEach(function (_ref9) {
-            var _ref10 = _slicedToArray(_ref9, 3),
-                row = _ref10[0],
-                column = _ref10[1],
-                newValue = _ref10[2];
+          var outOfBoundsDependentCells = _this14.engine.batch(function () {
+            outOfBoundsChanges.forEach(function (_ref11) {
+              var _ref12 = _slicedToArray(_ref11, 3),
+                  row = _ref12[0],
+                  column = _ref12[1],
+                  newValue = _ref12[2];
 
-            outOfBoundsDependentCells.push.apply(outOfBoundsDependentCells, _toConsumableArray(_this12.syncChangeWithEngine(row, column, newValue)));
+              _this14.syncChangeWithEngine(row, column, newValue);
+            });
           });
 
-          _this12.renderDependentSheets(outOfBoundsDependentCells, true);
+          _this14.renderDependentSheets(outOfBoundsDependentCells, true);
         });
       }
 
       this.renderDependentSheets(dependentCells);
+      this.validateDependentCells(dependentCells, changedCells);
     }
     /**
      * `onAfterSetSourceDataAtCell` hook callback.
      *
      * @private
      * @param {Array[]} changes An array of changes in format [[row, column, oldValue, value], ...].
+     * @param {string} [source] String that identifies source of hook call
+     *                          ([list of all available sources]{@link http://docs.handsontable.com/tutorial-using-callbacks.html#page-source-definition}).
      */
 
   }, {
     key: "onAfterSetSourceDataAtCell",
-    value: function onAfterSetSourceDataAtCell(changes) {
-      var _this13 = this;
+    value: function onAfterSetSourceDataAtCell(changes, source) {
+      var _this15 = this;
+
+      if (isBlockedSource(source)) {
+        return;
+      }
 
       var dependentCells = [];
-      changes.forEach(function (_ref11) {
-        var _ref12 = _slicedToArray(_ref11, 4),
-            row = _ref12[0],
-            column = _ref12[1],
-            newValue = _ref12[3];
+      var changedCells = [];
+      changes.forEach(function (_ref13) {
+        var _ref14 = _slicedToArray(_ref13, 4),
+            row = _ref14[0],
+            prop = _ref14[1],
+            newValue = _ref14[3];
+
+        var column = _this15.hot.propToCol(prop);
+
+        if (!isNumeric(column)) {
+          return;
+        }
 
         var address = {
           row: row,
-          col: _this13.toPhysicalColumnPosition(column),
-          sheet: _this13.sheetId
+          col: _this15.toPhysicalColumnPosition(column),
+          sheet: _this15.sheetId
         };
 
-        if (!_this13.engine.isItPossibleToSetCellContents(address)) {
+        if (!_this15.engine.isItPossibleToSetCellContents(address)) {
           warn("Not possible to set source cell data at ".concat(JSON.stringify(address)));
           return;
         }
 
-        dependentCells.push.apply(dependentCells, _toConsumableArray(_this13.engine.setCellContents(address, newValue)));
+        changedCells.push({
+          address: address
+        });
+        dependentCells.push.apply(dependentCells, _toConsumableArray(_this15.engine.setCellContents(address, newValue)));
       });
       this.renderDependentSheets(dependentCells);
+      this.validateDependentCells(dependentCells, changedCells);
     }
     /**
      * `beforeCreateRow` hook callback.
@@ -853,7 +1058,7 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onBeforeCreateRow",
     value: function onBeforeCreateRow(row, amount) {
-      if (!this.engine.isItPossibleToAddRows(this.sheetId, [this.toPhysicalRowPosition(row), amount])) {
+      if (this.sheetId === null || !this.engine.doesSheetExist(this.sheetName) || !this.engine.isItPossibleToAddRows(this.sheetId, [this.toPhysicalRowPosition(row), amount])) {
         return false;
       }
     }
@@ -869,7 +1074,7 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onBeforeCreateCol",
     value: function onBeforeCreateCol(col, amount) {
-      if (!this.engine.isItPossibleToAddColumns(this.sheetId, [this.toPhysicalColumnPosition(col), amount])) {
+      if (this.sheetId === null || !this.engine.doesSheetExist(this.sheetName) || !this.engine.isItPossibleToAddColumns(this.sheetId, [this.toPhysicalColumnPosition(col), amount])) {
         return false;
       }
     }
@@ -886,10 +1091,10 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onBeforeRemoveRow",
     value: function onBeforeRemoveRow(row, amount, physicalRows) {
-      var _this14 = this;
+      var _this16 = this;
 
       var possible = physicalRows.every(function (physicalRow) {
-        return _this14.engine.isItPossibleToRemoveRows(_this14.sheetId, [physicalRow, 1]);
+        return _this16.engine.isItPossibleToRemoveRows(_this16.sheetId, [physicalRow, 1]);
       });
       return possible === false ? false : void 0;
     }
@@ -906,10 +1111,10 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
   }, {
     key: "onBeforeRemoveCol",
     value: function onBeforeRemoveCol(col, amount, physicalColumns) {
-      var _this15 = this;
+      var _this17 = this;
 
       var possible = physicalColumns.every(function (physicalColumn) {
-        return _this15.engine.isItPossibleToRemoveColumns(_this15.sheetId, [physicalColumn, 1]);
+        return _this17.engine.isItPossibleToRemoveColumns(_this17.sheetId, [physicalColumn, 1]);
       });
       return possible === false ? false : void 0;
     }
@@ -919,11 +1124,17 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
      * @private
      * @param {number} row Represents the visual index of first newly created row in the data source array.
      * @param {number} amount Number of newly created rows in the data source array.
+     * @param {string} [source] String that identifies source of hook call
+     *                          ([list of all available sources]{@link http://docs.handsontable.com/tutorial-using-callbacks.html#page-source-definition}).
      */
 
   }, {
     key: "onAfterCreateRow",
-    value: function onAfterCreateRow(row, amount) {
+    value: function onAfterCreateRow(row, amount, source) {
+      if (isBlockedSource(source)) {
+        return;
+      }
+
       var changes = this.engine.addRows(this.sheetId, [this.toPhysicalRowPosition(row), amount]);
       this.renderDependentSheets(changes);
     }
@@ -933,11 +1144,17 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
      * @private
      * @param {number} col Represents the visual index of first newly created column in the data source.
      * @param {number} amount Number of newly created columns in the data source.
+     * @param {string} [source] String that identifies source of hook call
+     *                          ([list of all available sources]{@link http://docs.handsontable.com/tutorial-using-callbacks.html#page-source-definition}).
      */
 
   }, {
     key: "onAfterCreateCol",
-    value: function onAfterCreateCol(col, amount) {
+    value: function onAfterCreateCol(col, amount, source) {
+      if (isBlockedSource(source)) {
+        return;
+      }
+
       var changes = this.engine.addColumns(this.sheetId, [this.toPhysicalColumnPosition(col), amount]);
       this.renderDependentSheets(changes);
     }
@@ -948,17 +1165,23 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
      * @param {number} row Visual index of starter row.
      * @param {number} amount An amount of removed rows.
      * @param {number[]} physicalRows An array of physical rows removed from the data source.
+     * @param {string} [source] String that identifies source of hook call
+     *                          ([list of all available sources]{@link http://docs.handsontable.com/tutorial-using-callbacks.html#page-source-definition}).
      */
 
   }, {
     key: "onAfterRemoveRow",
-    value: function onAfterRemoveRow(row, amount, physicalRows) {
-      var _this16 = this;
+    value: function onAfterRemoveRow(row, amount, physicalRows, source) {
+      var _this18 = this;
+
+      if (isBlockedSource(source)) {
+        return;
+      }
 
       var descendingPhysicalRows = physicalRows.sort().reverse();
       var changes = this.engine.batch(function () {
         descendingPhysicalRows.forEach(function (physicalRow) {
-          _this16.engine.removeRows(_this16.sheetId, [physicalRow, 1]);
+          _this18.engine.removeRows(_this18.sheetId, [physicalRow, 1]);
         });
       });
       this.renderDependentSheets(changes);
@@ -970,20 +1193,58 @@ export var Formulas = /*#__PURE__*/function (_BasePlugin) {
      * @param {number} col Visual index of starter column.
      * @param {number} amount An amount of removed columns.
      * @param {number[]} physicalColumns An array of physical columns removed from the data source.
+     * @param {string} [source] String that identifies source of hook call
+     *                          ([list of all available sources]{@link http://docs.handsontable.com/tutorial-using-callbacks.html#page-source-definition}).
      */
 
   }, {
     key: "onAfterRemoveCol",
-    value: function onAfterRemoveCol(col, amount, physicalColumns) {
-      var _this17 = this;
+    value: function onAfterRemoveCol(col, amount, physicalColumns, source) {
+      var _this19 = this;
+
+      if (isBlockedSource(source)) {
+        return;
+      }
 
       var descendingPhysicalColumns = physicalColumns.sort().reverse();
       var changes = this.engine.batch(function () {
         descendingPhysicalColumns.forEach(function (physicalColumn) {
-          _this17.engine.removeColumns(_this17.sheetId, [physicalColumn, 1]);
+          _this19.engine.removeColumns(_this19.sheetId, [physicalColumn, 1]);
         });
       });
       this.renderDependentSheets(changes);
+    }
+    /**
+     * `afterDetachChild` hook callback.
+     * Used to sync the data of the rows detached in the Nested Rows plugin with the engine's dataset.
+     *
+     * @private
+     * @param {object} parent An object representing the parent from which the element was detached.
+     * @param {object} element The detached element.
+     * @param {number} finalElementRowIndex The final row index of the detached element.
+     */
+
+  }, {
+    key: "onAfterDetachChild",
+    value: function onAfterDetachChild(parent, element, finalElementRowIndex) {
+      var _element$__children,
+          _this20 = this;
+
+      _classPrivateFieldSet(this, _internalOperationPending, true);
+
+      var rowsData = this.hot.getSourceDataArray(finalElementRowIndex, 0, finalElementRowIndex + (((_element$__children = element.__children) === null || _element$__children === void 0 ? void 0 : _element$__children.length) || 0), this.hot.countSourceCols());
+
+      _classPrivateFieldSet(this, _internalOperationPending, false);
+
+      rowsData.forEach(function (row, relativeRowIndex) {
+        row.forEach(function (value, colIndex) {
+          _this20.engine.setCellContents({
+            col: colIndex,
+            row: finalElementRowIndex + relativeRowIndex,
+            sheet: _this20.sheetId
+          }, [[value]]);
+        });
+      });
     }
     /**
      * Called when a value is updated in the engine.

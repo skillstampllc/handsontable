@@ -23,7 +23,7 @@ import { CellRange } from "./../3rdparty/walkontable/src/index.mjs";
  * @util
  */
 
-var SelectionRange = /*#__PURE__*/function () {
+var SelectionRange = /*#__PURE__*/function (_Symbol$iterator) {
   function SelectionRange() {
     _classCallCheck(this, SelectionRange);
 
@@ -167,13 +167,13 @@ var SelectionRange = /*#__PURE__*/function () {
       return cellRange;
     }
   }, {
-    key: Symbol.iterator,
+    key: _Symbol$iterator,
     value: function value() {
       return this.ranges[Symbol.iterator]();
     }
   }]);
 
   return SelectionRange;
-}();
+}(Symbol.iterator);
 
 export default SelectionRange;

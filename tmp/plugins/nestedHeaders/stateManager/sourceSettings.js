@@ -51,6 +51,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
@@ -88,17 +92,17 @@ var SourceSettings = /*#__PURE__*/function () {
   function SourceSettings() {
     _classCallCheck(this, SourceSettings);
 
-    _data.set(this, {
+    _classPrivateFieldInitSpec(this, _data, {
       writable: true,
       value: []
     });
 
-    _dataLength.set(this, {
+    _classPrivateFieldInitSpec(this, _dataLength, {
       writable: true,
       value: 0
     });
 
-    _columnsLimit.set(this, {
+    _classPrivateFieldInitSpec(this, _columnsLimit, {
       writable: true,
       value: Infinity
     });

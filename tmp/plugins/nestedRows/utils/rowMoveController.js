@@ -108,10 +108,10 @@ var RowMoveController = /*#__PURE__*/function () {
    * @param {Array} rows Array of visual row indexes to be moved.
    * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements
    *   will be placed after the moving action. To check the visualization of the final index, please take a look at
-   *   [documentation](/docs/demo-moving.html).
+   *   [documentation](@/guides/rows/row-moving.md).
    * @param {undefined|number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we
    *   are going to drop the moved elements. To check visualization of drop index please take a look at
-   *   [documentation](/docs/demo-moving.html).
+   *   [documentation](@/guides/rows/row-moving.md).
    * @param {boolean} movePossible Indicates if it's possible to move rows to the desired position.
    * @fires Hooks#afterRowMove
    * @returns {boolean}
@@ -163,7 +163,7 @@ var RowMoveController = /*#__PURE__*/function () {
       this.collapsingUI.collapsedRowsStash.stash();
       this.shiftCollapsibleParentsLocations(physicalStartIndexes, physicalDropIndex, sameParent);
       this.moveRows(physicalStartIndexes, physicalDropIndex, targetParent);
-      this.dataManager.updateWithData(this.dataManager.getRawSourceData());
+      this.dataManager.rewriteCache();
       this.moveCellsMeta(physicalStartIndexes, physicalDropIndex);
       this.collapsingUI.collapsedRowsStash.applyStash(false); // TODO: Trying to mock real work of the `ManualRowMove` plugin. It was blocked by returning `false` below.
 
@@ -317,7 +317,7 @@ var RowMoveController = /*#__PURE__*/function () {
      * @param {Array} rows Array of visual row indexes to be moved.
      * @param {undefined|number} dropIndex Visual row index, being a drop index for the moved rows. Points to where we
      *   are going to drop the moved elements. To check visualization of drop index please take a look at
-     *   [documentation](/docs/demo-moving.html).
+     *   [documentation](@/guides/rows/row-moving.md).
      */
 
   }, {
@@ -362,7 +362,7 @@ var RowMoveController = /*#__PURE__*/function () {
      * @param {Array} movedRows Array of visual row indexes to be moved.
      * @param {number} finalIndex Visual row index, being a start index for the moved rows. Points to where the elements
      *   will be placed after the moving action. To check the visualization of the final index, please take a look at
-     *   [documentation](/docs/demo-moving.html).
+     *   [documentation](@/guides/rows/row-moving.md).
      * @returns {boolean}
      */
 

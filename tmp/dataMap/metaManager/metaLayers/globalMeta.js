@@ -52,7 +52,7 @@ function createTableMetaEmptyClass() {
 
 
 var GlobalMeta = /*#__PURE__*/function () {
-  function GlobalMeta() {
+  function GlobalMeta(hot) {
     _classCallCheck(this, GlobalMeta);
 
     /**
@@ -69,6 +69,7 @@ var GlobalMeta = /*#__PURE__*/function () {
 
     this.meta = this.metaCtor.prototype;
     (0, _object.extend)(this.meta, (0, _metaSchema.default)());
+    this.meta.instance = hot;
   }
   /**
    * Gets constructor of the global meta object. Necessary for inheritance for creating the next meta layers.

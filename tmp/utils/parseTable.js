@@ -126,7 +126,7 @@ function instanceToHTML(instance) {
       } else {
         var cellData = data[row][column];
 
-        var _instance$getCellMeta = instance.getCellMeta(row - rowModifier, column - columnModifier),
+        var _instance$getCellMeta = instance.getCellMeta(row - columnModifier, column - rowModifier),
             hidden = _instance$getCellMeta.hidden,
             rowspan = _instance$getCellMeta.rowspan,
             colspan = _instance$getCellMeta.colspan;

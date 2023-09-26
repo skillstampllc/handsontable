@@ -35,13 +35,13 @@ require("core-js/modules/es.array.includes.js");
 
 require("core-js/modules/es.string.includes.js");
 
+require("core-js/modules/es.array.concat.js");
+
 require("core-js/modules/es.symbol.iterator.js");
 
 require("core-js/modules/es.symbol.js");
 
 require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.array.concat.js");
 
 var _types = require("./types");
 
@@ -88,7 +88,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class Highlight
  * @util
  */
-var Highlight = /*#__PURE__*/function () {
+var Highlight = /*#__PURE__*/function (_Symbol$iterator) {
   function Highlight(options) {
     _classCallCheck(this, Highlight);
 
@@ -370,14 +370,14 @@ var Highlight = /*#__PURE__*/function () {
      */
 
   }, {
-    key: Symbol.iterator,
+    key: _Symbol$iterator,
     value: function value() {
       return [this.cell, this.fill].concat(_toConsumableArray(this.areas.values()), _toConsumableArray(this.headers.values()), _toConsumableArray(this.activeHeaders.values()), _toConsumableArray(this.customSelections))[Symbol.iterator]();
     }
   }]);
 
   return Highlight;
-}();
+}(Symbol.iterator);
 
 var _default = Highlight;
 exports.default = _default;

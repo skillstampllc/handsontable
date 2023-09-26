@@ -13,6 +13,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
@@ -90,27 +94,27 @@ export var ChangesObservable = /*#__PURE__*/function () {
 
     _classCallCheck(this, ChangesObservable);
 
-    _observers.set(this, {
+    _classPrivateFieldInitSpec(this, _observers, {
       writable: true,
       value: new Set()
     });
 
-    _indexMatrix.set(this, {
+    _classPrivateFieldInitSpec(this, _indexMatrix, {
       writable: true,
       value: []
     });
 
-    _currentIndexState.set(this, {
+    _classPrivateFieldInitSpec(this, _currentIndexState, {
       writable: true,
       value: []
     });
 
-    _isMatrixIndexesInitialized.set(this, {
+    _classPrivateFieldInitSpec(this, _isMatrixIndexesInitialized, {
       writable: true,
       value: false
     });
 
-    _initialIndexValue.set(this, {
+    _classPrivateFieldInitSpec(this, _initialIndexValue, {
       writable: true,
       value: false
     });

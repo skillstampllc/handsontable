@@ -291,7 +291,7 @@ if (isClassListSupported()) {
       } else {
         var len = 0;
 
-        while (className && className[len]) {
+        while (className[len]) {
           element.classList.add(className[len]);
           len += 1;
         }
@@ -317,7 +317,7 @@ if (isClassListSupported()) {
       } else {
         var len = 0;
 
-        while (className && className[len]) {
+        while (className[len]) {
           element.classList.remove(className[len]);
           len += 1;
         }
@@ -368,7 +368,7 @@ if (isClassListSupported()) {
 
     className = filterEmptyClassNames(className);
 
-    while (className && className[len]) {
+    while (className[len]) {
       // String.prototype.trim is defined in polyfill.js
       _className = _className.replace(createClassNameRegExp(className[len]), ' ').trim();
       len += 1;
@@ -422,7 +422,7 @@ export function removeTextNodes(element) {
     var childs = element.childNodes;
 
     for (var i = childs.length - 1; i >= 0; i--) {
-      removeTextNodes(childs[i], element);
+      removeTextNodes(childs[i]);
     }
   }
 }
@@ -1103,7 +1103,6 @@ export function setOverlayPosition(overlayElem, left, top) {
     overlayElem.style.top = top;
     overlayElem.style.left = left;
   } else if (isSafari()) {
-    overlayElem.style['-webkit-transform'] = "translate3d(".concat(left, ",").concat(top, ",0)");
     overlayElem.style['-webkit-transform'] = "translate3d(".concat(left, ",").concat(top, ",0)");
   } else {
     overlayElem.style.transform = "translate3d(".concat(left, ",").concat(top, ",0)");

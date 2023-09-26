@@ -36,7 +36,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * @class SelectionRange
  * @util
  */
-var SelectionRange = /*#__PURE__*/function () {
+var SelectionRange = /*#__PURE__*/function (_Symbol$iterator) {
   function SelectionRange() {
     _classCallCheck(this, SelectionRange);
 
@@ -180,14 +180,14 @@ var SelectionRange = /*#__PURE__*/function () {
       return cellRange;
     }
   }, {
-    key: Symbol.iterator,
+    key: _Symbol$iterator,
     value: function value() {
       return this.ranges[Symbol.iterator]();
     }
   }]);
 
   return SelectionRange;
-}();
+}(Symbol.iterator);
 
 var _default = SelectionRange;
 exports.default = _default;

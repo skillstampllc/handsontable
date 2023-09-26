@@ -68,7 +68,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
@@ -100,6 +100,7 @@ Hooks.getSingleton().register('afterColumnSort'); // DIFF - MultiColumnSorting &
 
 /**
  * @plugin ColumnSorting
+ * @class ColumnSorting
  *
  * @description
  * This plugin sorts the view by columns (but does not sort the data source!). To enable the plugin, set the
@@ -143,7 +144,8 @@ Hooks.getSingleton().register('afterColumnSort'); // DIFF - MultiColumnSorting &
  *       }
  *     }
  *   }
- * }]```
+ * }]
+ * ```
  */
 
 export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
@@ -231,8 +233,8 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
       this.addHook('afterGetColHeader', function (column, TH) {
         return _this2.onAfterGetColHeader(column, TH);
       });
-      this.addHook('beforeOnCellMouseDown', function (event, coords, TD, controller) {
-        return _this2.onBeforeOnCellMouseDown(event, coords, TD, controller);
+      this.addHook('beforeOnCellMouseDown', function () {
+        return _this2.onBeforeOnCellMouseDown.apply(_this2, arguments);
       });
       this.addHook('afterOnCellMouseDown', function (event, target) {
         return _this2.onAfterOnCellMouseDown(event, target);
@@ -271,7 +273,7 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
 
 
       this.hot.addHook('afterGetColHeader', clearColHeader);
-      this.hot.addHookOnce('afterRender', function () {
+      this.hot.addHookOnce('afterViewRender', function () {
         _this3.hot.removeHook('afterGetColHeader', clearColHeader);
       });
       this.hot.batchExecution(function () {
@@ -396,7 +398,8 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
      *   this.loadData(newData); // Load new data set and re-render the table.
      *
      *   return false; // The blockade for the default sort action.
-     * }```
+     * }
+     * ```
      *
      * @param {undefined|object|Array} sortConfig Single column sort configuration or full sort configuration (for all sorted columns).
      * The configuration object contains `column` and `sortOrder` properties. First of them contains visual column index, the second one contains
@@ -877,19 +880,19 @@ export var ColumnSorting = /*#__PURE__*/function (_BasePlugin) {
      * @param {MouseEvent} event The `mousedown` event.
      * @param {CellCoords} coords Visual coordinates.
      * @param {HTMLElement} TD The cell element.
-     * @param {object} blockCalculations A literal object which holds boolean values which controls
-     *                                   how the selection while selecting neighboring cells.
+     * @param {object} controller An object with properties `row`, `column` and `cell`. Each property contains
+     *                            a boolean value that allows or disallows changing the selection for that particular area.
      */
 
   }, {
     key: "onBeforeOnCellMouseDown",
-    value: function onBeforeOnCellMouseDown(event, coords, TD, blockCalculations) {
+    value: function onBeforeOnCellMouseDown(event, coords, TD, controller) {
       if (wasHeaderClickedProperly(coords.row, coords.col, event) === false) {
         return;
       }
 
       if (this.wasClickableHeaderClicked(event, coords.col) && isPressedCtrlKey()) {
-        blockCalculations.column = true;
+        controller.column = true;
       }
     }
     /**

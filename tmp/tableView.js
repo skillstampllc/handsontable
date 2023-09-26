@@ -59,7 +59,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -212,12 +212,15 @@ var TableView = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       if (!this.instance.isRenderSuspended()) {
+        this.instance.runHooks('beforeRender', this.instance.forceFullRender);
+
         if (this.postponedAdjustElementsSize) {
           this.postponedAdjustElementsSize = false;
           this.adjustElementsSize(true);
         }
 
         this.wt.draw(!this.instance.forceFullRender);
+        this.instance.runHooks('afterRender', this.instance.forceFullRender);
         this.instance.forceFullRender = false;
         this.instance.renderCall = false;
       }
@@ -786,7 +789,7 @@ var TableView = /*#__PURE__*/function () {
         onCellMouseDown: function onCellMouseDown(event, coords, TD, wt) {
           var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
 
-          var blockCalculations = {
+          var controller = {
             row: false,
             column: false,
             cell: false
@@ -797,7 +800,7 @@ var TableView = /*#__PURE__*/function () {
           _this2.activeWt = wt;
           priv.mouseDown = true;
 
-          _this2.instance.runHooks('beforeOnCellMouseDown', event, visualCoords, TD, blockCalculations);
+          _this2.instance.runHooks('beforeOnCellMouseDown', event, visualCoords, TD, controller);
 
           if ((0, _event.isImmediatePropagationStopped)(event)) {
             return;
@@ -806,7 +809,7 @@ var TableView = /*#__PURE__*/function () {
           (0, _mouseEventHandler.handleMouseEvent)(event, {
             coords: visualCoords,
             selection: _this2.instance.selection,
-            controller: blockCalculations
+            controller: controller
           });
 
           _this2.instance.runHooks('afterOnCellMouseDown', event, visualCoords, TD);
@@ -851,14 +854,14 @@ var TableView = /*#__PURE__*/function () {
         onCellMouseOver: function onCellMouseOver(event, coords, TD, wt) {
           var visualCoords = _this2.translateFromRenderableToVisualCoords(coords);
 
-          var blockCalculations = {
+          var controller = {
             row: false,
             column: false,
             cell: false
           };
           _this2.activeWt = wt;
 
-          _this2.instance.runHooks('beforeOnCellMouseOver', event, visualCoords, TD, blockCalculations);
+          _this2.instance.runHooks('beforeOnCellMouseOver', event, visualCoords, TD, controller);
 
           if ((0, _event.isImmediatePropagationStopped)(event)) {
             return;
@@ -868,7 +871,7 @@ var TableView = /*#__PURE__*/function () {
             (0, _mouseEventHandler.handleMouseEvent)(event, {
               coords: visualCoords,
               selection: _this2.instance.selection,
-              controller: blockCalculations
+              controller: controller
             });
           }
 
@@ -909,7 +912,7 @@ var TableView = /*#__PURE__*/function () {
           return _this2.beforeRender(force, skipRender);
         },
         onDraw: function onDraw(force) {
-          return _this2.onDraw(force);
+          return _this2.afterRender(force);
         },
         onScrollVertically: function onScrollVertically() {
           return _this2.instance.runHooks('afterScrollVertically');
@@ -1171,7 +1174,8 @@ var TableView = /*#__PURE__*/function () {
      * @private
      * @param {boolean} force If `true` rendering was triggered by a change of settings or data or `false` if
      *                        rendering was triggered by scrolling or moving selection.
-     * @param {boolean} skipRender Indicates whether the rendering is skipped.
+     * @param {object} skipRender Object with `skipRender` property, if it is set to `true ` the next rendering
+     *                            cycle will be skipped.
      */
 
   }, {
@@ -1179,11 +1183,11 @@ var TableView = /*#__PURE__*/function () {
     value: function beforeRender(force, skipRender) {
       if (force) {
         // this.instance.forceFullRender = did Handsontable request full render?
-        this.instance.runHooks('beforeRender', this.instance.forceFullRender, skipRender);
+        this.instance.runHooks('beforeViewRender', this.instance.forceFullRender, skipRender);
       }
     }
     /**
-     * `onDraw` callback.
+     * `afterRender` callback.
      *
      * @private
      * @param {boolean} force If `true` rendering was triggered by a change of settings or data or `false` if
@@ -1191,11 +1195,11 @@ var TableView = /*#__PURE__*/function () {
      */
 
   }, {
-    key: "onDraw",
-    value: function onDraw(force) {
+    key: "afterRender",
+    value: function afterRender(force) {
       if (force) {
         // this.instance.forceFullRender = did Handsontable request full render?
-        this.instance.runHooks('afterRender', this.instance.forceFullRender);
+        this.instance.runHooks('afterViewRender', this.instance.forceFullRender);
       }
     }
     /**

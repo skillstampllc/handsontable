@@ -1,3 +1,5 @@
+import "core-js/modules/web.dom-collections.for-each.js";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -8,6 +10,8 @@ import GlobalMeta from "./metaLayers/globalMeta.mjs";
 import TableMeta from "./metaLayers/tableMeta.mjs";
 import ColumnMeta from "./metaLayers/columnMeta.mjs";
 import CellMeta from "./metaLayers/cellMeta.mjs";
+import localHooks from "../../mixins/localHooks.mjs";
+import { mixin } from "../../helpers/object.mjs";
 /**
  * With the Meta Manager class, it can be possible to manage with meta objects for different layers in
  * one place. All coordinates used to fetch, updating, removing, or creating rows or columns have to
@@ -37,15 +41,23 @@ import CellMeta from "./metaLayers/cellMeta.mjs";
  */
 
 var MetaManager = /*#__PURE__*/function () {
-  function MetaManager() {
-    var customSettings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  function MetaManager(hot) {
+    var _this = this;
+
+    var customSettings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var metaMods = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
     _classCallCheck(this, MetaManager);
 
     /**
+     * @type {Handsontable}
+     */
+    this.hot = hot;
+    /**
      * @type {GlobalMeta}
      */
-    this.globalMeta = new GlobalMeta();
+
+    this.globalMeta = new GlobalMeta(hot);
     this.globalMeta.updateMeta(customSettings);
     /**
      * @type {TableMeta}
@@ -62,6 +74,9 @@ var MetaManager = /*#__PURE__*/function () {
      */
 
     this.cellMeta = new CellMeta(this.columnMeta);
+    metaMods.forEach(function (ModifierClass) {
+      return new ModifierClass(_this);
+    });
   }
   /**
    * Gets the global meta object that is a root of all default settings, which are recognizable by Handsontable.
@@ -149,13 +164,41 @@ var MetaManager = /*#__PURE__*/function () {
      *
      * @param {number} physicalRow The physical row index.
      * @param {number} physicalColumn The physical column index.
-     * @param {string} [key] If the key exists its value will be returned, otherwise the whole cell meta object.
+     * @param {object} options Additional options that are used to extend the cell meta object.
+     * @param {number} options.visualRow The visual row index of the currently requested cell meta object.
+     * @param {number} options.visualColumn The visual column index of the currently requested cell meta object.
      * @returns {object}
      */
 
   }, {
     key: "getCellMeta",
-    value: function getCellMeta(physicalRow, physicalColumn, key) {
+    value: function getCellMeta(physicalRow, physicalColumn, _ref) {
+      var visualRow = _ref.visualRow,
+          visualColumn = _ref.visualColumn;
+      var cellMeta = this.cellMeta.getMeta(physicalRow, physicalColumn);
+      cellMeta.visualRow = visualRow;
+      cellMeta.visualCol = visualColumn;
+      cellMeta.row = physicalRow;
+      cellMeta.col = physicalColumn;
+      this.runLocalHooks('afterGetCellMeta', cellMeta);
+      return cellMeta;
+    }
+    /**
+     * Gets a value (defined by the `key` property) from the cell meta object.
+     *
+     * @param {number} physicalRow The physical row index.
+     * @param {number} physicalColumn The physical column index.
+     * @param {string} key Defines the value that will be returned from the cell meta object.
+     * @returns {*}
+     */
+
+  }, {
+    key: "getCellMetaKeyValue",
+    value: function getCellMetaKeyValue(physicalRow, physicalColumn, key) {
+      if (typeof key !== 'string') {
+        throw new Error('The passed cell meta object key is not a string');
+      }
+
       return this.cellMeta.getMeta(physicalRow, physicalColumn, key);
     }
     /**
@@ -303,3 +346,4 @@ var MetaManager = /*#__PURE__*/function () {
 }();
 
 export { MetaManager as default };
+mixin(MetaManager, localHooks);

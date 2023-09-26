@@ -29,7 +29,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
@@ -43,7 +43,7 @@ import { TextEditor } from "../textEditor/index.mjs";
 import EventManager from "../../eventManager.mjs";
 import { addClass, outerHeight } from "../../helpers/dom/element.mjs";
 import { deepExtend } from "../../helpers/object.mjs";
-import { isMetaKey } from "../../helpers/unicode.mjs";
+import { isFunctionKey } from "../../helpers/unicode.mjs";
 export var EDITOR_TYPE = 'date';
 /**
  * @private
@@ -69,6 +69,7 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
     _this.defaultDateFormat = 'DD/MM/YYYY';
     _this.isCellEdited = false;
     _this.parentDestroyed = false;
+    _this.$datePicker = null;
     return _this;
   }
 
@@ -110,7 +111,6 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       this.datePickerStyle.zIndex = 9999;
       addClass(this.datePicker, 'htDatepickerHolder');
       this.hot.rootDocument.body.appendChild(this.datePicker);
-      this.$datePicker = new Pikaday(this.getDatePickerConfig());
       var eventManager = new EventManager(this);
       /**
        * Prevent recognizing clicking on datepicker as clicking outside of table.
@@ -119,7 +119,6 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       eventManager.addEventListener(this.datePicker, 'mousedown', function (event) {
         return event.stopPropagation();
       });
-      this.hideDatepicker();
     }
     /**
      * Destroy data picker instance.
@@ -129,7 +128,10 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
     key: "destroyElements",
     value: function destroyElements() {
       var datePickerParentElement = this.datePicker.parentNode;
-      this.$datePicker.destroy();
+
+      if (this.$datePicker) {
+        this.$datePicker.destroy();
+      }
 
       if (datePickerParentElement) {
         datePickerParentElement.removeChild(this.datePicker);
@@ -176,6 +178,7 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       var _this3 = this;
 
       this._opened = false;
+      this.$datePicker.destroy();
 
       this.instance._registerTimeout(function () {
         _this3.instance._refreshBorders();
@@ -206,8 +209,6 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
         }
       }
 
-      this.hideDatepicker();
-
       _get(_getPrototypeOf(DateEditor.prototype), "finishEditing", this).call(this, restoreOriginalValue, ctrlDown);
     }
     /**
@@ -219,19 +220,16 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
   }, {
     key: "showDatepicker",
     value: function showDatepicker(event) {
-      this.$datePicker.config(this.getDatePickerConfig());
       var offset = this.TD.getBoundingClientRect();
       var dateFormat = this.cellProperties.dateFormat || this.defaultDateFormat;
-      var datePickerConfig = this.$datePicker.config();
-      var dateStr;
       var isMouseDown = this.instance.view.isMouseDown();
-      var isMeta = event ? isMetaKey(event.keyCode) : false;
+      var isMeta = event ? isFunctionKey(event.keyCode) : false;
+      var dateStr;
       this.datePickerStyle.top = "".concat(this.hot.rootWindow.pageYOffset + offset.top + outerHeight(this.TD), "px");
       this.datePickerStyle.left = "".concat(this.hot.rootWindow.pageXOffset + offset.left, "px");
+      this.$datePicker = new Pikaday(this.getDatePickerConfig());
 
       this.$datePicker._onInputFocus = function () {};
-
-      datePickerConfig.format = dateFormat;
 
       if (this.originalValue) {
         dateStr = this.originalValue;
@@ -250,7 +248,6 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
         }
       } else if (this.cellProperties.defaultDate) {
         dateStr = this.cellProperties.defaultDate;
-        datePickerConfig.defaultDate = dateStr;
 
         if (moment(dateStr, dateFormat, true).isValid()) {
           this.$datePicker.setMoment(moment(dateStr, dateFormat), true);
@@ -266,7 +263,6 @@ export var DateEditor = /*#__PURE__*/function (_TextEditor) {
       }
 
       this.datePickerStyle.display = 'block';
-      this.$datePicker.show();
     }
     /**
      * Hide data picker.

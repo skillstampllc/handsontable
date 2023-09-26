@@ -24,10 +24,10 @@ import "core-js/modules/es.string.iterator.js";
 import "core-js/modules/web.dom-collections.iterator.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
+import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.symbol.iterator.js";
 import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.object.keys.js";
 import "core-js/modules/es.array.filter.js";
 import "core-js/modules/es.object.get-own-property-descriptor.js";
@@ -62,7 +62,7 @@ import { arrayEach } from "./../../helpers/array.mjs";
  * @util
  */
 
-var Highlight = /*#__PURE__*/function () {
+var Highlight = /*#__PURE__*/function (_Symbol$iterator) {
   function Highlight(options) {
     _classCallCheck(this, Highlight);
 
@@ -344,13 +344,13 @@ var Highlight = /*#__PURE__*/function () {
      */
 
   }, {
-    key: Symbol.iterator,
+    key: _Symbol$iterator,
     value: function value() {
       return [this.cell, this.fill].concat(_toConsumableArray(this.areas.values()), _toConsumableArray(this.headers.values()), _toConsumableArray(this.activeHeaders.values()), _toConsumableArray(this.customSelections))[Symbol.iterator]();
     }
   }]);
 
   return Highlight;
-}();
+}(Symbol.iterator);
 
 export default Highlight;

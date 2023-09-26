@@ -34,7 +34,7 @@ var BaseUI = /*#__PURE__*/function () {
     /**
      * Flag which determines build state of element.
      *
-     * @type {boolean}
+     * @type {number}
      */
 
     this.state = STATE_INITIALIZED;

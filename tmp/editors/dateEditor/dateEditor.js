@@ -61,7 +61,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
@@ -96,6 +96,7 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
     _this.defaultDateFormat = 'DD/MM/YYYY';
     _this.isCellEdited = false;
     _this.parentDestroyed = false;
+    _this.$datePicker = null;
     return _this;
   }
 
@@ -137,7 +138,6 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
       this.datePickerStyle.zIndex = 9999;
       (0, _element.addClass)(this.datePicker, 'htDatepickerHolder');
       this.hot.rootDocument.body.appendChild(this.datePicker);
-      this.$datePicker = new _pikaday.default(this.getDatePickerConfig());
       var eventManager = new _eventManager.default(this);
       /**
        * Prevent recognizing clicking on datepicker as clicking outside of table.
@@ -146,7 +146,6 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
       eventManager.addEventListener(this.datePicker, 'mousedown', function (event) {
         return event.stopPropagation();
       });
-      this.hideDatepicker();
     }
     /**
      * Destroy data picker instance.
@@ -156,7 +155,10 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
     key: "destroyElements",
     value: function destroyElements() {
       var datePickerParentElement = this.datePicker.parentNode;
-      this.$datePicker.destroy();
+
+      if (this.$datePicker) {
+        this.$datePicker.destroy();
+      }
 
       if (datePickerParentElement) {
         datePickerParentElement.removeChild(this.datePicker);
@@ -203,6 +205,7 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
       var _this3 = this;
 
       this._opened = false;
+      this.$datePicker.destroy();
 
       this.instance._registerTimeout(function () {
         _this3.instance._refreshBorders();
@@ -233,8 +236,6 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
         }
       }
 
-      this.hideDatepicker();
-
       _get(_getPrototypeOf(DateEditor.prototype), "finishEditing", this).call(this, restoreOriginalValue, ctrlDown);
     }
     /**
@@ -246,19 +247,16 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
   }, {
     key: "showDatepicker",
     value: function showDatepicker(event) {
-      this.$datePicker.config(this.getDatePickerConfig());
       var offset = this.TD.getBoundingClientRect();
       var dateFormat = this.cellProperties.dateFormat || this.defaultDateFormat;
-      var datePickerConfig = this.$datePicker.config();
-      var dateStr;
       var isMouseDown = this.instance.view.isMouseDown();
-      var isMeta = event ? (0, _unicode.isMetaKey)(event.keyCode) : false;
+      var isMeta = event ? (0, _unicode.isFunctionKey)(event.keyCode) : false;
+      var dateStr;
       this.datePickerStyle.top = "".concat(this.hot.rootWindow.pageYOffset + offset.top + (0, _element.outerHeight)(this.TD), "px");
       this.datePickerStyle.left = "".concat(this.hot.rootWindow.pageXOffset + offset.left, "px");
+      this.$datePicker = new _pikaday.default(this.getDatePickerConfig());
 
       this.$datePicker._onInputFocus = function () {};
-
-      datePickerConfig.format = dateFormat;
 
       if (this.originalValue) {
         dateStr = this.originalValue;
@@ -277,7 +275,6 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
         }
       } else if (this.cellProperties.defaultDate) {
         dateStr = this.cellProperties.defaultDate;
-        datePickerConfig.defaultDate = dateStr;
 
         if ((0, _moment.default)(dateStr, dateFormat, true).isValid()) {
           this.$datePicker.setMoment((0, _moment.default)(dateStr, dateFormat), true);
@@ -293,7 +290,6 @@ var DateEditor = /*#__PURE__*/function (_TextEditor) {
       }
 
       this.datePickerStyle.display = 'block';
-      this.$datePicker.show();
     }
     /**
      * Hide data picker.
